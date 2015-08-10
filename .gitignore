@@ -1,0 +1,5 @@
+*.o
+*.layout
+/bin/*
+/obj/*
+

@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1438352521 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<map>
+	<pthread.h>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<stdio.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<csignal>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdio.h>
+	<stdlib.h>
+	<sqlite3.h>
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+
+1438114312 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceInfo.cpp
+	"InterfaceInfo.h"
+
+1438114303 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceInfo.h
+	<string>
+
+1438804246 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.cpp
+	"InterfaceStats.h"
+
+1438804233 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.h
+	<stdint.h>
+
