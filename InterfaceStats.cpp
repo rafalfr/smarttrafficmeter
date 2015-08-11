@@ -26,6 +26,16 @@ InterfaceStats::~InterfaceStats()
 
 void InterfaceStats::update ( uint64_t _tx, uint64_t _rx )
 {
+    if (p_rx==0)
+    {
+        p_rx=_rx;
+    }
+
+    if (p_tx==0)
+    {
+        p_tx=_tx;
+    }
+
 	rx += ( _rx - p_rx );
 	tx += ( _tx - p_tx );
 

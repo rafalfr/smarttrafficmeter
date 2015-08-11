@@ -43,6 +43,8 @@
 		</Linker>
 		<Unit filename="InterfaceInfo.cpp" />
 		<Unit filename="InterfaceInfo.h" />
+		<Unit filename="InterfaceSpeedMeter.cpp" />
+		<Unit filename="InterfaceSpeedMeter.h" />
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
 		<Unit filename="main.cpp" />
