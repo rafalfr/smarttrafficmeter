@@ -30,6 +30,7 @@
 #include <sqlite3.h>
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
+#include "InterfaceSpeedMeter.h"
 
 using namespace std;
 
@@ -43,10 +44,7 @@ uint32_t refresh_interval = 1;  //statistics interval in seconds
 uint32_t save_interval = 5;     //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
-map<string, map<uint32_t, InterfaceStats>> hourly_stats;
-map<string, map<uint32_t, InterfaceStats>> daily_stats;
-map<string, map<uint32_t, InterfaceStats>> monthly_stats;
-map<string, map<uint32_t, InterfaceStats>> yearly_stats;
+map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
 
 
@@ -106,6 +104,10 @@ int main()
 	for ( auto const & mac_info : interfaces )
 	{
 		string mac = mac_info.second.get_mac();
+
+		InterfaceSpeedMeter ism;
+		speed_stats[mac]=ism;
+
 		if ( all_stats.find ( mac ) == all_stats.end() )
 		{
 			get_time ( &y, &m, &d, &h );
@@ -340,6 +342,12 @@ static void * MeterThread ( void *arg )
 
 				string mac = get_mac ( ifaddr->ifa_name ).c_str();
 
+				if (speed_stats.find(mac)==speed_stats.end())
+                {
+                    InterfaceSpeedMeter ism;
+                    speed_stats[mac]=ism;
+                }
+
 				string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
 
 				if ( all_stats[mac]["hourly"].find ( row ) == all_stats[mac]["hourly"].end() )
@@ -380,6 +388,16 @@ static void * MeterThread ( void *arg )
 					all_stats[mac]["yearly"][row] = ystats;
 				}
 				all_stats[mac]["yearly"][row].update ( stats->tx_bytes, stats->rx_bytes );
+				speed_stats[mac].update(stats->rx_bytes,stats->tx_bytes);
+
+				for(auto const & mac_speedinfo : speed_stats)
+                {
+                    const string& mac=mac_speedinfo.first;
+                    InterfaceSpeedMeter& ism=mac_speedinfo.second;
+                    cout<<mac<<endl;
+                    //cout<<mac<<endl<<"up: "<<ism.get_tx_speed()<<"\tdown: "<<ism.get_rx_speed()<<endl;
+                    printf("%ld",ism.get_tx_speed());
+                }
 
 
 //				uint32_t key = ( y << 14 ) | ( m << 10 ) | ( d << 5 ) | h;
