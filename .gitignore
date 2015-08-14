@@ -1,4 +1,5 @@
 *.o
+*.db
 *.layout
 /bin/*
 /obj/*

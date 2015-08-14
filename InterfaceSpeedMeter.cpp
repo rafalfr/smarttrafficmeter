@@ -5,15 +5,34 @@
 InterfaceSpeedMeter::InterfaceSpeedMeter()
 {
 	max_buf_items = 5;
+	map<string, uint64_t> item;
+
+	uint64_t time = get_time_milisecs();
+
+	item["rx"] = 0;
+	item["tx"] = 0;
+	item["time"] = time;
+	buf.push_front ( item );
 }
 
 
 InterfaceSpeedMeter::InterfaceSpeedMeter ( const InterfaceSpeedMeter& ism )
 {
-    ///TODO
-    ///głęboka kopia ism.buf
+	//copy constructor with a buf deep copy
+	for ( auto const & stats : ism.buf )
+	{
+		uint64_t rx = stats.at ( "rx" );
+		uint64_t tx = stats.at ( "tx" );
+		uint64_t time = stats.at ( "time" );
+		map<string, uint64_t> item;
+
+		item["rx"] = rx;
+		item["tx"] = tx;
+		item["time"] = time;
+
+		buf.push_front ( item );
+	}
 	max_buf_items = ism.max_buf_items;
-	buf = ism.buf;
 }
 
 InterfaceSpeedMeter::~InterfaceSpeedMeter()
@@ -29,7 +48,8 @@ uint64_t InterfaceSpeedMeter::get_rx_speed ( void ) const
 
 	if ( time > 0 )
 	{
-		return ( 8 * data ) / time;
+		/*time is in miliseconds, so we multiply the result by 1000 to get speed in bits/s */
+		return ( 8ULL * 1000ULL * data ) / time;
 	}
 	else
 	{
@@ -46,7 +66,7 @@ uint64_t InterfaceSpeedMeter::get_tx_speed ( void ) const
 
 	if ( time > 0 )
 	{
-		return ( 8 * data ) / time;
+		return ( 8ULL * 1000ULL * data ) / time;
 	}
 	else
 	{

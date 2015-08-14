@@ -41,7 +41,7 @@ using namespace std;
 //http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
 
 uint32_t refresh_interval = 1;  //statistics interval in seconds
-uint32_t save_interval = 5;     //save interval in seconds
+uint32_t save_interval = 30;     //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
@@ -393,10 +393,10 @@ static void * MeterThread ( void *arg )
 				for(auto const & mac_speedinfo : speed_stats)
                 {
                     const string& mac=mac_speedinfo.first;
-                    InterfaceSpeedMeter& ism=mac_speedinfo.second;
-                    cout<<mac<<endl;
-                    //cout<<mac<<endl<<"up: "<<ism.get_tx_speed()<<"\tdown: "<<ism.get_rx_speed()<<endl;
-                    printf("%ld",ism.get_tx_speed());
+                    const InterfaceSpeedMeter& ism=mac_speedinfo.second;
+                    cout<<mac<<endl<<"up: "<<ism.get_tx_speed()<<"\tdown: "<<ism.get_rx_speed()<<endl;
+                    //printf("%ld",ism.get_tx_speed());
+
                 }
 
 

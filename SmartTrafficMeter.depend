@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1439236994 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/main.cpp
+1439558858 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/main.cpp
 	<iostream>
 	<vector>
 	<string>
@@ -31,6 +31,7 @@
 	<sqlite3.h>
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
 
 1438114312 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
@@ -44,7 +45,7 @@
 1438804233 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.h
 	<stdint.h>
 
-1439496236 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.cpp
+1439558474 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
