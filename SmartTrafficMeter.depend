@@ -45,7 +45,7 @@
 1438804233 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.h
 	<stdint.h>
 
-1439558474 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.cpp
+1439559255 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 

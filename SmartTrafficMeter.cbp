@@ -21,9 +21,9 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
-					<Add option="-O3" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -36,6 +36,7 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/include/mysql/" />
 		</Compiler>
 		<Linker>
 			<Add library="pthread" />
@@ -47,6 +48,8 @@
 		<Unit filename="InterfaceSpeedMeter.h" />
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
+		<Unit filename="MySQLInterface.cpp" />
+		<Unit filename="MySQLInterface.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="version.h" />
 		<Extensions>
