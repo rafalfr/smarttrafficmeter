@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <map>
@@ -334,10 +335,10 @@ static void * MeterThread ( void *arg )
 			{
 				struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
 
-				printf ( "\t\ttx_packets = %10u; rx_packets = %10u\n"
-						 "\t\ttx_bytes   = %10u; rx_bytes   = %10u\n",
-						 stats->tx_packets, stats->rx_packets,
-						 stats->tx_bytes, stats->rx_bytes );
+//				printf ( "\t\ttx_packets = %10u; rx_packets = %10u\n"
+//						 "\t\ttx_bytes   = %10u; rx_bytes   = %10u\n",
+//						 stats->tx_packets, stats->rx_packets,
+//						 stats->tx_bytes, stats->rx_bytes );
 
 				uint32_t y;
 				uint32_t m;
@@ -467,6 +468,7 @@ static void * MeterThread ( void *arg )
 		if ( c_time >= p_time + ( 1000 * save_interval ) )
 		{
 			save_stats_to_sqlite();
+			save_stats_to_files();
 			p_time = c_time;
 		}
 		sleep ( refresh_interval );
@@ -493,7 +495,7 @@ int mkpath ( const std::string _s, mode_t mode )
 	size_t pre = 0, pos;
 	std::string dir;
 	int mdret;
-	string s(_s);
+	string s ( _s );
 
 	if ( s[s.size() - 1] != '/' ) {
 		s += '/';
@@ -596,7 +598,7 @@ void save_stats_to_files ( void )
 		string mac = mac_table.first;
 		mkpath ( mac, 0755 );
 
-        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
 		for ( auto const & table_row : table )
 		{
@@ -609,9 +611,29 @@ void save_stats_to_files ( void )
 			{
 				string row = row_stats.first;
 				mkpath ( mac + "/" + table_name + "/" + row, 0755 );
+
+                const InterfaceStats& stats=row_stats.second;
+
+				ofstream file;
+				file.open(mac + "/" + table_name + "/" + row+"/stats.txt");
+                if (file.is_open()==true)
+                {
+                    uint64_t rx=stats.recieved();
+                    uint64_t tx=stats.transmited();
+
+                    cout<<mac + "/" + table_name + "/" + row+"\t"+std::to_string ( rx )<<endl;
+
+                    file<<(std::to_string ( rx ));
+                    file<<endl;
+                    file<<(std::to_string ( tx ));
+
+                    file.close();
+                }
 			}
 		}
 	}
+
+
 }
 
 
