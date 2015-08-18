@@ -1,4 +1,6 @@
 #include "MySQLInterface.h"
+#include <iostream>
+
 
 MySQLInterface::MySQLInterface()
 {

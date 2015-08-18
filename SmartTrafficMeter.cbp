@@ -41,6 +41,7 @@
 		<Linker>
 			<Add library="pthread" />
 			<Add library="sqlite3" />
+			<Add library="mysqlclient" />
 		</Linker>
 		<Unit filename="InterfaceInfo.cpp" />
 		<Unit filename="InterfaceInfo.h" />

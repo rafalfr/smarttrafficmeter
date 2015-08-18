@@ -1,11 +1,14 @@
 #ifndef MYSQLINTERFACE_H
 #define MYSQLINTERFACE_H
+#include <cstdint>
 #include "mysql.h"
 
 
 //http://www.tol.it/doc/MySQL/chapter4.html
 //http://dev.mysql.com/doc/refman/5.0/en/mysql-fetch-row.html
 //libmysqlclient-dev
+
+using namespace std;
 
 class MySQLInterface
 {

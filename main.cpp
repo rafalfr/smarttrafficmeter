@@ -17,7 +17,8 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <net/if.h>#include <sys/ioctl.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <net/if.h>
@@ -54,9 +55,10 @@ void print_daily_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats
 void print_monthly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
 void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
 void save_stats_to_sqlite ( void );
+void save_stats_to_files ( void );
 void load_data_from_sqlite ( void );
 int dirExists ( const char *path );
-int mkpath ( std::string s, mode_t mode );
+int mkpath ( const std::string s, mode_t mode );
 static void signal_handler ( int );
 static void * MeterThread ( void *arg );
 void get_time ( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
@@ -71,7 +73,9 @@ int main()
 	signal ( SIGSEGV, signal_handler );
 	signal ( SIGTERM, signal_handler );
 
-	load_data_from_sqlite();
+
+
+	//load_data_from_sqlite();
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -105,7 +109,7 @@ int main()
 		string mac = mac_info.second.get_mac();
 
 		InterfaceSpeedMeter ism;
-		speed_stats[mac]=ism;
+		speed_stats[mac] = ism;
 
 		if ( all_stats.find ( mac ) == all_stats.end() )
 		{
@@ -131,6 +135,8 @@ int main()
 			all_stats[mac]["yearly"][row] = ystats;
 		}
 	}
+
+	save_stats_to_files();
 
 //	for ( auto const & kv : interfaces )
 //	{
@@ -341,11 +347,11 @@ static void * MeterThread ( void *arg )
 
 				string mac = get_mac ( ifaddr->ifa_name ).c_str();
 
-				if (speed_stats.find(mac)==speed_stats.end())
-                {
-                    InterfaceSpeedMeter ism;
-                    speed_stats[mac]=ism;
-                }
+				if ( speed_stats.find ( mac ) == speed_stats.end() )
+				{
+					InterfaceSpeedMeter ism;
+					speed_stats[mac] = ism;
+				}
 
 				string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
 
@@ -387,16 +393,16 @@ static void * MeterThread ( void *arg )
 					all_stats[mac]["yearly"][row] = ystats;
 				}
 				all_stats[mac]["yearly"][row].update ( stats->tx_bytes, stats->rx_bytes );
-				speed_stats[mac].update(stats->rx_bytes,stats->tx_bytes);
+				speed_stats[mac].update ( stats->rx_bytes, stats->tx_bytes );
 
-				for(auto const & mac_speedinfo : speed_stats)
-                {
-                    const string& mac=mac_speedinfo.first;
-                    const InterfaceSpeedMeter& ism=mac_speedinfo.second;
-                    cout<<mac<<endl<<"up: "<<ism.get_tx_speed()<<"\tdown: "<<ism.get_rx_speed()<<endl;
-                    //printf("%ld",ism.get_tx_speed());
+				for ( auto const & mac_speedinfo : speed_stats )
+				{
+					const string& mac = mac_speedinfo.first;
+					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+					cout << mac << endl << "up: " << ism.get_tx_speed() << "\tdown: " << ism.get_rx_speed() << endl;
+					//printf("%ld",ism.get_tx_speed());
 
-                }
+				}
 
 
 //				uint32_t key = ( y << 14 ) | ( m << 10 ) | ( d << 5 ) | h;
@@ -482,11 +488,12 @@ int dirExists ( const char *path )
 	}
 }
 
-int mkpath ( std::string s, mode_t mode )
+int mkpath ( const std::string _s, mode_t mode )
 {
 	size_t pre = 0, pos;
 	std::string dir;
 	int mdret;
+	string s(_s);
 
 	if ( s[s.size() - 1] != '/' ) {
 		s += '/';
@@ -581,6 +588,34 @@ void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stat
 		}
 	}
 }
+
+void save_stats_to_files ( void )
+{
+	for ( auto const & mac_table : all_stats )
+	{
+		string mac = mac_table.first;
+		mkpath ( mac, 0755 );
+
+        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+		for ( auto const & table_row : table )
+		{
+			string table_name = table_row.first;
+			mkpath ( mac + "/" + table_name, 0755 );
+
+			const map<string, InterfaceStats> & row = table_row.second;
+
+			for ( auto const & row_stats : row )
+			{
+				string row = row_stats.first;
+				mkpath ( mac + "/" + table_name + "/" + row, 0755 );
+			}
+		}
+	}
+}
+
+
+
 
 static int callback ( void *NotUsed, int argc, char **argv, char **azColName )
 {
