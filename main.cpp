@@ -77,8 +77,6 @@ int main()
 
 
 
-	//load_data_from_sqlite();
-	load_data_from_files();
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -139,7 +137,9 @@ int main()
 		}
 	}
 
-	save_stats_to_files();
+	//load_data_from_sqlite();
+	load_data_from_files();
+
 
 //	for ( auto const & kv : interfaces )
 //	{
@@ -496,7 +496,7 @@ int32_t mkpath ( const std::string _s, mode_t mode )
 {
 	size_t pre = 0, pos;
 	std::string dir;
-	int32_t mdret=0;
+	int32_t mdret = 0;
 	string s ( _s );
 
 	if ( s[s.size() - 1] != '/' ) {
@@ -1075,14 +1075,11 @@ void load_data_from_files ( void )
 		string mac = in.get_mac();
 
 ///
-		InterfaceStats hstats;
-		all_stats[mac]["hourly"][row] = hstats;
-
 		get_time ( &y, &m, &d, &h );
 
 		row.clear();
 		string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
-		file.open ( mac + "/hourly/" + row + "/stats.txt" );
+		file.open ( mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
@@ -1092,14 +1089,11 @@ void load_data_from_files ( void )
 		}
 
 ///
-		InterfaceStats dstats;
-		all_stats[mac]["daily"][row] = dstats;
-
 		get_time ( &y, &m, &d, &h );
 
 		row.clear();
 		row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
-		file.open ( mac + "/daily/" + row + "/stats.txt" );
+		file.open ( mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
@@ -1109,14 +1103,11 @@ void load_data_from_files ( void )
 		}
 
 ///
-		InterfaceStats mstats;
-		all_stats[mac]["monthly"][row] = mstats;
-
 		get_time ( &y, &m, &d, &h );
 
 		row.clear();
 		row = std::to_string ( y ) + "-" + std::to_string ( m );
-		file.open ( mac + "/monthly/" + row + "/stats.txt" );
+		file.open ( mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
@@ -1126,14 +1117,11 @@ void load_data_from_files ( void )
 		}
 
 ///
-		InterfaceStats ystats;
-		all_stats[mac]["yearly"][row] = ystats;
-
 		get_time ( &y, &m, &d, &h );
 
 		row.clear();
 		row = std::to_string ( y );
-		file.open ( mac + "/yearly/" + row + "/stats.txt" );
+		file.open ( mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
@@ -1268,7 +1256,7 @@ void load_data_from_sqlite ( void )
 
 static void signal_handler ( int )
 {
-    save_stats_to_files();
-    save_stats_to_sqlite();
+	save_stats_to_files();
+	save_stats_to_sqlite();
 	exit ( 0 );
 }
