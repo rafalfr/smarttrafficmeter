@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <pthread.h>
-#define _GNU_SOURCE     /* To get definition of NI_MAXHOST */
+//#define _GNU_SOURCE     /* To get definition of NI_MAXHOST */
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -42,7 +42,7 @@ using namespace std;
 //http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
 
 uint32_t refresh_interval = 1;  //statistics interval in seconds
-uint32_t save_interval = 30;     //save interval in seconds
+uint32_t save_interval = 60;     //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
@@ -58,8 +58,9 @@ void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stat
 void save_stats_to_sqlite ( void );
 void save_stats_to_files ( void );
 void load_data_from_sqlite ( void );
-int dirExists ( const char *path );
-int mkpath ( const std::string s, mode_t mode );
+void load_data_from_files ( void );
+int32_t dirExists ( const char *path );
+int32_t mkpath ( const std::string s, mode_t mode );
 static void signal_handler ( int );
 static void * MeterThread ( void *arg );
 void get_time ( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
@@ -77,6 +78,7 @@ int main()
 
 
 	//load_data_from_sqlite();
+	load_data_from_files();
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -285,7 +287,7 @@ map<string, InterfaceInfo> get_all_interfaces ( void )
 	return interfaces;
 }
 
-static void * MeterThread ( void *arg )
+static void * MeterThread ( void * )
 {
 
 	static uint64_t p_time = 0;
@@ -456,7 +458,7 @@ static void * MeterThread ( void *arg )
 			}
 		}
 		freeifaddrs ( ifaddr );
-		//cout << "\033[2J\033[1;1H";
+		cout << "\033[2J\033[1;1H";
 		//print_hourly_stats ( hourly_stats );
 		//print_daily_stats ( daily_stats );
 		//print_monthly_stats ( monthly_stats );
@@ -467,7 +469,7 @@ static void * MeterThread ( void *arg )
 		uint64_t c_time = te.tv_sec * 1000LL + te.tv_usec / 1000;
 		if ( c_time >= p_time + ( 1000 * save_interval ) )
 		{
-			save_stats_to_sqlite();
+			//save_stats_to_sqlite();
 			save_stats_to_files();
 			p_time = c_time;
 		}
@@ -475,7 +477,7 @@ static void * MeterThread ( void *arg )
 	}
 }
 
-int dirExists ( const char *path )
+int32_t dirExists ( const char *path )
 {
 	struct stat info;
 
@@ -490,11 +492,11 @@ int dirExists ( const char *path )
 	}
 }
 
-int mkpath ( const std::string _s, mode_t mode )
+int32_t mkpath ( const std::string _s, mode_t mode )
 {
 	size_t pre = 0, pos;
 	std::string dir;
-	int mdret;
+	int32_t mdret=0;
 	string s ( _s );
 
 	if ( s[s.size() - 1] != '/' ) {
@@ -612,23 +614,23 @@ void save_stats_to_files ( void )
 				string row = row_stats.first;
 				mkpath ( mac + "/" + table_name + "/" + row, 0755 );
 
-                const InterfaceStats& stats=row_stats.second;
+				const InterfaceStats& stats = row_stats.second;
 
 				ofstream file;
-				file.open(mac + "/" + table_name + "/" + row+"/stats.txt");
-                if (file.is_open()==true)
-                {
-                    uint64_t rx=stats.recieved();
-                    uint64_t tx=stats.transmited();
+				file.open ( mac + "/" + table_name + "/" + row + "/stats.txt" );
+				if ( file.is_open() == true )
+				{
+					uint64_t rx = stats.recieved();
+					uint64_t tx = stats.transmited();
 
-                    cout<<mac + "/" + table_name + "/" + row+"\t"+std::to_string ( rx )<<endl;
+					//cout << mac + "/" + table_name + "/" + row + "\t" + std::to_string ( rx ) << endl;
 
-                    file<<(std::to_string ( rx ));
-                    file<<endl;
-                    file<<(std::to_string ( tx ));
+					file << ( std::to_string ( rx ) );
+					file << endl;
+					file << ( std::to_string ( tx ) );
 
-                    file.close();
-                }
+					file.close();
+				}
 			}
 		}
 	}
@@ -639,7 +641,7 @@ void save_stats_to_files ( void )
 
 
 
-static int callback ( void *NotUsed, int argc, char **argv, char **azColName )
+static int callback ( void *, int argc, char **argv, char **azColName )
 {
 	int i;
 	for ( i = 0; i < argc; i++ ) {
@@ -1053,6 +1055,97 @@ void save_stats_to_sqlite ( void )
 
 }
 
+void load_data_from_files ( void )
+{
+	uint32_t y;
+	uint32_t m;
+	uint32_t d;
+	uint32_t h;
+	uint64_t rx_bytes;
+	uint64_t tx_bytes;
+
+	map<string, InterfaceInfo> interfaces = get_all_interfaces();
+
+	string row;
+	ifstream file;
+
+	for ( auto const & kv : interfaces )
+	{
+		const InterfaceInfo& in = kv.second;
+		string mac = in.get_mac();
+
+///
+		InterfaceStats hstats;
+		all_stats[mac]["hourly"][row] = hstats;
+
+		get_time ( &y, &m, &d, &h );
+
+		row.clear();
+		string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
+		file.open ( mac + "/hourly/" + row + "/stats.txt" );
+		if ( file.is_open() == true )
+		{
+			file >> rx_bytes;
+			file >> tx_bytes;
+			file.close();
+			all_stats[mac]["hourly"][row].update ( tx_bytes, rx_bytes );
+		}
+
+///
+		InterfaceStats dstats;
+		all_stats[mac]["daily"][row] = dstats;
+
+		get_time ( &y, &m, &d, &h );
+
+		row.clear();
+		row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
+		file.open ( mac + "/daily/" + row + "/stats.txt" );
+		if ( file.is_open() == true )
+		{
+			file >> rx_bytes;
+			file >> tx_bytes;
+			file.close();
+			all_stats[mac]["daily"][row].update ( tx_bytes, rx_bytes );
+		}
+
+///
+		InterfaceStats mstats;
+		all_stats[mac]["monthly"][row] = mstats;
+
+		get_time ( &y, &m, &d, &h );
+
+		row.clear();
+		row = std::to_string ( y ) + "-" + std::to_string ( m );
+		file.open ( mac + "/monthly/" + row + "/stats.txt" );
+		if ( file.is_open() == true )
+		{
+			file >> rx_bytes;
+			file >> tx_bytes;
+			file.close();
+			all_stats[mac]["monthly"][row].update ( tx_bytes, rx_bytes );
+		}
+
+///
+		InterfaceStats ystats;
+		all_stats[mac]["yearly"][row] = ystats;
+
+		get_time ( &y, &m, &d, &h );
+
+		row.clear();
+		row = std::to_string ( y );
+		file.open ( mac + "/yearly/" + row + "/stats.txt" );
+		if ( file.is_open() == true )
+		{
+			file >> rx_bytes;
+			file >> tx_bytes;
+			file.close();
+			all_stats[mac]["yearly"][row].update ( tx_bytes, rx_bytes );
+		}
+	}
+}
+
+
+
 void load_data_from_sqlite ( void )
 {
 	sqlite3 *db;
@@ -1175,5 +1268,7 @@ void load_data_from_sqlite ( void )
 
 static void signal_handler ( int )
 {
+    save_stats_to_files();
+    save_stats_to_sqlite();
 	exit ( 0 );
 }

@@ -21,9 +21,10 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O3" />
+					<Add option="-march=core2" />
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -34,6 +35,7 @@
 		<Compiler>
 			<Add option="-Wmain" />
 			<Add option="-std=c++11" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/include/mysql/" />
