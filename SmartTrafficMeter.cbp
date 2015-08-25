@@ -53,6 +53,8 @@
 		<Unit filename="InterfaceStats.h" />
 		<Unit filename="MySQLInterface.cpp" />
 		<Unit filename="MySQLInterface.h" />
+		<Unit filename="ServerThread.cpp" />
+		<Unit filename="ServerThread.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="version.h" />
 		<Extensions>

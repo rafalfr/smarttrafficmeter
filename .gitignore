@@ -3,4 +3,5 @@
 *.layout
 /bin/*
 /obj/*
+/python/*
 
