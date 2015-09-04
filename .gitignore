@@ -1,5 +1,6 @@
 *.o
 *.db
+*.py
 *.layout
 /bin/*
 /obj/*

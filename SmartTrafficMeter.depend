@@ -87,3 +87,147 @@
 
 1430823953 /usr/include/mysql//my_alloc.h
 
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+	"InterfaceInfo.h"
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
+	<string>
+
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+	"InterfaceSpeedMeter.h"
+	<sys/time.h>
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
+	<list>
+	<map>
+
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+	"InterfaceStats.h"
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
+	<stdint.h>
+
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
+	"MySQLInterface.h"
+	<iostream>
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.h
+	<cstdint>
+	"mysql.h"
+
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+	"ServerThread.h"
+	<map>
+	<string>
+	<cstring>
+	<sys/socket.h>
+	<netinet/in.h>
+	<stdio.h>
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
+
+1441399913 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+	<map>
+	<pthread.h>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<stdio.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<csignal>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<stdlib.h>
+	<sqlite3.h>
+	"ServerThread.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+
+1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
+	"json/json.h"
+	<json/assertions.h>
+	<json/reader.h>
+	<json/value.h>
+	"json_tool.h"
+	<utility>
+	<cstdio>
+	<cassert>
+	<cstring>
+	<istream>
+	<sstream>
+	<memory>
+	<set>
+	<json/assertions.h>
+	<json/value.h>
+	<json/writer.h>
+	<math.h>
+	<sstream>
+	<utility>
+	<cstring>
+	<cassert>
+	<cpptl/conststring.h>
+	<cstddef>
+	<algorithm>
+	"json_valueiterator.inl"
+	<json/writer.h>
+	"json_tool.h"
+	<iomanip>
+	<memory>
+	<sstream>
+	<utility>
+	<set>
+	<cassert>
+	<cstring>
+	<cstdio>
+	<float.h>
+	<ieeefp.h>
+	<cmath>
+	<float.h>
+
+1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/json/json.h
+	<cpptl/config.h>
+	"config.h"
+	"forwards.h"
+	"forwards.h"
+	<string>
+	<vector>
+	<exception>
+	<map>
+	<cpptl/smallmap.h>
+	<cpptl/forwards.h>
+	"features.h"
+	"value.h"
+	<deque>
+	<iosfwd>
+	<stack>
+	<string>
+	<istream>
+	"value.h"
+	<vector>
+	<string>
+	<ostream>
+	<stdlib.h>
+	<sstream>
+	"config.h"
+

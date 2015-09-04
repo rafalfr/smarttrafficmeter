@@ -29,6 +29,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <sqlite3.h>
+#include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
@@ -40,6 +41,9 @@ using namespace std;
 //http://stackoverflow.com/questions/1519585/how-to-get-mac-address-for-an-interface-in-linux-using-a-c-program
 //http://stackoverflow.com/questions/18100097/portable-way-to-check-if-directory-exists-windows-linux-c
 //http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
+
+//libsqlite3-dev
+//libmysqlclient-dev
 
 uint32_t refresh_interval = 1;  //statistics interval in seconds
 uint32_t save_interval = 60;     //save interval in seconds
@@ -68,12 +72,15 @@ void get_time ( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 int main()
 {
 	pthread_t t1;
+	pthread_t t2;
 	void *res;
 	int s;
 
 	signal ( SIGINT, signal_handler );
 	signal ( SIGSEGV, signal_handler );
 	signal ( SIGTERM, signal_handler );
+
+
 
 
 
@@ -152,15 +159,22 @@ int main()
 //	}
 
 
-	s = pthread_create ( &t1, NULL, &MeterThread, NULL );
-	if ( s != 0 ) {
+	int st=pthread_create ( &t2, NULL, &ServerThread::Thread, NULL );
+
+	st = pthread_join ( t2, &res );
+	if ( st != 0 ) {
 		return 1;
 	}
 
-	s = pthread_join ( t1, &res );
-	if ( s != 0 ) {
-		return 1;
-	}
+//	s = pthread_create ( &t1, NULL, &MeterThread, NULL );
+//	if ( s != 0 ) {
+//		return 1;
+//	}
+//
+//	s = pthread_join ( t1, &res );
+//	if ( s != 0 ) {
+//		return 1;
+//	}
 
 	exit ( EXIT_SUCCESS );
 }
