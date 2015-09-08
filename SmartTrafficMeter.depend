@@ -107,7 +107,7 @@
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
 	<stdint.h>
 
-1441721936 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
+1441743581 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
 	"MySQLInterface.h"
 	<iostream>
 
@@ -131,7 +131,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1441721906 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1441743300 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	<iostream>
 	<fstream>
 	<vector>

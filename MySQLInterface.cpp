@@ -37,11 +37,9 @@ bool MySQLInterface::Connect( const char* server, const char* user, const char* 
 		string query( "CREATE DATABASE IF NOT EXISTS " );
 		query.append( database );
 
-		if ( mysql_query( conn, query.c_str() ) )
-		{
-			return true;
-		}
-
+		mysql_query( conn, query.c_str() );
+		queryresult = mysql_store_result( conn );
+		mysql_free_result( queryresult );
 	}
 	else
 	{
@@ -61,8 +59,9 @@ bool MySQLInterface::SQLQuery( const char* query )
 
 	mysql_query( conn, query );
 
-	if ( !( queryresult = mysql_store_result( conn ) ) )
+	if ( ( queryresult = mysql_store_result( conn ) )==NULL )
 	{
+		cout<<"queryresult"<<endl;
 		return false;
 	}
 

@@ -4,7 +4,6 @@
 #include <string>
 #include <map>
 #include <pthread.h>
-//#define _GNU_SOURCE     /* To get definition of NI_MAXHOST */
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -48,17 +47,14 @@ using namespace std;
 //libmysqlclient-dev
 
 uint32_t refresh_interval = 1;  //statistics interval in seconds
-uint32_t save_interval = 60;     //save interval in seconds
+uint32_t save_interval = 5*60;     //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
+map<string, string> settings;
 
 
-void print_hourly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_daily_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_monthly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_yearly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
 void save_stats_to_mysql( void );
 void save_stats_to_sqlite( void );
 void save_stats_to_files( void );
@@ -81,6 +77,7 @@ int main()
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
+	settings["storage"] = "files";
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -158,22 +155,28 @@ int main()
 
 	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
-	st = pthread_join( t2, &res );
+	//st = pthread_join( t2, &res );
 
-	if ( st != 0 )
+//	if ( st != 0 )
+//	{
+//		return 1;
+//	}
+
+	s = pthread_create( &t1, NULL, &MeterThread, NULL );
+
+	if ( s != 0 )
 	{
 		return 1;
 	}
 
-//	s = pthread_create ( &t1, NULL, &MeterThread, NULL );
-//	if ( s != 0 ) {
-//		return 1;
-//	}
-//
-//	s = pthread_join ( t1, &res );
-//	if ( s != 0 ) {
-//		return 1;
-//	}
+	cout << "Monitoring has started" << endl;
+
+	s = pthread_join( t1, &res );
+
+	if ( s != 0 )
+	{
+		return 1;
+	}
 
 	exit( EXIT_SUCCESS );
 }
@@ -295,72 +298,18 @@ static void * MeterThread( void * )
 				all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
 				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
-				for ( auto const & mac_speedinfo : speed_stats )
-				{
-					const string& mac = mac_speedinfo.first;
-					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
-					cout << mac << endl << "up: " << ism.get_tx_speed() << "\tdown: " << ism.get_rx_speed() << endl;
-					//printf("%ld",ism.get_tx_speed());
-
-				}
-
-
-//				uint32_t key = ( y << 14 ) | ( m << 10 ) | ( d << 5 ) | h;
-//				if ( hourly_stats[mac].find ( key ) == hourly_stats[mac].end() )
+				//				for ( auto const & mac_speedinfo : speed_stats )
 //				{
-//					InterfaceStats interface_stats;
-//					hourly_stats[mac][key] = interface_stats;
-//					hourly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//				else
-//				{
-//					hourly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//
-//				key = ( y << 9 ) | ( m << 5 ) | d;
-//				if ( daily_stats[mac].find ( key ) == daily_stats[mac].end() )
-//				{
-//					InterfaceStats interface_stats;
-//					daily_stats[mac][key] = interface_stats;
-//					daily_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//				else
-//				{
-//					daily_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//
-//				key = ( y << 4 ) | m;
-//				if ( monthly_stats[mac].find ( key ) == monthly_stats[mac].end() )
-//				{
-//					InterfaceStats interface_stats;
-//					monthly_stats[mac][key] = interface_stats;
-//					monthly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//				else
-//				{
-//					monthly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//
-//				key = y;
-//				if ( yearly_stats[mac].find ( key ) == yearly_stats[mac].end() )
-//				{
-//					InterfaceStats interface_stats;
-//					yearly_stats[mac][key] = interface_stats;
-//					yearly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
-//				}
-//				else
-//				{
-//					yearly_stats[mac][key].update ( stats->tx_bytes, stats->rx_bytes );
+//					const string& mac = mac_speedinfo.first;
+//					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+//					cout << mac << endl << "up: " << ism.get_tx_speed() << "\tdown: " << ism.get_rx_speed() << endl;
+//					//printf("%ld",ism.get_tx_speed());
 //				}
 			}
 		}
 
 		freeifaddrs( ifaddr );
 		cout << "\033[2J\033[1;1H";
-		//print_hourly_stats ( hourly_stats );
-		//print_daily_stats ( daily_stats );
-		//print_monthly_stats ( monthly_stats );
-		//print_yearly_stats ( yearly_stats );
 
 		struct timeval te;
 		gettimeofday( &te, NULL );
@@ -368,8 +317,21 @@ static void * MeterThread( void * )
 
 		if ( c_time >= p_time + ( 1000 * save_interval ) )
 		{
-			//save_stats_to_sqlite();
-			save_stats_to_files();
+			string storage = settings["storage"];
+
+			if ( storage.compare( "mysql" ) == 0 )
+			{
+				save_stats_to_mysql();
+			}
+			else if ( storage.compare( "sqlite" ) == 0 )
+			{
+				save_stats_to_sqlite();
+			}
+			else if ( storage.compare( "files" ) == 0 )
+			{
+				save_stats_to_files();
+			}
+
 			p_time = c_time;
 		}
 
@@ -436,77 +398,6 @@ void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 	( *h ) = tm->tm_hour;
 }
 
-void print_hourly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
-{
-	for ( auto const & kv : stats )
-	{
-		string mac = kv.first;
-		cout << mac << ":" << endl;
-		map<uint32_t, InterfaceStats> interface_stats = kv.second;
-
-		for ( auto const & kv : interface_stats )
-		{
-			uint32_t key = kv.first;
-			InterfaceStats s = kv.second;
-			key = key & 0x1F;
-			cout << key << "\trecieved=" << s.recieved() << "\ttransmited=" << s.transmited() << endl;
-		}
-	}
-}
-
-void print_daily_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
-{
-	for ( auto const & kv : stats )
-	{
-		string mac = kv.first;
-		cout << mac << ":" << endl;
-		map<uint32_t, InterfaceStats> interface_stats = kv.second;
-
-		for ( auto const & kv : interface_stats )
-		{
-			uint32_t key = kv.first;
-			InterfaceStats s = kv.second;
-			key = key & 0x1F;
-			cout << key << "\trecieved=" << s.recieved() << "\ttransmited=" << s.transmited() << endl;
-		}
-	}
-}
-
-void print_monthly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
-{
-	for ( auto const & kv : stats )
-	{
-		string mac = kv.first;
-		cout << mac << ":" << endl;
-		map<uint32_t, InterfaceStats> interface_stats = kv.second;
-
-		for ( auto const & kv : interface_stats )
-		{
-			uint32_t key = kv.first;
-			InterfaceStats s = kv.second;
-			key = key & 0xF;
-			cout << key << "\trecieved=" << s.recieved() << "\ttransmited=" << s.transmited() << endl;
-		}
-	}
-}
-
-void print_yearly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
-{
-	for ( auto const & kv : stats )
-	{
-		string mac = kv.first;
-		cout << mac << ":" << endl;
-		map<uint32_t, InterfaceStats> interface_stats = kv.second;
-
-		for ( auto const & kv : interface_stats )
-		{
-			uint32_t key = kv.first;
-			InterfaceStats s = kv.second;
-			cout << key << "\trecieved=" << s.recieved() << "\ttransmited=" << s.transmited() << endl;
-		}
-	}
-}
-
 void save_stats_to_files( void )
 {
 	for ( auto const & mac_table : all_stats )
@@ -549,11 +440,7 @@ void save_stats_to_files( void )
 			}
 		}
 	}
-
-
 }
-
-
 
 
 static int callback( void *, int argc, char **argv, char **azColName )
@@ -573,8 +460,6 @@ void save_stats_to_mysql( void )
 {
 	//http://zetcode.com/db/mysqlc/
 
-	MySQLInterface* db = new MySQLInterface();
-
 	for ( auto const & mac_table : all_stats )
 	{
 		bool res;
@@ -583,6 +468,7 @@ void save_stats_to_mysql( void )
 		string mac = mac_table.first;
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
+		MySQLInterface* db = new MySQLInterface();
 		res = db->Connect( "127.0.0.1", "root", "dvj5rfx2", mac.c_str() );
 
 		if ( res == false )
@@ -597,13 +483,15 @@ void save_stats_to_mysql( void )
 			string query;
 			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
 
-			res=db->SQLQuery(query.c_str());
+			res = db->SQLQuery( query.c_str() );
 
-			if ( res==false )
+			if ( res == false )
 			{
 				printf( "can't create table" );
 				continue;
 			}
+
+			db->FreeResult();
 
 			const map<string, InterfaceStats> & row = table_row.second;
 
@@ -625,13 +513,15 @@ void save_stats_to_mysql( void )
 				query += std::to_string( tx );
 				query += ");";
 
-				res=db->SQLQuery(query.c_str());
+				res = db->SQLQuery( query.c_str() );
 
-				if ( res==false )
+				if ( res == false )
 				{
 					printf( "error\n" );
 					continue;
 				}
+
+				db->FreeResult();
 
 				query.clear();
 				query += "UPDATE OR IGNORE " + table_name + " SET ";
@@ -643,18 +533,20 @@ void save_stats_to_mysql( void )
 				query += " WHERE row='" + row + "'";
 				query += ";";
 
-				res=db->SQLQuery(query.c_str());
+				res = db->SQLQuery( query.c_str() );
 
-				if ( res==false )
+				if ( res == false )
 				{
 					printf( "error\n" );
 					continue;
 				}
+
+				db->FreeResult();
 			}
 		}
-	}
 
-	delete db;
+		delete db;
+	}
 }
 
 
@@ -662,44 +554,6 @@ void save_stats_to_mysql( void )
 
 void save_stats_to_sqlite( void )
 {
-//	string path;
-//	for ( auto const & kv : yearly_stats )
-//	{
-//		string mac = kv.first;
-//		map<uint32_t, InterfaceStats> ystats = kv.second;
-//		for ( auto const & kv : ystats )
-//		{
-//			uint32_t year = kv.first;
-//			InterfaceStats s = kv.second;
-//			path = mac + "/" + std::to_string ( year ) + "/";
-//			mkpath ( path, 0755 );
-//
-//
-//			map<uint32_t, InterfaceStats> mstats = monthly_stats[mac];
-//			for ( auto const & kv : mstats )
-//			{
-//				uint32_t month = kv.first & 0xF;
-//				path += std::to_string ( month ) + "/";
-//				mkpath ( path, 0755 );
-//
-//				map<uint32_t, InterfaceStats> dstats = daily_stats[mac];
-//				for ( auto const & kv : dstats )
-//				{
-//					uint32_t day = kv.first & 0x1F;
-//					path += std::to_string ( day ) + "/";
-//					mkpath ( path, 0755 );
-//
-//					map<uint32_t, InterfaceStats> hstats = hourly_stats[mac];
-//					for ( auto const & kv : hstats )
-//					{
-//						uint32_t hour = kv.first & 0x1F;
-//						path += std::to_string ( hour ) + "/";
-//						mkpath ( path, 0755 );
-//					}
-//				}
-//			}
-//		}
-//	}
 
 //http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
 //http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
@@ -785,289 +639,6 @@ void save_stats_to_sqlite( void )
 			}
 		}
 	}
-
-
-//	for ( auto const & kv : yearly_stats )
-//	{
-//		sqlite3 *db;
-//		char *zErrMsg = 0;
-//		int rc;
-//
-//		string mac = kv.first;
-//
-//		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
-//		if ( rc != 0 )
-//		{
-//			continue;
-//		}
-//
-//		string query;
-//		query += "CREATE TABLE IF NOT EXISTS `YEARLY` (`year` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`year`));";
-//
-//		rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//		if ( rc != SQLITE_OK ) {
-//			sqlite3_free ( zErrMsg );
-//			printf ( "can't open the database" );
-//			continue;
-//		}
-//
-//		map<uint32_t, InterfaceStats> ystats = kv.second;
-//		for ( auto const & kv : ystats )
-//		{
-//			uint32_t year = kv.first;
-//			InterfaceStats s = kv.second;
-//			uint64_t rx = s.recieved();
-//			uint64_t tx = s.transmited();
-//			string query;
-//			query += "INSERT OR IGNORE INTO YEARLY (year,rx_bytes,tx_bytes) VALUES(";
-//			query += "'";
-//			query += std::to_string ( year );
-//			query += "'";
-//			query += ",";
-//			query += std::to_string ( rx );
-//			query += ",";
-//			query += std::to_string ( tx );
-//			query += ");";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//
-//			query.clear();
-//			query += "UPDATE OR IGNORE YEARLY SET ";
-//			query += "rx_bytes=";
-//			query += std::to_string ( rx );
-//			query += ", ";
-//			query += "tx_bytes=";
-//			query += std::to_string ( tx );
-//			query += " WHERE year='" + std::to_string ( year ) + "'";
-//			query += ";";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//		}
-//		sqlite3_close ( db );
-//	}
-//
-//////////////////////////////////////////
-//	for ( auto const & kv : monthly_stats )
-//	{
-//		sqlite3 *db;
-//		char *zErrMsg = 0;
-//		int rc;
-//
-//		string mac = kv.first;
-//
-//		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
-//		if ( rc != 0 )
-//		{
-//			continue;
-//		}
-//
-//		string query;
-//		query += "CREATE TABLE IF NOT EXISTS `MONTHLY` (`month` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`month`));";
-//
-//		rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//		if ( rc != SQLITE_OK ) {
-//			sqlite3_free ( zErrMsg );
-//			printf ( "can't create the table" );
-//			continue;
-//		}
-//
-//		map<uint32_t, InterfaceStats> mstats = kv.second;
-//		for ( auto const & kv : mstats )
-//		{
-//			uint32_t key = kv.first;
-//			uint32_t year = ( key >> 4 ) & 0xFFFF;
-//			uint32_t month = key & 0xF;
-//			InterfaceStats s = kv.second;
-//			uint64_t rx = s.recieved();
-//			uint64_t tx = s.transmited();
-//			string query;
-//			query += "INSERT OR IGNORE INTO MONTHLY (month,rx_bytes,tx_bytes) VALUES(";
-//			query += "'";
-//			query += std::to_string ( year ) + "-" + std::to_string ( month );
-//			query += "'";
-//			query += ",";
-//			query += std::to_string ( rx );
-//			query += ",";
-//			query += std::to_string ( tx );
-//			query += ");";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//
-//			query.clear();
-//			query += "UPDATE OR IGNORE MONTHLY SET ";
-//			query += "rx_bytes=";
-//			query += std::to_string ( rx );
-//			query += ", ";
-//			query += "tx_bytes=";
-//			query += std::to_string ( tx );
-//			query += " WHERE month='" + std::to_string ( year ) + "-" + std::to_string ( month ) + "'";
-//			query += ";";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//		}
-//		sqlite3_close ( db );
-//	}
-//
-///////////////////////////////////////////////
-//	for ( auto const & kv : daily_stats )
-//	{
-//		sqlite3 *db;
-//		char *zErrMsg = 0;
-//		int rc;
-//
-//		string mac = kv.first;
-//
-//		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
-//		if ( rc != 0 )
-//		{
-//			continue;
-//		}
-//
-//		string query;
-//		query += "CREATE TABLE IF NOT EXISTS `DAILY` (`day` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`day`));";
-//
-//		rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//		if ( rc != SQLITE_OK ) {
-//			sqlite3_free ( zErrMsg );
-//			printf ( "can't create the table" );
-//			continue;
-//		}
-//
-//		map<uint32_t, InterfaceStats> dstats = kv.second;
-//		for ( auto const & kv : dstats )
-//		{
-//			uint32_t key = kv.first;
-//			uint32_t year = ( key >> 9 ) & 0xFFFF;
-//			uint32_t month = ( key >> 5 ) & 0xF;
-//			uint32_t day = key & 0x1F;
-//			InterfaceStats s = kv.second;
-//			uint64_t rx = s.recieved();
-//			uint64_t tx = s.transmited();
-//			string query;
-//			query += "INSERT OR IGNORE INTO DAILY (day,rx_bytes,tx_bytes) VALUES(";
-//			query += "'";
-//			query += std::to_string ( year ) + "-" + std::to_string ( month ) + "-" + std::to_string ( day );
-//			query += "'";
-//			query += ",";
-//			query += std::to_string ( rx );
-//			query += ",";
-//			query += std::to_string ( tx );
-//			query += ");";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//
-//			query.clear();
-//			query += "UPDATE OR IGNORE DAILY SET ";
-//			query += "rx_bytes=";
-//			query += std::to_string ( rx );
-//			query += ", ";
-//			query += "tx_bytes=";
-//			query += std::to_string ( tx );
-//			query += " WHERE day='" + std::to_string ( year ) + "-" + std::to_string ( month ) + "-" + std::to_string ( day ) + "'";
-//			query += ";";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//		}
-//		sqlite3_close ( db );
-//	}
-//
-////////////////
-//	for ( auto const & kv : hourly_stats )
-//	{
-//		sqlite3 *db;
-//		char *zErrMsg = 0;
-//		int rc;
-//
-//		string mac = kv.first;
-//
-//		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
-//		if ( rc != 0 )
-//		{
-//			continue;
-//		}
-//
-//		string query;
-//		query += "CREATE TABLE IF NOT EXISTS `HOURLY` (`hour` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`hour`));";
-//
-//		rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//		if ( rc != SQLITE_OK ) {
-//			sqlite3_free ( zErrMsg );
-//			printf ( "can't create the table" );
-//			continue;
-//		}
-//
-//		map<uint32_t, InterfaceStats> dstats = kv.second;
-//		for ( auto const & kv : dstats )
-//		{
-//			uint32_t key = kv.first;
-//			uint32_t year = ( key >> 14 ) & 0xFFFF;
-//			uint32_t month = ( key >> 10 ) & 0xF;
-//			uint32_t day = ( key >> 5 ) & 0x1F;
-//			uint32_t hour = key & 0x1F;
-//			InterfaceStats s = kv.second;
-//			uint64_t rx = s.recieved();
-//			uint64_t tx = s.transmited();
-//			string query;
-//			query += "INSERT OR IGNORE INTO HOURLY (hour,rx_bytes,tx_bytes) VALUES(";
-//			query += "'";
-//			query += std::to_string ( year ) + "-" + std::to_string ( month ) + "-" + std::to_string ( day ) + "-" + std::to_string ( hour );
-//			query += "'";
-//			query += ",";
-//			query += std::to_string ( rx );
-//			query += ",";
-//			query += std::to_string ( tx );
-//			query += ");";
-//			cout << query << endl;
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//
-//			query.clear();
-//			query += "UPDATE OR IGNORE HOURLY SET ";
-//			query += "rx_bytes=";
-//			query += std::to_string ( rx );
-//			query += ", ";
-//			query += "tx_bytes=";
-//			query += std::to_string ( tx );
-//			query += " WHERE hour='" + std::to_string ( year ) + "-" + std::to_string ( month ) + "-" + std::to_string ( day ) + "-" + std::to_string ( hour ) + "'";
-//			query += ";";
-//			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-//			if ( rc != SQLITE_OK ) {
-//				sqlite3_free ( zErrMsg );
-//				printf ( "error\n" );
-//				continue;
-//			}
-//		}
-//		sqlite3_close ( db );
-//	}
-
 }
 
 void load_data_from_files( void )
@@ -1276,7 +847,20 @@ void load_data_from_sqlite( void )
 
 static void signal_handler( int )
 {
-	save_stats_to_files();
-	save_stats_to_sqlite();
+	string storage = settings["storage"];
+
+	if ( storage.compare( "mysql" ) == 0 )
+	{
+		save_stats_to_mysql();
+	}
+	else if ( storage.compare( "sqlite" ) == 0 )
+	{
+		save_stats_to_sqlite();
+	}
+	else if ( storage.compare( "files" ) == 0 )
+	{
+		save_stats_to_files();
+	}
+
 	exit( 0 );
 }
