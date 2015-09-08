@@ -29,6 +29,8 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <sqlite3.h>
+#include "Utils.h"
+#include "MySQLInterface.h"
 #include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
@@ -53,21 +55,20 @@ map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
 
 
-
-map<string, InterfaceInfo> get_all_interfaces ( void );
-void print_hourly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_daily_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_monthly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats );
-void save_stats_to_sqlite ( void );
-void save_stats_to_files ( void );
-void load_data_from_sqlite ( void );
-void load_data_from_files ( void );
-int32_t dirExists ( const char *path );
-int32_t mkpath ( const std::string s, mode_t mode );
-static void signal_handler ( int );
-static void * MeterThread ( void *arg );
-void get_time ( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
+void print_hourly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
+void print_daily_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
+void print_monthly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
+void print_yearly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats );
+void save_stats_to_mysql( void );
+void save_stats_to_sqlite( void );
+void save_stats_to_files( void );
+void load_data_from_sqlite( void );
+void load_data_from_files( void );
+int32_t dirExists( const char *path );
+int32_t mkpath( const std::string s, mode_t mode );
+static void signal_handler( int );
+static void * MeterThread( void *arg );
+void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 int main()
 {
@@ -76,13 +77,9 @@ int main()
 	void *res;
 	int s;
 
-	signal ( SIGINT, signal_handler );
-	signal ( SIGSEGV, signal_handler );
-	signal ( SIGTERM, signal_handler );
-
-
-
-
+	signal( SIGINT, signal_handler );
+	signal( SIGSEGV, signal_handler );
+	signal( SIGTERM, signal_handler );
 
 
 //    for(auto const & mac_table : all_stats)
@@ -110,7 +107,7 @@ int main()
 	uint32_t d;
 	uint32_t h;
 
-	map<string, InterfaceInfo> interfaces = get_all_interfaces();
+	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	for ( auto const & mac_info : interfaces )
 	{
@@ -119,27 +116,27 @@ int main()
 		InterfaceSpeedMeter ism;
 		speed_stats[mac] = ism;
 
-		if ( all_stats.find ( mac ) == all_stats.end() )
+		if ( all_stats.find( mac ) == all_stats.end() )
 		{
-			get_time ( &y, &m, &d, &h );
+			get_time( &y, &m, &d, &h );
 
 			InterfaceStats hstats;
-			string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
+			string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 			all_stats[mac]["hourly"][row] = hstats;
 
 			InterfaceStats dstats;
 			row.clear();
-			row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
+			row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 			all_stats[mac]["daily"][row] = dstats;
 
 			InterfaceStats mstats;
 			row.clear();
-			row = std::to_string ( y ) + "-" + std::to_string ( m );
+			row = std::to_string( y ) + "-" + std::to_string( m );
 			all_stats[mac]["monthly"][row] = mstats;
 
 			InterfaceStats ystats;
 			row.clear();
-			row = std::to_string ( y );
+			row = std::to_string( y );
 			all_stats[mac]["yearly"][row] = ystats;
 		}
 	}
@@ -159,10 +156,12 @@ int main()
 //	}
 
 
-	int st=pthread_create ( &t2, NULL, &ServerThread::Thread, NULL );
+	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
-	st = pthread_join ( t2, &res );
-	if ( st != 0 ) {
+	st = pthread_join( t2, &res );
+
+	if ( st != 0 )
+	{
 		return 1;
 	}
 
@@ -176,148 +175,26 @@ int main()
 //		return 1;
 //	}
 
-	exit ( EXIT_SUCCESS );
+	exit( EXIT_SUCCESS );
 }
 
-string get_mac ( char* name )
-{
-	int s;
-	struct ifreq buffer;
-	char* out_buf;
-	string mac;
-
-	out_buf = new char[256];
-	memset ( out_buf, 0x00, 256 * sizeof ( char ) );
-
-	s = socket ( PF_INET, SOCK_DGRAM, 0 );
-
-	memset ( &buffer, 0x00, sizeof ( buffer ) );
-
-	strcpy ( buffer.ifr_name, name );
-
-	ioctl ( s, SIOCGIFHWADDR, &buffer );
-
-	close ( s );
-
-	for ( s = 0; s < 6; s++ )
-	{
-		sprintf ( out_buf, "%.2x-%.2x-%.2x-%.2x-%.2x-%.2x", ( unsigned char ) buffer.ifr_hwaddr.sa_data[0], ( unsigned char ) buffer.ifr_hwaddr.sa_data[1], ( unsigned char ) buffer.ifr_hwaddr.sa_data[2], ( unsigned char ) buffer.ifr_hwaddr.sa_data[3], ( unsigned char ) buffer.ifr_hwaddr.sa_data[4], ( unsigned char ) buffer.ifr_hwaddr.sa_data[5] );
-	}
-
-	mac.clear();
-	mac.append ( out_buf );
-
-	delete out_buf;
-
-	return mac;
-}
-
-map<string, InterfaceInfo> get_all_interfaces ( void )
-{
-	//vector<InterfaceInfo> interfaces;
-
-	map<string, InterfaceInfo> interfaces;
-
-	struct ifaddrs *ifaddr;
-	int family, s;
-	char host[NI_MAXHOST];
-
-	if ( getifaddrs ( &ifaddr ) == -1 )
-	{
-		perror ( "getifaddrs" );
-		exit ( EXIT_FAILURE );
-	}
-
-
-	for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
-	{
-		if ( ifaddr->ifa_addr == NULL || strcmp ( ifaddr->ifa_name, "lo" ) == 0 )
-		{
-			continue;
-		}
-
-		family = ifaddr->ifa_addr->sa_family;
-
-//        if (family != AF_INET && family != AF_INET6)
-//            continue;
-
-		/* For an AF_INET* interface address, display the address */
-
-		if ( family == AF_INET ) //|| family == AF_INET6 )
-		{
-			s = getnameinfo ( ifaddr->ifa_addr,
-							  ( family == AF_INET ) ? sizeof ( struct sockaddr_in ) :
-							  sizeof ( struct sockaddr_in6 ),
-							  host, NI_MAXHOST,
-							  NULL, 0, NI_NUMERICHOST );
-			if ( s != 0 )
-			{
-				continue;
-			}
-
-			string interface_name = string ( ifaddr->ifa_name );
-			if ( interfaces.find ( interface_name ) == interfaces.end() )
-			{
-				InterfaceInfo in;
-				in.set_name ( ifaddr->ifa_name );
-				in.set_mac ( get_mac ( ifaddr->ifa_name ).c_str() );
-				in.set_ip4 ( host );
-				interfaces[interface_name] = in;
-			}
-			else
-			{
-				interfaces[interface_name].set_ip4 ( host );
-			}
-		}
-		else if ( family == AF_INET6 )
-		{
-			s = getnameinfo ( ifaddr->ifa_addr,
-							  ( family == AF_INET ) ? sizeof ( struct sockaddr_in ) :
-							  sizeof ( struct sockaddr_in6 ),
-							  host, NI_MAXHOST,
-							  NULL, 0, NI_NUMERICHOST );
-			if ( s != 0 )
-			{
-				continue;
-			}
-
-			string interface_name = string ( ifaddr->ifa_name );
-			if ( interfaces.find ( interface_name ) == interfaces.end() )
-			{
-				InterfaceInfo in;
-				in.set_name ( ifaddr->ifa_name );
-				in.set_mac ( get_mac ( ifaddr->ifa_name ).c_str() );
-				in.set_ip6 ( host );
-				interfaces[interface_name] = in;
-			}
-			else
-			{
-				interfaces[interface_name].set_ip6 ( host );
-			}
-		}
-	}
-	freeifaddrs ( ifaddr );
-
-	return interfaces;
-}
-
-static void * MeterThread ( void * )
+static void * MeterThread( void * )
 {
 
 	static uint64_t p_time = 0;
 	struct ifaddrs *ifaddr;
 	int family, s;
 	char host[NI_MAXHOST];
-	string hourly ( "hourly" );
-	string daily ( "daily" );
-	string monthly ( "monthly" );
-	string yearly ( "yearly" );
+	string hourly( "hourly" );
+	string daily( "daily" );
+	string monthly( "monthly" );
+	string yearly( "yearly" );
 
 
 	while ( true )
 	{
 
-		if ( getifaddrs ( &ifaddr ) == -1 )
+		if ( getifaddrs( &ifaddr ) == -1 )
 		{
 			continue;
 		}
@@ -325,7 +202,8 @@ static void * MeterThread ( void * )
 		for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
 		{
 
-			if ( ifaddr->ifa_addr == NULL || strcmp ( ifaddr->ifa_name, "lo" ) == 0 ) {
+			if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 )
+			{
 				continue;
 			}
 
@@ -336,11 +214,12 @@ static void * MeterThread ( void * )
 
 			if ( family == AF_INET || family == AF_INET6 )
 			{
-				s = getnameinfo ( ifaddr->ifa_addr,
-								  ( family == AF_INET ) ? sizeof ( struct sockaddr_in ) :
-								  sizeof ( struct sockaddr_in6 ),
-								  host, NI_MAXHOST,
-								  NULL, 0, NI_NUMERICHOST );
+				s = getnameinfo( ifaddr->ifa_addr,
+				                 ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
+				                 sizeof( struct sockaddr_in6 ),
+				                 host, NI_MAXHOST,
+				                 NULL, 0, NI_NUMERICHOST );
+
 				if ( s != 0 )
 				{
 					continue;
@@ -360,57 +239,61 @@ static void * MeterThread ( void * )
 				uint32_t m;
 				uint32_t d;
 				uint32_t h;
-				get_time ( &y, &m, &d, &h );
+				get_time( &y, &m, &d, &h );
 
-				string mac = get_mac ( ifaddr->ifa_name ).c_str();
+				string mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
-				if ( speed_stats.find ( mac ) == speed_stats.end() )
+				if ( speed_stats.find( mac ) == speed_stats.end() )
 				{
 					InterfaceSpeedMeter ism;
 					speed_stats[mac] = ism;
 				}
 
-				string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
+				string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
-				if ( all_stats[mac]["hourly"].find ( row ) == all_stats[mac]["hourly"].end() )
+				if ( all_stats[mac]["hourly"].find( row ) == all_stats[mac]["hourly"].end() )
 				{
 					InterfaceStats hstats;
 					all_stats[mac]["hourly"][row] = hstats;
 				}
-				all_stats[mac]["hourly"][row].update ( stats->tx_bytes, stats->rx_bytes );
+
+				all_stats[mac]["hourly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 
 				row.clear();
-				row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
+				row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
-				if ( all_stats[mac]["daily"].find ( row ) == all_stats[mac]["daily"].end() )
+				if ( all_stats[mac]["daily"].find( row ) == all_stats[mac]["daily"].end() )
 				{
 					InterfaceStats dstats;
 					all_stats[mac]["daily"][row] = dstats;
 				}
-				all_stats[mac]["daily"][row].update ( stats->tx_bytes, stats->rx_bytes );
+
+				all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 				row.clear();
-				row = std::to_string ( y ) + "-" + std::to_string ( m );
+				row = std::to_string( y ) + "-" + std::to_string( m );
 
-				if ( all_stats[mac]["monthly"].find ( row ) == all_stats[mac]["monthly"].end() )
+				if ( all_stats[mac]["monthly"].find( row ) == all_stats[mac]["monthly"].end() )
 				{
 					InterfaceStats mstats;
 					all_stats[mac]["monthly"][row] = mstats;
 				}
-				all_stats[mac]["monthly"][row].update ( stats->tx_bytes, stats->rx_bytes );
+
+				all_stats[mac]["monthly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 
 				row.clear();
-				row = std::to_string ( y );
+				row = std::to_string( y );
 
-				if ( all_stats[mac]["yearly"].find ( row ) == all_stats[mac]["yearly"].end() )
+				if ( all_stats[mac]["yearly"].find( row ) == all_stats[mac]["yearly"].end() )
 				{
 					InterfaceStats ystats;
 					all_stats[mac]["yearly"][row] = ystats;
 				}
-				all_stats[mac]["yearly"][row].update ( stats->tx_bytes, stats->rx_bytes );
-				speed_stats[mac].update ( stats->rx_bytes, stats->tx_bytes );
+
+				all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
+				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
 				for ( auto const & mac_speedinfo : speed_stats )
 				{
@@ -471,7 +354,8 @@ static void * MeterThread ( void * )
 //				}
 			}
 		}
-		freeifaddrs ( ifaddr );
+
+		freeifaddrs( ifaddr );
 		cout << "\033[2J\033[1;1H";
 		//print_hourly_stats ( hourly_stats );
 		//print_daily_stats ( daily_stats );
@@ -479,74 +363,87 @@ static void * MeterThread ( void * )
 		//print_yearly_stats ( yearly_stats );
 
 		struct timeval te;
-		gettimeofday ( &te, NULL );
+		gettimeofday( &te, NULL );
 		uint64_t c_time = te.tv_sec * 1000LL + te.tv_usec / 1000;
+
 		if ( c_time >= p_time + ( 1000 * save_interval ) )
 		{
 			//save_stats_to_sqlite();
 			save_stats_to_files();
 			p_time = c_time;
 		}
-		sleep ( refresh_interval );
+
+		sleep( refresh_interval );
 	}
 }
 
-int32_t dirExists ( const char *path )
+int32_t dirExists( const char *path )
 {
 	struct stat info;
 
-	if ( stat ( path, &info ) != 0 ) {
+	if ( stat( path, &info ) != 0 )
+	{
 		return 0;
 	}
-	else if ( info.st_mode & S_IFDIR ) {
+	else if ( info.st_mode & S_IFDIR )
+	{
 		return 1;
 	}
-	else {
+	else
+	{
 		return 0;
 	}
 }
 
-int32_t mkpath ( const std::string _s, mode_t mode )
+int32_t mkpath( const std::string _s, mode_t mode )
 {
 	size_t pre = 0, pos;
 	std::string dir;
 	int32_t mdret = 0;
-	string s ( _s );
+	string s( _s );
 
-	if ( s[s.size() - 1] != '/' ) {
+	if ( s[s.size() - 1] != '/' )
+	{
 		s += '/';
 	}
 
-	while ( ( pos = s.find_first_of ( '/', pre ) ) != std::string::npos ) {
-		dir = s.substr ( 0, pos++ );
+	while ( ( pos = s.find_first_of( '/', pre ) ) != std::string::npos )
+	{
+		dir = s.substr( 0, pos++ );
 		pre = pos;
-		if ( dir.size() == 0 ) {
+
+		if ( dir.size() == 0 )
+		{
 			continue;    // if leading / first time is 0 length
 		}
-		if ( ( mdret = mkdir ( dir.c_str(), mode ) ) && errno != EEXIST ) {
+
+		if ( ( mdret = mkdir( dir.c_str(), mode ) ) && errno != EEXIST )
+		{
 			return mdret;
 		}
 	}
+
 	return mdret;
 }
 
-void get_time ( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
+void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
-	time_t t = time ( NULL );
-	struct tm* tm = localtime ( &t );
+	time_t t = time( NULL );
+	struct tm* tm = localtime( &t );
 	( *y ) = tm->tm_year + 1900;
 	( *m ) = tm->tm_mon + 1;
 	( *d ) = tm->tm_mday;
 	( *h ) = tm->tm_hour;
 }
 
-void print_hourly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats )
+void print_hourly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
 {
 	for ( auto const & kv : stats )
 	{
 		string mac = kv.first;
 		cout << mac << ":" << endl;
 		map<uint32_t, InterfaceStats> interface_stats = kv.second;
+
 		for ( auto const & kv : interface_stats )
 		{
 			uint32_t key = kv.first;
@@ -557,13 +454,14 @@ void print_hourly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stat
 	}
 }
 
-void print_daily_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats )
+void print_daily_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
 {
 	for ( auto const & kv : stats )
 	{
 		string mac = kv.first;
 		cout << mac << ":" << endl;
 		map<uint32_t, InterfaceStats> interface_stats = kv.second;
+
 		for ( auto const & kv : interface_stats )
 		{
 			uint32_t key = kv.first;
@@ -574,13 +472,14 @@ void print_daily_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats
 	}
 }
 
-void print_monthly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats )
+void print_monthly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
 {
 	for ( auto const & kv : stats )
 	{
 		string mac = kv.first;
 		cout << mac << ":" << endl;
 		map<uint32_t, InterfaceStats> interface_stats = kv.second;
+
 		for ( auto const & kv : interface_stats )
 		{
 			uint32_t key = kv.first;
@@ -591,13 +490,14 @@ void print_monthly_stats ( const map<string, map<uint32_t, InterfaceStats>>& sta
 	}
 }
 
-void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stats )
+void print_yearly_stats( const map<string, map<uint32_t, InterfaceStats>>& stats )
 {
 	for ( auto const & kv : stats )
 	{
 		string mac = kv.first;
 		cout << mac << ":" << endl;
 		map<uint32_t, InterfaceStats> interface_stats = kv.second;
+
 		for ( auto const & kv : interface_stats )
 		{
 			uint32_t key = kv.first;
@@ -607,31 +507,32 @@ void print_yearly_stats ( const map<string, map<uint32_t, InterfaceStats>>& stat
 	}
 }
 
-void save_stats_to_files ( void )
+void save_stats_to_files( void )
 {
 	for ( auto const & mac_table : all_stats )
 	{
 		string mac = mac_table.first;
-		mkpath ( mac, 0755 );
+		mkpath( mac, 0755 );
 
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
 		for ( auto const & table_row : table )
 		{
 			string table_name = table_row.first;
-			mkpath ( mac + "/" + table_name, 0755 );
+			mkpath( mac + "/" + table_name, 0755 );
 
 			const map<string, InterfaceStats> & row = table_row.second;
 
 			for ( auto const & row_stats : row )
 			{
 				string row = row_stats.first;
-				mkpath ( mac + "/" + table_name + "/" + row, 0755 );
+				mkpath( mac + "/" + table_name + "/" + row, 0755 );
 
 				const InterfaceStats& stats = row_stats.second;
 
 				ofstream file;
-				file.open ( mac + "/" + table_name + "/" + row + "/stats.txt" );
+				file.open( mac + "/" + table_name + "/" + row + "/stats.txt" );
+
 				if ( file.is_open() == true )
 				{
 					uint64_t rx = stats.recieved();
@@ -639,9 +540,9 @@ void save_stats_to_files ( void )
 
 					//cout << mac + "/" + table_name + "/" + row + "\t" + std::to_string ( rx ) << endl;
 
-					file << ( std::to_string ( rx ) );
+					file << ( std::to_string( rx ) );
 					file << endl;
-					file << ( std::to_string ( tx ) );
+					file << ( std::to_string( tx ) );
 
 					file.close();
 				}
@@ -655,18 +556,111 @@ void save_stats_to_files ( void )
 
 
 
-static int callback ( void *, int argc, char **argv, char **azColName )
+static int callback( void *, int argc, char **argv, char **azColName )
 {
 	int i;
-	for ( i = 0; i < argc; i++ ) {
-		printf ( "%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL" );
-		table_columns[string ( azColName[i] )] = string ( argv[i] ? argv[i] : "0" );
+
+	for ( i = 0; i < argc; i++ )
+	{
+		printf( "%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL" );
+		table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
 	}
+
 	//printf ( "\n" );
 	return 0;
 }
+void save_stats_to_mysql( void )
+{
+	//http://zetcode.com/db/mysqlc/
 
-void save_stats_to_sqlite ( void )
+	MySQLInterface* db = new MySQLInterface();
+
+	for ( auto const & mac_table : all_stats )
+	{
+		bool res;
+
+
+		string mac = mac_table.first;
+		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+		res = db->Connect( "127.0.0.1", "root", "dvj5rfx2", mac.c_str() );
+
+		if ( res == false )
+		{
+			continue;
+		}
+
+		for ( auto const & table_row : table )
+		{
+			string table_name = table_row.first;
+
+			string query;
+			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
+
+			res=db->SQLQuery(query.c_str());
+
+			if ( res==false )
+			{
+				printf( "can't create table" );
+				continue;
+			}
+
+			const map<string, InterfaceStats> & row = table_row.second;
+
+			for ( auto const & row_stats : row )
+			{
+				string row = row_stats.first;
+				const InterfaceStats& stats = row_stats.second;
+				uint64_t rx = stats.recieved();
+				uint64_t tx = stats.transmited();
+
+				string query;
+				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
+				query += "'";
+				query += row;
+				query += "'";
+				query += ",";
+				query += std::to_string( rx );
+				query += ",";
+				query += std::to_string( tx );
+				query += ");";
+
+				res=db->SQLQuery(query.c_str());
+
+				if ( res==false )
+				{
+					printf( "error\n" );
+					continue;
+				}
+
+				query.clear();
+				query += "UPDATE OR IGNORE " + table_name + " SET ";
+				query += "rx_bytes=";
+				query += std::to_string( rx );
+				query += ", ";
+				query += "tx_bytes=";
+				query += std::to_string( tx );
+				query += " WHERE row='" + row + "'";
+				query += ";";
+
+				res=db->SQLQuery(query.c_str());
+
+				if ( res==false )
+				{
+					printf( "error\n" );
+					continue;
+				}
+			}
+		}
+	}
+
+	delete db;
+}
+
+
+
+
+void save_stats_to_sqlite( void )
 {
 //	string path;
 //	for ( auto const & kv : yearly_stats )
@@ -720,7 +714,8 @@ void save_stats_to_sqlite ( void )
 		string mac = mac_table.first;
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
-		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
+		rc = sqlite3_open_v2( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
+
 		if ( rc != 0 )
 		{
 			continue;
@@ -733,10 +728,12 @@ void save_stats_to_sqlite ( void )
 			string query;
 			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
 
-			rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-			if ( rc != SQLITE_OK ) {
-				sqlite3_free ( zErrMsg );
-				printf ( "can't create table" );
+			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+			if ( rc != SQLITE_OK )
+			{
+				sqlite3_free( zErrMsg );
+				printf( "can't create table" );
 				continue;
 			}
 
@@ -755,30 +752,34 @@ void save_stats_to_sqlite ( void )
 				query += row;
 				query += "'";
 				query += ",";
-				query += std::to_string ( rx );
+				query += std::to_string( rx );
 				query += ",";
-				query += std::to_string ( tx );
+				query += std::to_string( tx );
 				query += ");";
-				rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-				if ( rc != SQLITE_OK ) {
-					sqlite3_free ( zErrMsg );
-					printf ( "error\n" );
+				rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+				if ( rc != SQLITE_OK )
+				{
+					sqlite3_free( zErrMsg );
+					printf( "error\n" );
 					continue;
 				}
 
 				query.clear();
 				query += "UPDATE OR IGNORE " + table_name + " SET ";
 				query += "rx_bytes=";
-				query += std::to_string ( rx );
+				query += std::to_string( rx );
 				query += ", ";
 				query += "tx_bytes=";
-				query += std::to_string ( tx );
+				query += std::to_string( tx );
 				query += " WHERE row='" + row + "'";
 				query += ";";
-				rc = sqlite3_exec ( db, query.c_str(), callback, 0, &zErrMsg );
-				if ( rc != SQLITE_OK ) {
-					sqlite3_free ( zErrMsg );
-					printf ( "error\n" );
+				rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+				if ( rc != SQLITE_OK )
+				{
+					sqlite3_free( zErrMsg );
+					printf( "error\n" );
 					continue;
 				}
 			}
@@ -1069,7 +1070,7 @@ void save_stats_to_sqlite ( void )
 
 }
 
-void load_data_from_files ( void )
+void load_data_from_files( void )
 {
 	uint32_t y;
 	uint32_t m;
@@ -1078,7 +1079,7 @@ void load_data_from_files ( void )
 	uint64_t rx_bytes;
 	uint64_t tx_bytes;
 
-	map<string, InterfaceInfo> interfaces = get_all_interfaces();
+	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	string row;
 	ifstream file;
@@ -1089,66 +1090,70 @@ void load_data_from_files ( void )
 		string mac = in.get_mac();
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		row.clear();
-		string row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
-		file.open ( mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
+		string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		file.open( mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
+
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["hourly"][row].update ( tx_bytes, rx_bytes );
+			all_stats[mac]["hourly"][row].update( tx_bytes, rx_bytes );
 		}
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		row.clear();
-		row = std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
-		file.open ( mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
+		row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+		file.open( mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
+
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["daily"][row].update ( tx_bytes, rx_bytes );
+			all_stats[mac]["daily"][row].update( tx_bytes, rx_bytes );
 		}
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		row.clear();
-		row = std::to_string ( y ) + "-" + std::to_string ( m );
-		file.open ( mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
+		row = std::to_string( y ) + "-" + std::to_string( m );
+		file.open( mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
+
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["monthly"][row].update ( tx_bytes, rx_bytes );
+			all_stats[mac]["monthly"][row].update( tx_bytes, rx_bytes );
 		}
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		row.clear();
-		row = std::to_string ( y );
-		file.open ( mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
+		row = std::to_string( y );
+		file.open( mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
+
 		if ( file.is_open() == true )
 		{
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["yearly"][row].update ( tx_bytes, rx_bytes );
+			all_stats[mac]["yearly"][row].update( tx_bytes, rx_bytes );
 		}
 	}
 }
 
 
 
-void load_data_from_sqlite ( void )
+void load_data_from_sqlite( void )
 {
 	sqlite3 *db;
 	char *zErrMsg = 0;
@@ -1158,119 +1163,120 @@ void load_data_from_sqlite ( void )
 	uint32_t d;
 	uint32_t h;
 
-	map<string, InterfaceInfo> interfaces = get_all_interfaces();
+	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	for ( auto const & kv : interfaces )
 	{
 		const InterfaceInfo& in = kv.second;
 		string mac = in.get_mac();
 
-		rc = sqlite3_open_v2 ( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+		rc = sqlite3_open_v2( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+
 		if ( rc != 0 )
 		{
 			continue;
 		}
 
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		string query = "SELECT * from yearly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string ( y );
+		query += std::to_string( y );
 		query += "'";
 		query += ";";
 		table_columns.clear();
-		rc = sqlite3_exec ( db, query.c_str(), callback, NULL, &zErrMsg );
+		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		uint64_t rx_bytes;
 		uint64_t tx_bytes;
 		string row = table_columns["row"];
 
-		rx_bytes = std::stoull ( table_columns["rx_bytes"] );
+		rx_bytes = std::stoull( table_columns["rx_bytes"] );
 
-		tx_bytes = std::stoull ( table_columns["tx_bytes"] );
+		tx_bytes = std::stoull( table_columns["tx_bytes"] );
 
 		InterfaceStats ystats;
 		all_stats[mac]["yearly"][row] = ystats;
-		all_stats[mac]["yearly"][row].update ( tx_bytes, rx_bytes );
+		all_stats[mac]["yearly"][row].update( tx_bytes, rx_bytes );
 
 ///
 
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		query.clear();
 		query = "SELECT * from monthly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string ( y ) + "-" + std::to_string ( m );
+		query += std::to_string( y ) + "-" + std::to_string( m );
 		query += "'";
 		query += ";";
 		table_columns.clear();
-		rc = sqlite3_exec ( db, query.c_str(), callback, NULL, &zErrMsg );
+		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		row = table_columns["row"];
 
-		rx_bytes = std::stoull ( table_columns["rx_bytes"] );
+		rx_bytes = std::stoull( table_columns["rx_bytes"] );
 
-		tx_bytes = std::stoull ( table_columns["tx_bytes"] );
+		tx_bytes = std::stoull( table_columns["tx_bytes"] );
 
 		InterfaceStats mstats;
 		all_stats[mac]["monthly"][row] = mstats;
-		all_stats[mac]["monthly"][row].update ( tx_bytes, rx_bytes );
+		all_stats[mac]["monthly"][row].update( tx_bytes, rx_bytes );
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		query.clear();
 		query = "SELECT * from daily ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d );
+		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 		query += "'";
 		query += ";";
 
 		table_columns.clear();
-		rc = sqlite3_exec ( db, query.c_str(), callback, NULL, &zErrMsg );
+		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		row = table_columns["row"];
-		rx_bytes = std::stoull ( table_columns["rx_bytes"] );
-		tx_bytes = std::stoull ( table_columns["tx_bytes"] );
+		rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		tx_bytes = std::stoull( table_columns["tx_bytes"] );
 
 		InterfaceStats dstats;
 		all_stats[mac]["daily"][row] = dstats;
-		all_stats[mac]["daily"][row].update ( tx_bytes, rx_bytes );
+		all_stats[mac]["daily"][row].update( tx_bytes, rx_bytes );
 
 ///
-		get_time ( &y, &m, &d, &h );
+		get_time( &y, &m, &d, &h );
 
 		query.clear();
 		query = "SELECT * from hourly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string ( y ) + "-" + std::to_string ( m ) + "-" + std::to_string ( d ) + " " + std::to_string ( h ) + ":00-" + std::to_string ( h + 1 ) + ":00";
+		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 		query += "'";
 		query += ";";
 
 		table_columns.clear();
-		rc = sqlite3_exec ( db, query.c_str(), callback, NULL, &zErrMsg );
+		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		row = table_columns["row"];
-		rx_bytes = std::stoull ( table_columns["rx_bytes"] );
-		tx_bytes = std::stoull ( table_columns["tx_bytes"] );
+		rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		tx_bytes = std::stoull( table_columns["tx_bytes"] );
 
 		InterfaceStats hstats;
 		all_stats[mac]["hourly"][row] = hstats;
-		all_stats[mac]["hourly"][row].update ( tx_bytes, rx_bytes );
+		all_stats[mac]["hourly"][row].update( tx_bytes, rx_bytes );
 
-		sqlite3_close ( db );
+		sqlite3_close( db );
 	}
 
 }
 
 
-static void signal_handler ( int )
+static void signal_handler( int )
 {
 	save_stats_to_files();
 	save_stats_to_sqlite();
-	exit ( 0 );
+	exit( 0 );
 }

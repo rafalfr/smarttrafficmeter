@@ -51,10 +51,15 @@
 		<Unit filename="InterfaceSpeedMeter.h" />
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
+		<Unit filename="Jsoncpp.cpp" />
 		<Unit filename="MySQLInterface.cpp" />
 		<Unit filename="MySQLInterface.h" />
 		<Unit filename="ServerThread.cpp" />
 		<Unit filename="ServerThread.h" />
+		<Unit filename="Utils.cpp" />
+		<Unit filename="Utils.h" />
+		<Unit filename="json/json-forwards.h" />
+		<Unit filename="json/json.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="version.h" />
 		<Extensions>

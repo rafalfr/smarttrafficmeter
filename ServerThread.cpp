@@ -7,6 +7,8 @@
 #include <stdio.h>
 
 #include "json/json.h"
+#include "Utils.h"
+#include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
 
@@ -53,8 +55,32 @@ void* ServerThread::Thread( void* arg )
 				const string& mac = mac_speedinfo.first;
 				const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-				root[mac]["down"] = Json::Value::UInt64(ism.get_rx_speed());
-				root[mac]["up"] = Json::Value::UInt64(ism.get_tx_speed());
+				root[mac]["down"] = Json::Value::UInt64( ism.get_rx_speed() );
+				root[mac]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
+			}
+
+			string response = writer.write( root );
+			sendto( sockfd, response.c_str(), response.size(), 0, ( struct sockaddr * ) &cliaddr, sizeof( cliaddr ) );
+		}
+		else if ( command.compare( "get interfaces" ) == 0 )
+		{
+			map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+
+			Json::Value root;
+			Json::StyledWriter writer;
+
+			for ( const auto& name_info : interfaces )
+			{
+				const string& name = name_info.first;
+				const InterfaceInfo& ii = name_info.second;
+
+				string mac = ii.get_mac();
+				string ip4 = ii.get_ip4();
+				string ip6 = ii.get_ip6();
+
+				root[name]["mac"] = mac;
+				root[name]["IP4"] = ip4;
+				root[name]["IP6"] = ip6;
 			}
 
 			string response = writer.write( root );

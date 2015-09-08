@@ -14,64 +14,73 @@ MySQLInterface::~MySQLInterface()
 {
 	if ( conn != NULL )
 	{
-		mysql_close ( conn );
+		mysql_close( conn );
 	}
+
 	mysql_library_end();
 }
 
 
 
-bool MySQLInterface::Connect ( const char* server, const char* user, const char* password, const char* database )
+bool MySQLInterface::Connect( const char* server, const char* user, const char* password, const char* database )
 {
-	conn = mysql_init ( NULL );
+	conn = mysql_init( NULL );
+
 	if ( conn == NULL )
 	{
 		cout << __FILE__ << " " << __LINE__ << endl;
 		return false;
 	}
 
-	if ( mysql_real_connect ( conn, server, user, password, database, 0, NULL, 0 ) != NULL )
+	if ( mysql_real_connect( conn, server, user, password, NULL, 0, NULL, 0 ) != NULL )
 	{
-		return true;
+		string query( "CREATE DATABASE IF NOT EXISTS " );
+		query.append( database );
+
+		if ( mysql_query( conn, query.c_str() ) )
+		{
+			return true;
+		}
+
 	}
 	else
 	{
-		cout << mysql_error ( conn ) << endl;
-		mysql_close ( conn );
+		cout << mysql_error( conn ) << endl;
+		mysql_close( conn );
 		conn = NULL;
 		return false;
 	}
 }
 
-bool MySQLInterface::SQLQuery ( const char* query )
+bool MySQLInterface::SQLQuery( const char* query )
 {
 	if ( conn == NULL )
 	{
 		return false;
 	}
 
-	mysql_query ( conn, query );
+	mysql_query( conn, query );
 
-	if ( ! ( queryresult = mysql_store_result ( conn ) ) )
+	if ( !( queryresult = mysql_store_result( conn ) ) )
 	{
 		return false;
 	}
 
-	num_fields = mysql_num_fields ( queryresult );
+	num_fields = mysql_num_fields( queryresult );
 
 	return true;
 }
 
-uint32_t MySQLInterface::GetFieldsCount ( void )
+uint32_t MySQLInterface::GetFieldsCount( void )
 {
 	return num_fields;
 }
 
-MYSQL_ROW MySQLInterface::FetchNextRow ( void )
+MYSQL_ROW MySQLInterface::FetchNextRow( void )
 {
 	if ( queryresult != NULL )
 	{
-		return mysql_fetch_row ( queryresult );
+		return mysql_fetch_row( queryresult );
 	}
 	else
 	{
@@ -79,11 +88,11 @@ MYSQL_ROW MySQLInterface::FetchNextRow ( void )
 	}
 }
 
-bool MySQLInterface::FreeResult ( void )
+bool MySQLInterface::FreeResult( void )
 {
 	if ( queryresult != NULL )
 	{
-		mysql_free_result ( queryresult );
+		mysql_free_result( queryresult );
 	}
 
 	return true;
