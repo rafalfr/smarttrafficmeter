@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <csignal>
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -26,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/signal.h>
 #include <stdlib.h>
 #include <sqlite3.h>
 #include "Utils.h"
@@ -46,8 +48,11 @@ using namespace std;
 //libsqlite3-dev
 //libmysqlclient-dev
 
+pthread_t t1;
+pthread_t t2;
+
 uint32_t refresh_interval = 1;  //statistics interval in seconds
-uint32_t save_interval = 5*60;     //save interval in seconds
+uint32_t save_interval = 10*60;   //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
@@ -55,7 +60,7 @@ map<string, string> table_columns;
 map<string, string> settings;
 
 
-void save_stats_to_mysql( void );
+//void save_stats_to_mysql( void );
 void save_stats_to_sqlite( void );
 void save_stats_to_files( void );
 void load_data_from_sqlite( void );
@@ -68,12 +73,10 @@ void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 int main()
 {
-	pthread_t t1;
-	pthread_t t2;
 	void *res;
 	int s;
 
-	signal( SIGINT, signal_handler );
+	//signal( SIGINT, signal_handler );
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
@@ -139,7 +142,7 @@ int main()
 	}
 
 	//load_data_from_sqlite();
-	load_data_from_files();
+	//load_data_from_files();
 
 
 //	for ( auto const & kv : interfaces )
@@ -298,13 +301,61 @@ static void * MeterThread( void * )
 				all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
 				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
-				//				for ( auto const & mac_speedinfo : speed_stats )
-//				{
-//					const string& mac = mac_speedinfo.first;
-//					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
-//					cout << mac << endl << "up: " << ism.get_tx_speed() << "\tdown: " << ism.get_rx_speed() << endl;
-//					//printf("%ld",ism.get_tx_speed());
-//				}
+				for ( auto const & mac_speedinfo : speed_stats )
+				{
+					const string& mac = mac_speedinfo.first;
+					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+
+					cout << mac << endl;
+
+					double speed = ( double )ism.get_tx_speed();
+
+					if ( speed < 1000.0 )
+					{
+						cout << "up: " << speed << " b/s\t";
+					}
+					else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0;
+						cout << "up: " << speed << " Kb/s\t";
+					}
+					else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0 * 1000.0;
+						cout << "up: " << speed << " Mb/s\t";
+					}
+					else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0 * 1000.0 * 1000.0;
+						cout << "up: " << speed << " Gb/s\t";
+					}
+
+					speed = ( double )ism.get_rx_speed();
+
+					if ( speed < 1000.0 )
+					{
+						cout << "down: " << speed << " b/s" << endl;
+					}
+					else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0;
+						cout << "down: " << speed << " Kb/s" << endl;
+					}
+					else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0 * 1000.0;
+						cout << "down: " << speed << " Mb/s" << endl;
+					}
+					else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+					{
+						speed /= 1000.0 * 1000.0 * 1000.0;
+						cout << "down: " << speed << " Gb/s" << endl;
+					}
+
+					cout << endl;
+				}
+
+				cout << "-------------------------------" << endl;
 			}
 		}
 
@@ -321,7 +372,7 @@ static void * MeterThread( void * )
 
 			if ( storage.compare( "mysql" ) == 0 )
 			{
-				save_stats_to_mysql();
+				//save_stats_to_mysql();
 			}
 			else if ( storage.compare( "sqlite" ) == 0 )
 			{
@@ -456,98 +507,111 @@ static int callback( void *, int argc, char **argv, char **azColName )
 	//printf ( "\n" );
 	return 0;
 }
-void save_stats_to_mysql( void )
-{
-	//http://zetcode.com/db/mysqlc/
 
-	for ( auto const & mac_table : all_stats )
-	{
-		bool res;
-
-
-		string mac = mac_table.first;
-		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
-
-		MySQLInterface* db = new MySQLInterface();
-		res = db->Connect( "127.0.0.1", "root", "dvj5rfx2", mac.c_str() );
-
-		if ( res == false )
-		{
-			continue;
-		}
-
-		for ( auto const & table_row : table )
-		{
-			string table_name = table_row.first;
-
-			string query;
-			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
-
-			res = db->SQLQuery( query.c_str() );
-
-			if ( res == false )
-			{
-				printf( "can't create table" );
-				continue;
-			}
-
-			db->FreeResult();
-
-			const map<string, InterfaceStats> & row = table_row.second;
-
-			for ( auto const & row_stats : row )
-			{
-				string row = row_stats.first;
-				const InterfaceStats& stats = row_stats.second;
-				uint64_t rx = stats.recieved();
-				uint64_t tx = stats.transmited();
-
-				string query;
-				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
-				query += "'";
-				query += row;
-				query += "'";
-				query += ",";
-				query += std::to_string( rx );
-				query += ",";
-				query += std::to_string( tx );
-				query += ");";
-
-				res = db->SQLQuery( query.c_str() );
-
-				if ( res == false )
-				{
-					printf( "error\n" );
-					continue;
-				}
-
-				db->FreeResult();
-
-				query.clear();
-				query += "UPDATE OR IGNORE " + table_name + " SET ";
-				query += "rx_bytes=";
-				query += std::to_string( rx );
-				query += ", ";
-				query += "tx_bytes=";
-				query += std::to_string( tx );
-				query += " WHERE row='" + row + "'";
-				query += ";";
-
-				res = db->SQLQuery( query.c_str() );
-
-				if ( res == false )
-				{
-					printf( "error\n" );
-					continue;
-				}
-
-				db->FreeResult();
-			}
-		}
-
-		delete db;
-	}
-}
+//void save_stats_to_mysql( void )
+//{
+//	//http://zetcode.com/db/mysqlc/
+//
+//	MYSQL *conn = mysql_init( NULL );
+//
+//
+//	for ( const auto & mac_table : all_stats )
+//	{
+//		bool res;
+//
+//
+//		string mac = mac_table.first;
+//		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+//
+//		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", NULL, 0, NULL, 0 ) != NULL )
+//		{
+//			string query( "CREATE DATABASE IF NOT EXISTS `" );
+//			query.append( mac.c_str() );
+//			query.append( "`" );
+//			mysql_query( conn, query.c_str() );
+//		}
+//		else
+//		{
+//			cout << mysql_error( conn ) << endl;
+//			mysql_close( conn );
+//			conn = NULL;
+//			return;
+//		}
+//
+//		mysql_close( conn );
+//
+//		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", mac.c_str(), 0, NULL, 0 ) != NULL )
+//		{
+//			continue;
+//		}
+//
+//		for ( const auto & table_row : table )
+//		{
+//			string table_name = table_row.first;
+//
+//			string query;
+//			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
+//
+//			mysql_query( conn, query.c_str() );
+//
+////			if ( res == false )
+////			{
+////				printf( "can't create table" );
+////				continue;
+////			}
+//
+//			const map<string, InterfaceStats> row = table_row.second;
+//
+//			for ( auto const row_stats : row )
+//			{
+//				string row = row_stats.first;
+//				const InterfaceStats& stats = row_stats.second;
+//				uint64_t rx = stats.recieved();
+//				uint64_t tx = stats.transmited();
+//
+//				string query;
+//				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
+//				query += "'";
+//				query += row;
+//				query += "'";
+//				query += ",";
+//				query += std::to_string( rx );
+//				query += ",";
+//				query += std::to_string( tx );
+//				query += ");";
+//
+//				mysql_query( conn, query.c_str() );
+//
+////				if ( res == false )
+////				{
+////					printf( "error\n" );
+////					continue;
+////				}
+//
+//
+//				query.clear();
+//				query += "UPDATE OR IGNORE " + table_name + " SET ";
+//				query += "rx_bytes=";
+//				query += std::to_string( rx );
+//				query += ", ";
+//				query += "tx_bytes=";
+//				query += std::to_string( tx );
+//				query += " WHERE row='" + row + "'";
+//				query += ";";
+//
+//				mysql_query( conn, query.c_str() );
+//
+//				if ( res == false )
+//				{
+//					printf( "error\n" );
+//					continue;
+//				}
+//			}
+//		}
+//
+//		mysql_close( conn );
+//	}
+//}
 
 
 
@@ -847,11 +911,14 @@ void load_data_from_sqlite( void )
 
 static void signal_handler( int )
 {
+	//pthread_kill(t1, SIGTERM);
+	//pthread_kill(t2, SIGTERM);
+
 	string storage = settings["storage"];
 
 	if ( storage.compare( "mysql" ) == 0 )
 	{
-		save_stats_to_mysql();
+		//save_stats_to_mysql();
 	}
 	else if ( storage.compare( "sqlite" ) == 0 )
 	{

@@ -131,12 +131,13 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1441743300 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1441803379 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	<iostream>
 	<fstream>
 	<vector>
 	<string>
 	<map>
+	<csignal>
 	<pthread.h>
 	<arpa/inet.h>
 	<sys/socket.h>
@@ -160,6 +161,7 @@
 	<sys/types.h>
 	<sys/stat.h>
 	<sys/time.h>
+	<sys/signal.h>
 	<stdlib.h>
 	<sqlite3.h>
 	"Utils.h"
