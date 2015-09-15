@@ -1,3 +1,4 @@
+#ifdef use_mysql
 #include "MySQLInterface.h"
 #include <iostream>
 
@@ -96,3 +97,4 @@ bool MySQLInterface::FreeResult( void )
 
 	return true;
 }
+#endif

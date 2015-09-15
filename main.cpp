@@ -1,3 +1,4 @@
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -29,13 +30,22 @@
 #include <sys/time.h>
 #include <sys/signal.h>
 #include <stdlib.h>
-#include <sqlite3.h>
+#include "version.h"
 #include "Utils.h"
 #include "MySQLInterface.h"
 #include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+
+
+#ifdef use_mysql
+
+#endif // use_mysql
+
+#ifdef use_sqlite
+#include <sqlite3.h>
+#endif // use_sqlite
 
 using namespace std;
 
@@ -60,7 +70,7 @@ map<string, string> table_columns;
 map<string, string> settings;
 
 
-//void save_stats_to_mysql( void );
+void save_stats_to_mysql( void );
 void save_stats_to_sqlite( void );
 void save_stats_to_files( void );
 void load_data_from_sqlite( void );
@@ -81,6 +91,8 @@ int main()
 	signal( SIGTERM, signal_handler );
 
 	settings["storage"] = "files";
+
+	cout << "SmartTrafficMeter version" << AutoVersion::FULLVERSION_STRING << endl;
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -145,11 +157,15 @@ int main()
 
 	if ( storage.compare( "mysql" ) == 0 )
 	{
-		//save_stats_to_mysql();
+#ifdef use_mysql
+		save_stats_to_mysql();
+#endif // use_mysql
 	}
 	else if ( storage.compare( "sqlite" ) == 0 )
 	{
+#ifdef use_sqlite
 		load_data_from_sqlite();
+#endif // use_sqlite
 	}
 	else if ( storage.compare( "files" ) == 0 )
 	{
@@ -262,6 +278,7 @@ static void * MeterThread( void * )
 
 				if ( speed_stats.find( mac ) == speed_stats.end() )
 				{
+					///TODO load data from database
 					InterfaceSpeedMeter ism;
 					speed_stats[mac] = ism;
 				}
@@ -383,11 +400,15 @@ static void * MeterThread( void * )
 
 			if ( storage.compare( "mysql" ) == 0 )
 			{
+#ifdef use_mysql
 				//save_stats_to_mysql();
+#endif // use_mysql
 			}
 			else if ( storage.compare( "sqlite" ) == 0 )
 			{
+#ifdef use_sqlite
 				save_stats_to_sqlite();
+#endif // use_sqlite
 			}
 			else if ( storage.compare( "files" ) == 0 )
 			{
@@ -519,117 +540,120 @@ static int callback( void *, int argc, char **argv, char **azColName )
 	return 0;
 }
 
-//void save_stats_to_mysql( void )
-//{
-//	//http://zetcode.com/db/mysqlc/
-//
-//	MYSQL *conn = mysql_init( NULL );
-//
-//
-//	for ( const auto & mac_table : all_stats )
-//	{
-//		bool res;
-//
-//
-//		string mac = mac_table.first;
-//		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
-//
-//		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", NULL, 0, NULL, 0 ) != NULL )
-//		{
-//			string query( "CREATE DATABASE IF NOT EXISTS `" );
-//			query.append( mac.c_str() );
-//			query.append( "`" );
-//			mysql_query( conn, query.c_str() );
-//		}
-//		else
-//		{
-//			cout << mysql_error( conn ) << endl;
-//			mysql_close( conn );
-//			conn = NULL;
-//			return;
-//		}
-//
-//		mysql_close( conn );
-//
-//		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", mac.c_str(), 0, NULL, 0 ) != NULL )
-//		{
-//			continue;
-//		}
-//
-//		for ( const auto & table_row : table )
-//		{
-//			string table_name = table_row.first;
-//
-//			string query;
-//			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
-//
-//			mysql_query( conn, query.c_str() );
-//
-////			if ( res == false )
-////			{
-////				printf( "can't create table" );
-////				continue;
-////			}
-//
-//			const map<string, InterfaceStats> row = table_row.second;
-//
-//			for ( auto const row_stats : row )
+void save_stats_to_mysql( void )
+{
+#ifdef use_mysql
+	//http://zetcode.com/db/mysqlc/
+
+	MYSQL *conn = mysql_init( NULL );
+
+
+	for ( const auto & mac_table : all_stats )
+	{
+		bool res;
+
+
+		string mac = mac_table.first;
+		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", NULL, 0, NULL, 0 ) != NULL )
+		{
+			string query( "CREATE DATABASE IF NOT EXISTS `" );
+			query.append( mac.c_str() );
+			query.append( "`" );
+			mysql_query( conn, query.c_str() );
+		}
+		else
+		{
+			cout << mysql_error( conn ) << endl;
+			mysql_close( conn );
+			conn = NULL;
+			return;
+		}
+
+		mysql_close( conn );
+
+		if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", mac.c_str(), 0, NULL, 0 ) != NULL )
+		{
+			continue;
+		}
+
+		for ( const auto & table_row : table )
+		{
+			string table_name = table_row.first;
+
+			string query;
+			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
+
+			mysql_query( conn, query.c_str() );
+
+//			if ( res == false )
 //			{
-//				string row = row_stats.first;
-//				const InterfaceStats& stats = row_stats.second;
-//				uint64_t rx = stats.recieved();
-//				uint64_t tx = stats.transmited();
-//
-//				string query;
-//				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
-//				query += "'";
-//				query += row;
-//				query += "'";
-//				query += ",";
-//				query += std::to_string( rx );
-//				query += ",";
-//				query += std::to_string( tx );
-//				query += ");";
-//
-//				mysql_query( conn, query.c_str() );
-//
-////				if ( res == false )
-////				{
-////					printf( "error\n" );
-////					continue;
-////				}
-//
-//
-//				query.clear();
-//				query += "UPDATE OR IGNORE " + table_name + " SET ";
-//				query += "rx_bytes=";
-//				query += std::to_string( rx );
-//				query += ", ";
-//				query += "tx_bytes=";
-//				query += std::to_string( tx );
-//				query += " WHERE row='" + row + "'";
-//				query += ";";
-//
-//				mysql_query( conn, query.c_str() );
-//
+//				printf( "can't create table" );
+//				continue;
+//			}
+
+			const map<string, InterfaceStats> row = table_row.second;
+
+			for ( auto const row_stats : row )
+			{
+				string row = row_stats.first;
+				const InterfaceStats& stats = row_stats.second;
+				uint64_t rx = stats.recieved();
+				uint64_t tx = stats.transmited();
+
+				string query;
+				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
+				query += "'";
+				query += row;
+				query += "'";
+				query += ",";
+				query += std::to_string( rx );
+				query += ",";
+				query += std::to_string( tx );
+				query += ");";
+
+				mysql_query( conn, query.c_str() );
+
 //				if ( res == false )
 //				{
 //					printf( "error\n" );
 //					continue;
 //				}
-//			}
-//		}
-//
-//		mysql_close( conn );
-//	}
-//}
+
+
+				query.clear();
+				query += "UPDATE OR IGNORE " + table_name + " SET ";
+				query += "rx_bytes=";
+				query += std::to_string( rx );
+				query += ", ";
+				query += "tx_bytes=";
+				query += std::to_string( tx );
+				query += " WHERE row='" + row + "'";
+				query += ";";
+
+				mysql_query( conn, query.c_str() );
+
+				if ( res == false )
+				{
+					printf( "error\n" );
+					continue;
+				}
+			}
+		}
+
+		mysql_close( conn );
+	}
+
+#endif // use_mysql
+}
 
 
 
 
 void save_stats_to_sqlite( void )
 {
-
+#ifdef use_sqlite
 //http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
 //http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
 //https://www.sqlite.org/cintro.html
@@ -714,6 +738,8 @@ void save_stats_to_sqlite( void )
 			}
 		}
 	}
+
+#endif // use_sqlite
 }
 
 void load_data_from_files( void )
@@ -801,6 +827,7 @@ void load_data_from_files( void )
 
 void load_data_from_sqlite( void )
 {
+#ifdef use_sqlite
 	sqlite3 *db;
 	char *zErrMsg = 0;
 	int rc;
@@ -917,6 +944,7 @@ void load_data_from_sqlite( void )
 		sqlite3_close( db );
 	}
 
+#endif // use_sqlite
 }
 
 
@@ -929,11 +957,15 @@ static void signal_handler( int )
 
 	if ( storage.compare( "mysql" ) == 0 )
 	{
+#ifdef use_mysql
 		//save_stats_to_mysql();
+#endif // use_mysql
 	}
 	else if ( storage.compare( "sqlite" ) == 0 )
 	{
+#ifdef use_sqlite
 		save_stats_to_sqlite();
+#endif // use_sqlite
 	}
 	else if ( storage.compare( "files" ) == 0 )
 	{

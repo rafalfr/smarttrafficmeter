@@ -1,5 +1,6 @@
 #ifndef MYSQLINTERFACE_H
 #define MYSQLINTERFACE_H
+#ifdef use_mysql
 #include <cstdint>
 #include "mysql.h"
 
@@ -30,5 +31,5 @@ public:
 	bool FreeResult ( void );
 
 };
-
+#endif // use_mysql
 #endif // MYSQLINTERFACE_H
