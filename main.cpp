@@ -52,7 +52,7 @@ pthread_t t1;
 pthread_t t2;
 
 uint32_t refresh_interval = 1;  //statistics interval in seconds
-uint32_t save_interval = 10*60;   //save interval in seconds
+uint32_t save_interval = 10 * 60; //save interval in seconds
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
@@ -76,7 +76,7 @@ int main()
 	void *res;
 	int s;
 
-	//signal( SIGINT, signal_handler );
+	signal( SIGINT, signal_handler );
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
@@ -141,9 +141,20 @@ int main()
 		}
 	}
 
-	//load_data_from_sqlite();
-	//load_data_from_files();
+	string storage = settings["storage"];
 
+	if ( storage.compare( "mysql" ) == 0 )
+	{
+		//save_stats_to_mysql();
+	}
+	else if ( storage.compare( "sqlite" ) == 0 )
+	{
+		load_data_from_sqlite();
+	}
+	else if ( storage.compare( "files" ) == 0 )
+	{
+		load_data_from_files();
+	}
 
 //	for ( auto const & kv : interfaces )
 //	{
@@ -736,7 +747,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["hourly"][row].update( tx_bytes, rx_bytes );
+			all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -751,7 +762,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["daily"][row].update( tx_bytes, rx_bytes );
+			all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -766,7 +777,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["monthly"][row].update( tx_bytes, rx_bytes );
+			all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -781,7 +792,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["yearly"][row].update( tx_bytes, rx_bytes );
+			all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 	}
 }
@@ -833,7 +844,7 @@ void load_data_from_sqlite( void )
 
 		InterfaceStats ystats;
 		all_stats[mac]["yearly"][row] = ystats;
-		all_stats[mac]["yearly"][row].update( tx_bytes, rx_bytes );
+		all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
 
@@ -857,7 +868,7 @@ void load_data_from_sqlite( void )
 
 		InterfaceStats mstats;
 		all_stats[mac]["monthly"][row] = mstats;
-		all_stats[mac]["monthly"][row].update( tx_bytes, rx_bytes );
+		all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
 		get_time( &y, &m, &d, &h );
@@ -879,7 +890,7 @@ void load_data_from_sqlite( void )
 
 		InterfaceStats dstats;
 		all_stats[mac]["daily"][row] = dstats;
-		all_stats[mac]["daily"][row].update( tx_bytes, rx_bytes );
+		all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
 		get_time( &y, &m, &d, &h );
@@ -901,7 +912,7 @@ void load_data_from_sqlite( void )
 
 		InterfaceStats hstats;
 		all_stats[mac]["hourly"][row] = hstats;
-		all_stats[mac]["hourly"][row].update( tx_bytes, rx_bytes );
+		all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 		sqlite3_close( db );
 	}
