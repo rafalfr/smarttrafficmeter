@@ -45,18 +45,73 @@ void* ServerThread::Thread( void* arg )
 		mesg[n] = 0;
 		string command( mesg );
 
-		if ( command.compare( "get speed" ) == 0 )
+		if ( command.compare( "get stats" ) == 0 )
 		{
 			Json::Value root;
 			Json::StyledWriter writer;
+			uint32_t y;
+			uint32_t m;
+			uint32_t d;
+			uint32_t h;
+			Utils::get_time( &y, &m, &d, &h );
 
 			for ( auto const & mac_speedinfo : speed_stats )
 			{
 				const string& mac = mac_speedinfo.first;
 				const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-				root[mac]["down"] = Json::Value::UInt64( ism.get_rx_speed() );
-				root[mac]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
+				root[mac]["speed"]["down"] = Json::Value::UInt64( ism.get_rx_speed() );
+				root[mac]["speed"]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
+
+				string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+
+				if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
+				{
+					root[mac]["hourly"]["down"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].recieved() );
+					root[mac]["hourly"]["up"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].transmited() );
+				}
+				else
+				{
+					root[mac]["hourly"] = Json::Value::UInt64( 0 );
+					root[mac]["hourly"]["up"] = Json::Value::UInt64( 0 );
+				}
+
+				row.clear();
+				row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+
+				if ( all_stats[mac]["daily"].find( row ) != all_stats[mac]["daily"].end() )
+				{
+					root[mac]["daily"]["down"] = Json::Value::UInt64( all_stats[mac]["daily"][row].recieved() );
+					root[mac]["daily"]["up"] = Json::Value::UInt64( all_stats[mac]["daily"][row].transmited() );
+				}
+				else
+				{
+					root[mac]["daily"]["down"] = Json::Value::UInt64( 0 );
+					root[mac]["daily"]["up"] = Json::Value::UInt64( 0 );
+				}
+
+				row.clear();
+				row = std::to_string( y ) + "-" + std::to_string( m );
+
+				if ( all_stats[mac]["monthly"].find( row ) != all_stats[mac]["monthly"].end() )
+				{
+					root[mac]["monthly"]["down"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].recieved() );
+					root[mac]["monthly"]["up"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].transmited() );
+				}
+				else
+				{
+					root[mac]["monthly"]["down"] = Json::Value::UInt64( 0 );
+					root[mac]["monthly"]["up"] = Json::Value::UInt64( 0 );
+				}
+
+				row.clear();
+				row = std::to_string( y );
+
+				if ( all_stats[mac]["yearly"].find( row ) != all_stats[mac]["yearly"].end() )
+				{
+					root[mac]["yearly"]["down"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].recieved() );
+					root[mac]["yearly"]["up"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].transmited() );
+				}
 			}
 
 			string response = writer.write( root );

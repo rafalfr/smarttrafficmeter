@@ -148,4 +148,13 @@ string Utils::get_mac( char* name )
 	return mac;
 }
 
+void Utils::get_time(uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h)
+{
+	time_t t = time( NULL );
+	struct tm* tm = localtime( &t );
+	( *y ) = tm->tm_year + 1900;
+	( *m ) = tm->tm_mon + 1;
+	( *d ) = tm->tm_mday;
+	( *h ) = tm->tm_hour;
+}
 

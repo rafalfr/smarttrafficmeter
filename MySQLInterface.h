@@ -1,5 +1,7 @@
 #ifndef MYSQLINTERFACE_H
 #define MYSQLINTERFACE_H
+#include "config.h"
+
 #ifdef use_mysql
 #include <cstdint>
 #include "mysql.h"
