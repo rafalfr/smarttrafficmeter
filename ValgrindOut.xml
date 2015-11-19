@@ -1,0 +1,551 @@
+<?xml version="1.0"?>
+
+<valgrindoutput>
+
+<protocolversion>4</protocolversion>
+<protocoltool>memcheck</protocoltool>
+
+<preamble>
+  <line>Memcheck, a memory error detector</line>
+  <line>Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.</line>
+  <line>Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info</line>
+  <line>Command: /home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter  -lϰ</line>
+</preamble>
+
+<pid>3054</pid>
+<ppid>1859</ppid>
+<tool>memcheck</tool>
+
+<args>
+  <vargv>
+    <exe>/usr/bin/valgrind.bin</exe>
+    <arg>-v</arg>
+    <arg>--leak-check=full</arg>
+    <arg>--track-origins=yes</arg>
+    <arg>--show-reachable=yes</arg>
+    <arg>--xml=yes</arg>
+    <arg>--xml-file=/home/rafal/Programowanie/C++/smarttrafficmeter/ValgrindOut.xml</arg>
+  </vargv>
+  <argv>
+    <exe>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</exe>
+    <arg></arg>
+    <arg>-lϰ</arg>
+  </argv>
+</args>
+
+<status>
+  <state>RUNNING</state>
+  <time>00:00:00:00.320 </time>
+</status>
+
+
+<status>
+  <state>FINISHED</state>
+  <time>00:00:00:07.827 </time>
+</status>
+
+<error>
+  <unique>0x0</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>29 bytes in 1 blocks are possibly lost in loss record 1 of 8</text>
+    <leakedbytes>29</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x4287C6</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>char* std::string::_S_construct&lt;char const*&gt;(char const*, char const*, std::allocator&lt;char&gt; const&amp;, std::forward_iterator_tag)</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>basic_string.tcc</file>
+      <line>138</line>
+    </frame>
+    <frame>
+      <ip>0x511B5B5</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::basic_string(char const*, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x43DD80</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>69</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x1</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>29 bytes in 1 blocks are possibly lost in loss record 2 of 8</text>
+    <leakedbytes>29</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A39A</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_M_clone(std::allocator&lt;char&gt; const&amp;, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A44F</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::reserve(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A6F9</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+    </frame>
+    <frame>
+      <ip>0x511A826</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::append(char const*)</fn>
+    </frame>
+    <frame>
+      <ip>0x4043CC</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>InterfaceInfo::set_name(char const*)</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>InterfaceInfo.cpp</file>
+      <line>59</line>
+    </frame>
+    <frame>
+      <ip>0x43DDFD</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>74</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x2</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>30 bytes in 1 blocks are possibly lost in loss record 3 of 8</text>
+    <leakedbytes>30</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x5119783</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_M_mutate(unsigned long, unsigned long, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x5119DBD</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x42E03A</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>93</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x3</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>38 bytes in 1 blocks are possibly lost in loss record 4 of 8</text>
+    <leakedbytes>38</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A39A</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_M_clone(std::allocator&lt;char&gt; const&amp;, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A44F</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::reserve(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A6F9</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+    </frame>
+    <frame>
+      <ip>0x511A826</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::append(char const*)</fn>
+    </frame>
+    <frame>
+      <ip>0x404406</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>InterfaceInfo::set_ip4(char const*)</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>InterfaceInfo.cpp</file>
+      <line>65</line>
+    </frame>
+    <frame>
+      <ip>0x43DE51</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>76</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x4</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>42 bytes in 1 blocks are possibly lost in loss record 5 of 8</text>
+    <leakedbytes>42</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A39A</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_M_clone(std::allocator&lt;char&gt; const&amp;, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A44F</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::reserve(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A6F9</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+    </frame>
+    <frame>
+      <ip>0x511A826</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::append(char const*)</fn>
+    </frame>
+    <frame>
+      <ip>0x404392</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>InterfaceInfo::set_mac(char const*)</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>InterfaceInfo.cpp</file>
+      <line>53</line>
+    </frame>
+    <frame>
+      <ip>0x43DE32</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>75</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x5</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>54 bytes in 1 blocks are possibly lost in loss record 6 of 8</text>
+    <leakedbytes>54</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x51196F8</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator&lt;char&gt; const&amp;)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A39A</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::_Rep::_M_clone(std::allocator&lt;char&gt; const&amp;, unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A44F</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::reserve(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x511A6F9</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+    </frame>
+    <frame>
+      <ip>0x511A826</ip>
+      <obj>/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20</obj>
+      <fn>std::string::append(char const*)</fn>
+    </frame>
+    <frame>
+      <ip>0x404440</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>InterfaceInfo::set_ip6(char const*)</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>InterfaceInfo.cpp</file>
+      <line>71</line>
+    </frame>
+    <frame>
+      <ip>0x43E074</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>109</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x6</unique>
+  <tid>1</tid>
+  <kind>Leak_StillReachable</kind>
+  <xwhat>
+    <text>72 bytes in 1 blocks are still reachable in loss record 7 of 8</text>
+    <leakedbytes>72</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2C100</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>operator new(unsigned long)</fn>
+    </frame>
+    <frame>
+      <ip>0x43F4C3</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>__gnu_cxx::new_allocator&lt;std::_Rb_tree_node&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;::allocate(unsigned long, void const*)</fn>
+      <dir>/usr/include/c++/4.9/ext</dir>
+      <file>new_allocator.h</file>
+      <line>104</line>
+    </frame>
+    <frame>
+      <ip>0x43F3F1</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>std::allocator_traits&lt;std::allocator&lt;std::_Rb_tree_node&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt; &gt;::allocate(std::allocator&lt;std::_Rb_tree_node&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;&amp;, unsigned long)</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>alloc_traits.h</file>
+      <line>357</line>
+    </frame>
+    <frame>
+      <ip>0x43F0AE</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, InterfaceInfo&gt;, std::_Select1st&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;::_M_get_node()</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>stl_tree.h</file>
+      <line>385</line>
+    </frame>
+    <frame>
+      <ip>0x43EA54</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>std::_Rb_tree_node&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt;* std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, InterfaceInfo&gt;, std::_Select1st&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;::_M_create_node&lt;std::piecewise_construct_t const&amp;, std::tuple&lt;std::string const&amp;&gt;, std::tuple&lt;&gt; &gt;(std::piecewise_construct_t const&amp;, std::tuple&lt;std::string const&amp;&gt;&amp;&amp;, std::tuple&lt;&gt;&amp;&amp;)</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>stl_tree.h</file>
+      <line>417</line>
+    </frame>
+    <frame>
+      <ip>0x43E792</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>std::_Rb_tree_iterator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, InterfaceInfo&gt;, std::_Select1st&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;::_M_emplace_hint_unique&lt;std::piecewise_construct_t const&amp;, std::tuple&lt;std::string const&amp;&gt;, std::tuple&lt;&gt; &gt;(std::_Rb_tree_const_iterator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt;, std::piecewise_construct_t const&amp;, std::tuple&lt;std::string const&amp;&gt;&amp;&amp;, std::tuple&lt;&gt;&amp;&amp;)</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>stl_tree.h</file>
+      <line>1790</line>
+    </frame>
+    <frame>
+      <ip>0x43E57E</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>std::map&lt;std::string, InterfaceInfo, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, InterfaceInfo&gt; &gt; &gt;::operator[](std::string const&amp;)</fn>
+      <dir>/usr/include/c++/4.9/bits</dir>
+      <file>stl_map.h</file>
+      <line>500</line>
+    </frame>
+    <frame>
+      <ip>0x43DE67</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>Utils::get_all_interfaces()</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>Utils.cpp</file>
+      <line>77</line>
+    </frame>
+    <frame>
+      <ip>0x42E087</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>122</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0x7</unique>
+  <tid>1</tid>
+  <kind>Leak_PossiblyLost</kind>
+  <xwhat>
+    <text>576 bytes in 1 blocks are possibly lost in loss record 8 of 8</text>
+    <leakedbytes>576</leakedbytes>
+    <leakedblocks>1</leakedblocks>
+  </xwhat>
+  <stack>
+    <frame>
+      <ip>0x4C2DC90</ip>
+      <obj>/usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so</obj>
+      <fn>calloc</fn>
+    </frame>
+    <frame>
+      <ip>0x40134B4</ip>
+      <obj>/lib/x86_64-linux-gnu/ld-2.21.so</obj>
+      <fn>allocate_dtv</fn>
+      <dir>/build/buildd/glibc-2.21/elf</dir>
+      <file>dl-tls.c</file>
+      <line>322</line>
+    </frame>
+    <frame>
+      <ip>0x40134B4</ip>
+      <obj>/lib/x86_64-linux-gnu/ld-2.21.so</obj>
+      <fn>_dl_allocate_tls</fn>
+      <dir>/build/buildd/glibc-2.21/elf</dir>
+      <file>dl-tls.c</file>
+      <line>544</line>
+    </frame>
+    <frame>
+      <ip>0x4E400D2</ip>
+      <obj>/lib/x86_64-linux-gnu/libpthread-2.21.so</obj>
+      <fn>allocate_stack</fn>
+      <dir>/build/buildd/glibc-2.21/nptl</dir>
+      <file>allocatestack.c</file>
+      <line>588</line>
+    </frame>
+    <frame>
+      <ip>0x4E400D2</ip>
+      <obj>/lib/x86_64-linux-gnu/libpthread-2.21.so</obj>
+      <fn>pthread_create@@GLIBC_2.2.5</fn>
+      <dir>/build/buildd/glibc-2.21/nptl</dir>
+      <file>pthread_create.c</file>
+      <line>537</line>
+    </frame>
+    <frame>
+      <ip>0x42EACA</ip>
+      <obj>/home/rafal/Programowanie/C++/smarttrafficmeter/bin/Debug/SmartTrafficMeter</obj>
+      <fn>main</fn>
+      <dir>/home/rafal/Programowanie/C++/smarttrafficmeter</dir>
+      <file>main.cpp</file>
+      <line>186</line>
+    </frame>
+  </stack>
+</error>
+
+<errorcounts>
+</errorcounts>
+
+<suppcounts>
+</suppcounts>
+
+</valgrindoutput>
+

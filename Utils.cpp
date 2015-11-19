@@ -27,16 +27,17 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 {
 	map<string, InterfaceInfo> interfaces;
 
-	struct ifaddrs *ifaddr;
+	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
-	char host[NI_MAXHOST];
+	char* host=new char[NI_MAXHOST];
 
 	if ( getifaddrs( &ifaddr ) == -1 )
 	{
-		perror( "getifaddrs" );
-		exit( EXIT_FAILURE );
+		freeifaddrs( ifaddr );
+		return interfaces;
 	}
 
+	ipa=ifaddr;
 
 	for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
 	{
@@ -65,7 +66,7 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 				continue;
 			}
 
-			string interface_name = string( ifaddr->ifa_name );
+			string interface_name( ifaddr->ifa_name );
 
 			if ( interfaces.find( interface_name ) == interfaces.end() )
 			{
@@ -110,7 +111,9 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 		}
 	}
 
-	freeifaddrs( ifaddr );
+	delete []host;
+
+	freeifaddrs( ipa );
 
 	return interfaces;
 }
@@ -143,7 +146,7 @@ string Utils::get_mac( char* name )
 	mac.clear();
 	mac.append( out_buf );
 
-	delete out_buf;
+	delete []out_buf;
 
 	return mac;
 }

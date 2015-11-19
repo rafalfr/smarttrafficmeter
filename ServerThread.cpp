@@ -21,7 +21,7 @@ extern map<string, InterfaceSpeedMeter> speed_stats;
 //http://en.cppreference.com/w/cpp/links/libs
 //http://jsoncpp.sourceforge.net/old.html
 
-void* ServerThread::Thread( void* arg )
+void* ServerThread::Thread( void* )
 {
 	int sockfd, n;
 	struct sockaddr_in servaddr, cliaddr;

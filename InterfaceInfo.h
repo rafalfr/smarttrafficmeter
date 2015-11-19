@@ -14,6 +14,8 @@ private:
 
 public:
 	InterfaceInfo();
+	InterfaceInfo(const InterfaceInfo& info);
+
 	~InterfaceInfo();
 
 	string get_mac ( void ) const;

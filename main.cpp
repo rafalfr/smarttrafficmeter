@@ -32,12 +32,12 @@
 #include <stdlib.h>
 #include "version.h"
 #include "Utils.h"
+#include "BecomeDaemon.h"
 #include "MySQLInterface.h"
 #include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
-
 
 #ifdef use_mysql
 
@@ -57,17 +57,27 @@ using namespace std;
 
 //libsqlite3-dev
 //libmysqlclient-dev
+//cbp2make
+
+/* generowanie pliku makefile i kompilacja za pomocą make
+cbp2make -in SmartTrafficMeter.cbp
+make clean -f SmartTrafficMeter.cbp.mak
+make -f SmartTrafficMeter.cbp.mak
+*/
 
 pthread_t t1;
 pthread_t t2;
 
-uint32_t refresh_interval = 1;  //statistics interval in seconds
+bool is_daemon = false;
+uint32_t refresh_interval = 1;  //statistics refresh interval in seconds
 uint32_t save_interval = 10 * 60; //save interval in seconds
+string cwd;
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
 map<string, string> settings;
+
 
 
 void save_stats_to_mysql( void );
@@ -81,8 +91,40 @@ static void signal_handler( int );
 static void * MeterThread( void *arg );
 void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
-int main()
+int main( int argc, char *argv[] )
 {
+	if ( argc > 1 )
+	{
+		for ( int32_t i = 1; i < argc; i++ )
+		{
+			string arg = string( argv[i] );
+
+			if ( arg.compare( "-daemon" ) == 0 )
+			{
+				is_daemon = true;
+			}
+		}
+	}
+
+	cout << "Smart Traffic Meter version " << AutoVersion::FULLVERSION_STRING << endl;
+
+	char buf[512];
+
+	if ( getcwd( buf, 512 * sizeof( char ) ) != nullptr )
+	{
+		cwd.clear();
+		cwd.append( buf );
+	}
+
+	if ( is_daemon == true )
+	{
+		if ( BecomeDaemon( BD_NO_CHDIR | BD_NO_UMASK0 ) == -1 )
+		{
+			cout << "Can't start as daemon. Process exited" << endl;
+			return 0;
+		}
+	}
+
 	void *res;
 	int s;
 
@@ -91,8 +133,6 @@ int main()
 	signal( SIGTERM, signal_handler );
 
 	settings["storage"] = "files";
-
-	cout << "SmartTrafficMeter version" << AutoVersion::FULLVERSION_STRING << endl;
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -185,12 +225,19 @@ int main()
 
 	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
+	if (st!=0)
+	{
+		cout<<"Can't start server thread"<<endl;
+	}
+
 	//st = pthread_join( t2, &res );
 
 //	if ( st != 0 )
 //	{
 //		return 1;
 //	}
+
+//http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
 
 	s = pthread_create( &t1, NULL, &MeterThread, NULL );
 
@@ -208,6 +255,8 @@ int main()
 		return 1;
 	}
 
+
+
 	exit( EXIT_SUCCESS );
 }
 
@@ -215,7 +264,7 @@ static void * MeterThread( void * )
 {
 
 	static uint64_t p_time = 0;
-	struct ifaddrs *ifaddr;
+	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
 	char host[NI_MAXHOST];
 	string hourly( "hourly" );
@@ -224,13 +273,18 @@ static void * MeterThread( void * )
 	string yearly( "yearly" );
 
 
+	int k = 0;
+
 	while ( true )
 	{
 
 		if ( getifaddrs( &ifaddr ) == -1 )
 		{
+			freeifaddrs( ifaddr );
 			continue;
 		}
+
+		ipa = ifaddr;
 
 		for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
 		{
@@ -387,7 +441,7 @@ static void * MeterThread( void * )
 			}
 		}
 
-		freeifaddrs( ifaddr );
+		freeifaddrs( ipa );
 		cout << "\033[2J\033[1;1H";
 
 		struct timeval te;
@@ -419,7 +473,10 @@ static void * MeterThread( void * )
 		}
 
 		sleep( refresh_interval );
+		k++;
 	}
+
+	return 0;
 }
 
 int32_t dirExists( const char *path )
@@ -505,7 +562,7 @@ void save_stats_to_files( void )
 				const InterfaceStats& stats = row_stats.second;
 
 				ofstream file;
-				file.open( mac + "/" + table_name + "/" + row + "/stats.txt" );
+				file.open( cwd + "/" + mac + "/" + table_name + "/" + row + "/stats.txt" );
 
 				if ( file.is_open() == true )
 				{
@@ -525,7 +582,7 @@ void save_stats_to_files( void )
 	}
 }
 
-
+#ifdef use_sqlite
 static int callback( void *, int argc, char **argv, char **azColName )
 {
 	int i;
@@ -539,6 +596,8 @@ static int callback( void *, int argc, char **argv, char **azColName )
 	//printf ( "\n" );
 	return 0;
 }
+#endif
+
 
 void save_stats_to_mysql( void )
 {
@@ -667,7 +726,7 @@ void save_stats_to_sqlite( void )
 		string mac = mac_table.first;
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
-		rc = sqlite3_open_v2( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
+		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
 
 		if ( rc != 0 )
 		{
@@ -766,7 +825,7 @@ void load_data_from_files( void )
 
 		row.clear();
 		string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
-		file.open( mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -781,7 +840,7 @@ void load_data_from_files( void )
 
 		row.clear();
 		row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
-		file.open( mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -796,7 +855,7 @@ void load_data_from_files( void )
 
 		row.clear();
 		row = std::to_string( y ) + "-" + std::to_string( m );
-		file.open( mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -811,7 +870,7 @@ void load_data_from_files( void )
 
 		row.clear();
 		row = std::to_string( y );
-		file.open( mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -843,7 +902,7 @@ void load_data_from_sqlite( void )
 		const InterfaceInfo& in = kv.second;
 		string mac = in.get_mac();
 
-		rc = sqlite3_open_v2( ( mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
 
 		if ( rc != 0 )
 		{
