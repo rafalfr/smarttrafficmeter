@@ -116,7 +116,7 @@
 	<cstdint>
 	"mysql.h"
 
-1444739252 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1447938453 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -132,7 +132,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1447938239 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1448733853 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -173,7 +173,7 @@
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
-	<sqlite3.h>
+	"sqlite3.h"
 
 1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
 	"json/json.h"
@@ -242,12 +242,12 @@
 	<sstream>
 	"config.h"
 
-1444738405 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+1448734556 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
 
-1445433942 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1448734625 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	<arpa/inet.h>
 	<sys/socket.h>
 	<netdb.h>
@@ -272,11 +272,12 @@
 	<sys/time.h>
 	"Utils.h"
 
-1444738527 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+1448733643 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
-1447938411 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1448734362 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
-1447936064 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
+1447938407 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
+	<iostream>
 	<unistd.h>
 	<cstdlib>
 	<sys/stat.h>
@@ -284,4 +285,64 @@
 	"BecomeDaemon.h"
 
 1447856379 /home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.h
+
+1448733547 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"config.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<TargetConditionals.h>
+	<ctype.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/ioctl.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<tcl.h>
+	"sqlite3rtree.h"
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<ctype.h>
+	<math.h>
+
+1446489844 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
+	<stdarg.h>
 

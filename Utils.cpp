@@ -29,7 +29,7 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 
 	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
-	char* host=new char[NI_MAXHOST];
+	char* host = new char[NI_MAXHOST];
 
 	if ( getifaddrs( &ifaddr ) == -1 )
 	{
@@ -37,7 +37,7 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 		return interfaces;
 	}
 
-	ipa=ifaddr;
+	ipa = ifaddr;
 
 	for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
 	{
@@ -151,7 +151,7 @@ string Utils::get_mac( char* name )
 	return mac;
 }
 
-void Utils::get_time(uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h)
+void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
 	time_t t = time( NULL );
 	struct tm* tm = localtime( &t );
@@ -160,4 +160,38 @@ void Utils::get_time(uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h)
 	( *d ) = tm->tm_mday;
 	( *h ) = tm->tm_hour;
 }
+/** @brief contians
+  *
+  * the function returns true if key is found in the str
+  *
+  */
+bool Utils::contians( const string& str, const string& key )
+{
+	if ( str.find( key ) != string::npos )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/** @brief starts_with
+  *
+  *function returns true if str starts with key
+  *
+  */
+bool Utils::starts_with( const string& str, const string& key )
+{
+	if ( str.find( key ) == 0 )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 

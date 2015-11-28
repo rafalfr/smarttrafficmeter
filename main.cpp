@@ -44,7 +44,7 @@
 #endif // use_mysql
 
 #ifdef use_sqlite
-#include <sqlite3.h>
+#include "sqlite3.h"
 #endif // use_sqlite
 
 using namespace std;
@@ -70,7 +70,7 @@ pthread_t t2;
 
 bool is_daemon = false;
 uint32_t refresh_interval = 1;  //statistics refresh interval in seconds
-uint32_t save_interval = 10 * 60; //save interval in seconds
+uint32_t save_interval = 30 * 60; //save interval in seconds
 string cwd;
 
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
@@ -132,7 +132,7 @@ int main( int argc, char *argv[] )
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
-	settings["storage"] = "files";
+	settings["storage"] = "sqlite files";
 
 //    for(auto const & mac_table : all_stats)
 //    {
@@ -195,19 +195,19 @@ int main( int argc, char *argv[] )
 
 	string storage = settings["storage"];
 
-	if ( storage.compare( "mysql" ) == 0 )
+	if ( Utils::starts_with(storage,"mysql") )
 	{
 #ifdef use_mysql
 		save_stats_to_mysql();
 #endif // use_mysql
 	}
-	else if ( storage.compare( "sqlite" ) == 0 )
+	else if ( Utils::starts_with(storage,"sqlite") )
 	{
 #ifdef use_sqlite
 		load_data_from_sqlite();
 #endif // use_sqlite
 	}
-	else if ( storage.compare( "files" ) == 0 )
+	else if ( Utils::starts_with(storage,"files") )
 	{
 		load_data_from_files();
 	}
@@ -452,19 +452,19 @@ static void * MeterThread( void * )
 		{
 			string storage = settings["storage"];
 
-			if ( storage.compare( "mysql" ) == 0 )
+			if ( Utils::contians(storage,"mysql") )
 			{
 #ifdef use_mysql
 				//save_stats_to_mysql();
 #endif // use_mysql
 			}
-			else if ( storage.compare( "sqlite" ) == 0 )
+			else if ( Utils::contians(storage,"sqlite") )
 			{
 #ifdef use_sqlite
 				save_stats_to_sqlite();
 #endif // use_sqlite
 			}
-			else if ( storage.compare( "files" ) == 0 )
+			else if ( Utils::contians(storage,"files") )
 			{
 				save_stats_to_files();
 			}
@@ -1014,19 +1014,19 @@ static void signal_handler( int )
 
 	string storage = settings["storage"];
 
-	if ( storage.compare( "mysql" ) == 0 )
+	if ( Utils::contians(storage,"mysql") )
 	{
 #ifdef use_mysql
 		//save_stats_to_mysql();
 #endif // use_mysql
 	}
-	else if ( storage.compare( "sqlite" ) == 0 )
+	else if ( Utils::contians(storage,"sqlite") )
 	{
 #ifdef use_sqlite
 		save_stats_to_sqlite();
 #endif // use_sqlite
 	}
-	else if ( storage.compare( "files" ) == 0 )
+	else if ( Utils::contians(storage,"files") )
 	{
 		save_stats_to_files();
 	}

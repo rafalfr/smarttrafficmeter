@@ -39,9 +39,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
+			<Add directory="sqlite" />
 			<Add directory="/usr/include/mysql/" />
 		</Compiler>
 		<Linker>
+			<Add library="dl" />
 			<Add library="pthread" />
 			<Add library="sqlite3" />
 			<Add library="mysqlclient" />
@@ -65,6 +67,11 @@
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sqlite/sqlite3.h" />
+		<Unit filename="sqlite/sqlite3ext.h" />
+		<Unit filename="sqlite3.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="version.h" />
 		<Extensions>
 			<envvars />
