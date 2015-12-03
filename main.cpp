@@ -738,7 +738,7 @@ void save_stats_to_sqlite( void )
 			string table_name = table_row.first;
 
 			string query;
-			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
+			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` UNSIGNED BIGINT NULL,`tx_bytes` UNSIGNED BIGINT NULL,PRIMARY KEY (`row`));";
 
 			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
 
@@ -764,9 +764,9 @@ void save_stats_to_sqlite( void )
 				query += row;
 				query += "'";
 				query += ",";
-				query += std::to_string( rx );
+				query += Utils::to_string( rx );
 				query += ",";
-				query += std::to_string( tx );
+				query += Utils::to_string( tx );
 				query += ");";
 				rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
 
@@ -780,10 +780,10 @@ void save_stats_to_sqlite( void )
 				query.clear();
 				query += "UPDATE OR IGNORE " + table_name + " SET ";
 				query += "rx_bytes=";
-				query += std::to_string( rx );
+				query += Utils::to_string( rx );
 				query += ", ";
 				query += "tx_bytes=";
-				query += std::to_string( tx );
+				query += Utils::to_string( tx );
 				query += " WHERE row='" + row + "'";
 				query += ";";
 				rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );

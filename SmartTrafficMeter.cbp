@@ -39,6 +39,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
+			<Add option="-Duse_sqlite" />
 			<Add directory="sqlite" />
 			<Add directory="/usr/include/mysql/" />
 		</Compiler>

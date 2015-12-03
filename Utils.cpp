@@ -194,4 +194,52 @@ bool Utils::starts_with( const string& str, const string& key )
 	}
 }
 
+/** @brief to_string
+  *
+  * @todo: document this function
+  */
+string Utils::to_string( uint64_t value )
+{
+	static uint64_t maxd = 1ULL;
+
+	if ( maxd == 1ULL )
+	{
+		//compute maximum decimal value
+		for ( uint64_t i = 0ULL; i < sizeof( uint64_t ) * 8ULL; i++ )
+		{
+			uint64_t v = 1ULL << i;
+
+			if ( ( v / maxd ) != 0ULL )
+			{
+				maxd *= 10ULL;
+			}
+		}
+	}
+
+	string out;
+
+	uint64_t divisor = maxd;
+
+	if ( value == 0ULL )
+	{
+		out += "0";
+	}
+	else
+	{
+		while ( divisor > 0 )
+		{
+			uint64_t c = value / divisor;
+			value -= c * divisor;
+			divisor /= 10ULL;
+
+			if ( out.empty() == false || c > 0ULL )
+			{
+				out += std::to_string( c );
+			}
+		}
+	}
+
+	return out;
+}
+
 

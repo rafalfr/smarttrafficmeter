@@ -14,6 +14,7 @@ public:
 	static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 	static bool contians(const string& str, const string& key);
 	static bool starts_with(const string& str, const string& key);
+	static string to_string(uint64_t value);
 };
 
 #endif // UTILS_H
