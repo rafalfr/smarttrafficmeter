@@ -738,7 +738,7 @@ void save_stats_to_sqlite( void )
 			string table_name = table_row.first;
 
 			string query;
-			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` UNSIGNED BIGINT NULL,`tx_bytes` UNSIGNED BIGINT NULL,PRIMARY KEY (`row`));";
+			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` UNSIGNED BIG INT NULL,`tx_bytes` UNSIGNED BIG INT NULL,PRIMARY KEY (`row`));";
 
 			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
 
