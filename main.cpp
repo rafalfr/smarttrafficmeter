@@ -73,6 +73,7 @@ uint32_t refresh_interval = 1;  //statistics refresh interval in seconds
 uint32_t save_interval = 30 * 60; //save interval in seconds
 string cwd;
 
+//mac, table, date, stats
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
@@ -201,13 +202,15 @@ int main( int argc, char *argv[] )
 		save_stats_to_mysql();
 #endif // use_mysql
 	}
-	else if ( Utils::starts_with(storage,"sqlite") )
+
+	if ( Utils::starts_with(storage,"sqlite") )
 	{
 #ifdef use_sqlite
 		load_data_from_sqlite();
 #endif // use_sqlite
 	}
-	else if ( Utils::starts_with(storage,"files") )
+
+	if ( Utils::starts_with(storage,"files") )
 	{
 		load_data_from_files();
 	}
@@ -381,6 +384,7 @@ static void * MeterThread( void * )
 				}
 
 				all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
+
 				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
 				for ( auto const & mac_speedinfo : speed_stats )
@@ -458,13 +462,15 @@ static void * MeterThread( void * )
 				//save_stats_to_mysql();
 #endif // use_mysql
 			}
-			else if ( Utils::contians(storage,"sqlite") )
+
+			if ( Utils::contians(storage,"sqlite") )
 			{
 #ifdef use_sqlite
 				save_stats_to_sqlite();
 #endif // use_sqlite
 			}
-			else if ( Utils::contians(storage,"files") )
+
+			if ( Utils::contians(storage,"files") )
 			{
 				save_stats_to_files();
 			}
@@ -571,9 +577,9 @@ void save_stats_to_files( void )
 
 					//cout << mac + "/" + table_name + "/" + row + "\t" + std::to_string ( rx ) << endl;
 
-					file << ( std::to_string( rx ) );
+					file << ( Utils::to_string( rx ) );
 					file << endl;
-					file << ( std::to_string( tx ) );
+					file << ( Utils::to_string( tx ) );
 
 					file.close();
 				}
@@ -667,9 +673,9 @@ void save_stats_to_mysql( void )
 				query += row;
 				query += "'";
 				query += ",";
-				query += std::to_string( rx );
+				query += Utils::to_string( rx );
 				query += ",";
-				query += std::to_string( tx );
+				query += Utils::to_string( tx );
 				query += ");";
 
 				mysql_query( conn, query.c_str() );
@@ -684,10 +690,10 @@ void save_stats_to_mysql( void )
 				query.clear();
 				query += "UPDATE OR IGNORE " + table_name + " SET ";
 				query += "rx_bytes=";
-				query += std::to_string( rx );
+				query += Utils::to_string( rx );
 				query += ", ";
 				query += "tx_bytes=";
-				query += std::to_string( tx );
+				query += Utils::to_string( tx );
 				query += " WHERE row='" + row + "'";
 				query += ";";
 
@@ -1020,13 +1026,15 @@ static void signal_handler( int )
 		//save_stats_to_mysql();
 #endif // use_mysql
 	}
-	else if ( Utils::contians(storage,"sqlite") )
+
+	if ( Utils::contians(storage,"sqlite") )
 	{
 #ifdef use_sqlite
 		save_stats_to_sqlite();
 #endif // use_sqlite
 	}
-	else if ( Utils::contians(storage,"files") )
+
+	if ( Utils::contians(storage,"files") )
 	{
 		save_stats_to_files();
 	}

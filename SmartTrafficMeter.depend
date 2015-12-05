@@ -132,7 +132,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1448733853 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1449349930 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -274,7 +274,7 @@
 
 1448733643 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
-1448734362 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1449350684 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1447938407 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
 	<iostream>

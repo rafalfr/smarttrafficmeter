@@ -1,12 +1,13 @@
+#include <limits>
 #include "InterfaceStats.h"
 
 InterfaceStats::InterfaceStats()
 {
 	first_update = true;
-	p_rx = 0;
-	p_tx = 0;
-	rx = 0;
-	tx = 0;
+	p_rx = 0ULL;
+	p_tx = 0ULL;
+	rx = 0ULL;
+	tx = 0ULL;
 }
 
 InterfaceStats::InterfaceStats( const InterfaceStats& stats )
@@ -18,14 +19,10 @@ InterfaceStats::InterfaceStats( const InterfaceStats& stats )
 	tx = stats.tx;
 }
 
-
-
-
 InterfaceStats::~InterfaceStats()
 {
 
 }
-
 
 void InterfaceStats::set_initial_stats( uint64_t _tx, uint64_t _rx )
 {
@@ -33,7 +30,6 @@ void InterfaceStats::set_initial_stats( uint64_t _tx, uint64_t _rx )
 	tx = _tx;
 	first_update = true;
 }
-
 
 void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
 {
@@ -44,8 +40,23 @@ void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
 		first_update = false;
 	}
 
-	rx += ( _rx - p_rx );
-	tx += ( _tx - p_tx );
+	if ( _rx >= p_rx )
+	{
+		rx +=  _rx - p_rx ;
+	}
+	else
+	{
+		rx += ( _rx + ( uint64_t )std::numeric_limits<uint32_t>::max() ) - p_rx;
+	}
+
+	if ( _tx >= p_tx )
+	{
+		tx +=  _tx - p_tx ;
+	}
+	else
+	{
+		tx += ( _tx + ( uint64_t )std::numeric_limits<uint32_t>::max() ) - p_tx;
+	}
 
 	p_rx = _rx;
 	p_tx = _tx;

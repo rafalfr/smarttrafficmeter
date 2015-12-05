@@ -11,11 +11,11 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -I/usr/include/mysql/
-CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -DGLIBCXX_FORCE_NEW
+INC = -Isqlite -I/usr/include/mysql/
+CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -DGLIBCXX_FORCE_NEW -Duse_sqlite
 RESINC = 
 LIBDIR = 
-LIB = -lpthread -lsqlite3 -lmysqlclient
+LIB = -ldl -lpthread -lsqlite3 -lmysqlclient
 LDFLAGS = 
 
 INC_DEBUG = $(INC)
@@ -30,7 +30,7 @@ DEP_DEBUG =
 OUT_DEBUG = bin/Debug/SmartTrafficMeter
 
 INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -march=core2 -fomit-frame-pointer -fexpensive-optimizations -O3
+CFLAGS_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
@@ -40,9 +40,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/SmartTrafficMeter
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o
 
 all: debug release
 
@@ -59,14 +59,17 @@ debug: before_debug out_debug after_debug
 out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
 	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
+$(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
+
+$(OBJDIR_DEBUG)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c sqlite3.c -o $(OBJDIR_DEBUG)/sqlite3.o
+
 $(OBJDIR_DEBUG)/main.o: main.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c main.cpp -o $(OBJDIR_DEBUG)/main.o
 
 $(OBJDIR_DEBUG)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Utils.cpp -o $(OBJDIR_DEBUG)/Utils.o
-
-$(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
 
 $(OBJDIR_DEBUG)/BecomeDaemon.o: BecomeDaemon.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c BecomeDaemon.cpp -o $(OBJDIR_DEBUG)/BecomeDaemon.o
@@ -102,14 +105,17 @@ release: before_release out_release after_release
 out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
 	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
+$(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
+
+$(OBJDIR_RELEASE)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c sqlite3.c -o $(OBJDIR_RELEASE)/sqlite3.o
+
 $(OBJDIR_RELEASE)/main.o: main.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c main.cpp -o $(OBJDIR_RELEASE)/main.o
 
 $(OBJDIR_RELEASE)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Utils.cpp -o $(OBJDIR_RELEASE)/Utils.o
-
-$(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
 
 $(OBJDIR_RELEASE)/BecomeDaemon.o: BecomeDaemon.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c BecomeDaemon.cpp -o $(OBJDIR_RELEASE)/BecomeDaemon.o
