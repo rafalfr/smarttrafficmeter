@@ -196,21 +196,21 @@ int main( int argc, char *argv[] )
 
 	string storage = settings["storage"];
 
-	if ( Utils::starts_with(storage,"mysql") )
+	if ( Utils::starts_with( storage, "mysql" ) )
 	{
 #ifdef use_mysql
 		save_stats_to_mysql();
 #endif // use_mysql
 	}
 
-	if ( Utils::starts_with(storage,"sqlite") )
+	if ( Utils::starts_with( storage, "sqlite" ) )
 	{
 #ifdef use_sqlite
 		load_data_from_sqlite();
 #endif // use_sqlite
 	}
 
-	if ( Utils::starts_with(storage,"files") )
+	if ( Utils::starts_with( storage, "files" ) )
 	{
 		load_data_from_files();
 	}
@@ -228,9 +228,9 @@ int main( int argc, char *argv[] )
 
 	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
-	if (st!=0)
+	if ( st != 0 )
 	{
-		cout<<"Can't start server thread"<<endl;
+		cout << "Can't start server thread" << endl;
 	}
 
 	//st = pthread_join( t2, &res );
@@ -266,6 +266,10 @@ int main( int argc, char *argv[] )
 static void * MeterThread( void * )
 {
 
+	uint32_t y;
+	uint32_t m;
+	uint32_t d;
+	uint32_t h;
 	static uint64_t p_time = 0;
 	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
@@ -325,10 +329,6 @@ static void * MeterThread( void * )
 //						 stats->tx_packets, stats->rx_packets,
 //						 stats->tx_bytes, stats->rx_bytes );
 
-				uint32_t y;
-				uint32_t m;
-				uint32_t d;
-				uint32_t h;
 				get_time( &y, &m, &d, &h );
 
 				string mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
@@ -456,23 +456,69 @@ static void * MeterThread( void * )
 		{
 			string storage = settings["storage"];
 
-			if ( Utils::contians(storage,"mysql") )
+			if ( Utils::contians( storage, "mysql" ) )
 			{
 #ifdef use_mysql
 				//save_stats_to_mysql();
 #endif // use_mysql
 			}
 
-			if ( Utils::contians(storage,"sqlite") )
+			if ( Utils::contians( storage, "sqlite" ) )
 			{
 #ifdef use_sqlite
 				save_stats_to_sqlite();
 #endif // use_sqlite
 			}
 
-			if ( Utils::contians(storage,"files") )
+			if ( Utils::contians( storage, "files" ) )
 			{
 				save_stats_to_files();
+			}
+
+			/* remove unused rows from the all_stats container */
+			string current_row;
+
+			for ( auto const & mac_table : all_stats )
+			{
+				string mac = mac_table.first;
+
+				const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+				for ( auto const & table_row : table )
+				{
+					string table_name = table_row.first;	//hourly, daily, etc..
+
+					current_row.clear();
+
+					if ( table_name.compare( "hourly" ) == 0 )
+					{
+						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+					}
+					else if ( table_name.compare( "daily" ) == 0 )
+					{
+						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+					}
+					else if ( table_name.compare( "monthly" ) == 0 )
+					{
+						current_row += std::to_string( y ) + "-" + std::to_string( m );
+					}
+					else if ( table_name.compare( "yearly" ) == 0 )
+					{
+						current_row += std::to_string( y );
+					}
+
+					const map<string, InterfaceStats> & row = table_row.second;
+
+					for ( auto const & row_stats : row )
+					{
+						string row = row_stats.first;	//subsequent rows in the current table
+
+						if ( row.compare( current_row ) != 0 )
+						{
+							all_stats[mac][table_name].erase( row );
+						}
+					}
+				}
 			}
 
 			p_time = c_time;
@@ -1020,21 +1066,21 @@ static void signal_handler( int )
 
 	string storage = settings["storage"];
 
-	if ( Utils::contians(storage,"mysql") )
+	if ( Utils::contians( storage, "mysql" ) )
 	{
 #ifdef use_mysql
 		//save_stats_to_mysql();
 #endif // use_mysql
 	}
 
-	if ( Utils::contians(storage,"sqlite") )
+	if ( Utils::contians( storage, "sqlite" ) )
 	{
 #ifdef use_sqlite
 		save_stats_to_sqlite();
 #endif // use_sqlite
 	}
 
-	if ( Utils::contians(storage,"files") )
+	if ( Utils::contians( storage, "files" ) )
 	{
 		save_stats_to_files();
 	}
