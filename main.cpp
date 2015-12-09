@@ -862,6 +862,8 @@ void load_data_from_files( void )
 	uint64_t rx_bytes;
 	uint64_t tx_bytes;
 
+	get_time( &y, &m, &d, &h );
+
 	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	string row;
@@ -873,8 +875,6 @@ void load_data_from_files( void )
 		string mac = in.get_mac();
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		row.clear();
 		string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 		file.open( cwd + "/" + mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
@@ -888,8 +888,6 @@ void load_data_from_files( void )
 		}
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		row.clear();
 		row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
@@ -903,8 +901,6 @@ void load_data_from_files( void )
 		}
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		row.clear();
 		row = std::to_string( y ) + "-" + std::to_string( m );
 		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
@@ -918,8 +914,6 @@ void load_data_from_files( void )
 		}
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		row.clear();
 		row = std::to_string( y );
 		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
@@ -947,6 +941,8 @@ void load_data_from_sqlite( void )
 	uint32_t d;
 	uint32_t h;
 
+	get_time( &y, &m, &d, &h );
+
 	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	for ( auto const & kv : interfaces )
@@ -961,8 +957,6 @@ void load_data_from_sqlite( void )
 			continue;
 		}
 
-		get_time( &y, &m, &d, &h );
-
 		string query = "SELECT * from yearly ";
 		query += "WHERE row=";
 		query += "'";
@@ -976,18 +970,29 @@ void load_data_from_sqlite( void )
 		uint64_t tx_bytes;
 		string row = table_columns["row"];
 
-		rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		try
+		{
+			rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		}
+		catch ( ... )
+		{
+			rx_bytes = 0ULL;
+		}
 
-		tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		try
+		{
+			tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		}
+		catch ( ... )
+		{
+			tx_bytes = 0ULL;
+		}
 
 		InterfaceStats ystats;
 		all_stats[mac]["yearly"][row] = ystats;
 		all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
-
-		get_time( &y, &m, &d, &h );
-
 		query.clear();
 		query = "SELECT * from monthly ";
 		query += "WHERE row=";
@@ -1000,17 +1005,29 @@ void load_data_from_sqlite( void )
 
 		row = table_columns["row"];
 
-		rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		try
+		{
+			rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		}
+		catch ( ... )
+		{
+			rx_bytes = 0ULL;
+		}
 
-		tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		try
+		{
+			tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		}
+		catch ( ... )
+		{
+			tx_bytes = 0ULL;
+		}
 
 		InterfaceStats mstats;
 		all_stats[mac]["monthly"][row] = mstats;
 		all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		query.clear();
 		query = "SELECT * from daily ";
 		query += "WHERE row=";
@@ -1023,16 +1040,30 @@ void load_data_from_sqlite( void )
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		row = table_columns["row"];
-		rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		tx_bytes = std::stoull( table_columns["tx_bytes"] );
+
+		try
+		{
+			rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		}
+		catch ( ... )
+		{
+			rx_bytes = 0ULL;
+		}
+
+		try
+		{
+			tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		}
+		catch ( ... )
+		{
+			tx_bytes = 0ULL;
+		}
 
 		InterfaceStats dstats;
 		all_stats[mac]["daily"][row] = dstats;
 		all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
 
 ///
-		get_time( &y, &m, &d, &h );
-
 		query.clear();
 		query = "SELECT * from hourly ";
 		query += "WHERE row=";
@@ -1045,8 +1076,24 @@ void load_data_from_sqlite( void )
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
 		row = table_columns["row"];
-		rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		tx_bytes = std::stoull( table_columns["tx_bytes"] );
+
+		try
+		{
+			rx_bytes = std::stoull( table_columns["rx_bytes"] );
+		}
+		catch ( ... )
+		{
+			rx_bytes = 0ULL;
+		}
+
+		try
+		{
+			tx_bytes = std::stoull( table_columns["tx_bytes"] );
+		}
+		catch ( ... )
+		{
+			tx_bytes = 0ULL;
+		}
 
 		InterfaceStats hstats;
 		all_stats[mac]["hourly"][row] = hstats;

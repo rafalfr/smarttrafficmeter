@@ -40,6 +40,16 @@
 			<Add option="-fexceptions" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add option="-Duse_sqlite" />
+			<Add option="-DSQLITE_ENABLE_API_ARMOR" />
+			<Add option="-DSQLITE_ENABLE_ATOMIC_WRITE" />
+			<Add option="-DSQLITE_ENABLE_COLUMN_METADATA" />
+			<Add option="-DSQLITE_ENABLE_DBSTAT_VTAB" />
+			<Add option="-DSQLITE_ENABLE_EXPLAIN_COMMENTS" />
+			<Add option="-DSQLITE_ENABLE_FTS3" />
+			<Add option="-DSQLITE_ENABLE_FTS3_PARENTHESIS" />
+			<Add option="-DSQLITE_ENABLE_FTS4" />
+			<Add option="-DSQLITE_ENABLE_FTS5" />
+			<Add option="-DSQLITE_ENABLE_IOTRACE" />
 			<Add directory="sqlite" />
 			<Add directory="/usr/include/mysql/" />
 		</Compiler>
