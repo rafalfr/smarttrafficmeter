@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include "version.h"
 #include "Utils.h"
+#include "Logger.h"
 #include "BecomeDaemon.h"
 #include "MySQLInterface.h"
 #include "ServerThread.h"
@@ -122,7 +123,12 @@ int main( int argc, char *argv[] )
 		if ( BecomeDaemon( BD_NO_CHDIR | BD_NO_UMASK0 ) == -1 )
 		{
 			cout << "Can't start as daemon. Process exited" << endl;
+			Logger::LogError( "Can;t start as daemon. Process exited" );
 			return 0;
+		}
+		else
+		{
+			Logger::LogInfo( "SmartTrafficMeter has started as daemon" );
 		}
 	}
 
@@ -231,6 +237,7 @@ int main( int argc, char *argv[] )
 	if ( st != 0 )
 	{
 		cout << "Can't start server thread" << endl;
+		Logger::LogError( "Can't start server thread" );
 	}
 
 	//st = pthread_join( t2, &res );
@@ -446,7 +453,7 @@ static void * MeterThread( void * )
 		}
 
 		freeifaddrs( ipa );
-		cout << "\033[2J\033[1;1H";
+		//cout << "\033[2J\033[1;1H";
 
 		struct timeval te;
 		gettimeofday( &te, NULL );
@@ -515,6 +522,7 @@ static void * MeterThread( void * )
 
 						if ( row.compare( current_row ) != 0 )
 						{
+							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
 							all_stats[mac][table_name].erase( row );
 						}
 					}
@@ -639,14 +647,19 @@ static int callback( void *, int argc, char **argv, char **azColName )
 {
 	int i;
 
-	for ( i = 0; i < argc; i++ )
+	if ( argc > 0 )
 	{
-		printf( "%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL" );
-		table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
-	}
+		for ( i = 0; i < argc; i++ )
+		{
+			table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
+		}
 
-	//printf ( "\n" );
-	return 0;
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 #endif
 
@@ -940,10 +953,14 @@ void load_data_from_sqlite( void )
 	uint32_t m;
 	uint32_t d;
 	uint32_t h;
+	uint64_t rx_bytes;
+	uint64_t tx_bytes;
 
 	get_time( &y, &m, &d, &h );
 
 	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+
+	string row;
 
 	for ( auto const & kv : interfaces )
 	{
@@ -966,31 +983,32 @@ void load_data_from_sqlite( void )
 		table_columns.clear();
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
-		uint64_t rx_bytes;
-		uint64_t tx_bytes;
-		string row = table_columns["row"];
+		if ( rc == SQLITE_OK )
+		{
+			row = table_columns["row"];
 
-		try
-		{
-			rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		}
-		catch ( ... )
-		{
-			rx_bytes = 0ULL;
-		}
+			try
+			{
+				rx_bytes = std::stoull( table_columns["rx_bytes"] );
+			}
+			catch ( ... )
+			{
+				rx_bytes = 0ULL;
+			}
 
-		try
-		{
-			tx_bytes = std::stoull( table_columns["tx_bytes"] );
-		}
-		catch ( ... )
-		{
-			tx_bytes = 0ULL;
-		}
+			try
+			{
+				tx_bytes = std::stoull( table_columns["tx_bytes"] );
+			}
+			catch ( ... )
+			{
+				tx_bytes = 0ULL;
+			}
 
-		InterfaceStats ystats;
-		all_stats[mac]["yearly"][row] = ystats;
-		all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			InterfaceStats ystats;
+			all_stats[mac]["yearly"][row] = ystats;
+			all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+		}
 
 ///
 		query.clear();
@@ -1003,29 +1021,32 @@ void load_data_from_sqlite( void )
 		table_columns.clear();
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
-		row = table_columns["row"];
+		if ( rc == SQLITE_OK )
+		{
+			row = table_columns["row"];
 
-		try
-		{
-			rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		}
-		catch ( ... )
-		{
-			rx_bytes = 0ULL;
-		}
+			try
+			{
+				rx_bytes = std::stoull( table_columns["rx_bytes"] );
+			}
+			catch ( ... )
+			{
+				rx_bytes = 0ULL;
+			}
 
-		try
-		{
-			tx_bytes = std::stoull( table_columns["tx_bytes"] );
-		}
-		catch ( ... )
-		{
-			tx_bytes = 0ULL;
-		}
+			try
+			{
+				tx_bytes = std::stoull( table_columns["tx_bytes"] );
+			}
+			catch ( ... )
+			{
+				tx_bytes = 0ULL;
+			}
 
-		InterfaceStats mstats;
-		all_stats[mac]["monthly"][row] = mstats;
-		all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			InterfaceStats mstats;
+			all_stats[mac]["monthly"][row] = mstats;
+			all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+		}
 
 ///
 		query.clear();
@@ -1039,29 +1060,32 @@ void load_data_from_sqlite( void )
 		table_columns.clear();
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
-		row = table_columns["row"];
+		if ( rc == SQLITE_OK )
+		{
+			row = table_columns["row"];
 
-		try
-		{
-			rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		}
-		catch ( ... )
-		{
-			rx_bytes = 0ULL;
-		}
+			try
+			{
+				rx_bytes = std::stoull( table_columns["rx_bytes"] );
+			}
+			catch ( ... )
+			{
+				rx_bytes = 0ULL;
+			}
 
-		try
-		{
-			tx_bytes = std::stoull( table_columns["tx_bytes"] );
-		}
-		catch ( ... )
-		{
-			tx_bytes = 0ULL;
-		}
+			try
+			{
+				tx_bytes = std::stoull( table_columns["tx_bytes"] );
+			}
+			catch ( ... )
+			{
+				tx_bytes = 0ULL;
+			}
 
-		InterfaceStats dstats;
-		all_stats[mac]["daily"][row] = dstats;
-		all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+			InterfaceStats dstats;
+			all_stats[mac]["daily"][row] = dstats;
+			all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+		}
 
 ///
 		query.clear();
@@ -1075,29 +1099,32 @@ void load_data_from_sqlite( void )
 		table_columns.clear();
 		rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
 
-		row = table_columns["row"];
+		if ( rc == SQLITE_OK )
+		{
+			row = table_columns["row"];
 
-		try
-		{
-			rx_bytes = std::stoull( table_columns["rx_bytes"] );
-		}
-		catch ( ... )
-		{
-			rx_bytes = 0ULL;
-		}
+			try
+			{
+				rx_bytes = std::stoull( table_columns["rx_bytes"] );
+			}
+			catch ( ... )
+			{
+				rx_bytes = 0ULL;
+			}
 
-		try
-		{
-			tx_bytes = std::stoull( table_columns["tx_bytes"] );
-		}
-		catch ( ... )
-		{
-			tx_bytes = 0ULL;
-		}
+			try
+			{
+				tx_bytes = std::stoull( table_columns["tx_bytes"] );
+			}
+			catch ( ... )
+			{
+				tx_bytes = 0ULL;
+			}
 
-		InterfaceStats hstats;
-		all_stats[mac]["hourly"][row] = hstats;
-		all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			InterfaceStats hstats;
+			all_stats[mac]["hourly"][row] = hstats;
+			all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+		}
 
 		sqlite3_close( db );
 	}
@@ -1106,7 +1133,7 @@ void load_data_from_sqlite( void )
 }
 
 
-static void signal_handler( int )
+static void signal_handler( int signal )
 {
 	//pthread_kill(t1, SIGTERM);
 	//pthread_kill(t2, SIGTERM);
@@ -1130,6 +1157,19 @@ static void signal_handler( int )
 	if ( Utils::contians( storage, "files" ) )
 	{
 		save_stats_to_files();
+	}
+
+	if ( signal == SIGINT )
+	{
+		Logger::LogInfo( "Process exited as a result of SIGINT" );
+	}
+	else if ( signal == SIGSEGV )
+	{
+		Logger::LogInfo( "Process exited as a result of SIGSEGV" );
+	}
+	else if ( signal == SIGTERM )
+	{
+		Logger::LogInfo( "Process exited as a result of SIGTERM" );
 	}
 
 	exit( 0 );

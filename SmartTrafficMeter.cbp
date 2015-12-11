@@ -68,6 +68,8 @@
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
 		<Unit filename="Jsoncpp.cpp" />
+		<Unit filename="Logger.cpp" />
+		<Unit filename="Logger.h" />
 		<Unit filename="MySQLInterface.cpp" />
 		<Unit filename="MySQLInterface.h" />
 		<Unit filename="ServerThread.cpp" />
