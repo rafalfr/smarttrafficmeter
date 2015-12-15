@@ -462,7 +462,7 @@ static void * MeterThread( void * )
 		{
 			string storage = settings["storage"];
 
-			Logger::LogDebug("saving data");
+			Logger::LogDebug( "saving data" );
 
 			if ( Utils::contians( storage, "mysql" ) )
 			{
@@ -483,7 +483,7 @@ static void * MeterThread( void * )
 				save_stats_to_files();
 			}
 
-			Logger::LogDebug("cleaning database");
+			Logger::LogDebug( "cleaning database" );
 
 			/* remove unused rows from the all_stats container */
 			string current_row;
@@ -805,15 +805,28 @@ void save_stats_to_sqlite( void )
 			string table_name = table_row.first;
 
 			string query;
-			query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` UNSIGNED BIG INT NULL,`tx_bytes` UNSIGNED BIG INT NULL,PRIMARY KEY (`row`));";
+			query += "CREATE TABLE IF NOT EXISTS '" + table_name + "' ('row' VARCHAR(45) NULL,'rx_bytes' UNSIGNED BIG INT NULL,'tx_bytes' UNSIGNED BIG INT NULL,PRIMARY KEY ('row'));";
 
 			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
 
 			if ( rc != SQLITE_OK )
 			{
 				sqlite3_free( zErrMsg );
-				Logger::LogError("Can not create "+table_name);
+				Logger::LogError( "Can not create " + table_name );
 				continue;
+			}
+
+
+			query.clear();
+			query += "DELETE FROM " + table_name + " WHERE ";
+			query += "row NOT LIKE ";
+			query += "'2%%';";
+			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+			if ( rc != SQLITE_OK )
+			{
+				sqlite3_free( zErrMsg );
+				Logger::LogError( "Can not delete empty row in the table " + table_name );
 			}
 
 			const map<string, InterfaceStats> & row = table_row.second;
@@ -840,7 +853,7 @@ void save_stats_to_sqlite( void )
 				if ( rc != SQLITE_OK )
 				{
 					sqlite3_free( zErrMsg );
-					Logger::LogError("Can not insert row: "+row+" into the table "+table_name);
+					Logger::LogError( "Can not insert row: " + row + " into the table " + table_name );
 					continue;
 				}
 
@@ -858,7 +871,7 @@ void save_stats_to_sqlite( void )
 				if ( rc != SQLITE_OK )
 				{
 					sqlite3_free( zErrMsg );
-					Logger::LogError("Can not update "+table_name+" with row: "+row);
+					Logger::LogError( "Can not update " + table_name + " with row: " + row );
 					continue;
 				}
 			}
@@ -963,6 +976,7 @@ void load_data_from_sqlite( void )
 	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
 
 	string row;
+	string query;
 
 	for ( auto const & kv : interfaces )
 	{
@@ -971,12 +985,23 @@ void load_data_from_sqlite( void )
 
 		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
 
-		if ( rc != 0 )
+		if ( rc != SQLITE_OK )
 		{
 			continue;
 		}
 
-		string query = "SELECT * from yearly ";
+		query.clear();
+		query += "DELETE FROM yearly WHERE row NOT LIKE '2%%';";
+		rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+		if ( rc != SQLITE_OK )
+		{
+			sqlite3_free( zErrMsg );
+			Logger::LogError( "Can not delete empty row in the yearly table" );
+		}
+
+		query.clear();
+		query += "SELECT * from yearly ";
 		query += "WHERE row=";
 		query += "'";
 		query += std::to_string( y );
@@ -1013,6 +1038,16 @@ void load_data_from_sqlite( void )
 		}
 
 ///
+		query.clear();
+		query += "DELETE FROM monthly WHERE row NOT LIKE '2%%';";
+		rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+		if ( rc != SQLITE_OK )
+		{
+			sqlite3_free( zErrMsg );
+			Logger::LogError( "Can not delete empty row in the monthly table" );
+		}
+
 		query.clear();
 		query = "SELECT * from monthly ";
 		query += "WHERE row=";
@@ -1052,6 +1087,16 @@ void load_data_from_sqlite( void )
 
 ///
 		query.clear();
+		query += "DELETE FROM daily WHERE row NOT LIKE '2%%';";
+		rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+		if ( rc != SQLITE_OK )
+		{
+			sqlite3_free( zErrMsg );
+			Logger::LogError( "Can not delete empty row in the daily table" );
+		}
+
+		query.clear();
 		query = "SELECT * from daily ";
 		query += "WHERE row=";
 		query += "'";
@@ -1090,6 +1135,16 @@ void load_data_from_sqlite( void )
 		}
 
 ///
+		query.clear();
+		query += "DELETE FROM hourly WHERE row NOT LIKE '2%%';";
+		rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+		if ( rc != SQLITE_OK )
+		{
+			sqlite3_free( zErrMsg );
+			Logger::LogError( "Can not delete empty row in the hourly table" );
+		}
+
 		query.clear();
 		query = "SELECT * from hourly ";
 		query += "WHERE row=";
