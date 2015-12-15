@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -Isqlite -I/usr/include/mysql/
-CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -DGLIBCXX_FORCE_NEW -Duse_sqlite -DSQLITE_ENABLE_API_ARMOR -DSQLITE_ENABLE_ATOMIC_WRITE -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_EXPLAIN_COMMENTS -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_IOTRACE
+CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -DGLIBCXX_FORCE_NEW -Duse_sqlite
 RESINC = 
 LIBDIR = 
 LIB = -ldl -lpthread -lsqlite3 -lmysqlclient
@@ -40,9 +40,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/SmartTrafficMeter
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Logger.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Logger.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o
 
 all: debug release
 
@@ -59,9 +59,6 @@ debug: before_debug out_debug after_debug
 out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
 	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
-$(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
-
 $(OBJDIR_DEBUG)/sqlite3.o: sqlite3.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c sqlite3.c -o $(OBJDIR_DEBUG)/sqlite3.o
 
@@ -71,11 +68,17 @@ $(OBJDIR_DEBUG)/main.o: main.cpp
 $(OBJDIR_DEBUG)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Utils.cpp -o $(OBJDIR_DEBUG)/Utils.o
 
+$(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
+
 $(OBJDIR_DEBUG)/BecomeDaemon.o: BecomeDaemon.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c BecomeDaemon.cpp -o $(OBJDIR_DEBUG)/BecomeDaemon.o
 
 $(OBJDIR_DEBUG)/MySQLInterface.o: MySQLInterface.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c MySQLInterface.cpp -o $(OBJDIR_DEBUG)/MySQLInterface.o
+
+$(OBJDIR_DEBUG)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Logger.cpp -o $(OBJDIR_DEBUG)/Logger.o
 
 $(OBJDIR_DEBUG)/Jsoncpp.o: Jsoncpp.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Jsoncpp.cpp -o $(OBJDIR_DEBUG)/Jsoncpp.o
@@ -105,9 +108,6 @@ release: before_release out_release after_release
 out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
 	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
-$(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
-
 $(OBJDIR_RELEASE)/sqlite3.o: sqlite3.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c sqlite3.c -o $(OBJDIR_RELEASE)/sqlite3.o
 
@@ -117,11 +117,17 @@ $(OBJDIR_RELEASE)/main.o: main.cpp
 $(OBJDIR_RELEASE)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Utils.cpp -o $(OBJDIR_RELEASE)/Utils.o
 
+$(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
+
 $(OBJDIR_RELEASE)/BecomeDaemon.o: BecomeDaemon.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c BecomeDaemon.cpp -o $(OBJDIR_RELEASE)/BecomeDaemon.o
 
 $(OBJDIR_RELEASE)/MySQLInterface.o: MySQLInterface.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c MySQLInterface.cpp -o $(OBJDIR_RELEASE)/MySQLInterface.o
+
+$(OBJDIR_RELEASE)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Logger.cpp -o $(OBJDIR_RELEASE)/Logger.o
 
 $(OBJDIR_RELEASE)/Jsoncpp.o: Jsoncpp.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Jsoncpp.cpp -o $(OBJDIR_RELEASE)/Jsoncpp.o

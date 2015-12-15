@@ -55,6 +55,8 @@ using namespace std;
 //http://stackoverflow.com/questions/1519585/how-to-get-mac-address-for-an-interface-in-linux-using-a-c-program
 //http://stackoverflow.com/questions/18100097/portable-way-to-check-if-directory-exists-windows-linux-c
 //http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
+//http://stackoverflow.com/questions/5339200/how-to-create-a-single-instance-application-in-c-or-c
+
 
 //libsqlite3-dev
 //libmysqlclient-dev
@@ -286,9 +288,6 @@ static void * MeterThread( void * )
 	string monthly( "monthly" );
 	string yearly( "yearly" );
 
-
-	int k = 0;
-
 	while ( true )
 	{
 
@@ -457,11 +456,13 @@ static void * MeterThread( void * )
 
 		struct timeval te;
 		gettimeofday( &te, NULL );
-		uint64_t c_time = te.tv_sec * 1000LL + te.tv_usec / 1000;
+		uint64_t c_time = te.tv_sec * 1000ULL + te.tv_usec / 1000ULL;
 
-		if ( c_time >= p_time + ( 1000 * save_interval ) )
+		if ( c_time >= p_time + ( 1000ULL * save_interval ) )
 		{
 			string storage = settings["storage"];
+
+			Logger::LogDebug("saving data");
 
 			if ( Utils::contians( storage, "mysql" ) )
 			{
@@ -481,6 +482,8 @@ static void * MeterThread( void * )
 			{
 				save_stats_to_files();
 			}
+
+			Logger::LogDebug("cleaning database");
 
 			/* remove unused rows from the all_stats container */
 			string current_row;
@@ -533,7 +536,6 @@ static void * MeterThread( void * )
 		}
 
 		sleep( refresh_interval );
-		k++;
 	}
 
 	return 0;
@@ -793,7 +795,7 @@ void save_stats_to_sqlite( void )
 
 		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
 
-		if ( rc != 0 )
+		if ( rc != SQLITE_OK )
 		{
 			continue;
 		}
@@ -810,7 +812,7 @@ void save_stats_to_sqlite( void )
 			if ( rc != SQLITE_OK )
 			{
 				sqlite3_free( zErrMsg );
-				printf( "can't create table" );
+				Logger::LogError("Can not create "+table_name);
 				continue;
 			}
 
@@ -838,7 +840,7 @@ void save_stats_to_sqlite( void )
 				if ( rc != SQLITE_OK )
 				{
 					sqlite3_free( zErrMsg );
-					printf( "error\n" );
+					Logger::LogError("Can not insert row: "+row+" into the table "+table_name);
 					continue;
 				}
 
@@ -856,7 +858,7 @@ void save_stats_to_sqlite( void )
 				if ( rc != SQLITE_OK )
 				{
 					sqlite3_free( zErrMsg );
-					printf( "error\n" );
+					Logger::LogError("Can not update "+table_name+" with row: "+row);
 					continue;
 				}
 			}
