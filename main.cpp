@@ -288,6 +288,8 @@ static void * MeterThread( void * )
 	string monthly( "monthly" );
 	string yearly( "yearly" );
 
+	string row;
+
 	while ( true )
 	{
 
@@ -346,7 +348,8 @@ static void * MeterThread( void * )
 					speed_stats[mac] = ism;
 				}
 
-				string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+				row.clear();
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
 				if ( all_stats[mac]["hourly"].find( row ) == all_stats[mac]["hourly"].end() )
 				{
@@ -358,7 +361,7 @@ static void * MeterThread( void * )
 
 
 				row.clear();
-				row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
 				if ( all_stats[mac]["daily"].find( row ) == all_stats[mac]["daily"].end() )
 				{
@@ -369,7 +372,7 @@ static void * MeterThread( void * )
 				all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 				row.clear();
-				row = std::to_string( y ) + "-" + std::to_string( m );
+				row += std::to_string( y ) + "-" + std::to_string( m );
 
 				if ( all_stats[mac]["monthly"].find( row ) == all_stats[mac]["monthly"].end() )
 				{
@@ -381,7 +384,7 @@ static void * MeterThread( void * )
 
 
 				row.clear();
-				row = std::to_string( y );
+				row += std::to_string( y );
 
 				if ( all_stats[mac]["yearly"].find( row ) == all_stats[mac]["yearly"].end() )
 				{
@@ -519,14 +522,34 @@ static void * MeterThread( void * )
 
 					const map<string, InterfaceStats> & row = table_row.second;
 
+
+					//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
+					//const map<string, InterfaceStats>::iterator& it;
+
+//					for (map<string, InterfaceStats>::iterator& it = row.begin(); it != row.end(); )
+//					{
+//						string row_in_table = it->first;	//subsequent rows in the current table
+//
+//						if ( row_in_table.compare( current_row ) != 0 )
+//						{
+//							map<string, InterfaceStats>::iterator tmp = it++;
+//							all_stats[mac][table_name].erase( tmp );
+//						}
+//						else
+//						{
+//							++it;
+//						}
+//					}
+
 					for ( auto const & row_stats : row )
 					{
 						string row = row_stats.first;	//subsequent rows in the current table
 
 						if ( row.compare( current_row ) != 0 )
 						{
+							auto it=all_stats[mac][table_name].find(row);
+							all_stats[mac][table_name].erase( it );
 							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
-							all_stats[mac][table_name].erase( row );
 						}
 					}
 				}
