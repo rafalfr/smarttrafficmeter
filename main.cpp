@@ -524,34 +524,29 @@ static void * MeterThread( void * )
 
 
 					//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
-					//const map<string, InterfaceStats>::iterator& it;
+					//http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
 
-//					for (map<string, InterfaceStats>::iterator& it = row.begin(); it != row.end(); )
+					for ( auto it = row.cbegin(); it != row.cend(); )
+					{
+						string row_in_table = it->first;	//subsequent rows in the current table
+
+						if ( row_in_table.compare( current_row ) != 0 )
+						{
+							all_stats[mac][table_name].erase( it );
+						}
+						it++;
+					}
+
+//					for ( auto const & row_stats : row )
 //					{
-//						string row_in_table = it->first;	//subsequent rows in the current table
+//						string row = row_stats.first;	//subsequent rows in the current table
 //
-//						if ( row_in_table.compare( current_row ) != 0 )
+//						if ( row.compare( current_row ) != 0 )
 //						{
-//							map<string, InterfaceStats>::iterator tmp = it++;
-//							all_stats[mac][table_name].erase( tmp );
-//						}
-//						else
-//						{
-//							++it;
+//							all_stats[mac][table_name].erase( row );
+//							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
 //						}
 //					}
-
-					for ( auto const & row_stats : row )
-					{
-						string row = row_stats.first;	//subsequent rows in the current table
-
-						if ( row.compare( current_row ) != 0 )
-						{
-							auto it=all_stats[mac][table_name].find(row);
-							all_stats[mac][table_name].erase( it );
-							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
-						}
-					}
 				}
 			}
 
