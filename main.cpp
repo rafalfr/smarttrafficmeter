@@ -283,12 +283,14 @@ static void * MeterThread( void * )
 	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
 	char host[NI_MAXHOST];
-	string hourly( "hourly" );
-	string daily( "daily" );
-	string monthly( "monthly" );
-	string yearly( "yearly" );
+	const string hourly( "hourly" );
+	const string daily( "daily" );
+	const string monthly( "monthly" );
+	const string yearly( "yearly" );
 
 	string row;
+	string current_row;
+	vector<map<string, InterfaceStats>::const_iterator> rows4remove;
 
 	while ( true )
 	{
@@ -339,7 +341,7 @@ static void * MeterThread( void * )
 
 				get_time( &y, &m, &d, &h );
 
-				string mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
+				const string& mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
 				if ( speed_stats.find( mac ) == speed_stats.end() )
 				{
@@ -463,43 +465,19 @@ static void * MeterThread( void * )
 
 		if ( c_time >= p_time + ( 1000ULL * save_interval ) )
 		{
-			string storage = settings["storage"];
-
-			Logger::LogDebug( "saving data" );
-
-			if ( Utils::contians( storage, "mysql" ) )
-			{
-#ifdef use_mysql
-				//save_stats_to_mysql();
-#endif // use_mysql
-			}
-
-			if ( Utils::contians( storage, "sqlite" ) )
-			{
-#ifdef use_sqlite
-				save_stats_to_sqlite();
-#endif // use_sqlite
-			}
-
-			if ( Utils::contians( storage, "files" ) )
-			{
-				save_stats_to_files();
-			}
-
 			Logger::LogDebug( "cleaning database" );
 
 			/* remove unused rows from the all_stats container */
-			string current_row;
 
 			for ( auto const & mac_table : all_stats )
 			{
-				string mac = mac_table.first;
+				const string& mac = mac_table.first;
 
 				const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
 				for ( auto const & table_row : table )
 				{
-					string table_name = table_row.first;	//hourly, daily, etc..
+					const string& table_name = table_row.first;	//hourly, daily, etc..
 
 					current_row.clear();
 
@@ -526,14 +504,17 @@ static void * MeterThread( void * )
 					//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
 					//http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
 
-					for ( auto it = row.cbegin(); it != row.cend(); )
+					rows4remove.clear();
+
+					for ( map<string, InterfaceStats>::const_iterator it = row.cbegin(); it != row.cend(); )
 					{
-						string row_in_table = it->first;	//subsequent rows in the current table
+						const string& row_in_table = it->first;	//subsequent rows in the current table
 
 						if ( row_in_table.compare( current_row ) != 0 )
 						{
-							all_stats[mac][table_name].erase( it );
+							rows4remove.push_back( it );
 						}
+
 						it++;
 					}
 
@@ -543,11 +524,40 @@ static void * MeterThread( void * )
 //
 //						if ( row.compare( current_row ) != 0 )
 //						{
-//							all_stats[mac][table_name].erase( row );
+//							vec.push_back(&row_stats);
+//							//all_stats[mac][table_name].erase( row );
 //							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
 //						}
 //					}
+
+					for ( uint32_t i = 0; i < rows4remove.size(); i++ )
+					{
+						all_stats[mac][table_name].erase( rows4remove[i] );
+					}
 				}
+			}
+
+			const string& storage = settings["storage"];
+
+			Logger::LogDebug( "saving data" );
+
+			if ( Utils::contians( storage, "mysql" ) )
+			{
+#ifdef use_mysql
+				//save_stats_to_mysql();
+#endif // use_mysql
+			}
+
+			if ( Utils::contians( storage, "sqlite" ) )
+			{
+#ifdef use_sqlite
+				save_stats_to_sqlite();
+#endif // use_sqlite
+			}
+
+			if ( Utils::contians( storage, "files" ) )
+			{
+				save_stats_to_files();
 			}
 
 			p_time = c_time;
