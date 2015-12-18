@@ -36,6 +36,8 @@ void* ServerThread::Thread( void* )
 	servaddr.sin_port = htons( 32000 );
 	bind( sockfd, ( struct sockaddr * ) &servaddr, sizeof( servaddr ) );
 
+	string row;
+
 	while ( true )
 	{
 		len = sizeof( cliaddr );
@@ -63,7 +65,8 @@ void* ServerThread::Thread( void* )
 				root[mac]["speed"]["down"] = Json::Value::UInt64( ism.get_rx_speed() );
 				root[mac]["speed"]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
 
-				string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+				row.clear();
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
 				if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
 				{
@@ -77,7 +80,7 @@ void* ServerThread::Thread( void* )
 				}
 
 				row.clear();
-				row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
 				if ( all_stats[mac]["daily"].find( row ) != all_stats[mac]["daily"].end() )
 				{
@@ -91,7 +94,7 @@ void* ServerThread::Thread( void* )
 				}
 
 				row.clear();
-				row = std::to_string( y ) + "-" + std::to_string( m );
+				row += std::to_string( y ) + "-" + std::to_string( m );
 
 				if ( all_stats[mac]["monthly"].find( row ) != all_stats[mac]["monthly"].end() )
 				{
@@ -105,7 +108,7 @@ void* ServerThread::Thread( void* )
 				}
 
 				row.clear();
-				row = std::to_string( y );
+				row += std::to_string( y );
 
 				if ( all_stats[mac]["yearly"].find( row ) != all_stats[mac]["yearly"].end() )
 				{
@@ -119,7 +122,7 @@ void* ServerThread::Thread( void* )
 		}
 		else if ( command.compare( "get interfaces" ) == 0 )
 		{
-			map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+			const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
 			Json::Value root;
 			Json::StyledWriter writer;
@@ -129,9 +132,9 @@ void* ServerThread::Thread( void* )
 				const string& name = name_info.first;
 				const InterfaceInfo& ii = name_info.second;
 
-				string mac = ii.get_mac();
-				string ip4 = ii.get_ip4();
-				string ip6 = ii.get_ip6();
+				const string& mac = ii.get_mac();
+				const string& ip4 = ii.get_ip4();
+				const string& ip6 = ii.get_ip6();
 
 				root[name]["mac"] = mac;
 				root[name]["IP4"] = ip4;
@@ -142,4 +145,6 @@ void* ServerThread::Thread( void* )
 			sendto( sockfd, response.c_str(), response.size(), 0, ( struct sockaddr * ) &cliaddr, sizeof( cliaddr ) );
 		}
 	}
+
+	return 0;
 }

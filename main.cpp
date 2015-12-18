@@ -110,6 +110,11 @@ int main( int argc, char *argv[] )
 	void *res;
 	int32_t s;
 
+	all_stats.clear();
+	speed_stats.clear();
+	table_columns.clear();
+	settings.clear();
+
 	if ( argc > 1 )
 	{
 		for ( int32_t i = 1; i < argc; i++ )
@@ -386,61 +391,64 @@ static void * MeterThread( void * )
 
 				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
-				for ( auto const & mac_speedinfo : speed_stats )
+				if ( is_daemon == false )
 				{
-					const string& mac = mac_speedinfo.first;
-					const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+					for ( auto const & mac_speedinfo : speed_stats )
+					{
+						const string& mac = mac_speedinfo.first;
+						const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-					cout << mac << endl;
+						cout << mac << endl;
 
-					double speed = ( double )ism.get_tx_speed();
+						double speed = ( double )ism.get_tx_speed();
 
-					if ( speed < 1000.0 )
-					{
-						cout << "up: " << speed << " b/s\t";
-					}
-					else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0;
-						cout << "up: " << speed << " Kb/s\t";
-					}
-					else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0 * 1000.0;
-						cout << "up: " << speed << " Mb/s\t";
-					}
-					else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0 * 1000.0 * 1000.0;
-						cout << "up: " << speed << " Gb/s\t";
+						if ( speed < 1000.0 )
+						{
+							cout << "up: " << speed << " b/s\t";
+						}
+						else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0;
+							cout << "up: " << speed << " Kb/s\t";
+						}
+						else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0 * 1000.0;
+							cout << "up: " << speed << " Mb/s\t";
+						}
+						else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0 * 1000.0 * 1000.0;
+							cout << "up: " << speed << " Gb/s\t";
+						}
+
+						speed = ( double )ism.get_rx_speed();
+
+						if ( speed < 1000.0 )
+						{
+							cout << "down: " << speed << " b/s" << endl;
+						}
+						else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0;
+							cout << "down: " << speed << " Kb/s" << endl;
+						}
+						else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0 * 1000.0;
+							cout << "down: " << speed << " Mb/s" << endl;
+						}
+						else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+						{
+							speed /= 1000.0 * 1000.0 * 1000.0;
+							cout << "down: " << speed << " Gb/s" << endl;
+						}
+
+						cout << endl;
 					}
 
-					speed = ( double )ism.get_rx_speed();
-
-					if ( speed < 1000.0 )
-					{
-						cout << "down: " << speed << " b/s" << endl;
-					}
-					else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0;
-						cout << "down: " << speed << " Kb/s" << endl;
-					}
-					else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0 * 1000.0;
-						cout << "down: " << speed << " Mb/s" << endl;
-					}
-					else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
-					{
-						speed /= 1000.0 * 1000.0 * 1000.0;
-						cout << "down: " << speed << " Gb/s" << endl;
-					}
-
-					cout << endl;
+					cout << "-------------------------------" << endl;
 				}
-
-				cout << "-------------------------------" << endl;
 			}
 		}
 
@@ -453,7 +461,26 @@ static void * MeterThread( void * )
 
 		if ( c_time >= p_time + ( 1000ULL * save_interval ) )
 		{
-			Logger::LogDebug( "cleaning database" );
+			const string& storage = settings["storage"];
+
+			if ( Utils::contians( storage, "mysql" ) )
+			{
+#ifdef use_mysql
+				//save_stats_to_mysql();
+#endif // use_mysql
+			}
+
+			if ( Utils::contians( storage, "sqlite" ) )
+			{
+#ifdef use_sqlite
+				save_stats_to_sqlite();
+#endif // use_sqlite
+			}
+
+			if ( Utils::contians( storage, "files" ) )
+			{
+				save_stats_to_files();
+			}
 
 			/* remove unused rows from the all_stats container */
 
@@ -506,30 +533,9 @@ static void * MeterThread( void * )
 					{
 						all_stats[mac][table_name].erase( rows4remove[i] );
 					}
+
+					rows4remove.clear();
 				}
-			}
-
-			const string& storage = settings["storage"];
-
-			Logger::LogDebug( "saving data" );
-
-			if ( Utils::contians( storage, "mysql" ) )
-			{
-#ifdef use_mysql
-				//save_stats_to_mysql();
-#endif // use_mysql
-			}
-
-			if ( Utils::contians( storage, "sqlite" ) )
-			{
-#ifdef use_sqlite
-				save_stats_to_sqlite();
-#endif // use_sqlite
-			}
-
-			if ( Utils::contians( storage, "files" ) )
-			{
-				save_stats_to_files();
 			}
 
 			p_time = c_time;
