@@ -12,10 +12,10 @@ LD = g++
 WINDRES = windres
 
 INC = -Isqlite -I/usr/include/mysql/
-CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -DGLIBCXX_FORCE_NEW -Duse_sqlite
+CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -rdynamic -DGLIBCXX_FORCE_NEW -Duse_sqlite
 RESINC = 
 LIBDIR = 
-LIB = -ldl -lpthread -lsqlite3 -lmysqlclient
+LIB = -ldl -lpthread -lsqlite3
 LDFLAGS = 
 
 INC_DEBUG = $(INC)
@@ -30,12 +30,12 @@ DEP_DEBUG =
 OUT_DEBUG = bin/Debug/SmartTrafficMeter
 
 INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3
+CFLAGS_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -g
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
 LIB_RELEASE = $(LIB)
-LDFLAGS_RELEASE = $(LDFLAGS) -s
+LDFLAGS_RELEASE = $(LDFLAGS)
 OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/SmartTrafficMeter

@@ -6,6 +6,7 @@
 #include <map>
 #include <csignal>
 #include <pthread.h>
+#include <execinfo.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -56,7 +57,12 @@ using namespace std;
 //http://stackoverflow.com/questions/18100097/portable-way-to-check-if-directory-exists-windows-linux-c
 //http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
 //http://stackoverflow.com/questions/5339200/how-to-create-a-single-instance-application-in-c-or-c
-
+//http://stackoverflow.com/questions/77005/how-to-generate-a-stacktrace-when-my-gcc-c-app-crashes/77336#77336
+//http://stackoverflow.com/questions/15129089/is-there-a-way-to-dump-stack-trace-with-line-number-from-a-linux-release-binary
+//http://www.opensource.apple.com/source/gdb/gdb-1515/src/binutils/addr2line.c
+//https://gist.github.com/jvranish/4441299
+//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
+//http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
 
 //libsqlite3-dev
 //libmysqlclient-dev
@@ -97,11 +103,18 @@ void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 int main( int argc, char *argv[] )
 {
+	uint32_t y;
+	uint32_t m;
+	uint32_t d;
+	uint32_t h;
+	void *res;
+	int32_t s;
+
 	if ( argc > 1 )
 	{
 		for ( int32_t i = 1; i < argc; i++ )
 		{
-			string arg = string( argv[i] );
+			const string& arg = string( argv[i] );
 
 			if ( arg.compare( "-daemon" ) == 0 )
 			{
@@ -110,7 +123,7 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-	cout << "Smart Traffic Meter version " << AutoVersion::FULLVERSION_STRING << endl;
+	cout << "Smart Traffic Meter version " << AutoVersion::FULLVERSION_STRING << " built on " << __DATE__ << " " << __TIME__ << endl;
 
 	char buf[512];
 
@@ -125,7 +138,7 @@ int main( int argc, char *argv[] )
 		if ( BecomeDaemon( BD_NO_CHDIR | BD_NO_UMASK0 ) == -1 )
 		{
 			cout << "Can't start as daemon. Process exited" << endl;
-			Logger::LogError( "Can;t start as daemon. Process exited" );
+			Logger::LogError( "Can't start as daemon. Process exited" );
 			return 0;
 		}
 		else
@@ -134,45 +147,19 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-	void *res;
-	int s;
-
 	signal( SIGINT, signal_handler );
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
 	settings["storage"] = "sqlite files";
 
-//    for(auto const & mac_table : all_stats)
-//    {
-//        string mac=mac_table.first;
-//        cout<<mac<<endl;
-//
-//        for(auto const & table_rows : mac_table.second)
-//        {
-//            string table=table_rows.first;
-//            cout<<table<<endl;
-//
-//            for(auto const & row_stats : table_rows.second)
-//            {
-//                string row=row_stats.first;
-//                const InterfaceStats& stats=row_stats.second;
-//                cout<<row<<"\t"<<stats.recieved()<<"\t"<<stats.transmited()<<endl;
-//            }
-//        }
-//    }
-
-
-	uint32_t y;
-	uint32_t m;
-	uint32_t d;
-	uint32_t h;
-
 	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+
+	string row;
 
 	for ( auto const & mac_info : interfaces )
 	{
-		string mac = mac_info.second.get_mac();
+		const string& mac = mac_info.second.get_mac();
 
 		InterfaceSpeedMeter ism;
 		speed_stats[mac] = ism;
@@ -182,27 +169,28 @@ int main( int argc, char *argv[] )
 			get_time( &y, &m, &d, &h );
 
 			InterfaceStats hstats;
-			string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+			row.clear();
+			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 			all_stats[mac]["hourly"][row] = hstats;
 
 			InterfaceStats dstats;
 			row.clear();
-			row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 			all_stats[mac]["daily"][row] = dstats;
 
 			InterfaceStats mstats;
 			row.clear();
-			row = std::to_string( y ) + "-" + std::to_string( m );
+			row += std::to_string( y ) + "-" + std::to_string( m );
 			all_stats[mac]["monthly"][row] = mstats;
 
 			InterfaceStats ystats;
 			row.clear();
-			row = std::to_string( y );
+			row += std::to_string( y );
 			all_stats[mac]["yearly"][row] = ystats;
 		}
 	}
 
-	string storage = settings["storage"];
+	const string& storage = settings["storage"];
 
 	if ( Utils::starts_with( storage, "mysql" ) )
 	{
@@ -255,6 +243,7 @@ int main( int argc, char *argv[] )
 
 	if ( s != 0 )
 	{
+		Logger::LogError( "Can't start monitoring thread" );
 		return 1;
 	}
 
@@ -264,10 +253,9 @@ int main( int argc, char *argv[] )
 
 	if ( s != 0 )
 	{
+		Logger::LogError( "Can't join monitoring thread" );
 		return 1;
 	}
-
-
 
 	exit( EXIT_SUCCESS );
 }
@@ -500,10 +488,6 @@ static void * MeterThread( void * )
 
 					const map<string, InterfaceStats> & row = table_row.second;
 
-
-					//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
-					//http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
-
 					rows4remove.clear();
 
 					for ( map<string, InterfaceStats>::const_iterator it = row.cbegin(); it != row.cend(); )
@@ -517,18 +501,6 @@ static void * MeterThread( void * )
 
 						it++;
 					}
-
-//					for ( auto const & row_stats : row )
-//					{
-//						string row = row_stats.first;	//subsequent rows in the current table
-//
-//						if ( row.compare( current_row ) != 0 )
-//						{
-//							vec.push_back(&row_stats);
-//							//all_stats[mac][table_name].erase( row );
-//							Logger::LogDebug( string( "removed row " ) + row + " compared with " + current_row );
-//						}
-//					}
 
 					for ( uint32_t i = 0; i < rows4remove.size(); i++ )
 					{
@@ -632,21 +604,21 @@ void save_stats_to_files( void )
 {
 	for ( auto const & mac_table : all_stats )
 	{
-		string mac = mac_table.first;
+		const string& mac = mac_table.first;
 		mkpath( mac, 0755 );
 
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
 		for ( auto const & table_row : table )
 		{
-			string table_name = table_row.first;
+			const string& table_name = table_row.first;
 			mkpath( mac + "/" + table_name, 0755 );
 
 			const map<string, InterfaceStats> & row = table_row.second;
 
 			for ( auto const & row_stats : row )
 			{
-				string row = row_stats.first;
+				const string& row = row_stats.first;
 				mkpath( mac + "/" + table_name + "/" + row, 0755 );
 
 				const InterfaceStats& stats = row_stats.second;
@@ -812,13 +784,15 @@ void save_stats_to_sqlite( void )
 //http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
 //https://www.sqlite.org/cintro.html
 
+	string query;
+
 	for ( auto const & mac_table : all_stats )
 	{
 		sqlite3 *db;
 		char *zErrMsg = 0;
 		int rc;
 
-		string mac = mac_table.first;
+		const string& mac = mac_table.first;
 		const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
 		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
@@ -830,9 +804,9 @@ void save_stats_to_sqlite( void )
 
 		for ( auto const & table_row : table )
 		{
-			string table_name = table_row.first;
+			const string& table_name = table_row.first;
 
-			string query;
+			query.clear();
 			query += "CREATE TABLE IF NOT EXISTS '" + table_name + "' ('row' VARCHAR(45) NULL,'rx_bytes' UNSIGNED BIG INT NULL,'tx_bytes' UNSIGNED BIG INT NULL,PRIMARY KEY ('row'));";
 
 			rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
@@ -861,12 +835,12 @@ void save_stats_to_sqlite( void )
 
 			for ( auto const & row_stats : row )
 			{
-				string row = row_stats.first;
+				const string& row = row_stats.first;
 				const InterfaceStats& stats = row_stats.second;
 				uint64_t rx = stats.recieved();
 				uint64_t tx = stats.transmited();
 
-				string query;
+				query.clear();
 				query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
 				query += "'";
 				query += row;
@@ -920,7 +894,7 @@ void load_data_from_files( void )
 
 	get_time( &y, &m, &d, &h );
 
-	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
 	string row;
 	ifstream file;
@@ -928,11 +902,11 @@ void load_data_from_files( void )
 	for ( auto const & kv : interfaces )
 	{
 		const InterfaceInfo& in = kv.second;
-		string mac = in.get_mac();
+		const string& mac = in.get_mac();
 
 ///
 		row.clear();
-		string row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 		file.open( cwd + "/" + mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -945,7 +919,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -958,7 +932,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row = std::to_string( y ) + "-" + std::to_string( m );
+		row += std::to_string( y ) + "-" + std::to_string( m );
 		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -971,7 +945,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row = std::to_string( y );
+		row += std::to_string( y );
 		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -1001,7 +975,7 @@ void load_data_from_sqlite( void )
 
 	get_time( &y, &m, &d, &h );
 
-	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
 	string row;
 	string query;
@@ -1009,7 +983,7 @@ void load_data_from_sqlite( void )
 	for ( auto const & kv : interfaces )
 	{
 		const InterfaceInfo& in = kv.second;
-		string mac = in.get_mac();
+		const string& mac = in.get_mac();
 
 		rc = sqlite3_open_v2( ( cwd + "/" + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
 
@@ -1077,7 +1051,7 @@ void load_data_from_sqlite( void )
 		}
 
 		query.clear();
-		query = "SELECT * from monthly ";
+		query += "SELECT * from monthly ";
 		query += "WHERE row=";
 		query += "'";
 		query += std::to_string( y ) + "-" + std::to_string( m );
@@ -1125,7 +1099,7 @@ void load_data_from_sqlite( void )
 		}
 
 		query.clear();
-		query = "SELECT * from daily ";
+		query += "SELECT * from daily ";
 		query += "WHERE row=";
 		query += "'";
 		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
@@ -1174,7 +1148,7 @@ void load_data_from_sqlite( void )
 		}
 
 		query.clear();
-		query = "SELECT * from hourly ";
+		query += "SELECT * from hourly ";
 		query += "WHERE row=";
 		query += "'";
 		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
@@ -1223,7 +1197,7 @@ static void signal_handler( int signal )
 	//pthread_kill(t1, SIGTERM);
 	//pthread_kill(t2, SIGTERM);
 
-	string storage = settings["storage"];
+	const string& storage = settings["storage"];
 
 	if ( Utils::contians( storage, "mysql" ) )
 	{
@@ -1250,7 +1224,22 @@ static void signal_handler( int signal )
 	}
 	else if ( signal == SIGSEGV )
 	{
-		Logger::LogInfo( "Process exited as a result of SIGSEGV" );
+		// for this code to work compile with -g -rdynamic options
+		void *array[10];
+		size_t size;
+		char **strings;
+		size_t i;
+		size = backtrace( array, 10 );
+		strings = backtrace_symbols( array, size );
+
+		for ( i = 0; i < size; i++ )
+		{
+			Logger::LogError( strings[i] );
+		}
+
+		free( strings );
+
+		Logger::LogError( "Process exited as a result of SIGSEGV" );
 	}
 	else if ( signal == SIGTERM )
 	{
