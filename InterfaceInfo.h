@@ -18,6 +18,8 @@ public:
 
 	~InterfaceInfo();
 
+	InterfaceInfo& operator=(const InterfaceInfo& right);
+
 	string get_mac ( void ) const;
 	string get_name ( void ) const;
 	string get_ip4 ( void ) const;

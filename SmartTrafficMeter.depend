@@ -87,13 +87,13 @@
 
 1442586283 /usr/include/mysql//my_alloc.h
 
-1445433781 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+1450961800 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1445433660 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
+1450961306 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
 	<string>
 
-1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1450915496 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
@@ -117,7 +117,7 @@
 	<cstdint>
 	"mysql.h"
 
-1447938453 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1450454923 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -133,7 +133,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1450205326 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1450964441 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -142,6 +142,7 @@
 	<map>
 	<csignal>
 	<pthread.h>
+	<execinfo.h>
 	<arpa/inet.h>
 	<sys/socket.h>
 	<netdb.h>
@@ -276,7 +277,7 @@
 
 1450205433 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
-1450205473 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1450964442 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1447938407 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
 	<iostream>

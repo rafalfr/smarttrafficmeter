@@ -18,14 +18,31 @@ InterfaceInfo::InterfaceInfo(const InterfaceInfo& info)
     ip6.append(info.get_ip6());
 }
 
-
-
 InterfaceInfo::~InterfaceInfo()
 {
 	mac.clear();
 	ip4.clear();
 	ip6.clear();
 	name.clear();
+}
+/** @brief operator=
+  *
+  * @todo: document this function
+  */
+InterfaceInfo& InterfaceInfo::operator=(const InterfaceInfo& right)
+{
+    if( & right != this )
+    {
+        mac.clear();
+        mac.append(right.get_mac());
+        ip4.clear();
+        ip4.append(right.get_ip4());
+        ip6.clear();
+        ip6.append(right.get_ip6());
+        name.clear();
+        name.append(right.get_name());
+    }
+    return * this;
 }
 
 string InterfaceInfo::get_mac( void ) const

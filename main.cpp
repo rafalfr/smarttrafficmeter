@@ -64,6 +64,8 @@ using namespace std;
 //http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
 //http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
 
+//https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
+
 //libsqlite3-dev
 //libmysqlclient-dev
 //cbp2make
@@ -156,9 +158,9 @@ int main( int argc, char *argv[] )
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
 
-	settings["storage"] = "sqlite files";
+	settings["storage"] = "sqlite";
 
-	map<string, InterfaceInfo> interfaces = Utils::get_all_interfaces();
+	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
 	string row;
 
@@ -235,13 +237,6 @@ int main( int argc, char *argv[] )
 		Logger::LogError( "Can't start server thread" );
 	}
 
-	//st = pthread_join( t2, &res );
-
-//	if ( st != 0 )
-//	{
-//		return 1;
-//	}
-
 //http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
 
 	s = pthread_create( &t1, NULL, &MeterThread, NULL );
@@ -261,6 +256,14 @@ int main( int argc, char *argv[] )
 		Logger::LogError( "Can't join monitoring thread" );
 		return 1;
 	}
+
+//	s = pthread_join( t2, &res );
+//
+//	if ( s != 0 )
+//	{
+//		Logger::LogError( "Can't join server thread" );
+//		return 1;
+//	}
 
 	exit( EXIT_SUCCESS );
 }
@@ -334,6 +337,7 @@ static void * MeterThread( void * )
 
 				get_time( &y, &m, &d, &h );
 
+				//TODO remove possible memory leak
 				const string& mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
 				if ( speed_stats.find( mac ) == speed_stats.end() )
@@ -884,6 +888,7 @@ void save_stats_to_sqlite( void )
 				}
 			}
 		}
+		sqlite3_close_v2(db);
 	}
 
 #endif // use_sqlite

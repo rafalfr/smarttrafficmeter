@@ -95,7 +95,7 @@ void InterfaceSpeedMeter::update ( uint64_t _rx, uint64_t _tx )
 
 	buf.push_front ( item );
 
-	if ( buf.size() >= max_buf_items )
+	while ( buf.size() >= max_buf_items )
 	{
 		buf.pop_back();
 	}
