@@ -11,12 +11,12 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -Isqlite -I/usr/include/mysql/
+INC = -Isqlite -I/usr/include/mysql/ -I/usr/include/libiberty/
 CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -rdynamic -DGLIBCXX_FORCE_NEW -Duse_sqlite
 RESINC = 
 LIBDIR = 
-LIB = -ldl -lpthread -lsqlite3
-LDFLAGS = 
+LIB = -ldl -lpthread -lbfd
+LDFLAGS = -rdynamic
 
 INC_DEBUG = $(INC)
 CFLAGS_DEBUG = $(CFLAGS) -Wall -g -O0
@@ -40,9 +40,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/SmartTrafficMeter
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Logger.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/Settings.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Logger.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o $(OBJDIR_DEBUG)/Debug.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Logger.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/Settings.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Logger.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o $(OBJDIR_RELEASE)/Debug.o
 
 all: debug release
 
@@ -68,6 +68,9 @@ $(OBJDIR_DEBUG)/main.o: main.cpp
 $(OBJDIR_DEBUG)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Utils.cpp -o $(OBJDIR_DEBUG)/Utils.o
 
+$(OBJDIR_DEBUG)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Settings.cpp -o $(OBJDIR_DEBUG)/Settings.o
+
 $(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
 
@@ -91,6 +94,9 @@ $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
 
 $(OBJDIR_DEBUG)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c InterfaceInfo.cpp -o $(OBJDIR_DEBUG)/InterfaceInfo.o
+
+$(OBJDIR_DEBUG)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Debug.cpp -o $(OBJDIR_DEBUG)/Debug.o
 
 clean_debug: 
 	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
@@ -117,6 +123,9 @@ $(OBJDIR_RELEASE)/main.o: main.cpp
 $(OBJDIR_RELEASE)/Utils.o: Utils.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Utils.cpp -o $(OBJDIR_RELEASE)/Utils.o
 
+$(OBJDIR_RELEASE)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Settings.cpp -o $(OBJDIR_RELEASE)/Settings.o
+
 $(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
 
@@ -140,6 +149,9 @@ $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
 
 $(OBJDIR_RELEASE)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c InterfaceInfo.cpp -o $(OBJDIR_RELEASE)/InterfaceInfo.o
+
+$(OBJDIR_RELEASE)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Debug.cpp -o $(OBJDIR_RELEASE)/Debug.o
 
 clean_release: 
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
