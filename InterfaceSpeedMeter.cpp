@@ -39,6 +39,7 @@ InterfaceSpeedMeter::~InterfaceSpeedMeter()
 {
 
 }
+
 uint64_t InterfaceSpeedMeter::get_rx_speed ( void ) const
 {
 	const map<string, uint64_t> & first = buf.front();

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <regex>
 #include <map>
 #include <csignal>
 #include <pthread.h>
@@ -25,7 +26,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <net/if.h>
-#include <csignal>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -33,7 +33,9 @@
 #include <stdlib.h>
 #include "version.h"
 #include "Utils.h"
+#include "Debug.h"
 #include "Logger.h"
+#include "Settings.h"
 #include "BecomeDaemon.h"
 #include "MySQLInterface.h"
 #include "ServerThread.h"
@@ -66,9 +68,19 @@ using namespace std;
 
 //https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
 
+
+//http://stackoverflow.com/questions/10943907/linux-allocator-does-not-release-small-chunks-of-memory/10945602#10945602
+//https://github.com/skanzariya/Memwatch
+
+//https://regex101.com/
+
+// for backtrace code to work compile with -g -rdynamic options
+
+//required packages
 //libsqlite3-dev
 //libmysqlclient-dev
 //cbp2make
+//binutils-dev
 
 /* generowanie pliku makefile i kompilacja za pomocą make
 cbp2make -in SmartTrafficMeter.cbp
@@ -80,25 +92,21 @@ pthread_t t1;
 pthread_t t2;
 
 bool is_daemon = false;
-uint32_t refresh_interval = 1;  //statistics refresh interval in seconds
-uint32_t save_interval = 30 * 60; //save interval in seconds
 string cwd;
 
 //mac, table, date, stats
 map<string, map<string, map<string, InterfaceStats> > > all_stats;
 map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
-map<string, string> settings;
-
-
 
 void save_stats_to_mysql( void );
 void save_stats_to_sqlite( void );
 void save_stats_to_files( void );
 void load_data_from_sqlite( void );
 void load_data_from_files( void );
+void load_settings( void );
 int32_t dirExists( const char *path );
-int32_t mkpath( const std::string s, mode_t mode );
+int32_t mkpath( const std::string& s, mode_t mode );
 static void signal_handler( int );
 static void * MeterThread( void *arg );
 void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
@@ -115,7 +123,7 @@ int main( int argc, char *argv[] )
 	all_stats.clear();
 	speed_stats.clear();
 	table_columns.clear();
-	settings.clear();
+	Settings::settings.clear();
 
 	if ( argc > 1 )
 	{
@@ -154,11 +162,29 @@ int main( int argc, char *argv[] )
 		}
 	}
 
+	if ( Utils::check_one_instance() == false )
+	{
+		Logger::LogError( "Another instance is already running. Process exited" );
+		return 0;
+	}
+
+	//install handlers
 	signal( SIGINT, signal_handler );
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );
+	signal( SIGABRT, signal_handler );
+	signal( SIGILL, signal_handler );
+	signal( SIGFPE, signal_handler );
 
-	settings["storage"] = "sqlite";
+	//set default settings
+	Settings::settings["storage"] = "sqlite";
+	Settings::settings["database directory"] = cwd;
+	Settings::settings["stats refresh interval"] = "1";	//seconds
+	Settings::settings["stats save interval"] = "1800";	//seconds
+	Settings::settings["stats server port"] = "32000";
+	Settings::settings["html server port"] = "80";
+
+	load_settings();
 
 	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
@@ -197,7 +223,7 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-	const string& storage = settings["storage"];
+	const string& storage = Settings::settings["storage"];
 
 	if ( Utils::starts_with( storage, "mysql" ) )
 	{
@@ -217,17 +243,6 @@ int main( int argc, char *argv[] )
 	{
 		load_data_from_files();
 	}
-
-//	for ( auto const & kv : interfaces )
-//	{
-//		std::cout << kv.second.get_name() << "\t" << kv.second.get_mac() << "\t" << kv.second.get_ip4() << "\t" << kv.second.get_ip6() << endl;
-//		string parent_dir = kv.second.get_mac();
-//		mkpath ( parent_dir, 0755 );
-//		mkpath ( parent_dir + "/daily", 0755 );
-//		mkpath ( parent_dir + "/monthly", 0755 );
-//		mkpath ( parent_dir + "/yearly", 0755 );
-//	}
-
 
 	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
@@ -279,10 +294,32 @@ static void * MeterThread( void * )
 	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int family, s;
 	char host[NI_MAXHOST];
+	uint32_t refresh_interval;	//statistics refresh interval in seconds
+	uint32_t save_interval; 	//save interval in seconds
 	const string hourly( "hourly" );
 	const string daily( "daily" );
 	const string monthly( "monthly" );
 	const string yearly( "yearly" );
+
+
+	try
+	{
+		refresh_interval = std::stoi( Settings::settings["stats refresh interval"] );
+	}
+	catch ( ... )
+	{
+		refresh_interval = 1;
+	}
+
+	try
+	{
+		save_interval = std::stoi( Settings::settings["stats save interval"] );
+	}
+	catch ( ... )
+	{
+		save_interval = 30 * 60;
+	}
+
 
 	string row;
 	string current_row;
@@ -465,7 +502,7 @@ static void * MeterThread( void * )
 
 		if ( c_time >= p_time + ( 1000ULL * save_interval ) )
 		{
-			const string& storage = settings["storage"];
+			const string& storage = Settings::settings["storage"];
 
 			if ( Utils::contians( storage, "mysql" ) )
 			{
@@ -569,10 +606,10 @@ int32_t dirExists( const char *path )
 	}
 }
 
-int32_t mkpath( const std::string _s, mode_t mode )
+int32_t mkpath( const string& _s, mode_t mode )
 {
 	size_t pre = 0, pos;
-	std::string dir;
+	string dir;
 	int32_t mdret = 0;
 	string s( _s );
 
@@ -581,7 +618,7 @@ int32_t mkpath( const std::string _s, mode_t mode )
 		s += '/';
 	}
 
-	while ( ( pos = s.find_first_of( '/', pre ) ) != std::string::npos )
+	while ( ( pos = s.find_first_of( '/', pre ) ) != string::npos )
 	{
 		dir = s.substr( 0, pos++ );
 		pre = pos;
@@ -640,8 +677,6 @@ void save_stats_to_files( void )
 				{
 					uint64_t rx = stats.recieved();
 					uint64_t tx = stats.transmited();
-
-					//cout << mac + "/" + table_name + "/" + row + "\t" + std::to_string ( rx ) << endl;
 
 					file << ( Utils::to_string( rx ) );
 					file << endl;
@@ -888,7 +923,8 @@ void save_stats_to_sqlite( void )
 				}
 			}
 		}
-		sqlite3_close_v2(db);
+
+		sqlite3_close_v2( db );
 	}
 
 #endif // use_sqlite
@@ -931,7 +967,7 @@ void load_data_from_files( void )
 ///
 		row.clear();
 		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
-		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -944,7 +980,7 @@ void load_data_from_files( void )
 ///
 		row.clear();
 		row += std::to_string( y ) + "-" + std::to_string( m );
-		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -957,7 +993,7 @@ void load_data_from_files( void )
 ///
 		row.clear();
 		row += std::to_string( y );
-		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", std::ifstream::in );
+		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
 		{
@@ -1202,13 +1238,46 @@ void load_data_from_sqlite( void )
 #endif // use_sqlite
 }
 
+/** @brief load_settings
+  *
+  * @todo: document this function
+  */
+void load_settings( void )
+{
+	//mkpath( "/etc/smarttrafficmeter", 0644 );
+
+	ifstream file;
+	file.open( Settings::settings["database directory"] + "/smartrafficmeter.conf", std::ifstream::in );
+
+	if ( file.is_open() )
+	{
+		for ( string line; getline( file, line ); )
+		{
+			// skip over comment lines
+			if ( Utils::starts_with( line, "#" ) )
+			{
+				continue;
+			}
+
+			// check if line matches settings pattern
+			if ( regex_match( line, regex( "^[a-z\\s]+\\=[a-z\\s0-9\\/\\.]+$" ) ) )
+			{
+				const vector<string>& items = Utils::split( line, "=" );
+				Settings::settings[items[0]] = items[1];
+			}
+		}
+
+		file.close();
+	}
+
+}
 
 static void signal_handler( int signal )
 {
 	//pthread_kill(t1, SIGTERM);
 	//pthread_kill(t2, SIGTERM);
 
-	const string& storage = settings["storage"];
+	const string& storage = Settings::settings["storage"];
 
 	if ( Utils::contians( storage, "mysql" ) )
 	{
@@ -1235,26 +1304,31 @@ static void signal_handler( int signal )
 	}
 	else if ( signal == SIGSEGV )
 	{
-		// for this code to work compile with -g -rdynamic options
-		void *array[10];
-		size_t size;
-		char **strings;
-		size_t i;
-		size = backtrace( array, 10 );
-		strings = backtrace_symbols( array, size );
-
-		for ( i = 0; i < size; i++ )
-		{
-			Logger::LogError( strings[i] );
-		}
-
-		free( strings );
-
+		const string& backtrace = Debug::get_backtrace();
+		Logger::LogError( backtrace );
 		Logger::LogError( "Process exited as a result of SIGSEGV" );
 	}
 	else if ( signal == SIGTERM )
 	{
 		Logger::LogInfo( "Process exited as a result of SIGTERM" );
+	}
+	else if ( signal == SIGABRT )
+	{
+		const string& backtrace = Debug::get_backtrace();
+		Logger::LogError( backtrace );
+		Logger::LogInfo( "Process exited as a result of SIGABRT" );
+	}
+	else if ( signal == SIGILL )
+	{
+		const string& backtrace = Debug::get_backtrace();
+		Logger::LogError( backtrace );
+		Logger::LogInfo( "Process exited as a result of SIGILL" );
+	}
+	else if ( signal == SIGFPE )
+	{
+		const string& backtrace = Debug::get_backtrace();
+		Logger::LogError( backtrace );
+		Logger::LogInfo( "Process exited as a result of SIGFPE" );
 	}
 
 	exit( 0 );

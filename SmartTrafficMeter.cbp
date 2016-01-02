@@ -41,14 +41,18 @@
 			<Add option="-Duse_sqlite" />
 			<Add directory="sqlite" />
 			<Add directory="/usr/include/mysql/" />
+			<Add directory="/usr/include/libiberty/" />
 		</Compiler>
 		<Linker>
+			<Add option="-rdynamic" />
 			<Add library="dl" />
 			<Add library="pthread" />
-			<Add library="sqlite3" />
+			<Add library="bfd" />
 		</Linker>
 		<Unit filename="BecomeDaemon.cpp" />
 		<Unit filename="BecomeDaemon.h" />
+		<Unit filename="Debug.cpp" />
+		<Unit filename="Debug.h" />
 		<Unit filename="InterfaceInfo.cpp" />
 		<Unit filename="InterfaceInfo.h" />
 		<Unit filename="InterfaceSpeedMeter.cpp" />
@@ -62,6 +66,8 @@
 		<Unit filename="MySQLInterface.h" />
 		<Unit filename="ServerThread.cpp" />
 		<Unit filename="ServerThread.h" />
+		<Unit filename="Settings.cpp" />
+		<Unit filename="Settings.h" />
 		<Unit filename="Utils.cpp" />
 		<Unit filename="Utils.h" />
 		<Unit filename="config.h" />

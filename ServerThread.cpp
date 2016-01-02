@@ -8,6 +8,7 @@
 
 #include "json/json.h"
 #include "Utils.h"
+#include "Settings.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
@@ -27,13 +28,23 @@ void* ServerThread::Thread( void* )
 	struct sockaddr_in servaddr, cliaddr;
 	socklen_t len;
 	char mesg[256];
+	uint32_t port;
+
+	try
+	{
+		port = std::stoi( Settings::settings["stats server port"] );
+	}
+	catch ( ... )
+	{
+		port = 32000;
+	}
 
 	sockfd = socket( AF_INET, SOCK_DGRAM, 0 );
 
 	bzero( &servaddr, sizeof( servaddr ) );
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl( INADDR_ANY );
-	servaddr.sin_port = htons( 32000 );
+	servaddr.sin_port = htons( port );
 	bind( sockfd, ( struct sockaddr * ) &servaddr, sizeof( servaddr ) );
 
 	string row;
@@ -62,6 +73,7 @@ void* ServerThread::Thread( void* )
 				const string& mac = mac_speedinfo.first;
 				const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
+				// speed is in bits/s
 				root[mac]["speed"]["down"] = Json::Value::UInt64( ism.get_rx_speed() );
 				root[mac]["speed"]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
 

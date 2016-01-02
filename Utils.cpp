@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -20,6 +21,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/file.h>
+#include <errno.h>
 
 #include "Utils.h"
 
@@ -194,6 +197,35 @@ bool Utils::starts_with( const string& str, const string& key )
 	}
 }
 
+/** @brief split
+  *
+  * @todo: document this function
+  */
+vector<string> Utils::split( const string& str, const string& delim )
+{
+//http://garajeando.blogspot.com/2014/03/using-c11-to-split-strings-without.html
+//http://www.informit.com/articles/article.aspx?p=2064649&seqNum=
+
+	size_t start;
+	size_t end;
+
+	vector<string> items;
+
+	start = 0;
+	end = str.find( delim );
+
+	while ( end != string::npos )
+	{
+		items.push_back( str.substr( start, end - start ) );
+		start = end + delim.length();
+		end = str.find( delim, start );
+	}
+
+	items.push_back( str.substr( start ) );
+
+	return items;
+}
+
 /** @brief to_string
   *
   * @todo: document this function
@@ -241,5 +273,45 @@ string Utils::to_string( uint64_t value )
 
 	return out;
 }
+
+/** @brief check_one_instance
+  *
+  * @todo: document this function
+  */
+bool Utils::check_one_instance( void )
+{
+	int pid_file = open( "smarttrafficmeter.pid", O_CREAT | O_RDWR, 0666 );
+	int rc = flock( pid_file, LOCK_EX | LOCK_NB );
+
+	if ( rc != 0 && ( errno == EWOULDBLOCK ) )
+	{
+		return false;
+	}
+
+	return true;
+}
+
+/** @brief trim
+  *
+  * @todo: document this function
+  */
+string Utils::trim( const std::string& s )
+{
+	//http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
+	auto wsfront = std::find_if_not( s.begin(), s.end(), []( int c )
+	{
+		return std::isspace( c );
+	} );
+
+	auto wsback = std::find_if_not( s.rbegin(), s.rend(), []( int c )
+	{
+		return std::isspace( c );
+	} ).base();
+
+	return ( wsback <= wsfront ? std::string() : std::string( wsfront, wsback ) );
+}
+
+
 
 
