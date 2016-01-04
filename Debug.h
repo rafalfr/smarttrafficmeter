@@ -2,7 +2,11 @@
 #define DEBUG_H
 
 #include <iostream>
+#ifndef __pi__
+
 #include <bfd.h>
+
+#endif // __pi__
 
 //http://www.opensource.apple.com/source/gdb/gdb-1515/src/binutils/addr2line.c
 //https://github.com/dinhviethoa/linux-sample/blob/master/etpan-symbols.c
@@ -16,21 +20,25 @@
 //https://github.com/adarqui/darqbot/blob/master/test/how-to-generate-a-stacktrace-when-my-gcc-c-app-crashes
 //http://spin.atomicobject.com/2013/01/13/exceptions-stack-traces-c/
 
+
 using namespace std;
 
 class Debug
 {
 private:
+
+#ifndef __pi__
+
 	static bfd* abfd;
 	static asymbol **syms;
 	static asection *text;
+	static string resolve( const unsigned long address );
 
-static string resolve( const long address );
-
+#endif // __pi__
 
 public:
 
-	static string get_backtrace(void);
+	static string get_backtrace( void );
 
 };
 

@@ -320,7 +320,6 @@ static void * MeterThread( void * )
 		save_interval = 30 * 60;
 	}
 
-
 	string row;
 	string current_row;
 	vector<map<string, InterfaceStats>::const_iterator> rows4remove;

@@ -4,6 +4,7 @@
 #include <execinfo.h>
 #include <unistd.h>
 
+#ifndef __pi__
 
 bfd* Debug::abfd = 0;
 asymbol ** Debug::syms = 0;
@@ -13,7 +14,7 @@ asection* Debug::text = 0;
   *
   * @todo: document this function
   */
-string Debug::resolve( const long address )
+string Debug::resolve( const unsigned long address )
 {
 	string out;
 
@@ -45,12 +46,12 @@ string Debug::resolve( const long address )
 
 		unsigned storage_needed = bfd_get_symtab_upper_bound( abfd );
 		syms = ( asymbol ** ) malloc( storage_needed );
-		unsigned cSymbols = bfd_canonicalize_symtab( abfd, syms );
+		bfd_canonicalize_symtab( abfd, syms );
 
 		text = bfd_get_section_by_name( abfd, ".text" );
 	}
 
-	long offset = ( ( long )address ) - text->vma;
+	long offset = ( ( unsigned long )address ) - text->vma;
 
 	if ( offset > 0 )
 	{
@@ -76,6 +77,8 @@ string Debug::resolve( const long address )
 
 	return out;
 }
+#endif // __pi__
+
 
 /** @brief get_backtrace
   *
@@ -89,18 +92,31 @@ string Debug::get_backtrace( void )
 
 	size = backtrace( array, 64 );
 
+#ifndef __pi__
 
 	//we skip the first two entries
 	//because they refer to the Debug::get_backtrace
 	for ( i = 2; i < size; i++ )
 	{
-		out += resolve( ( long )array[i] );
-
-		if ( i < ( size - 1 ) )
-		{
-			out += "\n";
-		}
+		out += resolve( ( unsigned long )array[i] );
+		out += "\n";
 	}
+
+#endif // __pi__
+
+#ifdef __pi__
+
+	char** strs = backtrace_symbols( array, size );
+
+	for ( i = 0; i < size; ++i )
+	{
+		out += strs[i];
+		out += "\n";
+	}
+
+	free( strs );
+
+#endif // __pi__
 
 	return Utils::trim( out );
 }

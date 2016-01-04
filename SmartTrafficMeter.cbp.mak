@@ -15,7 +15,7 @@ INC = -Isqlite -I/usr/include/mysql/ -I/usr/include/libiberty/
 CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -rdynamic -DGLIBCXX_FORCE_NEW -Duse_sqlite
 RESINC = 
 LIBDIR = 
-LIB = -ldl -lpthread -lbfd
+LIB = -ldl -lpthread
 LDFLAGS = -rdynamic
 
 INC_DEBUG = $(INC)
@@ -23,7 +23,7 @@ CFLAGS_DEBUG = $(CFLAGS) -Wall -g -O0
 RESINC_DEBUG = $(RESINC)
 RCFLAGS_DEBUG = $(RCFLAGS)
 LIBDIR_DEBUG = $(LIBDIR)
-LIB_DEBUG = $(LIB)
+LIB_DEBUG = $(LIB)-lbfd
 LDFLAGS_DEBUG = $(LDFLAGS)
 OBJDIR_DEBUG = obj/Debug
 DEP_DEBUG = 
@@ -34,19 +34,32 @@ CFLAGS_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -g
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
-LIB_RELEASE = $(LIB)
+LIB_RELEASE = $(LIB)-lbfd
 LDFLAGS_RELEASE = $(LDFLAGS)
 OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/SmartTrafficMeter
 
+INC_PI = $(INC)
+CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -Wall -g -D__pi__
+RESINC_PI = $(RESINC)
+RCFLAGS_PI = $(RCFLAGS)
+LIBDIR_PI = $(LIBDIR)
+LIB_PI = $(LIB)
+LDFLAGS_PI = $(LDFLAGS)
+OBJDIR_PI = obj/pi
+DEP_PI = 
+OUT_PI = bin/pi/SmartTrafficMeter
+
 OBJ_DEBUG = $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/Settings.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Logger.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o $(OBJDIR_DEBUG)/Debug.o
 
 OBJ_RELEASE = $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/Settings.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Logger.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o $(OBJDIR_RELEASE)/Debug.o
 
-all: debug release
+OBJ_PI = $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/main.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/ServerThread.o $(OBJDIR_PI)/BecomeDaemon.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/Jsoncpp.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/Debug.o
 
-clean: clean_debug clean_release
+all: debug release pi
+
+clean: clean_debug clean_release clean_pi
 
 before_debug: 
 	test -d bin/Debug || mkdir -p bin/Debug
@@ -158,5 +171,60 @@ clean_release:
 	rm -rf bin/Release
 	rm -rf $(OBJDIR_RELEASE)
 
-.PHONY: before_debug after_debug clean_debug before_release after_release clean_release
+before_pi: 
+	test -d bin/pi || mkdir -p bin/pi
+	test -d $(OBJDIR_PI) || mkdir -p $(OBJDIR_PI)
+
+after_pi: 
+
+pi: before_pi out_pi after_pi
+
+out_pi: before_pi $(OBJ_PI) $(DEP_PI)
+	$(LD) $(LIBDIR_PI) -o $(OUT_PI) $(OBJ_PI)  $(LDFLAGS_PI) $(LIB_PI)
+
+$(OBJDIR_PI)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_PI) $(INC_PI) -c sqlite3.c -o $(OBJDIR_PI)/sqlite3.o
+
+$(OBJDIR_PI)/main.o: main.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c main.cpp -o $(OBJDIR_PI)/main.o
+
+$(OBJDIR_PI)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Utils.cpp -o $(OBJDIR_PI)/Utils.o
+
+$(OBJDIR_PI)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Settings.cpp -o $(OBJDIR_PI)/Settings.o
+
+$(OBJDIR_PI)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c ServerThread.cpp -o $(OBJDIR_PI)/ServerThread.o
+
+$(OBJDIR_PI)/BecomeDaemon.o: BecomeDaemon.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c BecomeDaemon.cpp -o $(OBJDIR_PI)/BecomeDaemon.o
+
+$(OBJDIR_PI)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c MySQLInterface.cpp -o $(OBJDIR_PI)/MySQLInterface.o
+
+$(OBJDIR_PI)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Logger.cpp -o $(OBJDIR_PI)/Logger.o
+
+$(OBJDIR_PI)/Jsoncpp.o: Jsoncpp.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Jsoncpp.cpp -o $(OBJDIR_PI)/Jsoncpp.o
+
+$(OBJDIR_PI)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceStats.cpp -o $(OBJDIR_PI)/InterfaceStats.o
+
+$(OBJDIR_PI)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_PI)/InterfaceSpeedMeter.o
+
+$(OBJDIR_PI)/InterfaceInfo.o: InterfaceInfo.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceInfo.cpp -o $(OBJDIR_PI)/InterfaceInfo.o
+
+$(OBJDIR_PI)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Debug.cpp -o $(OBJDIR_PI)/Debug.o
+
+clean_pi: 
+	rm -f $(OBJ_PI) $(OUT_PI)
+	rm -rf bin/pi
+	rm -rf $(OBJDIR_PI)
+
+.PHONY: before_debug after_debug clean_debug before_release after_release clean_release before_pi after_pi clean_pi
 
