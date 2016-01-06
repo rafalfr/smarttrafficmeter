@@ -87,8 +87,8 @@ void* ServerThread::Thread( void* )
 				}
 				else
 				{
-					root[mac]["hourly"] = Json::Value::UInt64( 0 );
-					root[mac]["hourly"]["up"] = Json::Value::UInt64( 0 );
+					root[mac]["hourly"]["down"] = Json::Value::UInt64( 0ULL );
+					root[mac]["hourly"]["up"] = Json::Value::UInt64( 0ULL );
 				}
 
 				row.clear();
@@ -101,8 +101,8 @@ void* ServerThread::Thread( void* )
 				}
 				else
 				{
-					root[mac]["daily"]["down"] = Json::Value::UInt64( 0 );
-					root[mac]["daily"]["up"] = Json::Value::UInt64( 0 );
+					root[mac]["daily"]["down"] = Json::Value::UInt64( 0ULL );
+					root[mac]["daily"]["up"] = Json::Value::UInt64( 0ULL );
 				}
 
 				row.clear();
@@ -115,8 +115,8 @@ void* ServerThread::Thread( void* )
 				}
 				else
 				{
-					root[mac]["monthly"]["down"] = Json::Value::UInt64( 0 );
-					root[mac]["monthly"]["up"] = Json::Value::UInt64( 0 );
+					root[mac]["monthly"]["down"] = Json::Value::UInt64( 0ULL );
+					root[mac]["monthly"]["up"] = Json::Value::UInt64( 0ULL );
 				}
 
 				row.clear();
@@ -126,6 +126,11 @@ void* ServerThread::Thread( void* )
 				{
 					root[mac]["yearly"]["down"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].recieved() );
 					root[mac]["yearly"]["up"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].transmited() );
+				}
+				else
+				{
+					root[mac]["yearly"]["down"] = Json::Value::UInt64( 0ULL );
+					root[mac]["yearly"]["up"] = Json::Value::UInt64( 0ULL );
 				}
 			}
 

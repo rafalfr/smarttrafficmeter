@@ -42,6 +42,7 @@
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+#include "server_http.hpp"
 
 #ifdef use_mysql
 
@@ -74,6 +75,8 @@ using namespace std;
 
 //https://regex101.com/
 
+//https://github.com/eidheim/Simple-Web-Server
+
 // for backtrace code to work compile with -g -rdynamic options
 
 //required packages
@@ -81,6 +84,7 @@ using namespace std;
 //libmysqlclient-dev
 //cbp2make
 //binutils-dev
+//libboost1.58-dev (libboost1.50-dev raspberry pi)
 
 /* generowanie pliku makefile i kompilacja za pomocą make
 cbp2make -in SmartTrafficMeter.cbp
@@ -264,14 +268,6 @@ int main( int argc, char *argv[] )
 
 	cout << "Monitoring has started" << endl;
 
-	s = pthread_join( t1, &res );
-
-	if ( s != 0 )
-	{
-		Logger::LogError( "Can't join monitoring thread" );
-		return 1;
-	}
-
 //	s = pthread_join( t2, &res );
 //
 //	if ( s != 0 )
@@ -279,6 +275,37 @@ int main( int argc, char *argv[] )
 //		Logger::LogError( "Can't join server thread" );
 //		return 1;
 //	}
+
+	typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
+
+	SimpleWeb::Server<SimpleWeb::HTTP> server( 8080, 2 );
+	server.default_resource["GET"] = []( HttpServer::Response & response, shared_ptr<HttpServer::Request> request )
+	{
+		stringstream content_stream;
+		content_stream << "<h1>Request from " << request->remote_endpoint_address << " (" << request->remote_endpoint_port << ")</h1>";
+		content_stream << request->method << " " << request->path << " HTTP/" << request->http_version << "<br>";
+
+		for ( auto& header : request->header )
+		{
+			content_stream << header.first << ": " << header.second << "<br>";
+		}
+
+		content_stream.seekp( 0, ios::end );
+
+		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n\r\n" << content_stream.rdbuf();
+	};
+
+	thread server_thread( [&server]()
+	{
+		server.start();
+	} );
+
+	s = pthread_join( t1, &res );
+	if ( s != 0 )
+	{
+		Logger::LogError( "Can't join monitoring thread" );
+		return 1;
+	}
 
 	exit( EXIT_SUCCESS );
 }
