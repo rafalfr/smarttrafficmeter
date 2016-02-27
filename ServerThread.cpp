@@ -78,7 +78,7 @@ void* ServerThread::Thread( void* )
 				root[mac]["speed"]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
 
 				row.clear();
-				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
 				if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
 				{

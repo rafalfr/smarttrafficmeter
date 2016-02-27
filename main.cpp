@@ -42,7 +42,9 @@
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+#include "WebSiteContent.h"
 #include "server_http.hpp"
+#include "tclap/CmdLine.h"
 
 #ifdef use_mysql
 
@@ -53,6 +55,7 @@
 #endif // use_sqlite
 
 using namespace std;
+using namespace TCLAP;
 
 //http://www.man7.org/tlpi/code/online/all_files_alpha.html
 //http://man7.org/linux/man-pages/man3/getifaddrs.3.html
@@ -129,20 +132,27 @@ int main( int argc, char *argv[] )
 	table_columns.clear();
 	Settings::settings.clear();
 
-	if ( argc > 1 )
-	{
-		for ( int32_t i = 1; i < argc; i++ )
-		{
-			const string& arg = string( argv[i] );
 
-			if ( arg.compare( "-daemon" ) == 0 )
-			{
-				is_daemon = true;
-			}
-		}
+	string version = string( AutoVersion::FULLVERSION_STRING ) + " built on " + string( __DATE__ ) + " " + string( __TIME__ );
+
+	try
+	{
+		CmdLine cmd( "Command description message", ' ', version );
+
+		SwitchArg daemon_switch( "d", "daemon", "run the program as daemon", false, NULL );
+		cmd.add( daemon_switch );
+		cmd.parse( argc, argv );
+
+		is_daemon = daemon_switch.getValue();
+	}
+	catch ( ArgException &e ) // catch any exceptions
+	{
+		cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
 	}
 
-	cout << "Smart Traffic Meter version " << AutoVersion::FULLVERSION_STRING << " built on " << __DATE__ << " " << __TIME__ << endl;
+	return 0;
+
+	cout << "Smart Traffic Meter version " << version << endl;
 
 	char buf[512];
 
@@ -207,7 +217,7 @@ int main( int argc, char *argv[] )
 
 			InterfaceStats hstats;
 			row.clear();
-			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 			all_stats[mac]["hourly"][row] = hstats;
 
 			InterfaceStats dstats;
@@ -276,31 +286,16 @@ int main( int argc, char *argv[] )
 //		return 1;
 //	}
 
-	typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
+	SimpleWeb::Server<SimpleWeb::HTTP> http_server( 8080, 2 );
+	WebSiteContent::set_web_site_content( http_server );
 
-	SimpleWeb::Server<SimpleWeb::HTTP> server( 8080, 2 );
-	server.default_resource["GET"] = []( HttpServer::Response & response, shared_ptr<HttpServer::Request> request )
+	thread server_thread( [&http_server]()
 	{
-		stringstream content_stream;
-		content_stream << "<h1>Request from " << request->remote_endpoint_address << " (" << request->remote_endpoint_port << ")</h1>";
-		content_stream << request->method << " " << request->path << " HTTP/" << request->http_version << "<br>";
-
-		for ( auto& header : request->header )
-		{
-			content_stream << header.first << ": " << header.second << "<br>";
-		}
-
-		content_stream.seekp( 0, ios::end );
-
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n\r\n" << content_stream.rdbuf();
-	};
-
-	thread server_thread( [&server]()
-	{
-		server.start();
+		http_server.start();
 	} );
 
 	s = pthread_join( t1, &res );
+
 	if ( s != 0 )
 	{
 		Logger::LogError( "Can't join monitoring thread" );
@@ -411,7 +406,7 @@ static void * MeterThread( void * )
 				}
 
 				row.clear();
-				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
 				if ( all_stats[mac]["hourly"].find( row ) == all_stats[mac]["hourly"].end() )
 				{
@@ -565,7 +560,7 @@ static void * MeterThread( void * )
 
 					if ( table_name.compare( "hourly" ) == 0 )
 					{
-						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 					}
 					else if ( table_name.compare( "daily" ) == 0 )
 					{
@@ -979,7 +974,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 		file.open( cwd + "/" + mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -1224,7 +1219,7 @@ void load_data_from_sqlite( void )
 		query += "SELECT * from hourly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + " " + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 		query += "'";
 		query += ";";
 

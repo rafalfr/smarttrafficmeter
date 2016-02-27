@@ -25,12 +25,6 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-fomit-frame-pointer" />
-					<Add option="-fexpensive-optimizations" />
-					<Add option="-O3" />
-					<Add option="-g" />
-				</Compiler>
 				<Linker>
 					<Add library="bfd" />
 				</Linker>
@@ -62,6 +56,7 @@
 			<Add directory="serverhttp" />
 			<Add directory="/usr/include/mysql/" />
 			<Add directory="/usr/include/libiberty/" />
+			<Add directory="../smarttrafficmeter" />
 		</Compiler>
 		<Linker>
 			<Add option="-rdynamic" />
@@ -94,6 +89,8 @@
 		<Unit filename="Settings.h" />
 		<Unit filename="Utils.cpp" />
 		<Unit filename="Utils.h" />
+		<Unit filename="WebSiteContent.cpp" />
+		<Unit filename="WebSiteContent.h" />
 		<Unit filename="config.h" />
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
@@ -104,6 +101,30 @@
 		<Unit filename="sqlite3.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="tclap/Arg.h" />
+		<Unit filename="tclap/ArgException.h" />
+		<Unit filename="tclap/ArgTraits.h" />
+		<Unit filename="tclap/CmdLine.h" />
+		<Unit filename="tclap/CmdLineInterface.h" />
+		<Unit filename="tclap/CmdLineOutput.h" />
+		<Unit filename="tclap/Constraint.h" />
+		<Unit filename="tclap/DocBookOutput.h" />
+		<Unit filename="tclap/HelpVisitor.h" />
+		<Unit filename="tclap/IgnoreRestVisitor.h" />
+		<Unit filename="tclap/MultiArg.h" />
+		<Unit filename="tclap/MultiSwitchArg.h" />
+		<Unit filename="tclap/OptionalUnlabeledTracker.h" />
+		<Unit filename="tclap/StandardTraits.h" />
+		<Unit filename="tclap/StdOutput.h" />
+		<Unit filename="tclap/SwitchArg.h" />
+		<Unit filename="tclap/UnlabeledMultiArg.h" />
+		<Unit filename="tclap/UnlabeledValueArg.h" />
+		<Unit filename="tclap/ValueArg.h" />
+		<Unit filename="tclap/ValuesConstraint.h" />
+		<Unit filename="tclap/VersionVisitor.h" />
+		<Unit filename="tclap/Visitor.h" />
+		<Unit filename="tclap/XorHandler.h" />
+		<Unit filename="tclap/ZshCompletionOutput.h" />
 		<Unit filename="version.h" />
 		<Extensions>
 			<envvars />

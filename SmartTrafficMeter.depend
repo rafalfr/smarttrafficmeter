@@ -62,7 +62,7 @@
 	<cstdint>
 	"mysql.h"
 
-1442586283 /usr/include/mysql//mysql.h
+1447666685 /usr/include/mysql//mysql.h
 	<standards.h>
 	<sys/types.h>
 	<winsock2.h>
@@ -73,19 +73,19 @@
 	"typelib.h"
 	"my_alloc.h"
 
-1445524496 /usr/include/mysql//mysql_version.h
+1453737101 /usr/include/mysql//mysql_version.h
 	<custom_conf.h>
 
-1442586283 /usr/include/mysql//mysql_com.h
+1447666685 /usr/include/mysql//mysql_com.h
 
-1442586283 /usr/include/mysql//mysql_time.h
+1447666685 /usr/include/mysql//mysql_time.h
 
-1442586283 /usr/include/mysql//my_list.h
+1447666685 /usr/include/mysql//my_list.h
 
-1442586283 /usr/include/mysql//typelib.h
+1447666685 /usr/include/mysql//typelib.h
 	"my_alloc.h"
 
-1442586283 /usr/include/mysql//my_alloc.h
+1447666685 /usr/include/mysql//my_alloc.h
 
 1450961800 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
@@ -117,7 +117,7 @@
 	<cstdint>
 	"mysql.h"
 
-1452099266 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1452616218 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -134,7 +134,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1452120680 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1452362084 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -179,6 +179,7 @@
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
+	"WebSiteContent.h"
 	"server_http.hpp"
 	"sqlite3.h"
 
@@ -285,7 +286,7 @@
 
 1450205433 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
-1452120682 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1456252337 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1447938407 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
 	<iostream>
@@ -395,4 +396,20 @@
 	<functional>
 	<iostream>
 	<sstream>
+
+1452362934 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
+	"server_http.hpp"
+
+1456252329 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+	<fstream>
+	<memory>
+	<sstream>
+	"WebSiteContent.h"
+	"json/json.h"
+	"Utils.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"sqlite3.h"
 
