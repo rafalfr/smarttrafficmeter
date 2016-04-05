@@ -230,14 +230,32 @@ vector<string> Utils::split( const string& str, const string& delim )
   *
   * @todo: document this function
   */
-void Utils::replace( const string& pattern, const string& with, const string& in )
+string Utils::replace( const string& pattern, const string& with, const string& in ) noexcept
 {
-    size_t pos = 0;
 
-    while ( ( pos = in.find( pattern, pos ) ) != string::npos )
+    string out;
+
+    size_t start = 0;
+    size_t end = 0;
+
+    if ( in.find( pattern, start ) == string::npos )
     {
-		in.replace(pos,with.size(),with);
+        out += in;
     }
+    else
+    {
+        while ( ( end = in.find( pattern, start ) ) != string::npos )
+        {
+            out += in.substr( start, end - start );
+
+            out += with;
+
+            start = end + pattern.size();
+        }
+
+        out += in.substr( start, end );
+    }
+    return out;
 }
 
 
