@@ -2,6 +2,7 @@
 *.db
 *.py
 *.xml
+*.pid
 *.layout
 /bin/*
 /obj/*

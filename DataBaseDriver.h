@@ -10,15 +10,18 @@ using namespace std;
 class DataBaseDriver
 {
 private:
-	string database;
+	string database_dir;
+	string database_type;
+	static map<string, string> table_columns;
+
+	static int callback( void *, int argc, char **argv, char **azColName );
 
 	public:
-		/** Default constructor */
 		DataBaseDriver();
-		/** Default destructor */
 		~DataBaseDriver();
 
-	void set_database(const string& _database) noexcept;
+	void set_database_type(const string& _database_type) noexcept;
+	void set_database_dir(const string& _database_dir) noexcept;
 
 	const map<string, InterfaceStats> get_daily_stats(const string& _mac,const string& _table,const struct date& _from,const struct date& _to);
 };
