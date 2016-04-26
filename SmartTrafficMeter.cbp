@@ -74,6 +74,8 @@
 		<Unit filename="DataBaseDriver.h" />
 		<Unit filename="Debug.cpp" />
 		<Unit filename="Debug.h" />
+		<Unit filename="Globals.cpp" />
+		<Unit filename="Globals.h" />
 		<Unit filename="InterfaceInfo.cpp" />
 		<Unit filename="InterfaceInfo.h" />
 		<Unit filename="InterfaceSpeedMeter.cpp" />

@@ -73,16 +73,41 @@ const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string&
         return results;
     }
 
+
+    string from;
+    string to;
+
+    if ( _table.compare( "hourly" ) == 0 )
+    {
+        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month ) + "-" + std::to_string( _from.day ) + "_" + std::to_string( _from.hour ) + ":00-" + std::to_string( _from.hour + 1 ) + ":00";
+        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month ) + "-" + std::to_string( _to.day ) + "_" + std::to_string( _to.hour ) + ":00-" + std::to_string( _to.hour + 1 ) + ":00";
+    }
+    else if ( _table.compare( "daily" ) == 0 )
+    {
+        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month ) + "-" + std::to_string( _from.day );
+        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month ) + "-" + std::to_string( _to.day );
+    }
+    else if ( _table.compare( "monthly" ) == 0 )
+    {
+        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month );
+        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month );
+    }
+    else if ( _table.compare( "yearly" ) == 0 )
+    {
+        from = std::to_string( _from.year );
+        to = std::to_string( _to.year );
+    }
+
     query.clear();
     query += "SELECT * from " + _table + " ";
     query += "WHERE row>=";
     query += "'";
-    query += std::to_string( _from.year ) + "-" + std::to_string( _from.month ) + "-" + std::to_string( _from.day ) + "_" + std::to_string( _from.hour ) + ":00-" + std::to_string( _from.hour + 1 ) + ":00";
+    query += from;
     query += "'";
     query += " AND ";
     query += " row<=";
     query += "'";
-    query += std::to_string( _to.year ) + "-" + std::to_string( _to.month ) + "-" + std::to_string( _to.day ) + "_" + std::to_string( _to.hour ) + ":00-" + std::to_string( _to.hour + 1 ) + ":00";
+    query += to;
     query += "'";
     query += ";";
     table_columns.clear();
@@ -110,12 +135,10 @@ const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string&
             tx_bytes = 0ULL;
         }
 
-        InterfaceStats ystats;
-        //all_stats[mac]["yearly"][row] = ystats;
-        //all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+        InterfaceStats stats;
+        results[row] = stats;
+        results[row].set_initial_stats( tx_bytes, rx_bytes );
     }
-
-
 #endif // use_sqlite
 
 

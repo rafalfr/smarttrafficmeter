@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include "version.h"
 #include "Utils.h"
+#include "Globals.h"
 #include "Debug.h"
 #include "Logger.h"
 #include "Settings.h"
@@ -88,6 +89,7 @@ using namespace TCLAP;
 //cbp2make
 //binutils-dev
 //libboost1.58-dev (libboost1.50-dev raspberry pi)
+//libboost-context-dev libboost-coroutine-dev libboost-regex-dev libboost-thread-dev libboost-system-dev
 
 /* generowanie pliku makefile i kompilacja za pomocą make
 cbp2make -in SmartTrafficMeter.cbp
@@ -195,6 +197,9 @@ int main( int argc, char *argv[] )
 	Settings::settings["stats save interval"] = "1800";	//seconds
 	Settings::settings["stats server port"] = "32000";
 	Settings::settings["html server port"] = "80";
+
+	Globals::db_drv.set_database_type(Settings::settings["storage"]);
+	Globals::db_drv.set_database_dir(Settings::settings["database directory"]);
 
 	load_settings();
 
