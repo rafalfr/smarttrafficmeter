@@ -23,7 +23,7 @@ private:
 	void set_database_type(const string& _database_type) noexcept;
 	void set_database_dir(const string& _database_dir) noexcept;
 
-	const map<string, InterfaceStats> get_daily_stats(const string& _mac,const string& _table,const struct date& _from,const struct date& _to);
+	const map<string, InterfaceStats> get_stats(const string& _mac,const string& _table,const struct date& _from,const struct date& _to);
 };
 
 #endif // DATABASEDRIVER_H

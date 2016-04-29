@@ -87,7 +87,7 @@
 
 1447666685 /usr/include/mysql//my_alloc.h
 
-1450961800 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+1461881738 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
 1450961306 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
@@ -134,7 +134,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1461355613 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1461676054 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -170,6 +170,7 @@
 	<stdlib.h>
 	"version.h"
 	"Utils.h"
+	"Globals.h"
 	"Debug.h"
 	"Logger.h"
 	"Settings.h"
@@ -251,13 +252,13 @@
 	<sstream>
 	"config.h"
 
-1459436762 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+1461770755 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
 	<map>
 	<string>
 	<vector>
 	"InterfaceInfo.h"
 
-1459867015 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1461770957 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	<algorithm>
 	<arpa/inet.h>
 	<sys/socket.h>
@@ -285,7 +286,7 @@
 	<errno.h>
 	"Utils.h"
 
-1450205433 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+1461853762 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
 1461275044 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
@@ -377,7 +378,7 @@
 	<map>
 	<string>
 
-1451935987 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+1461881550 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
@@ -401,13 +402,16 @@
 1456609879 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
 	"server_http.hpp"
 
-1461675911 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1461853608 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	<fstream>
 	<memory>
 	<sstream>
 	"WebSiteContent.h"
 	"json/json.h"
+	"defines.h"
 	"Utils.h"
+	"Logger.h"
+	"Globals.h"
 	"Settings.h"
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
@@ -562,11 +566,12 @@
 	<sstream>
 	<strstream>
 
-1461675175 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1461881465 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
 	"DataBaseDriver.h"
+	"Logger.h"
 	"sqlite3.h"
 
-1461095337 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
+1461769763 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
 	<map>
 	<string>
 	"defines.h"

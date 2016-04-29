@@ -205,6 +205,7 @@ vector<string> Utils::split( const string& str, const string& delim )
 {
 //http://garajeando.blogspot.com/2014/03/using-c11-to-split-strings-without.html
 //http://www.informit.com/articles/article.aspx?p=2064649&seqNum=
+//http://stackoverflow.com/questions/236129/split-a-string-in-c
 
     size_t start;
     size_t end;

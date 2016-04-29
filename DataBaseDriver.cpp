@@ -1,5 +1,5 @@
 #include "DataBaseDriver.h"
-
+#include "Logger.h"
 #ifdef use_sqlite
 #include "sqlite3.h"
 
@@ -11,7 +11,7 @@ map<string, string> DataBaseDriver::table_columns;
   *
   * @todo: document this function
   */
-DataBaseDriver::DataBaseDriver()
+DataBaseDriver::DataBaseDriver() : database_dir( "" ), database_type( "" )
 {
 
 }
@@ -51,7 +51,7 @@ void DataBaseDriver::set_database_dir( const string& _database_dir ) noexcept
   *
   * @todo: document this function
   */
-const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string& _mac, const string& _table, const struct date& _from, const struct date& _to )
+const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac, const string& _table, const struct date& _from, const struct date& _to )
 {
 
     map<string, InterfaceStats> results;
@@ -61,17 +61,20 @@ const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string&
 
 #ifdef use_sqlite
     sqlite3 *db;
-    char *zErrMsg = 0;
+    char *zErrMsg = nullptr;
     int rc;
     string row;
     string query;
 
-    rc = sqlite3_open_v2( ( database_dir + "/" + _mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+    rc = sqlite3_open_v2( ( database_dir + "/" + _mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
 
     if ( rc != SQLITE_OK )
     {
+        Logger::LogDebug( "can't open the database" );
         return results;
     }
+
+    Logger::LogInfo( "database opened" );
 
 
     string from;
@@ -111,7 +114,8 @@ const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string&
     query += "'";
     query += ";";
     table_columns.clear();
-    rc = sqlite3_exec( db, query.c_str(), DataBaseDriver::callback, NULL, &zErrMsg );
+    Logger::LogInfo( query );
+    rc = sqlite3_exec( db, query.c_str(), DataBaseDriver::callback, nullptr, &zErrMsg );
 
     if ( rc == SQLITE_OK )
     {
@@ -139,6 +143,11 @@ const map<string, InterfaceStats> DataBaseDriver::get_daily_stats( const string&
         results[row] = stats;
         results[row].set_initial_stats( tx_bytes, rx_bytes );
     }
+    else
+    {
+        Logger::LogDebug( "sqlite3_exec error" );
+    }
+
 #endif // use_sqlite
 
 

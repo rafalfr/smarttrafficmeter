@@ -3,7 +3,10 @@
 #include <sstream>
 #include "WebSiteContent.h"
 #include "json/json.h"
+#include "defines.h"
 #include "Utils.h"
+#include "Logger.h"
+#include "Globals.h"
 #include "Settings.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
@@ -203,11 +206,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^\\/daily\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
-        // http://127.0.0.1:8080/daily/2016-04-04/2015-04-04
+        // http://127.0.0.1:8080/daily/2015-04-04/2016-04-04
 
         string web_page;
-        string start_date = request->path_match[1];
-        string end_date = request->path_match[2];
+        string start_date_str = request->path_match[1];
+        string end_date_str = request->path_match[2];
 
 
         const uint32_t data_num = 10;
@@ -222,43 +225,65 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             web_page = input_file_stream.str();
             file.close();
 
+            const vector<string>& start_date_items = Utils::split( start_date_str, "-" );
+            const vector<string>& end_date_items = Utils::split( end_date_str, "-" );
 
-			// TODO
-            //const map<string, InterfaceStats>
+            struct date start_date;
+            struct date end_date;
 
+            start_date.year = stoi( start_date_items[0], nullptr, 10 );
+            start_date.month = stoi( start_date_items[1], nullptr, 10 );
+            start_date.day = stoi( start_date_items[2], nullptr, 10 );
+            start_date.hour = 0;
+
+            end_date.year = stoi( end_date_items[0], nullptr, 10 );
+            end_date.month = stoi( end_date_items[1], nullptr, 10 );
+            end_date.day = stoi( end_date_items[2], nullptr, 10 );
+            end_date.hour = 0;
+
+
+            const map<string, InterfaceStats> results = Globals::db_drv.get_stats( "00-30-4f-27-b5-c3", "daily", start_date, end_date );
 
             string chart_data;
             chart_data += "var barChartData = {\nlabels : [\n";
 
-            for ( uint32_t i = 0; i < data_num; i++ )
+            uint32_t i=0;
+
+            for(auto const & row_stats : results )
             {
                 chart_data += "\"";
-                chart_data += std::to_string( i );
+                chart_data += row_stats.first;
                 chart_data += "\"";
 
-                if ( i < data_num - 1 )
+                if ( i < results.size() - 1 )
                 {
                     chart_data += ",";
                 }
+                i++;
             }
 
             chart_data += "],\ndatasets : [\n{\nfillColor : \"rgba(220,220,220,0.5)\",\nstrokeColor : \"rgba(220,220,220,0.8)\",\nhighlightFill: \"rgba(220,220,220,0.75)\",\nhighlightStroke: \"rgba(220,220,220,1)\",\ndata :\n [";
 
-            for ( uint32_t i = 0; i < data_num; i++ )
+			i=0;
+            for(auto const & row_stats : results )
             {
-                chart_data += std::to_string( i );
+				const InterfaceStats& stats=row_stats.second;
+                chart_data += std::to_string( stats.recieved() );
 
                 if ( i < data_num - 1 )
                 {
                     chart_data += ",";
                 }
+                i++;
             }
 
             chart_data += "]\n},\n{\nfillColor : \"rgba(151,187,205,0.5)\",\nstrokeColor : \"rgba(151,187,205,0.8)\",highlightFill : \"rgba(151,187,205,0.75)\",highlightStroke : \"rgba(151,187,205,1)\",data :\n[";
 
-            for ( uint32_t i = 0; i < data_num; i++ )
+			i=0;
+            for(auto const & row_stats : results )
             {
-                chart_data += std::to_string( i );
+				const InterfaceStats& stats=row_stats.second;
+                chart_data += std::to_string( stats.transmited() );
 
                 if ( i < data_num - 1 )
                 {
@@ -285,7 +310,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         stringstream content_stream;
 
-        content_stream << start_date << endl << end_date << endl;
+        content_stream << start_date_str << endl << end_date_str << endl;
 
         content_stream.seekp( 0, ios::end );
         response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n\r\n" << content_stream.rdbuf();

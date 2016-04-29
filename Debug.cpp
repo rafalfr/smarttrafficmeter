@@ -6,9 +6,9 @@
 
 #ifndef __pi__
 
-bfd* Debug::abfd = 0;
-asymbol ** Debug::syms = 0;
-asection* Debug::text = 0;
+bfd* Debug::abfd = nullptr;
+asymbol ** Debug::syms = nullptr;
+asection* Debug::text = nullptr;
 
 /** @brief resolve
   *
@@ -33,7 +33,7 @@ string Debug::resolve( const unsigned long address )
 
 		bfd_init();
 
-		abfd = bfd_openr( ename, 0 );
+		abfd = bfd_openr( ename, nullptr );
 
 		if ( !abfd )
 		{
