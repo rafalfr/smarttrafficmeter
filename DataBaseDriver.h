@@ -1,6 +1,7 @@
 #ifndef DATABASEDRIVER_H
 #define DATABASEDRIVER_H
 #include <map>
+#include <vector>
 #include <string>
 #include "defines.h"
 #include "InterfaceStats.h"
@@ -12,7 +13,7 @@ class DataBaseDriver
 private:
 	string database_dir;
 	string database_type;
-	static map<string, string> table_columns;
+	static vector < map<string, string> > query_results;
 
 	static int callback( void *, int argc, char **argv, char **azColName );
 

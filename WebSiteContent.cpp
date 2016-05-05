@@ -18,9 +18,6 @@
 
 using namespace std;
 
-extern map<string, map<string, map<string, InterfaceStats> > > all_stats;
-extern map<string, InterfaceSpeedMeter> speed_stats;
-
 /** @brief set_web_site_content
   *
   * @todo: document this function
@@ -51,7 +48,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             string tables;
 
-            for ( auto const & mac_speedinfo : speed_stats )
+            for ( auto const & mac_speedinfo : Globals::speed_stats )
             {
                 const string& mac = mac_speedinfo.first;
                 const InterfaceSpeedMeter& ism = mac_speedinfo.second;
@@ -66,10 +63,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 uint64_t hourly_down = 0;
                 uint64_t hourly_up = 0;
 
-                if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
+                if ( Globals::all_stats[mac]["hourly"].find( row ) != Globals::all_stats[mac]["hourly"].end() )
                 {
-                    hourly_down = all_stats[mac]["hourly"][row].recieved();
-                    hourly_up = all_stats[mac]["hourly"][row].transmited();
+                    hourly_down = Globals::all_stats[mac]["hourly"][row].recieved();
+                    hourly_up = Globals::all_stats[mac]["hourly"][row].transmited();
                 }
 
 
@@ -79,10 +76,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 uint64_t daily_up = 0;
                 uint64_t daily_down = 0;
 
-                if ( all_stats[mac]["daily"].find( row ) != all_stats[mac]["daily"].end() )
+                if ( Globals::all_stats[mac]["daily"].find( row ) != Globals::all_stats[mac]["daily"].end() )
                 {
-                    daily_down = all_stats[mac]["daily"][row].recieved();
-                    daily_up = all_stats[mac]["daily"][row].transmited();
+                    daily_down = Globals::all_stats[mac]["daily"][row].recieved();
+                    daily_up = Globals::all_stats[mac]["daily"][row].transmited();
                 }
 
                 row.clear();
@@ -91,10 +88,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 uint64_t monthly_up = 0;
                 uint64_t monthly_down = 0;
 
-                if ( all_stats[mac]["monthly"].find( row ) != all_stats[mac]["monthly"].end() )
+                if ( Globals::all_stats[mac]["monthly"].find( row ) != Globals::all_stats[mac]["monthly"].end() )
                 {
-                    monthly_down = all_stats[mac]["monthly"][row].recieved();
-                    monthly_up = all_stats[mac]["monthly"][row].transmited();
+                    monthly_down = Globals::all_stats[mac]["monthly"][row].recieved();
+                    monthly_up = Globals::all_stats[mac]["monthly"][row].transmited();
                 }
 
                 row.clear();
@@ -103,10 +100,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 uint64_t yearly_up = 0;
                 uint64_t yearly_down = 0;
 
-                if ( all_stats[mac]["yearly"].find( row ) != all_stats[mac]["yearly"].end() )
+                if ( Globals::all_stats[mac]["yearly"].find( row ) != Globals::all_stats[mac]["yearly"].end() )
                 {
-                    yearly_down = all_stats[mac]["yearly"][row].recieved();
-                    yearly_up = all_stats[mac]["yearly"][row].transmited();
+                    yearly_down = Globals::all_stats[mac]["yearly"][row].recieved();
+                    yearly_up = Globals::all_stats[mac]["yearly"][row].transmited();
                 }
 
 
@@ -206,24 +203,45 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^\\/daily\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
-        // http://127.0.0.1:8080/daily/2015-04-04/2016-04-04
+        // http://127.0.0.1:8080/daily/2015-04-04/2016-06-04
+
+        uint32_t y;
+        uint32_t m;
+        uint32_t d;
+        uint32_t h;
 
         string web_page;
         string start_date_str = request->path_match[1];
         string end_date_str = request->path_match[2];
 
+        Utils::get_time( &y, &m, &d, &h );
 
-        const uint32_t data_num = 10;
+        string current_time_str = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
-        ifstream file;
-        file.open( "../../webpage/stats.html", std::ifstream::in | std::ifstream::binary );
+        //ifstream file;
+        //file.open( "../../webpage/stats.html", std::ifstream::in | std::ifstream::binary );
 
-        if ( file.is_open() )
+        web_page += "<!doctype html>\n";
+        web_page += "<html>\n";
+        web_page += "<head>\m";
+        web_page += "<title>Bar Chart</title>";
+        web_page += "<script src=\"/Chart.js\"></script>\n";
+        web_page += "</head>\n";
+
+        web_page += "<div style=\"width: 50%\">\n";
+        web_page += "<canvas id=\"canvas\" height=\"450\" width=\"600\"></canvas>\n";
+        web_page += "</div>\n";
+
+        for ( auto const & mac_table : Globals::all_stats )
         {
-            stringstream input_file_stream;
-            input_file_stream << file.rdbuf();
-            web_page = input_file_stream.str();
-            file.close();
+            const string& mac = mac_table.first;
+
+            //if ( file.is_open() )
+            //{
+//            stringstream input_file_stream;
+//            input_file_stream << file.rdbuf();
+//            web_page = input_file_stream.str();
+//            file.close();
 
             const vector<string>& start_date_items = Utils::split( start_date_str, "-" );
             const vector<string>& end_date_items = Utils::split( end_date_str, "-" );
@@ -242,14 +260,77 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             end_date.hour = 0;
 
 
-            const map<string, InterfaceStats> results = Globals::db_drv.get_stats( "00-30-4f-27-b5-c3", "daily", start_date, end_date );
+            map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
+
+            //update results for the current time
+            for ( auto & row_stats : results )
+            {
+                if ( row_stats.first.compare( current_time_str ) == 0 )
+                {
+                    uint64_t rx = Globals::all_stats[mac]["daily"][current_time_str].recieved();
+                    uint64_t tx = Globals::all_stats[mac]["daily"][current_time_str].transmited();
+                    row_stats.second.set_current_stats( tx, rx );
+                }
+            }
+
+            uint64_t max_value = 0ULL;
+
+            for ( auto & row_stats : results )
+            {
+                const InterfaceStats& stats = row_stats.second;
+
+                if ( stats.recieved() > max_value )
+                {
+                    max_value = stats.recieved();
+                }
+
+                if ( stats.transmited() > max_value )
+                {
+                    max_value = stats.transmited();
+                }
+            }
+
+            string unit;
+            float scale;
+
+            if ( max_value >= 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL )
+            {
+                scale = 1024.0f * 1024.0f * 1024.0f * 1024.0f * 1024.0f;
+                unit = "PB";
+            }
+            else if ( max_value >= 1024ULL * 1024ULL * 1024ULL * 1024ULL )
+            {
+                scale = 1024.0f * 1024.0f * 1024.0f * 1024.0f;
+                unit = "TB";
+            }
+            else if ( max_value >= 1024ULL * 1024ULL * 1024ULL )
+            {
+                scale = 1024.0f * 1024.0f * 1024.0f;
+                unit = "GB";
+            }
+            else if ( max_value >= 1024ULL * 1024ULL )
+            {
+                scale = 1024.0f * 1024.0f;
+                unit = "MB";
+            }
+            else if ( max_value >= 1024ULL )
+            {
+                scale = 1024.0f;
+                unit = "KB";
+            }
+            else
+            {
+                scale = 1.0f;
+                unit = "B";
+            }
+
 
             string chart_data;
             chart_data += "var barChartData = {\nlabels : [\n";
 
-            uint32_t i=0;
+            uint32_t i = 0;
 
-            for(auto const & row_stats : results )
+            for ( auto const & row_stats : results )
             {
                 chart_data += "\"";
                 chart_data += row_stats.first;
@@ -259,33 +340,43 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 {
                     chart_data += ",";
                 }
+
                 i++;
             }
 
             chart_data += "],\ndatasets : [\n{\nfillColor : \"rgba(220,220,220,0.5)\",\nstrokeColor : \"rgba(220,220,220,0.8)\",\nhighlightFill: \"rgba(220,220,220,0.75)\",\nhighlightStroke: \"rgba(220,220,220,1)\",\ndata :\n [";
 
-			i=0;
-            for(auto const & row_stats : results )
-            {
-				const InterfaceStats& stats=row_stats.second;
-                chart_data += std::to_string( stats.recieved() );
+            i = 0;
 
-                if ( i < data_num - 1 )
+            for ( auto const & row_stats : results )
+            {
+                const InterfaceStats& stats = row_stats.second;
+
+                float value = ( ( float )stats.recieved() ) / scale;
+
+                chart_data += std::to_string( value );
+
+                if ( i < results.size() - 1 )
                 {
                     chart_data += ",";
                 }
+
                 i++;
             }
 
             chart_data += "]\n},\n{\nfillColor : \"rgba(151,187,205,0.5)\",\nstrokeColor : \"rgba(151,187,205,0.8)\",highlightFill : \"rgba(151,187,205,0.75)\",highlightStroke : \"rgba(151,187,205,1)\",data :\n[";
 
-			i=0;
-            for(auto const & row_stats : results )
-            {
-				const InterfaceStats& stats=row_stats.second;
-                chart_data += std::to_string( stats.transmited() );
+            i = 0;
 
-                if ( i < data_num - 1 )
+            for ( auto const & row_stats : results )
+            {
+                const InterfaceStats& stats = row_stats.second;
+
+                float value = ( ( float )stats.transmited() ) / scale;
+
+                chart_data += std::to_string( value );
+
+                if ( i < results.size() - 1 )
                 {
                     chart_data += ",";
                 }
@@ -293,30 +384,43 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             chart_data += "]\n}\n]\n}";
 
-            web_page = Utils::replace( "$chart_data$", chart_data, web_page );
+            string chart_options;
+            chart_options += "var options = {\n";
+            chart_options += "scaleLabel : \"<%= value + ' " + unit + "'   %>\",\n";
+            chart_options += "responsive : true\n";
+            chart_options += "};";
 
+            web_page+="<script>\n";
+            web_page+=chart_data;
+            web_page+="\n";
+            web_page+=chart_options;
+            //web_page = Utils::replace( "$chart_data$", chart_data, web_page );
+            //web_page = Utils::replace( "$chart_options$", chart_options, web_page );
 
-            stringstream out_stream;
-            out_stream << web_page;
-
-            out_stream.seekp( 0, ios::end );
-            response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
-            response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-            response << "Cache-Control: public, max-age=1800";
-            response << "\r\n\r\n" << out_stream.rdbuf();
+			web_page+="window.onload = function(){\n";
+			web_page+="var ctx = document.getElementById(\"canvas\").getContext(\"2d\");\n";
+			web_page+="window.myBar = new Chart(ctx).Bar(barChartData, options);\n";
+			web_page+="}\n";
+            web_page += "</script>\n";
+            web_page+="<br>\n";
+            //}
         }
 
+        web_page += "</body>\n";
+        web_page += "</html>";
 
+        stringstream out_stream;
+        out_stream << web_page;
 
-        stringstream content_stream;
+        out_stream.seekp( 0, ios::end );
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "Cache-Control: public, max-age=1800";
+        response << "\r\n\r\n" << out_stream.rdbuf();
 
-        content_stream << start_date_str << endl << end_date_str << endl;
-
-        content_stream.seekp( 0, ios::end );
-        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         ifstream file;
         file.open( "../../webpage/Chart.js", std::ifstream::in | std::ifstream::binary );
@@ -335,7 +439,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/stats.json$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["\\/stats.json$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         string row;
         stringstream content_stream;
@@ -348,7 +452,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t h;
         Utils::get_time( &y, &m, &d, &h );
 
-        for ( auto const & mac_speedinfo : speed_stats )
+        for ( auto const & mac_speedinfo : Globals::speed_stats )
         {
             const string& mac = mac_speedinfo.first;
             const InterfaceSpeedMeter& ism = mac_speedinfo.second;
@@ -360,10 +464,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             row.clear();
             row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
-            if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
+            if ( Globals::all_stats[mac]["hourly"].find( row ) != Globals::all_stats[mac]["hourly"].end() )
             {
-                root[mac]["hourly"]["down"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].recieved() );
-                root[mac]["hourly"]["up"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].transmited() );
+                root[mac]["hourly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].recieved() );
+                root[mac]["hourly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].transmited() );
             }
             else
             {
@@ -374,10 +478,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             row.clear();
             row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
-            if ( all_stats[mac]["daily"].find( row ) != all_stats[mac]["daily"].end() )
+            if ( Globals::all_stats[mac]["daily"].find( row ) != Globals::all_stats[mac]["daily"].end() )
             {
-                root[mac]["daily"]["down"] = Json::Value::UInt64( all_stats[mac]["daily"][row].recieved() );
-                root[mac]["daily"]["up"] = Json::Value::UInt64( all_stats[mac]["daily"][row].transmited() );
+                root[mac]["daily"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].recieved() );
+                root[mac]["daily"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].transmited() );
             }
             else
             {
@@ -388,10 +492,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             row.clear();
             row += std::to_string( y ) + "-" + std::to_string( m );
 
-            if ( all_stats[mac]["monthly"].find( row ) != all_stats[mac]["monthly"].end() )
+            if ( Globals::all_stats[mac]["monthly"].find( row ) != Globals::all_stats[mac]["monthly"].end() )
             {
-                root[mac]["monthly"]["down"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].recieved() );
-                root[mac]["monthly"]["up"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].transmited() );
+                root[mac]["monthly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].recieved() );
+                root[mac]["monthly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].transmited() );
             }
             else
             {
@@ -402,10 +506,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             row.clear();
             row += std::to_string( y );
 
-            if ( all_stats[mac]["yearly"].find( row ) != all_stats[mac]["yearly"].end() )
+            if ( Globals::all_stats[mac]["yearly"].find( row ) != Globals::all_stats[mac]["yearly"].end() )
             {
-                root[mac]["yearly"]["down"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].recieved() );
-                root[mac]["yearly"]["up"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].transmited() );
+                root[mac]["yearly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].recieved() );
+                root[mac]["yearly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].transmited() );
             }
             else
             {
@@ -456,4 +560,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 //http://www.tutorialspoint.com/ajax/index.htm
 //http://stackoverflow.com/questions/4672691/ajax-responsetext-comes-back-as-undefined
 //https://mathiasbynens.be/notes/xhr-responsetype-json
+//http://www.flotcharts.org/
+//http://www.jqplot.com/
+//https://www.amcharts.com/demos/
+//http://www.uibox.in/item/68
 

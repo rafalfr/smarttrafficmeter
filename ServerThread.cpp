@@ -8,15 +8,13 @@
 
 #include "json/json.h"
 #include "Utils.h"
+#include "Globals.h"
 #include "Settings.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
 
 using namespace std;
-
-extern map<string, map<string, map<string, InterfaceStats> > > all_stats;
-extern map<string, InterfaceSpeedMeter> speed_stats;
 
 //https://www.abc.se/~m6695/udp.html
 //http://en.cppreference.com/w/cpp/links/libs
@@ -68,7 +66,7 @@ void* ServerThread::Thread( void* )
 			uint32_t h;
 			Utils::get_time( &y, &m, &d, &h );
 
-			for ( auto const & mac_speedinfo : speed_stats )
+			for ( auto const & mac_speedinfo : Globals::speed_stats )
 			{
 				const string& mac = mac_speedinfo.first;
 				const InterfaceSpeedMeter& ism = mac_speedinfo.second;
@@ -80,10 +78,10 @@ void* ServerThread::Thread( void* )
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
-				if ( all_stats[mac]["hourly"].find( row ) != all_stats[mac]["hourly"].end() )
+				if ( Globals::all_stats[mac]["hourly"].find( row ) != Globals::all_stats[mac]["hourly"].end() )
 				{
-					root[mac]["hourly"]["down"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].recieved() );
-					root[mac]["hourly"]["up"] = Json::Value::UInt64( all_stats[mac]["hourly"][row].transmited() );
+					root[mac]["hourly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].recieved() );
+					root[mac]["hourly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].transmited() );
 				}
 				else
 				{
@@ -94,10 +92,10 @@ void* ServerThread::Thread( void* )
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
-				if ( all_stats[mac]["daily"].find( row ) != all_stats[mac]["daily"].end() )
+				if ( Globals::all_stats[mac]["daily"].find( row ) != Globals::all_stats[mac]["daily"].end() )
 				{
-					root[mac]["daily"]["down"] = Json::Value::UInt64( all_stats[mac]["daily"][row].recieved() );
-					root[mac]["daily"]["up"] = Json::Value::UInt64( all_stats[mac]["daily"][row].transmited() );
+					root[mac]["daily"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].recieved() );
+					root[mac]["daily"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].transmited() );
 				}
 				else
 				{
@@ -108,10 +106,10 @@ void* ServerThread::Thread( void* )
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m );
 
-				if ( all_stats[mac]["monthly"].find( row ) != all_stats[mac]["monthly"].end() )
+				if ( Globals::all_stats[mac]["monthly"].find( row ) != Globals::all_stats[mac]["monthly"].end() )
 				{
-					root[mac]["monthly"]["down"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].recieved() );
-					root[mac]["monthly"]["up"] = Json::Value::UInt64( all_stats[mac]["monthly"][row].transmited() );
+					root[mac]["monthly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].recieved() );
+					root[mac]["monthly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].transmited() );
 				}
 				else
 				{
@@ -122,10 +120,10 @@ void* ServerThread::Thread( void* )
 				row.clear();
 				row += std::to_string( y );
 
-				if ( all_stats[mac]["yearly"].find( row ) != all_stats[mac]["yearly"].end() )
+				if ( Globals::all_stats[mac]["yearly"].find( row ) != Globals::all_stats[mac]["yearly"].end() )
 				{
-					root[mac]["yearly"]["down"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].recieved() );
-					root[mac]["yearly"]["up"] = Json::Value::UInt64( all_stats[mac]["yearly"][row].transmited() );
+					root[mac]["yearly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].recieved() );
+					root[mac]["yearly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].transmited() );
 				}
 				else
 				{

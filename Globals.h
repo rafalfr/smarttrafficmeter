@@ -1,12 +1,24 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include <map>
+#include <string>
+
+#include "InterfaceStats.h"
+#include "InterfaceSpeedMeter.h"
 #include "DataBaseDriver.h"
+
+using namespace std;
 
 class Globals
 {
 public:
-static DataBaseDriver db_drv;
+
+    //mac, table, date, stats
+    static map<string, map<string, map<string, InterfaceStats> > > all_stats;
+    static map<string, InterfaceSpeedMeter> speed_stats;
+
+    static DataBaseDriver db_drv;
 
 };
 

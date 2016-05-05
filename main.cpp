@@ -103,9 +103,6 @@ pthread_t t2;
 bool is_daemon = false;
 string cwd;
 
-//mac, table, date, stats
-map<string, map<string, map<string, InterfaceStats> > > all_stats;
-map<string, InterfaceSpeedMeter> speed_stats;
 map<string, string> table_columns;
 
 void save_stats_to_mysql( void );
@@ -118,7 +115,6 @@ int32_t dirExists( const char *path );
 int32_t mkpath( const std::string& s, mode_t mode );
 static void signal_handler( int );
 static void * MeterThread( void *arg );
-void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 int main( int argc, char *argv[] )
 {
@@ -129,8 +125,8 @@ int main( int argc, char *argv[] )
 	void *res;
 	int32_t s;
 
-	all_stats.clear();
-	speed_stats.clear();
+	Globals::all_stats.clear();
+	Globals::speed_stats.clear();
 	table_columns.clear();
 	Settings::settings.clear();
 
@@ -212,31 +208,31 @@ int main( int argc, char *argv[] )
 		const string& mac = mac_info.second.get_mac();
 
 		InterfaceSpeedMeter ism;
-		speed_stats[mac] = ism;
+		Globals::speed_stats[mac] = ism;
 
-		if ( all_stats.find( mac ) == all_stats.end() )
+		if ( Globals::all_stats.find( mac ) == Globals::all_stats.end() )
 		{
-			get_time( &y, &m, &d, &h );
+			Utils::get_time( &y, &m, &d, &h );
 
 			InterfaceStats hstats;
 			row.clear();
 			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
-			all_stats[mac]["hourly"][row] = hstats;
+			Globals::all_stats[mac]["hourly"][row] = hstats;
 
 			InterfaceStats dstats;
 			row.clear();
 			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
-			all_stats[mac]["daily"][row] = dstats;
+			Globals::all_stats[mac]["daily"][row] = dstats;
 
 			InterfaceStats mstats;
 			row.clear();
 			row += std::to_string( y ) + "-" + std::to_string( m );
-			all_stats[mac]["monthly"][row] = mstats;
+			Globals::all_stats[mac]["monthly"][row] = mstats;
 
 			InterfaceStats ystats;
 			row.clear();
 			row += std::to_string( y );
-			all_stats[mac]["yearly"][row] = ystats;
+			Globals::all_stats[mac]["yearly"][row] = ystats;
 		}
 	}
 
@@ -249,6 +245,7 @@ int main( int argc, char *argv[] )
 #endif // use_mysql
 	}
 
+	//save all stats
 	if ( Utils::starts_with( storage, "sqlite" ) )
 	{
 #ifdef use_sqlite
@@ -260,6 +257,26 @@ int main( int argc, char *argv[] )
 	{
 		load_data_from_files();
 	}
+
+	if ( Utils::contians( storage, "mysql" ) )
+	{
+#ifdef use_mysql
+		//save_stats_to_mysql();
+#endif // use_mysql
+	}
+
+	if ( Utils::contians( storage, "sqlite" ) )
+	{
+#ifdef use_sqlite
+		save_stats_to_sqlite();
+#endif // use_sqlite
+	}
+
+	if ( Utils::contians( storage, "files" ) )
+	{
+		save_stats_to_files();
+	}
+
 
 	int st = pthread_create( &t2, NULL, &ServerThread::Thread, NULL );
 
@@ -396,69 +413,69 @@ static void * MeterThread( void * )
 //						 stats->tx_packets, stats->rx_packets,
 //						 stats->tx_bytes, stats->rx_bytes );
 
-				get_time( &y, &m, &d, &h );
+				Utils::get_time( &y, &m, &d, &h );
 
 				//TODO remove possible memory leak
 				const string& mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
-				if ( speed_stats.find( mac ) == speed_stats.end() )
+				if ( Globals::speed_stats.find( mac ) == Globals::speed_stats.end() )
 				{
 					///TODO load data from database
 					InterfaceSpeedMeter ism;
-					speed_stats[mac] = ism;
+					Globals::speed_stats[mac] = ism;
 				}
 
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
 
-				if ( all_stats[mac]["hourly"].find( row ) == all_stats[mac]["hourly"].end() )
+				if ( Globals::all_stats[mac]["hourly"].find( row ) == Globals::all_stats[mac]["hourly"].end() )
 				{
 					InterfaceStats hstats;
-					all_stats[mac]["hourly"][row] = hstats;
+					Globals::all_stats[mac]["hourly"][row] = hstats;
 				}
 
-				all_stats[mac]["hourly"][row].update( stats->tx_bytes, stats->rx_bytes );
+				Globals::all_stats[mac]["hourly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
 
-				if ( all_stats[mac]["daily"].find( row ) == all_stats[mac]["daily"].end() )
+				if ( Globals::all_stats[mac]["daily"].find( row ) == Globals::all_stats[mac]["daily"].end() )
 				{
 					InterfaceStats dstats;
-					all_stats[mac]["daily"][row] = dstats;
+					Globals::all_stats[mac]["daily"][row] = dstats;
 				}
 
-				all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
+				Globals::all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 				row.clear();
 				row += std::to_string( y ) + "-" + std::to_string( m );
 
-				if ( all_stats[mac]["monthly"].find( row ) == all_stats[mac]["monthly"].end() )
+				if ( Globals::all_stats[mac]["monthly"].find( row ) == Globals::all_stats[mac]["monthly"].end() )
 				{
 					InterfaceStats mstats;
-					all_stats[mac]["monthly"][row] = mstats;
+					Globals::all_stats[mac]["monthly"][row] = mstats;
 				}
 
-				all_stats[mac]["monthly"][row].update( stats->tx_bytes, stats->rx_bytes );
+				Globals::all_stats[mac]["monthly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 
 				row.clear();
 				row += std::to_string( y );
 
-				if ( all_stats[mac]["yearly"].find( row ) == all_stats[mac]["yearly"].end() )
+				if ( Globals::all_stats[mac]["yearly"].find( row ) == Globals::all_stats[mac]["yearly"].end() )
 				{
 					InterfaceStats ystats;
-					all_stats[mac]["yearly"][row] = ystats;
+					Globals::all_stats[mac]["yearly"][row] = ystats;
 				}
 
-				all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
+				Globals::all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
-				speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
+				Globals::speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
 				if ( is_daemon == false )
 				{
-					for ( auto const & mac_speedinfo : speed_stats )
+					for ( auto const & mac_speedinfo : Globals::speed_stats )
 					{
 						const string& mac = mac_speedinfo.first;
 						const InterfaceSpeedMeter& ism = mac_speedinfo.second;
@@ -549,7 +566,7 @@ static void * MeterThread( void * )
 
 			/* remove unused rows from the all_stats container */
 
-			for ( auto const & mac_table : all_stats )
+			for ( auto const & mac_table : Globals::all_stats )
 			{
 				const string& mac = mac_table.first;
 
@@ -596,7 +613,7 @@ static void * MeterThread( void * )
 
 					for ( uint32_t i = 0; i < rows4remove.size(); i++ )
 					{
-						all_stats[mac][table_name].erase( rows4remove[i] );
+						Globals::all_stats[mac][table_name].erase( rows4remove[i] );
 					}
 
 					rows4remove.clear();
@@ -661,19 +678,10 @@ int32_t mkpath( const string& _s, mode_t mode )
 	return mdret;
 }
 
-void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
-{
-	time_t t = time( NULL );
-	struct tm* tm = localtime( &t );
-	( *y ) = tm->tm_year + 1900;
-	( *m ) = tm->tm_mon + 1;
-	( *d ) = tm->tm_mday;
-	( *h ) = tm->tm_hour;
-}
 
 void save_stats_to_files( void )
 {
-	for ( auto const & mac_table : all_stats )
+	for ( auto const & mac_table : Globals::all_stats )
 	{
 		const string& mac = mac_table.first;
 		mkpath( mac, 0755 );
@@ -855,7 +863,7 @@ void save_stats_to_sqlite( void )
 
 	string query;
 
-	for ( auto const & mac_table : all_stats )
+	for ( auto const & mac_table : Globals::all_stats )
 	{
 		sqlite3 *db;
 		char *zErrMsg = 0;
@@ -963,7 +971,7 @@ void load_data_from_files( void )
 	uint64_t rx_bytes;
 	uint64_t tx_bytes;
 
-	get_time( &y, &m, &d, &h );
+	Utils::get_time( &y, &m, &d, &h );
 
 	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
@@ -985,7 +993,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -998,7 +1006,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -1011,7 +1019,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -1024,7 +1032,7 @@ void load_data_from_files( void )
 			file >> rx_bytes;
 			file >> tx_bytes;
 			file.close();
-			all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 	}
 }
@@ -1044,7 +1052,7 @@ void load_data_from_sqlite( void )
 	uint64_t rx_bytes;
 	uint64_t tx_bytes;
 
-	get_time( &y, &m, &d, &h );
+	Utils::get_time( &y, &m, &d, &h );
 
 	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
@@ -1106,8 +1114,8 @@ void load_data_from_sqlite( void )
 			}
 
 			InterfaceStats ystats;
-			all_stats[mac]["yearly"][row] = ystats;
-			all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["yearly"][row] = ystats;
+			Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -1154,8 +1162,8 @@ void load_data_from_sqlite( void )
 			}
 
 			InterfaceStats mstats;
-			all_stats[mac]["monthly"][row] = mstats;
-			all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["monthly"][row] = mstats;
+			Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -1203,8 +1211,8 @@ void load_data_from_sqlite( void )
 			}
 
 			InterfaceStats dstats;
-			all_stats[mac]["daily"][row] = dstats;
-			all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["daily"][row] = dstats;
+			Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 ///
@@ -1252,8 +1260,8 @@ void load_data_from_sqlite( void )
 			}
 
 			InterfaceStats hstats;
-			all_stats[mac]["hourly"][row] = hstats;
-			all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+			Globals::all_stats[mac]["hourly"][row] = hstats;
+			Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
 		}
 
 		sqlite3_close( db );

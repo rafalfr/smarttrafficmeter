@@ -3,7 +3,7 @@
 #ifdef use_sqlite
 #include "sqlite3.h"
 
-map<string, string> DataBaseDriver::table_columns;
+vector < map<string, string> > DataBaseDriver::query_results;
 
 #endif // use_sqlite
 
@@ -113,35 +113,39 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
     query += to;
     query += "'";
     query += ";";
-    table_columns.clear();
     Logger::LogInfo( query );
+    query_results.clear();
     rc = sqlite3_exec( db, query.c_str(), DataBaseDriver::callback, nullptr, &zErrMsg );
 
     if ( rc == SQLITE_OK )
     {
-        row = table_columns["row"];
+        for ( auto & result : query_results )
+        {
 
-        try
-        {
-            rx_bytes = std::stoull( table_columns["rx_bytes"] );
-        }
-        catch ( ... )
-        {
-            rx_bytes = 0ULL;
-        }
+            row = result["row"];
 
-        try
-        {
-            tx_bytes = std::stoull( table_columns["tx_bytes"] );
-        }
-        catch ( ... )
-        {
-            tx_bytes = 0ULL;
-        }
+            try
+            {
+                rx_bytes = std::stoull( result["rx_bytes"] );
+            }
+            catch ( ... )
+            {
+                rx_bytes = 0ULL;
+            }
 
-        InterfaceStats stats;
-        results[row] = stats;
-        results[row].set_initial_stats( tx_bytes, rx_bytes );
+            try
+            {
+                tx_bytes = std::stoull( result["tx_bytes"] );
+            }
+            catch ( ... )
+            {
+                tx_bytes = 0ULL;
+            }
+
+            InterfaceStats stats;
+            results[row] = stats;
+            results[row].set_initial_stats( tx_bytes, rx_bytes );
+        }
     }
     else
     {
@@ -163,12 +167,16 @@ int DataBaseDriver::callback( void*, int argc, char** argv, char** azColName )
 {
     int i;
 
+    map <string, string> columns;
+
     if ( argc > 0 )
     {
         for ( i = 0; i < argc; i++ )
         {
-            table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
+            columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
         }
+
+        query_results.push_back( columns );
 
         return 0;
     }

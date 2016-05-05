@@ -31,6 +31,17 @@ void InterfaceStats::set_initial_stats( uint64_t _tx, uint64_t _rx )
 	first_update = true;
 }
 
+/** @brief set_current_stats
+  *
+  * @todo: document this function
+  */
+void InterfaceStats::set_current_stats(uint64_t _tx, uint64_t _rx)
+{
+	rx = _rx;
+	tx = _tx;
+	first_update = false;
+}
+
 void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
 {
 	if ( first_update == true )

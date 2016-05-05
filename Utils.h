@@ -20,6 +20,7 @@ public:
 	static string to_string( uint64_t value );
 	static string trim( const std::string &s );
 	static bool check_one_instance( void );
+
 };
 
 #endif // UTILS_H
