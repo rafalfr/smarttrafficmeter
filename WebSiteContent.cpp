@@ -228,14 +228,17 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "<script src=\"/Chart.js\"></script>\n";
         web_page += "</head>\n";
 
-        web_page += "<div style=\"width: 50%\">\n";
-        web_page += "<canvas id=\"canvas\" height=\"450\" width=\"600\"></canvas>\n";
-        web_page += "</div>\n";
-
+		uint32_t chart_id=0;
         for ( auto const & mac_table : Globals::all_stats )
         {
             const string& mac = mac_table.first;
 
+            string canvas_id="canvas";
+            canvas_id+=std::to_string(chart_id);
+
+			web_page += "<div style=\"width: 50%\">\n";
+			web_page += "<canvas id=\""+canvas_id+"\" height=\"450\" width=\"600\"></canvas>\n";
+			web_page += "</div>\n";
             //if ( file.is_open() )
             //{
 //            stringstream input_file_stream;
@@ -325,8 +328,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
 
 
+            string var_chart_data="ChartData";
+            var_chart_data+=std::to_string(chart_id);
+
             string chart_data;
-            chart_data += "var barChartData = {\nlabels : [\n";
+            chart_data += "var "+var_chart_data+" = {\nlabels : [\n";
 
             uint32_t i = 0;
 
@@ -384,8 +390,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             chart_data += "]\n}\n]\n}";
 
+            string var_options="options";
+            var_options+=std::to_string(chart_id);
+
             string chart_options;
-            chart_options += "var options = {\n";
+            chart_options += "var "+var_options+" = {\n";
             chart_options += "scaleLabel : \"<%= value + ' " + unit + "'   %>\",\n";
             chart_options += "responsive : true\n";
             chart_options += "};";
@@ -397,14 +406,46 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             //web_page = Utils::replace( "$chart_data$", chart_data, web_page );
             //web_page = Utils::replace( "$chart_options$", chart_options, web_page );
 
-			web_page+="window.onload = function(){\n";
-			web_page+="var ctx = document.getElementById(\"canvas\").getContext(\"2d\");\n";
-			web_page+="window.myBar = new Chart(ctx).Bar(barChartData, options);\n";
-			web_page+="}\n";
+
+            string var_chart="ctx";
+            var_chart+=std::to_string(chart_id);
+
             web_page += "</script>\n";
             web_page+="<br>\n";
             //}
+
+            chart_id++;
         }
+
+		chart_id=0;
+        web_page+="<script>\n";
+        web_page+="window.onload = function(){\n";
+        for ( auto const & mac_table : Globals::all_stats )
+        {
+
+			string canvas_id="canvas";
+            canvas_id+=std::to_string(chart_id);
+
+			string var_chart_data="ChartData";
+            var_chart_data+=std::to_string(chart_id);
+
+			string var_options="options";
+            var_options+=std::to_string(chart_id);
+
+			string var_context="ctx";
+			var_context+=std::to_string(chart_id);
+
+			string window_chart="window.myBar";
+			window_chart+=std::to_string(chart_id);
+
+			web_page+="var "+var_context+" = document.getElementById(\""+canvas_id+"\").getContext(\"2d\");\n";
+			web_page+=window_chart+" = new Chart("+var_context+").Bar("+var_chart_data+", "+var_options+");\n";
+
+			chart_id++;
+		}
+
+		web_page+="}\n";
+		web_page+="</script>\n";
 
         web_page += "</body>\n";
         web_page += "</html>";
