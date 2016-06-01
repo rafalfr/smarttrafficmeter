@@ -17,7 +17,9 @@ public:
 	static bool starts_with( const string& str, const string& key );
 	static string replace(const string& pattern, const string& with, const string& in) noexcept;
 	static vector<string> split( const string& str, const string& delim );
-	static string to_string( uint64_t value );
+	static string to_string( uint64_t value, uint32_t min_string_lenght=0 );
+	static string to_string( uint32_t value, uint32_t min_string_lenght=0 );
+	static vector<string> hexcolor_to_strings(string& hex_color);
 	static string trim( const std::string &s );
 	static bool check_one_instance( void );
 

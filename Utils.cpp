@@ -51,12 +51,10 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 
         family = ifaddr->ifa_addr->sa_family;
 
-//        if (family != AF_INET && family != AF_INET6)
-//            continue;
 
         /* For an AF_INET* interface address, display the address */
 
-        if ( family == AF_INET ) //|| family == AF_INET6 )
+        if ( family == AF_INET )
         {
             s = getnameinfo( ifaddr->ifa_addr,
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
@@ -256,6 +254,7 @@ string Utils::replace( const string& pattern, const string& with, const string& 
 
         out += in.substr( start, end );
     }
+
     return out;
 }
 
@@ -264,27 +263,12 @@ string Utils::replace( const string& pattern, const string& with, const string& 
   *
   * @todo: document this function
   */
-string Utils::to_string( uint64_t value )
+string Utils::to_string( uint64_t value, uint32_t min_string_lenght )
 {
-    static uint64_t maxd = 1ULL;
-
-    if ( maxd == 1ULL )
-    {
-        //compute maximum decimal value
-        for ( uint64_t i = 0ULL; i < sizeof( uint64_t ) * 8ULL; i++ )
-        {
-            uint64_t v = 1ULL << i;
-
-            if ( ( v / maxd ) != 0ULL )
-            {
-                maxd *= 10ULL;
-            }
-        }
-    }
 
     string out;
 
-    uint64_t divisor = maxd;
+    uint64_t divisor = 10000000000000000000ULL;
 
     if ( value == 0ULL )
     {
@@ -292,7 +276,7 @@ string Utils::to_string( uint64_t value )
     }
     else
     {
-        while ( divisor > 0 )
+        while ( divisor > 0ULL )
         {
             uint64_t c = value / divisor;
             value -= c * divisor;
@@ -305,8 +289,99 @@ string Utils::to_string( uint64_t value )
         }
     }
 
+    for ( int32_t i = 0; i < ( ( int32_t )min_string_lenght - ( int32_t )out.size() ); i++ )
+    {
+        out.insert( 0, "0" );
+    }
+
     return out;
 }
+
+
+/** @brief to_string
+  *
+  * @todo: document this function
+  */
+string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
+{
+
+    string out;
+
+    uint32_t divisor = 1000000000U;
+
+    if ( value == 0U )
+    {
+        out += "0";
+    }
+    else
+    {
+        while ( divisor > 0U )
+        {
+            uint32_t c = value / divisor;
+            value -= c * divisor;
+            divisor /= 10U;
+
+            if ( out.empty() == false || c > 0U )
+            {
+                out += std::to_string( c );
+            }
+        }
+    }
+
+    for ( int32_t i = 0; i < ( ( int32_t )min_string_lenght - ( int32_t )out.size() ); i++ )
+    {
+        out.insert( 0, "0" );
+    }
+
+    return out;
+}
+
+/** @brief hexcolor_to_strings
+  *
+  * @todo: document this function
+  */
+vector<string> Utils::hexcolor_to_strings( string& hex_color )
+{
+    vector<string> out;
+
+    if ( hex_color.size() != 6 )
+    {
+        out.push_back( "0" );
+        out.push_back( "0" );
+        out.push_back( "0" );
+        return out;
+    }
+
+
+    uint32_t color;
+
+    string color_item_str;
+
+    // r
+    color_item_str = hex_color.substr( 0, 2 );
+
+    color = std::stoi( color_item_str, nullptr, 16 );
+
+    out.push_back( Utils::to_string( color ) );
+
+    // g
+    color_item_str = hex_color.substr( 2, 2 );
+
+    color = std::stoi( color_item_str, nullptr, 16 );
+
+    out.push_back( Utils::to_string( color ) );
+
+    // b
+    color_item_str = hex_color.substr( 4, 2 );
+
+    color = std::stoi( color_item_str, nullptr, 16 );
+
+    out.push_back( Utils::to_string( color ) );
+
+    return out;
+}
+
+
 
 /** @brief check_one_instance
   *

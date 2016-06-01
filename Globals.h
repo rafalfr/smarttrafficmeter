@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 
+#include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
 #include "DataBaseDriver.h"
@@ -17,6 +18,7 @@ public:
     //mac, table, date, stats
     static map<string, map<string, map<string, InterfaceStats> > > all_stats;
     static map<string, InterfaceSpeedMeter> speed_stats;
+    static map<string, InterfaceInfo> interfaces;
 
     static DataBaseDriver db_drv;
 

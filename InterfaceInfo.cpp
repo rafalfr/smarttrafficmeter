@@ -8,14 +8,7 @@ InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), ip4( "" ), ip6( "" )
 
 InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( "" ), name( "" ), ip4( "" ), ip6( "" )
 {
-    mac.clear();
-    mac.append( info.get_mac() );
-    name.clear();
-    name.append( info.get_name() );
-    ip4.clear();
-    ip4.append( info.get_ip4() );
-    ip6.clear();
-    ip6.append( info.get_ip6() );
+
 }
 
 InterfaceInfo::~InterfaceInfo()

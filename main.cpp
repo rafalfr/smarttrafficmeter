@@ -199,11 +199,11 @@ int main( int argc, char *argv[] )
 
 	load_settings();
 
-	const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+	Globals::interfaces = Utils::get_all_interfaces();
 
 	string row;
 
-	for ( auto const & mac_info : interfaces )
+	for ( auto const & mac_info : Globals::interfaces )
 	{
 		const string& mac = mac_info.second.get_mac();
 
@@ -216,22 +216,22 @@ int main( int argc, char *argv[] )
 
 			InterfaceStats hstats;
 			row.clear();
-			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+			row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 ) + "_" + Utils::to_string( h,2 ) + ":00-" + Utils::to_string( h + 1,2 ) + ":00";
 			Globals::all_stats[mac]["hourly"][row] = hstats;
 
 			InterfaceStats dstats;
 			row.clear();
-			row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+			row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 );
 			Globals::all_stats[mac]["daily"][row] = dstats;
 
 			InterfaceStats mstats;
 			row.clear();
-			row += std::to_string( y ) + "-" + std::to_string( m );
+			row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 );
 			Globals::all_stats[mac]["monthly"][row] = mstats;
 
 			InterfaceStats ystats;
 			row.clear();
-			row += std::to_string( y );
+			row += Utils::to_string( y );
 			Globals::all_stats[mac]["yearly"][row] = ystats;
 		}
 	}
@@ -426,7 +426,7 @@ static void * MeterThread( void * )
 				}
 
 				row.clear();
-				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+				row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 ) + "_" + Utils::to_string( h,2 ) + ":00-" + Utils::to_string( h + 1,2 ) + ":00";
 
 				if ( Globals::all_stats[mac]["hourly"].find( row ) == Globals::all_stats[mac]["hourly"].end() )
 				{
@@ -438,7 +438,7 @@ static void * MeterThread( void * )
 
 
 				row.clear();
-				row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+				row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 );
 
 				if ( Globals::all_stats[mac]["daily"].find( row ) == Globals::all_stats[mac]["daily"].end() )
 				{
@@ -449,7 +449,7 @@ static void * MeterThread( void * )
 				Globals::all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
 
 				row.clear();
-				row += std::to_string( y ) + "-" + std::to_string( m );
+				row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 );
 
 				if ( Globals::all_stats[mac]["monthly"].find( row ) == Globals::all_stats[mac]["monthly"].end() )
 				{
@@ -461,7 +461,7 @@ static void * MeterThread( void * )
 
 
 				row.clear();
-				row += std::to_string( y );
+				row += Utils::to_string( y );
 
 				if ( Globals::all_stats[mac]["yearly"].find( row ) == Globals::all_stats[mac]["yearly"].end() )
 				{
@@ -580,19 +580,19 @@ static void * MeterThread( void * )
 
 					if ( table_name.compare( "hourly" ) == 0 )
 					{
-						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+						current_row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 ) + "_" + Utils::to_string( h,2 ) + ":00-" + Utils::to_string( h + 1,2 ) + ":00";
 					}
 					else if ( table_name.compare( "daily" ) == 0 )
 					{
-						current_row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+						current_row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 );
 					}
 					else if ( table_name.compare( "monthly" ) == 0 )
 					{
-						current_row += std::to_string( y ) + "-" + std::to_string( m );
+						current_row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 );
 					}
 					else if ( table_name.compare( "yearly" ) == 0 )
 					{
-						current_row += std::to_string( y );
+						current_row += Utils::to_string( y );
 					}
 
 					const map<string, InterfaceStats> & row = table_row.second;
@@ -985,7 +985,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 ) + "_" + Utils::to_string( h,2 ) + ":00-" + Utils::to_string( h + 1,2 ) + ":00";
 		file.open( cwd + "/" + mac + "/hourly/" + row + "/stats.txt", std::ifstream::in );
 
 		if ( file.is_open() == true )
@@ -998,7 +998,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+		row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 );
 		file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
@@ -1011,7 +1011,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row += std::to_string( y ) + "-" + std::to_string( m );
+		row += Utils::to_string( y ) + "-" + Utils::to_string( m,2 );
 		file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
@@ -1024,7 +1024,7 @@ void load_data_from_files( void )
 
 ///
 		row.clear();
-		row += std::to_string( y );
+		row += Utils::to_string( y );
 		file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", ifstream::in );
 
 		if ( file.is_open() == true )
@@ -1085,7 +1085,7 @@ void load_data_from_sqlite( void )
 		query += "SELECT * from yearly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string( y );
+		query += Utils::to_string( y );
 		query += "'";
 		query += ";";
 		table_columns.clear();
@@ -1133,7 +1133,7 @@ void load_data_from_sqlite( void )
 		query += "SELECT * from monthly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string( y ) + "-" + std::to_string( m );
+		query += Utils::to_string( y ) + "-" + Utils::to_string( m,2 );
 		query += "'";
 		query += ";";
 		table_columns.clear();
@@ -1181,7 +1181,7 @@ void load_data_from_sqlite( void )
 		query += "SELECT * from daily ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+		query += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 );
 		query += "'";
 		query += ";";
 
@@ -1230,7 +1230,7 @@ void load_data_from_sqlite( void )
 		query += "SELECT * from hourly ";
 		query += "WHERE row=";
 		query += "'";
-		query += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+		query += Utils::to_string( y ) + "-" + Utils::to_string( m,2 ) + "-" + Utils::to_string( d,2 ) + "_" + Utils::to_string( h,2 ) + ":00-" + Utils::to_string( h + 1,2 ) + ":00";
 		query += "'";
 		query += ";";
 

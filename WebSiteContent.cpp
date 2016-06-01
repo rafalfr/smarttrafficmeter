@@ -58,7 +58,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 uint64_t speed_up = ism.get_tx_speed();
 
                 row.clear();
-                row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+                row += Utils::to_string( y ) + "-" + Utils::to_string( m ) + "-" + Utils::to_string( d ) + "_" + Utils::to_string( h ) + ":00-" + Utils::to_string( h + 1 ) + ":00";
 
                 uint64_t hourly_down = 0;
                 uint64_t hourly_up = 0;
@@ -71,7 +71,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
 
                 row.clear();
-                row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+                row += Utils::to_string( y ) + "-" + Utils::to_string( m ) + "-" + Utils::to_string( d );
 
                 uint64_t daily_up = 0;
                 uint64_t daily_down = 0;
@@ -83,7 +83,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 }
 
                 row.clear();
-                row += std::to_string( y ) + "-" + std::to_string( m );
+                row += Utils::to_string( y ) + "-" + Utils::to_string( m );
 
                 uint64_t monthly_up = 0;
                 uint64_t monthly_down = 0;
@@ -95,7 +95,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 }
 
                 row.clear();
-                row += std::to_string( y );
+                row += Utils::to_string( y );
 
                 uint64_t yearly_up = 0;
                 uint64_t yearly_down = 0;
@@ -201,7 +201,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^\\/daily\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^\\\/daily\\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\\/?([[:xdigit:]]{6})?\\\/?([[:xdigit:]]{6})?\\\/?(bar|line|radar|polarArea|pie)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
         // http://127.0.0.1:8080/daily/2015-04-04/2016-06-04
 
@@ -211,40 +211,97 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t h;
 
         string web_page;
+
+        //get parameters
         string start_date_str = request->path_match[1];
         string end_date_str = request->path_match[2];
+        string up_color_str = request->path_match[3];
+        string down_color_str = request->path_match[4];
+        string chart_type_str = request->path_match[5];
+
+        // set default values
+        if ( up_color_str.compare( "" ) == 0 )
+        {
+            up_color_str = "ffbb00";
+        }
+
+        if ( down_color_str.compare( "" ) == 0 )
+        {
+            down_color_str = "0055ff";
+        }
+
+        if ( chart_type_str.compare( "" ) == 0 )
+        {
+            chart_type_str = "bar";
+        }
 
         Utils::get_time( &y, &m, &d, &h );
 
-        string current_time_str = std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+        string current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
 
-        //ifstream file;
-        //file.open( "../../webpage/stats.html", std::ifstream::in | std::ifstream::binary );
+        // create chart colors
+        string down_fill_color = rgba_color( down_color_str, 0.5f );
+        string down_stroke_color = rgba_color( down_color_str, 0.8f );
+        string down_highlightfill_color = rgba_color( down_color_str, 0.75f );
+        string down_highlightstroke_color = rgba_color( down_color_str, 1.0f );
 
+        string up_fill_color = rgba_color( up_color_str, 0.5f );
+        string up_stroke_color = rgba_color( up_color_str, 0.8f );
+        string up_highlightfill_color = rgba_color( up_color_str, 0.75f );
+        string up_highlightstroke_color = rgba_color( up_color_str, 1.0f );
+
+        // start generating web page
         web_page += "<!doctype html>\n";
         web_page += "<html>\n";
-        web_page += "<head>\m";
-        web_page += "<title>Bar Chart</title>";
+        web_page += "<head>\n";
+        web_page += "<title>daily statistics</title>";
         web_page += "<script src=\"/Chart.js\"></script>\n";
-        web_page += "</head>\n";
 
-		uint32_t chart_id=0;
+        web_page += "<style>\n";
+        web_page += "p {color:black; font-family: arial}\n";
+        web_page += "</style>\n";
+
+        web_page += "</head>\n";
+        web_page += "<body>\n";
+        web_page += "<table style=\"text-align: center; width: 1028px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+        web_page += "<tbody>\n";
+        web_page += "<tr>\n";
+        web_page += "<td style=\"vertical-align: top; text-align: center; width: 700px;\">\n";
+
+
+        uint32_t chart_id = 0;
+
+        // create chart for each network interface
         for ( auto const & mac_table : Globals::all_stats )
         {
             const string& mac = mac_table.first;
 
-            string canvas_id="canvas";
-            canvas_id+=std::to_string(chart_id);
+            string interface_name = "n/a";
+            string ip4 = "n/a";
+            string ip6 = "n/a";
 
-			web_page += "<div style=\"width: 50%\">\n";
-			web_page += "<canvas id=\""+canvas_id+"\" height=\"450\" width=\"600\"></canvas>\n";
-			web_page += "</div>\n";
-            //if ( file.is_open() )
-            //{
-//            stringstream input_file_stream;
-//            input_file_stream << file.rdbuf();
-//            web_page = input_file_stream.str();
-//            file.close();
+            for ( auto const & name_info : Globals::interfaces )
+            {
+                const InterfaceInfo& interface_info = name_info.second;
+
+                if ( interface_info.get_mac().compare( mac ) == 0 )
+                {
+                    interface_name = interface_info.get_name();
+                    ip4 = interface_info.get_ip4();
+                    ip6 = interface_info.get_ip6();
+                }
+            }
+
+            string canvas_id = "canvas";
+            canvas_id += Utils::to_string( chart_id );
+
+            web_page += "<div title=\"interface name, mac, IP4, IP6\" style=\"width: 100%\" align=\"center\">\n";
+            web_page += "<p>" + interface_name + ", " + mac + ", " + ip4 + ", " + ip6;
+            web_page += "</p></div>";
+
+            web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+            web_page += "<canvas id=\"" + canvas_id + "\" height=\"450\" width=\"600\"></canvas>\n";
+            web_page += "</div>\n";
 
             const vector<string>& start_date_items = Utils::split( start_date_str, "-" );
             const vector<string>& end_date_items = Utils::split( end_date_str, "-" );
@@ -328,11 +385,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
 
 
-            string var_chart_data="ChartData";
-            var_chart_data+=std::to_string(chart_id);
+            string var_chart_data = "ChartData";
+            var_chart_data += Utils::to_string( chart_id );
 
             string chart_data;
-            chart_data += "var "+var_chart_data+" = {\nlabels : [\n";
+            chart_data += "var " + var_chart_data + " = {\nlabels : [\n";
 
             uint32_t i = 0;
 
@@ -350,7 +407,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 i++;
             }
 
-            chart_data += "],\ndatasets : [\n{\nfillColor : \"rgba(220,220,220,0.5)\",\nstrokeColor : \"rgba(220,220,220,0.8)\",\nhighlightFill: \"rgba(220,220,220,0.75)\",\nhighlightStroke: \"rgba(220,220,220,1)\",\ndata :\n [";
+            chart_data += "],\ndatasets : [\n{\nlabel: \"down\",\nbackgroundColor : \"" + down_fill_color + "\",\nborderColor : \"" + down_stroke_color + "\",\nhoverBackgroundColor : \"" + down_highlightfill_color + "\",\nhoverBorderColor : \"" + down_highlightstroke_color + "\",\ndata :\n [";
 
             i = 0;
 
@@ -370,7 +427,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 i++;
             }
 
-            chart_data += "]\n},\n{\nfillColor : \"rgba(151,187,205,0.5)\",\nstrokeColor : \"rgba(151,187,205,0.8)\",highlightFill : \"rgba(151,187,205,0.75)\",highlightStroke : \"rgba(151,187,205,1)\",data :\n[";
+            chart_data += "]\n},\n{\nlabel: \"up\",\nbackgroundColor : \"" + up_fill_color + "\",\nborderColor : \"" + up_stroke_color + "\",hoverBackgroundColor : \"" + up_highlightfill_color + "\",hoverBorderColor : \"" + up_highlightstroke_color + "\",data :\n[";
 
             i = 0;
 
@@ -390,63 +447,75 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             chart_data += "]\n}\n]\n}";
 
-            string var_options="options";
-            var_options+=std::to_string(chart_id);
+            string var_options = "options";
+            var_options += Utils::to_string( chart_id );
 
             string chart_options;
-            chart_options += "var "+var_options+" = {\n";
-            chart_options += "scaleLabel : \"<%= value + ' " + unit + "'   %>\",\n";
+            chart_options += "var " + var_options + " = {\n";
+            chart_options += "scales: {\n";
+            chart_options += "yAxes: [{\n";
+            chart_options += "ticks: {\n";
+            chart_options += "callback: function(value, index, values) {\n";
+            chart_options += "return ''+value.toFixed(2)+' " + unit + "';\n";
+            chart_options += "}\n";
+            chart_options += "}\n";
+            chart_options += "}]\n";
+            chart_options += "},\n";
             chart_options += "responsive : true\n";
             chart_options += "};";
 
-            web_page+="<script>\n";
-            web_page+=chart_data;
-            web_page+="\n";
-            web_page+=chart_options;
-            //web_page = Utils::replace( "$chart_data$", chart_data, web_page );
-            //web_page = Utils::replace( "$chart_options$", chart_options, web_page );
+            web_page += "<script>\n";
+            web_page += chart_data;
+            web_page += "\n";
+            web_page += chart_options;
 
-
-            string var_chart="ctx";
-            var_chart+=std::to_string(chart_id);
+            string var_chart = "ctx";
+            var_chart += Utils::to_string( chart_id );
 
             web_page += "</script>\n";
-            web_page+="<br>\n";
-            //}
+            web_page += "<br>\n";
 
             chart_id++;
         }
 
-		chart_id=0;
-        web_page+="<script>\n";
-        web_page+="window.onload = function(){\n";
+        chart_id = 0;
+        web_page += "<script>\n";
+        web_page += "window.onload = function(){\n";
+
         for ( auto const & mac_table : Globals::all_stats )
         {
 
-			string canvas_id="canvas";
-            canvas_id+=std::to_string(chart_id);
+            string canvas_id = "canvas";
+            canvas_id += Utils::to_string( chart_id );
 
-			string var_chart_data="ChartData";
-            var_chart_data+=std::to_string(chart_id);
+            string var_chart_data = "ChartData";
+            var_chart_data += Utils::to_string( chart_id );
 
-			string var_options="options";
-            var_options+=std::to_string(chart_id);
+            string var_options = "options";
+            var_options += Utils::to_string( chart_id );
 
-			string var_context="ctx";
-			var_context+=std::to_string(chart_id);
+            string var_context = "ctx";
+            var_context += Utils::to_string( chart_id );
 
-			string window_chart="window.myBar";
-			window_chart+=std::to_string(chart_id);
+            string window_chart = "chart";
+            window_chart += Utils::to_string( chart_id );
 
-			web_page+="var "+var_context+" = document.getElementById(\""+canvas_id+"\").getContext(\"2d\");\n";
-			web_page+=window_chart+" = new Chart("+var_context+").Bar("+var_chart_data+", "+var_options+");\n";
+            web_page += "var " + var_context + " = document.getElementById(\"" + canvas_id + "\").getContext(\"2d\");\n";
+            web_page += "var " + window_chart + " = new Chart(" + var_context + ",{\n";
+            web_page += "type: '" + chart_type_str + "',\n";
+            web_page += "data: " + var_chart_data + ",\n";
+            web_page += "options: " + var_options + "\n";
+            web_page += "});\n";
+            chart_id++;
+        }
 
-			chart_id++;
-		}
+        web_page += "}\n";
+        web_page += "</script>\n";
 
-		web_page+="}\n";
-		web_page+="</script>\n";
-
+        web_page += "</td>\n";
+        web_page += "</tr>\n";
+        web_page += "</tbody>\n";
+        web_page += "</table>\n";
         web_page += "</body>\n";
         web_page += "</html>";
 
@@ -503,7 +572,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             root[mac]["speed"]["up"] = Json::Value::UInt64( ism.get_tx_speed() );
 
             row.clear();
-            row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d ) + "_" + std::to_string( h ) + ":00-" + std::to_string( h + 1 ) + ":00";
+            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
 
             if ( Globals::all_stats[mac]["hourly"].find( row ) != Globals::all_stats[mac]["hourly"].end() )
             {
@@ -517,7 +586,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
 
             row.clear();
-            row += std::to_string( y ) + "-" + std::to_string( m ) + "-" + std::to_string( d );
+            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
 
             if ( Globals::all_stats[mac]["daily"].find( row ) != Globals::all_stats[mac]["daily"].end() )
             {
@@ -531,7 +600,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
 
             row.clear();
-            row += std::to_string( y ) + "-" + std::to_string( m );
+            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
 
             if ( Globals::all_stats[mac]["monthly"].find( row ) != Globals::all_stats[mac]["monthly"].end() )
             {
@@ -545,7 +614,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
 
             row.clear();
-            row += std::to_string( y );
+            row += Utils::to_string( y );
 
             if ( Globals::all_stats[mac]["yearly"].find( row ) != Globals::all_stats[mac]["yearly"].end() )
             {
@@ -570,6 +639,31 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
 }
+/** @brief rgba_color
+  *
+  * @todo: document this function
+  */
+string WebSiteContent::rgba_color( string& hex_color, float a )
+{
+    string out;
+
+    vector<string> rgb = Utils::hexcolor_to_strings( hex_color );
+
+    out += "rgba(";
+    out += rgb[0];
+    out += ",";
+    out += rgb[1];
+    out += ",";
+    out += rgb[2];
+    out += ",";
+    out += std::to_string( a );
+    out += ")";
+
+    return out;
+}
+
+
+
 
 //http://html-online.com/editor/
 
