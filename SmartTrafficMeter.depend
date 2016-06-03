@@ -135,7 +135,7 @@
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1462912910 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1464902878 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -259,7 +259,7 @@
 	<vector>
 	"InterfaceInfo.h"
 
-1463248637 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1464956490 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	<algorithm>
 	<arpa/inet.h>
 	<sys/socket.h>
@@ -404,7 +404,7 @@
 	<string>
 	"server_http.hpp"
 
-1463249886 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1464955749 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	<fstream>
 	<memory>
 	<sstream>
@@ -568,9 +568,10 @@
 	<sstream>
 	<strstream>
 
-1462027878 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1464879361 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
 	"DataBaseDriver.h"
 	"Logger.h"
+	"Utils.h"
 	"sqlite3.h"
 
 1462027816 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h

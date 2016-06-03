@@ -73,6 +73,11 @@ using namespace TCLAP;
 
 //https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
 
+//Windows
+//http://www.codeproject.com/Articles/499465/Simple-Windows-Service-in-Cplusplus
+//http://www.devx.com/cplus/Article/9857
+//http://www.codeproject.com/Articles/5331/Retrieve-the-number-of-bytes-sent-received-and-oth
+//http://dandar3.blogspot.com/2009/03/network-monitor-v07.html
 
 //http://stackoverflow.com/questions/10943907/linux-allocator-does-not-release-small-chunks-of-memory/10945602#10945602
 //https://github.com/skanzariya/Memwatch
@@ -178,7 +183,7 @@ int main( int argc, char *argv[] )
 		return 0;
 	}
 
-	//install handlers
+	//install handlers for linux systems
 	signal( SIGINT, signal_handler );
 	signal( SIGSEGV, signal_handler );
 	signal( SIGTERM, signal_handler );

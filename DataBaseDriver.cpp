@@ -1,5 +1,7 @@
 #include "DataBaseDriver.h"
 #include "Logger.h"
+#include "Utils.h"
+
 #ifdef use_sqlite
 #include "sqlite3.h"
 
@@ -82,18 +84,18 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
     if ( _table.compare( "hourly" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month ) + "-" + std::to_string( _from.day ) + "_" + std::to_string( _from.hour ) + ":00-" + std::to_string( _from.hour + 1 ) + ":00";
-        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month ) + "-" + std::to_string( _to.day ) + "_" + std::to_string( _to.hour ) + ":00-" + std::to_string( _to.hour + 1 ) + ":00";
+        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 ) + "_" + Utils::to_string( _from.hour, 2 ) + ":00-" + Utils::to_string( _from.hour + 1, 2 ) + ":00";
+        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 ) + "_" + Utils::to_string( _to.hour, 2 ) + ":00-" + Utils::to_string( _to.hour + 1, 2 ) + ":00";
     }
     else if ( _table.compare( "daily" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month ) + "-" + std::to_string( _from.day );
-        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month ) + "-" + std::to_string( _to.day );
+        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 );
+        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 );
     }
     else if ( _table.compare( "monthly" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + std::to_string( _from.month );
-        to = std::to_string( _to.year ) + "-" + std::to_string( _to.month );
+        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 );
+        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 );
     }
     else if ( _table.compare( "yearly" ) == 0 )
     {

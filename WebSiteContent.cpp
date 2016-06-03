@@ -1,6 +1,7 @@
 #include <fstream>
 #include <memory>
 #include <sstream>
+#include <regex>
 #include "WebSiteContent.h"
 #include "json/json.h"
 #include "defines.h"
@@ -201,7 +202,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^\\\/daily\\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\\/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})\\\/?([[:xdigit:]]{6})?\\\/?([[:xdigit:]]{6})?\\\/?(bar|line|radar|polarArea|pie)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^\\\/daily\\\/?(.*)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
         // http://127.0.0.1:8080/daily/2015-04-04/2016-06-04
 
@@ -212,32 +213,110 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         string web_page;
 
-        //get parameters
-        string start_date_str = request->path_match[1];
-        string end_date_str = request->path_match[2];
-        string up_color_str = request->path_match[3];
-        string down_color_str = request->path_match[4];
-        string chart_type_str = request->path_match[5];
-
-        // set default values
-        if ( up_color_str.compare( "" ) == 0 )
-        {
-            up_color_str = "ffbb00";
-        }
-
-        if ( down_color_str.compare( "" ) == 0 )
-        {
-            down_color_str = "0055ff";
-        }
-
-        if ( chart_type_str.compare( "" ) == 0 )
-        {
-            chart_type_str = "bar";
-        }
+        //option name, value
+        map<string, string> options;
 
         Utils::get_time( &y, &m, &d, &h );
 
         string current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+
+        //set default optional parameters values
+        string start_date_str = "1900-01-01";
+        string end_date_str = current_time_str;
+        string up_color_str = "ffbb00";
+        string down_color_str = "0055ff";
+        string chart_type_str = "bar";
+        string chartwidth_str = "600";
+        string chartheight_str = "450";
+        string options_str = request->path_match[1];
+
+        //parse parameters string
+        vector<string> options_items = Utils::split( options_str, "&" );
+
+        for ( auto const & options_item : options_items )
+        {
+            vector<string> option_value = Utils::split( options_item, "=" );
+
+            if ( option_value[0].size() > 0 && option_value[1].size() > 0 )
+            {
+                if ( regex_match( option_value[0], regex( "(start|end|upcolor|downcolor|charttype|chartwidth|chartheight)" ) ) == true )
+                {
+                    options[option_value[0]] = option_value[1];
+                }
+            }
+        }
+
+        //get parameters from the options
+        if ( options.find( "start" ) != options.end() )
+        {
+            string value = options["start"];
+
+            if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+        }
+
+        if ( options.find( "end" ) != options.end() )
+        {
+            string value = options["end"];
+
+            if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+        }
+
+        if ( options.find( "upcolor" ) != options.end() )
+        {
+            string value = options["upcolor"];
+
+            if ( regex_match( value, regex( "^[[:xdigit:]]{6}$" ) ) == true )
+            {
+                up_color_str = value;
+            }
+        }
+
+        if ( options.find( "downcolor" ) != options.end() )
+        {
+            string value = options["downcolor"];
+
+            if ( regex_match( value, regex( "^[[:xdigit:]]{6}$" ) ) == true )
+            {
+                down_color_str = value;
+            }
+        }
+
+        if ( options.find( "charttype" ) != options.end() )
+        {
+            string value = options["charttype"];
+
+            if ( regex_match( value, regex( "^(bar|line)$" ) ) == true )
+            {
+                chart_type_str = value;
+            }
+        }
+
+        if ( options.find( "chartwidth" ) != options.end() )
+        {
+            string value = options["chartwidth"];
+
+            if ( regex_match( value, regex( "^[[:digit:]]{1,4}$" ) ) == true )
+            {
+                chartwidth_str = value;
+            }
+        }
+
+        if ( options.find( "chartheight" ) != options.end() )
+        {
+            string value = options["chartheight"];
+
+            if ( regex_match( value, regex( "^[[:digit:]]{1,4}$" ) ) == true )
+            {
+                chartheight_str = value;
+            }
+        }
+
 
         // create chart colors
         string down_fill_color = rgba_color( down_color_str, 0.5f );
@@ -263,10 +342,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         web_page += "</head>\n";
         web_page += "<body>\n";
-        web_page += "<table style=\"text-align: center; width: 1028px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+        web_page += "<table style=\"text-align: center; width: " + chartwidth_str + "px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
         web_page += "<tbody>\n";
         web_page += "<tr>\n";
-        web_page += "<td style=\"vertical-align: top; text-align: center; width: 700px;\">\n";
+        web_page += "<td style=\"vertical-align: top; text-align: center; width: " + chartwidth_str + "px;\">\n";
 
 
         uint32_t chart_id = 0;
@@ -300,7 +379,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             web_page += "</p></div>";
 
             web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
-            web_page += "<canvas id=\"" + canvas_id + "\" height=\"450\" width=\"600\"></canvas>\n";
+            web_page += "<canvas id=\"" + canvas_id + "\" height=\"" + chartheight_str + "\" width=\"" + chartwidth_str + "\"></canvas>\n";
             web_page += "</div>\n";
 
             const vector<string>& start_date_items = Utils::split( start_date_str, "-" );

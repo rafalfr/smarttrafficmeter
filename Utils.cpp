@@ -210,6 +210,12 @@ vector<string> Utils::split( const string& str, const string& delim )
 
     vector<string> items;
 
+    if ( str.size() == 0  || delim.size() == 0 )
+    {
+        items.push_back( str );
+        return items;
+    }
+
     start = 0;
     end = str.find( delim );
 
