@@ -202,9 +202,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^\\\/daily\\\/?(.*)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^\\\/(hourly|daily|monthly|yearly)\\\/?(.*)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
-        // http://127.0.0.1:8080/daily/2015-04-04/2016-06-04
+        // http://127.0.0.1:8080/daily/
 
         uint32_t y;
         uint32_t m;
@@ -213,12 +213,34 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         string web_page;
 
-        //option name, value
+        //option: name, value
         map<string, string> options;
 
         Utils::get_time( &y, &m, &d, &h );
 
-        string current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+        string current_time_str;
+
+        // hourly, daily, monthly, yearly
+        string stats_type = request->path_match[1];
+        Logger::LogInfo(stats_type);
+
+        if ( stats_type.compare( "hourly" ) == 0 )
+        {
+            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 )+ "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+        }
+        else if ( stats_type.compare( "daily" ) == 0 )
+        {
+            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+        }
+        else if ( stats_type.compare( "monthly" ) == 0 )
+        {
+            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+        }
+        else if ( stats_type.compare( "yearly" ) == 0 )
+        {
+            current_time_str = Utils::to_string( y );
+        }
+
 
         //set default optional parameters values
         string start_date_str = "1900-01-01";
@@ -228,7 +250,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string chart_type_str = "bar";
         string chartwidth_str = "600";
         string chartheight_str = "450";
-        string options_str = request->path_match[1];
+        string options_str = request->path_match[2];
+        Logger::LogInfo(options_str);
 
         //parse parameters string
         vector<string> options_items = Utils::split( options_str, "&" );
@@ -249,7 +272,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         //get parameters from the options
         if ( options.find( "start" ) != options.end() )
         {
-            string value = options["start"];
+            const string& value = options["start"];
 
             if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
             {
@@ -259,7 +282,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "end" ) != options.end() )
         {
-            string value = options["end"];
+            const string& value = options["end"];
 
             if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
             {
@@ -269,7 +292,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "upcolor" ) != options.end() )
         {
-            string value = options["upcolor"];
+            const string& value = options["upcolor"];
 
             if ( regex_match( value, regex( "^[[:xdigit:]]{6}$" ) ) == true )
             {
@@ -279,7 +302,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "downcolor" ) != options.end() )
         {
-            string value = options["downcolor"];
+            const string& value = options["downcolor"];
 
             if ( regex_match( value, regex( "^[[:xdigit:]]{6}$" ) ) == true )
             {
@@ -289,7 +312,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "charttype" ) != options.end() )
         {
-            string value = options["charttype"];
+            const string& value = options["charttype"];
 
             if ( regex_match( value, regex( "^(bar|line)$" ) ) == true )
             {
@@ -299,7 +322,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "chartwidth" ) != options.end() )
         {
-            string value = options["chartwidth"];
+            const string& value = options["chartwidth"];
 
             if ( regex_match( value, regex( "^[[:digit:]]{1,4}$" ) ) == true )
             {
@@ -309,14 +332,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         if ( options.find( "chartheight" ) != options.end() )
         {
-            string value = options["chartheight"];
+            const string& value = options["chartheight"];
 
             if ( regex_match( value, regex( "^[[:digit:]]{1,4}$" ) ) == true )
             {
                 chartheight_str = value;
             }
         }
-
 
         // create chart colors
         string down_fill_color = rgba_color( down_color_str, 0.5f );
@@ -359,6 +381,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             string ip4 = "n/a";
             string ip6 = "n/a";
 
+            // get interface inforamtion
             for ( auto const & name_info : Globals::interfaces )
             {
                 const InterfaceInfo& interface_info = name_info.second;
@@ -398,7 +421,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             end_date.day = stoi( end_date_items[2], nullptr, 10 );
             end_date.hour = 0;
 
-
+            //get stats for the current interface
             map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
 
             //update results for the current time
@@ -412,6 +435,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 }
             }
 
+            //scale obtained stats
             uint64_t max_value = 0ULL;
 
             for ( auto & row_stats : results )
@@ -463,7 +487,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 unit = "B";
             }
 
-
+            //generate chart html
             string var_chart_data = "ChartData";
             var_chart_data += Utils::to_string( chart_id );
 
@@ -561,6 +585,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "<script>\n";
         web_page += "window.onload = function(){\n";
 
+        //genrate chart object
         for ( auto const & mac_table : Globals::all_stats )
         {
 
@@ -588,6 +613,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             chart_id++;
         }
 
+        //finish generating html
         web_page += "}\n";
         web_page += "</script>\n";
 
@@ -598,6 +624,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "</body>\n";
         web_page += "</html>";
 
+        //send html to the user
         stringstream out_stream;
         out_stream << web_page;
 
