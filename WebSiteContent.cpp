@@ -222,28 +222,29 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         // hourly, daily, monthly, yearly
         string stats_type = request->path_match[1];
-        Logger::LogInfo(stats_type);
 
-        if ( stats_type.compare( "hourly" ) == 0 )
+        current_time_str = Utils::date_str( stats_type, y, m, d, h );
+
+        //set default optional parameters values
+        string start_date_str;
+
+        if ( stats_type.compare( "yearly" ) == 0 )
         {
-            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 )+ "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-        }
-        else if ( stats_type.compare( "daily" ) == 0 )
-        {
-            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+            start_date_str = "1900";
         }
         else if ( stats_type.compare( "monthly" ) == 0 )
         {
-            current_time_str = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+            start_date_str = "1900-01";
         }
-        else if ( stats_type.compare( "yearly" ) == 0 )
+        else if ( stats_type.compare( "daily" ) == 0 )
         {
-            current_time_str = Utils::to_string( y );
+            start_date_str = "1900-01-01";
+        }
+        else if ( stats_type.compare( "hourly" ) == 0 )
+        {
+            start_date_str = "1900-01-01-00";
         }
 
-
-        //set default optional parameters values
-        string start_date_str = "1900-01-01";
         string end_date_str = current_time_str;
         string up_color_str = "ffbb00";
         string down_color_str = "0055ff";
@@ -251,7 +252,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string chartwidth_str = "600";
         string chartheight_str = "450";
         string options_str = request->path_match[2];
-        Logger::LogInfo(options_str);
 
         //parse parameters string
         vector<string> options_items = Utils::split( options_str, "&" );
@@ -269,12 +269,24 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             }
         }
 
-        //get parameters from the options
+        //get parameters from the options map
         if ( options.find( "start" ) != options.end() )
         {
             const string& value = options["start"];
 
-            if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            if ( stats_type.compare( "yearly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
             {
                 start_date_str = value;
             }
@@ -284,7 +296,19 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         {
             const string& value = options["end"];
 
-            if ( regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            if ( stats_type.compare( "yearly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2}$" ) ) == true )
             {
                 end_date_str = value;
             }
@@ -411,26 +435,65 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             struct date start_date;
             struct date end_date;
 
-            start_date.year = stoi( start_date_items[0], nullptr, 10 );
-            start_date.month = stoi( start_date_items[1], nullptr, 10 );
-            start_date.day = stoi( start_date_items[2], nullptr, 10 );
-            start_date.hour = 0;
+            if ( stats_type.compare( "yearly" ) == 0 )
+            {
+                start_date.year = stoi( start_date_items[0], nullptr, 10 );
+                start_date.month = 0;
+                start_date.day = 0;
+                start_date.hour = 0;
 
-            end_date.year = stoi( end_date_items[0], nullptr, 10 );
-            end_date.month = stoi( end_date_items[1], nullptr, 10 );
-            end_date.day = stoi( end_date_items[2], nullptr, 10 );
-            end_date.hour = 0;
+                end_date.year = stoi( end_date_items[0], nullptr, 10 );
+                end_date.month = 0;
+                end_date.day = 0;
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 )
+            {
+                start_date.year = stoi( start_date_items[0], nullptr, 10 );
+                start_date.month = stoi( start_date_items[1], nullptr, 10 );
+                start_date.day = 0;
+                start_date.hour = 0;
+
+                end_date.year = stoi( end_date_items[0], nullptr, 10 );
+                end_date.month = stoi( end_date_items[1], nullptr, 10 );
+                end_date.day = 0;
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 )
+            {
+                start_date.year = stoi( start_date_items[0], nullptr, 10 );
+                start_date.month = stoi( start_date_items[1], nullptr, 10 );
+                start_date.day = stoi( start_date_items[2], nullptr, 10 );
+                start_date.hour = 0;
+
+                end_date.year = stoi( end_date_items[0], nullptr, 10 );
+                end_date.month = stoi( end_date_items[1], nullptr, 10 );
+                end_date.day = stoi( end_date_items[2], nullptr, 10 );
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 )
+            {
+                start_date.year = stoi( start_date_items[0], nullptr, 10 );
+                start_date.month = stoi( start_date_items[1], nullptr, 10 );
+                start_date.day = stoi( start_date_items[2], nullptr, 10 );
+                start_date.hour = stoi( start_date_items[3], nullptr, 10 );;
+
+                end_date.year = stoi( end_date_items[0], nullptr, 10 );
+                end_date.month = stoi( end_date_items[1], nullptr, 10 );
+                end_date.day = stoi( end_date_items[2], nullptr, 10 );
+                end_date.hour = stoi( end_date_items[3], nullptr, 10 );;
+            }
 
             //get stats for the current interface
-            map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
+            map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, stats_type, start_date, end_date );
 
             //update results for the current time
             for ( auto & row_stats : results )
             {
                 if ( row_stats.first.compare( current_time_str ) == 0 )
                 {
-                    uint64_t rx = Globals::all_stats[mac]["daily"][current_time_str].recieved();
-                    uint64_t tx = Globals::all_stats[mac]["daily"][current_time_str].transmited();
+                    uint64_t rx = Globals::all_stats[mac][stats_type][current_time_str].recieved();
+                    uint64_t tx = Globals::all_stats[mac][stats_type][current_time_str].transmited();
                     row_stats.second.set_current_stats( tx, rx );
                 }
             }
@@ -499,7 +562,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             for ( auto const & row_stats : results )
             {
                 chart_data += "\"";
-                chart_data += row_stats.first;
+                chart_data += Utils::replace("_",", ",row_stats.first);
                 chart_data += "\"";
 
                 if ( i < results.size() - 1 )

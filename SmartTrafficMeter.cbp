@@ -95,6 +95,8 @@
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
 		<Unit filename="Jsoncpp.cpp" />
+		<Unit filename="LinuxUtils.cpp" />
+		<Unit filename="LinuxUtils.h" />
 		<Unit filename="Logger.cpp" />
 		<Unit filename="Logger.h" />
 		<Unit filename="MySQLInterface.cpp" />

@@ -5,7 +5,7 @@
 class ServerThread
 {
     public:
-        static void * Thread ( void *arg );
+        static void * Thread ( void );
 };
 
 #endif // SERVERTHREAD_H

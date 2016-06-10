@@ -1,3 +1,4 @@
+#include "config.h"
 #include <algorithm>
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -24,7 +25,17 @@
 #include <sys/file.h>
 #include <errno.h>
 
+#ifdef use_sqlite
+#include "sqlite3.h"
+#endif // use_sqlite
+
 #include "Utils.h"
+#include "Logger.h"
+#include "Globals.h"
+
+
+map<string, string> Utils::table_columns;
+
 
 map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 {
@@ -60,7 +71,7 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
                              host, NI_MAXHOST,
-                             NULL, 0, NI_NUMERICHOST );
+                             NULL, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
             {
@@ -88,7 +99,7 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
                              host, NI_MAXHOST,
-                             NULL, 0, NI_NUMERICHOST );
+                             NULL, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
             {
@@ -154,7 +165,7 @@ string Utils::get_mac( char* name )
 
 void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
-    time_t t = time( NULL );
+    time_t t = time( nullptr );
     struct tm* tm = localtime( &t );
     ( *y ) = tm->tm_year + 1900;
     ( *m ) = tm->tm_mon + 1;
@@ -428,5 +439,528 @@ string Utils::trim( const std::string& s )
 }
 
 
+/** @brief date_str
+  *
+  * @todo: document this function
+  */
+string Utils::date_str( const string& type, uint32_t y, uint32_t m, uint32_t d, uint32_t h )
+{
+    if ( type.compare( "yearly" ) == 0 )
+    {
+        return Utils::to_string( y );
+    }
+    else if ( type.compare( "monthly" ) == 0 )
+    {
+        return Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+    }
+    else if ( type.compare( "daily" ) == 0 )
+    {
+        return Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+    }
+    else if ( type.compare( "hourly" ) == 0 )
+    {
+        return Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+    }
 
+    return "";
+}
+/** @brief load_data_from_sqlite
+  *
+  * @todo: document this function
+  */
+void Utils::load_data_from_sqlite(void)
+{
+#ifdef use_sqlite
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+    uint32_t y;
+    uint32_t m;
+    uint32_t d;
+    uint32_t h;
+    uint64_t rx_bytes;
+    uint64_t tx_bytes;
+
+    Utils::get_time( &y, &m, &d, &h );
+
+    const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+    string row;
+    string query;
+
+    for ( auto const & kv : interfaces )
+    {
+        const InterfaceInfo& in = kv.second;
+        const string& mac = in.get_mac();
+
+        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+
+        if ( rc != SQLITE_OK )
+        {
+            continue;
+        }
+
+        query.clear();
+        query += "DELETE FROM yearly WHERE row NOT LIKE '2%%';";
+        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+        if ( rc != SQLITE_OK )
+        {
+            sqlite3_free( zErrMsg );
+            Logger::LogError( "Can not delete empty row in the yearly table" );
+        }
+
+        query.clear();
+        query += "SELECT * from yearly ";
+        query += "WHERE row=";
+        query += "'";
+        query += Utils::to_string( y );
+        query += "'";
+        query += ";";
+        table_columns.clear();
+        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+
+        if ( rc == SQLITE_OK )
+        {
+            row = table_columns["row"];
+
+            try
+            {
+                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+            }
+            catch ( ... )
+            {
+                rx_bytes = 0ULL;
+            }
+
+            try
+            {
+                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+            }
+            catch ( ... )
+            {
+                tx_bytes = 0ULL;
+            }
+
+            InterfaceStats ystats;
+            Globals::all_stats[mac]["yearly"][row] = ystats;
+            Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+        }
+
+///
+        query.clear();
+        query += "DELETE FROM monthly WHERE row NOT LIKE '2%%';";
+        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+        if ( rc != SQLITE_OK )
+        {
+            sqlite3_free( zErrMsg );
+            Logger::LogError( "Can not delete empty row in the monthly table" );
+        }
+
+        query.clear();
+        query += "SELECT * from monthly ";
+        query += "WHERE row=";
+        query += "'";
+        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+        query += "'";
+        query += ";";
+        table_columns.clear();
+        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+
+        if ( rc == SQLITE_OK )
+        {
+            row = table_columns["row"];
+
+            try
+            {
+                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+            }
+            catch ( ... )
+            {
+                rx_bytes = 0ULL;
+            }
+
+            try
+            {
+                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+            }
+            catch ( ... )
+            {
+                tx_bytes = 0ULL;
+            }
+
+            InterfaceStats mstats;
+            Globals::all_stats[mac]["monthly"][row] = mstats;
+            Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+        }
+
+///
+        query.clear();
+        query += "DELETE FROM daily WHERE row NOT LIKE '2%%';";
+        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+        if ( rc != SQLITE_OK )
+        {
+            sqlite3_free( zErrMsg );
+            Logger::LogError( "Can not delete empty row in the daily table" );
+        }
+
+        query.clear();
+        query += "SELECT * from daily ";
+        query += "WHERE row=";
+        query += "'";
+        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+        query += "'";
+        query += ";";
+
+        table_columns.clear();
+        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+
+        if ( rc == SQLITE_OK )
+        {
+            row = table_columns["row"];
+
+            try
+            {
+                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+            }
+            catch ( ... )
+            {
+                rx_bytes = 0ULL;
+            }
+
+            try
+            {
+                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+            }
+            catch ( ... )
+            {
+                tx_bytes = 0ULL;
+            }
+
+            InterfaceStats dstats;
+            Globals::all_stats[mac]["daily"][row] = dstats;
+            Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+        }
+
+///
+        query.clear();
+        query += "DELETE FROM hourly WHERE row NOT LIKE '2%%';";
+        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+        if ( rc != SQLITE_OK )
+        {
+            sqlite3_free( zErrMsg );
+            Logger::LogError( "Can not delete empty row in the hourly table" );
+        }
+
+        query.clear();
+        query += "SELECT * from hourly ";
+        query += "WHERE row=";
+        query += "'";
+        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+        query += "'";
+        query += ";";
+
+        table_columns.clear();
+        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+
+        if ( rc == SQLITE_OK )
+        {
+            row = table_columns["row"];
+
+            try
+            {
+                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+            }
+            catch ( ... )
+            {
+                rx_bytes = 0ULL;
+            }
+
+            try
+            {
+                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+            }
+            catch ( ... )
+            {
+                tx_bytes = 0ULL;
+            }
+
+            InterfaceStats hstats;
+            Globals::all_stats[mac]["hourly"][row] = hstats;
+            Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+        }
+
+        sqlite3_close( db );
+    }
+
+#endif // use_sqlite
+}
+
+
+
+
+/** @brief load_data_from_files
+  *
+  * @todo: document this function
+  */
+void Utils::load_data_from_files(void)
+{
+//    uint32_t y;
+//    uint32_t m;
+//    uint32_t d;
+//    uint32_t h;
+//    uint64_t rx_bytes;
+//    uint64_t tx_bytes;
+//
+//    Utils::get_time( &y, &m, &d, &h );
+//
+//    const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+//
+//    string row;
+//    ifstream file;
+//
+//    for ( auto const & kv : interfaces )
+//    {
+//        const InterfaceInfo& in = kv.second;
+//        const string& mac = in.get_mac();
+//
+/////
+//        row.clear();
+//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+//        file.open( Globals::cwd + PATH_SEPARATOR + mac + PATH_SEPARATOR + "hourly" PATH_SEPARATOR+ row + PATH_SEPARATOR + "stats.txt", std::ifstream::in );
+//
+//        if ( file.is_open() == true )
+//        {
+//            file >> rx_bytes;
+//            file >> tx_bytes;
+//            file.close();
+//            Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+//        }
+//
+/////
+//        row.clear();
+//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+//        file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", ifstream::in );
+//
+//        if ( file.is_open() == true )
+//        {
+//            file >> rx_bytes;
+//            file >> tx_bytes;
+//            file.close();
+//            Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+//        }
+//
+/////
+//        row.clear();
+//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+//        file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", ifstream::in );
+//
+//        if ( file.is_open() == true )
+//        {
+//            file >> rx_bytes;
+//            file >> tx_bytes;
+//            file.close();
+//            Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+//        }
+//
+/////
+//        row.clear();
+//        row += Utils::to_string( y );
+//        file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", ifstream::in );
+//
+//        if ( file.is_open() == true )
+//        {
+//            file >> rx_bytes;
+//            file >> tx_bytes;
+//            file.close();
+//            Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+//        }
+//    }
+}
+
+/** @brief save_stats_to_sqlite
+  *
+  * @todo: document this function
+  */
+void Utils::save_stats_to_sqlite(void)
+{
+	#ifdef use_sqlite
+//http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
+//http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
+//https://www.sqlite.org/cintro.html
+
+    string query;
+
+    for ( auto const & mac_table : Globals::all_stats )
+    {
+        sqlite3 *db;
+        char *zErrMsg = 0;
+        int rc;
+
+        const string& mac = mac_table.first;
+        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
+
+        if ( rc != SQLITE_OK )
+        {
+            continue;
+        }
+
+        for ( auto const & table_row : table )
+        {
+            const string& table_name = table_row.first;
+
+            query.clear();
+            query += "CREATE TABLE IF NOT EXISTS '" + table_name + "' ('row' VARCHAR(45) NULL,'rx_bytes' UNSIGNED BIG INT NULL,'tx_bytes' UNSIGNED BIG INT NULL,PRIMARY KEY ('row'));";
+
+            rc = sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+
+            if ( rc != SQLITE_OK )
+            {
+                sqlite3_free( zErrMsg );
+                Logger::LogError( "Can not create " + table_name );
+                continue;
+            }
+
+
+            query.clear();
+            query += "DELETE FROM " + table_name + " WHERE ";
+            query += "row NOT LIKE ";
+            query += "'2%%';";
+            rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+            if ( rc != SQLITE_OK )
+            {
+                sqlite3_free( zErrMsg );
+                Logger::LogError( "Can not delete empty row in the table " + table_name );
+            }
+
+            const map<string, InterfaceStats> & row = table_row.second;
+
+            for ( auto const & row_stats : row )
+            {
+                const string& row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                uint64_t rx = stats.recieved();
+                uint64_t tx = stats.transmited();
+
+                query.clear();
+                query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
+                query += "'";
+                query += row;
+                query += "'";
+                query += ",";
+                query += Utils::to_string( rx );
+                query += ",";
+                query += Utils::to_string( tx );
+                query += ");";
+                rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+                if ( rc != SQLITE_OK )
+                {
+                    sqlite3_free( zErrMsg );
+                    Logger::LogError( "Can not insert row: " + row + " into the table " + table_name );
+                    continue;
+                }
+
+                query.clear();
+                query += "UPDATE OR IGNORE " + table_name + " SET ";
+                query += "rx_bytes=";
+                query += Utils::to_string( rx );
+                query += ", ";
+                query += "tx_bytes=";
+                query += Utils::to_string( tx );
+                query += " WHERE row='" + row + "'";
+                query += ";";
+                rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+
+                if ( rc != SQLITE_OK )
+                {
+                    sqlite3_free( zErrMsg );
+                    Logger::LogError( "Can not update " + table_name + " with row: " + row );
+                    continue;
+                }
+            }
+        }
+
+        sqlite3_close_v2( db );
+    }
+
+#endif // use_sqlite
+}
+
+/** @brief save_stats_to_files
+  *
+  * @todo: document this function
+  */
+void Utils::save_stats_to_files(void)
+{
+//    for ( auto const & mac_table : Globals::all_stats )
+//    {
+//        const string& mac = mac_table.first;
+//        mkpath( mac, 0755 );
+//
+//        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+//
+//        for ( auto const & table_row : table )
+//        {
+//            const string& table_name = table_row.first;
+//            mkpath( mac + "/" + table_name, 0755 );
+//
+//            const map<string, InterfaceStats> & row = table_row.second;
+//
+//            for ( auto const & row_stats : row )
+//            {
+//                const string& row = row_stats.first;
+//                mkpath( mac + "/" + table_name + "/" + row, 0755 );
+//
+//                const InterfaceStats& stats = row_stats.second;
+//
+//                ofstream file;
+//                file.open( cwd + "/" + mac + "/" + table_name + "/" + row + "/stats.txt" );
+//
+//                if ( file.is_open() == true )
+//                {
+//                    uint64_t rx = stats.recieved();
+//                    uint64_t tx = stats.transmited();
+//
+//                    file << ( Utils::to_string( rx ) );
+//                    file << endl;
+//                    file << ( Utils::to_string( tx ) );
+//
+//                    file.close();
+//                }
+//            }
+//        }
+//    }
+}
+
+/** @brief callback
+  *
+  * @todo: document this function
+  */
+int Utils::callback(void*, int argc, char** argv, char** azColName)
+{
+#ifdef use_sqlite
+    int i;
+
+    if ( argc > 0 )
+    {
+        for ( i = 0; i < argc; i++ )
+        {
+            Utils::table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
+        }
+
+        return 0;
+    }
+    else
+    {
+        return 1;
+	}
+#endif
+}
 

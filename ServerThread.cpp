@@ -20,7 +20,7 @@ using namespace std;
 //http://en.cppreference.com/w/cpp/links/libs
 //http://jsoncpp.sourceforge.net/old.html
 
-void* ServerThread::Thread( void* )
+void* ServerThread::Thread( void )
 {
 	int sockfd, n;
 	struct sockaddr_in servaddr, cliaddr;

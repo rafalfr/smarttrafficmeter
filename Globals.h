@@ -15,6 +15,9 @@ class Globals
 {
 public:
 
+    static bool is_daemon;
+    static string cwd;
+
     //mac, table, date, stats
     static map<string, map<string, map<string, InterfaceStats> > > all_stats;
     static map<string, InterfaceSpeedMeter> speed_stats;
