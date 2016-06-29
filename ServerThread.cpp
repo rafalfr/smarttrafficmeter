@@ -2,9 +2,12 @@
 #include <map>
 #include <string>
 #include <cstring>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
 #include <stdio.h>
+
+#ifdef __linux
+#include <sys/socket.h>
+#include <netinet/in.h>
+#endif // __linux
 
 #include "json/json.h"
 #include "Utils.h"

@@ -6,7 +6,7 @@ InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc(""), ip4( "" ), ip6
 
 }
 
-InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( "" ), name( "" ), desc(""), ip4( "" ), ip6( "" )
+InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( info.get_mac() ), name( info.get_name() ), desc(""), ip4( info.get_ip4() ), ip6( info.get_ip6() )
 {
 
 }

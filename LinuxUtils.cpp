@@ -33,6 +33,9 @@
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/predef.h>
 
 #include "Utils.h"
 #include "Logger.h"
@@ -46,9 +49,9 @@
 
 #ifndef __pi__
 
-bfd* Debug::abfd = nullptr;
-asymbol ** Debug::syms = nullptr;
-asection* Debug::text = nullptr;
+bfd* LinuxUtils::abfd = nullptr;
+asymbol ** LinuxUtils::syms = nullptr;
+asection* LinuxUtils::text = nullptr;
 
 #endif // __pi__
 
@@ -59,7 +62,7 @@ using namespace std;
   *
   * @todo: document this function
   */
-void* LinuxUtils::MeterThread(void)
+void* LinuxUtils::MeterThread( void )
 {
     uint32_t y = 0;
     uint32_t m = 0;
@@ -130,7 +133,7 @@ void* LinuxUtils::MeterThread(void)
                                  ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                                  sizeof( struct sockaddr_in6 ),
                                  host, NI_MAXHOST,
-                                 NULL, 0, NI_NUMERICHOST );
+                                 nullptr, 0, NI_NUMERICHOST );
 
                 if ( s != 0 )
                 {
@@ -272,7 +275,7 @@ void* LinuxUtils::MeterThread(void)
         //cout << "\033[2J\033[1;1H";
 
         struct timeval te;
-        gettimeofday( &te, NULL );
+        gettimeofday( &te, nullptr );
         uint64_t c_time = te.tv_sec * 1000ULL + te.tv_usec / 1000ULL;
 
         if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) )
@@ -361,16 +364,16 @@ void* LinuxUtils::MeterThread(void)
         sleep( refresh_interval );
     }
 
-    return 0;
+    return nullptr;
 }
 
 /** @brief signal_handler
   *
   * @todo: document this function
   */
-void LinuxUtils::signal_handler(int signal)
+void LinuxUtils::signal_handler( int signal )
 {
-	    const string& storage = Settings::settings["storage"];
+    const string& storage = Settings::settings["storage"];
 
     if ( Utils::contians( storage, "mysql" ) )
     {
@@ -424,6 +427,8 @@ void LinuxUtils::signal_handler(int signal)
         Logger::LogInfo( "Process exited as a result of SIGFPE" );
     }
 
+    Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
+
     exit( 0 );
 }
 
@@ -431,83 +436,83 @@ void LinuxUtils::signal_handler(int signal)
   *
   * @todo: document this function
   */
-int LinuxUtils::BecomeDaemon(int flags)
+int LinuxUtils::BecomeDaemon( int flags )
 {
-    	int maxfd, fd;
+    int maxfd, fd;
 
-	switch ( fork() )                   /* Become background process */
-	{
-	case -1:
-		return -1;
+    switch ( fork() )                   /* Become background process */
+    {
+    case -1:
+        return -1;
 
-	case 0:
-		break;                     /* Child falls through... */
+    case 0:
+        break;                     /* Child falls through... */
 
-	default:
-		_exit( EXIT_SUCCESS );     /* while parent terminates */
-	}
+    default:
+        _exit( EXIT_SUCCESS );     /* while parent terminates */
+    }
 
-	if ( setsid() == -1 )               /* Become leader of new session */
-		return -1;
+    if ( setsid() == -1 )               /* Become leader of new session */
+        return -1;
 
-	switch ( fork() )                   /* Ensure we are not session leader */
-	{
-	case -1:
-		return -1;
+    switch ( fork() )                   /* Ensure we are not session leader */
+    {
+    case -1:
+        return -1;
 
-	case 0:
-		break;
+    case 0:
+        break;
 
-	default:
-		_exit( EXIT_SUCCESS );
-	}
+    default:
+        _exit( EXIT_SUCCESS );
+    }
 
-	if ( !( flags & BD_NO_UMASK0 ) )
-		umask( 0 );                     /* Clear file mode creation mask */
+    if ( !( flags & BD_NO_UMASK0 ) )
+        umask( 0 );                     /* Clear file mode creation mask */
 
-	if ( !( flags & BD_NO_CHDIR ) )
-	{
-		if ( chdir( "/" ) != 0 )
-		{
-			cout << "can't change working directory" << endl;
-		}
-	}
+    if ( !( flags & BD_NO_CHDIR ) )
+    {
+        if ( chdir( "/" ) != 0 )
+        {
+            cout << "can't change working directory" << endl;
+        }
+    }
 
-	if ( !( flags & BD_NO_CLOSE_FILES ) ) /* Close all open files */
-	{
-		maxfd = sysconf( _SC_OPEN_MAX );
+    if ( !( flags & BD_NO_CLOSE_FILES ) ) /* Close all open files */
+    {
+        maxfd = sysconf( _SC_OPEN_MAX );
 
-		if ( maxfd == -1 )              /* Limit is indeterminate... */
-			maxfd = BD_MAX_CLOSE;       /* so take a guess */
+        if ( maxfd == -1 )              /* Limit is indeterminate... */
+            maxfd = BD_MAX_CLOSE;       /* so take a guess */
 
-		for ( fd = 0; fd < maxfd; fd++ )
-			close( fd );
-	}
+        for ( fd = 0; fd < maxfd; fd++ )
+            close( fd );
+    }
 
-	if ( !( flags & BD_NO_REOPEN_STD_FDS ) )
-	{
-		close( STDIN_FILENO );          /* Reopen standard fd's to /dev/null */
+    if ( !( flags & BD_NO_REOPEN_STD_FDS ) )
+    {
+        close( STDIN_FILENO );          /* Reopen standard fd's to /dev/null */
 
-		fd = open( "/dev/null", O_RDWR );
+        fd = open( "/dev/null", O_RDWR );
 
-		if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
-			return -1;
+        if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
+            return -1;
 
-		if ( dup2( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
-			return -1;
+        if ( dup2( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
+            return -1;
 
-		if ( dup2( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
-			return -1;
-	}
+        if ( dup2( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
+            return -1;
+    }
 
-	return 0;
+    return 0;
 }
 
 /** @brief get_all_interfaces
   *
   * @todo: document this function
   */
-map<string, InterfaceInfo> LinuxUtils::get_all_interfaces(void)
+map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 {
     map<string, InterfaceInfo> interfaces;
 
@@ -541,7 +546,7 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces(void)
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
                              host, NI_MAXHOST,
-                             NULL, 0U, NI_NUMERICHOST );
+                             nullptr, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
             {
@@ -569,7 +574,7 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces(void)
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
                              host, NI_MAXHOST,
-                             NULL, 0U, NI_NUMERICHOST );
+                             nullptr, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
             {
@@ -601,13 +606,11 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces(void)
 }
 
 
-
-
 /** @brief get_mac
   *
   * @todo: document this function
   */
-string LinuxUtils::get_mac(char* name)
+string LinuxUtils::get_mac( char* name )
 {
     int s;
     struct ifreq buffer;
@@ -644,12 +647,14 @@ string LinuxUtils::get_mac(char* name)
   *
   * @todo: document this function
   */
-bool LinuxUtils::check_one_instance(void)
+bool LinuxUtils::check_one_instance( void )
 {
-    int pid_file = open( "smarttrafficmeter.pid", O_CREAT | O_RDWR, 0666 );
-    int rc = flock( pid_file, LOCK_EX | LOCK_NB );
-
-    if ( rc != 0 && ( errno == EWOULDBLOCK ) )
+    try
+    {
+        Globals::shared_mem.reset(
+            new boost::interprocess::shared_memory_object( boost::interprocess::create_only, "SmartTrafficMeterSharedMemory", boost::interprocess::read_write ) );
+    }
+    catch ( ... )
     {
         return false;
     }
@@ -661,74 +666,78 @@ bool LinuxUtils::check_one_instance(void)
   *
   * @todo: document this function
   */
-string LinuxUtils::resolve(const unsigned long address)
+string LinuxUtils::resolve( const unsigned long address )
 {
-	string out;
+    string out;
 
 #ifndef __pi__
 
-	if ( !abfd )
-	{
-		char ename[1024];
-		int l = readlink( "/proc/self/exe", ename, sizeof( ename ) );
+    if ( !abfd )
+    {
+        char ename[1024];
+        int l = readlink( "/proc/self/exe", ename, sizeof( ename ) );
 
-		if ( l == -1 )
-		{
-			Logger::LogError( "Failed to find executable." );
-			return out;
-		}
+        if ( l == -1 )
+        {
+            Logger::LogError( "Failed to find executable." );
+            return out;
+        }
 
-		ename[l] = 0;
+        ename[l] = 0;
 
-		bfd_init();
+        bfd_init();
 
-		abfd = bfd_openr( ename, nullptr );
+        abfd = bfd_openr( ename, nullptr );
 
-		if ( !abfd )
-		{
-			Logger::LogError( "bfd_openr failed" );
-			return out;
-		}
+        if ( !abfd )
+        {
+            Logger::LogError( "bfd_openr failed" );
+            return out;
+        }
 
-		/* oddly, this is required for it to work... */
-		bfd_check_format( abfd, bfd_object );
+        /* oddly, this is required for it to work... */
+        bfd_check_format( abfd, bfd_object );
 
-		unsigned storage_needed = bfd_get_symtab_upper_bound( abfd );
-		syms = ( asymbol ** ) malloc( storage_needed );
-		bfd_canonicalize_symtab( abfd, syms );
+        unsigned storage_needed = bfd_get_symtab_upper_bound( abfd );
+        syms = ( asymbol ** ) malloc( storage_needed );
+        bfd_canonicalize_symtab( abfd, syms );
 
-		text = bfd_get_section_by_name( abfd, ".text" );
-	}
+        text = bfd_get_section_by_name( abfd, ".text" );
+    }
 
-	long offset = ( ( unsigned long )address ) - text->vma;
+    long offset = ( ( unsigned long )address ) - text->vma;
 
-	if ( offset > 0 )
-	{
-		const char *file;
-		const char *func;
-		unsigned line;
+    if ( offset > 0 )
+    {
+        const char *file;
+        const char *func;
+        unsigned line;
 
-		if ( bfd_find_nearest_line( abfd, text, syms, offset, &file, &func, &line ) && file )
-		{
-			string file_str( file );
+        if ( bfd_find_nearest_line( abfd, text, syms, offset, &file, &func, &line ) && file )
+        {
+            string file_str( file );
 
-			out.clear();
-			out += "file: ";
-			out += file_str.substr( file_str.rfind( "/" ) + 1, string::npos );
-			out += "\t";
-			out += "func: ";
-			out += func;
-			out += "\t";
-			out += "line: ";
-			out += std::to_string( line );
-		}
-	}
+            out.clear();
+            out += "file: ";
+            out += file_str.substr( file_str.rfind( "/" ) + 1, string::npos );
+            out += "\t";
+            out += "func: ";
+            out += func;
+            out += "\t";
+            out += "line: ";
+            out += std::to_string( line );
+        }
+    }
 
 #endif // __pi__
-	return out;
+    return out;
 }
 
-void set_signals_handler(void)
+/** @brief set_signals_handler
+  *
+  * @todo: document this function
+  */
+void LinuxUtils::set_signals_handler( void )
 {
     signal( SIGINT, LinuxUtils::signal_handler );
     signal( SIGSEGV, LinuxUtils::signal_handler );
@@ -738,6 +747,39 @@ void set_signals_handler(void)
     signal( SIGFPE, LinuxUtils::signal_handler );
 }
 
+
+/** @brief get_get_program_path
+  *
+  * @todo: document this function
+  */
+string LinuxUtils::get_get_program_path( const char* argv0 )
+{
+    char buf[1024] = {0};
+    ssize_t size = readlink( "/proc/self/exe", buf, sizeof( buf ) );
+
+    if ( size == 0 || size == sizeof( buf ) )
+    {
+        if ( argv0 == nullptr || argv0[0] == 0 )
+        {
+            return "";
+        }
+
+        boost::system::error_code ec;
+        boost::filesystem::path p(
+            boost::filesystem::canonical(
+                argv0, boost::filesystem::current_path(), ec ) );
+        return p.make_preferred().string();
+    }
+    else
+    {
+        std::string path( buf, size );
+        boost::system::error_code ec;
+        boost::filesystem::path p(
+            boost::filesystem::canonical(
+                path, boost::filesystem::current_path(), ec ) );
+        return p.make_preferred().string();
+    }
+}
 
 
 #endif // __linux

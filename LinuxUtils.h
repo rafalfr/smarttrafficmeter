@@ -23,19 +23,28 @@ private:
 	static bfd* abfd;
 	static asymbol **syms;
 	static asection *text;
-	static string resolve( const unsigned long address );
 
 #endif // __pi__
 
 public:
 
     static void * MeterThread( void );
+
     static void signal_handler( int signal );
+
     static int BecomeDaemon( int flags );
+
     static std::string get_mac( char* name );
+
     static std::map<std::string, InterfaceInfo> get_all_interfaces( void );
+
     static bool check_one_instance( void );
+
     static void set_signals_handler(void);
+
+    static string resolve( const unsigned long address );
+
+    static string get_get_program_path(const char* argv0);
 
 };
 

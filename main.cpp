@@ -55,6 +55,7 @@ using namespace TCLAP;
 //https://gist.github.com/jvranish/4441299
 //http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
 //http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
+//http://stackoverflow.com/questions/1528298/get-path-of-executable
 
 //https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
 
@@ -110,7 +111,7 @@ int main( int argc, char *argv[] )
     uint32_t h;
     void *res;
     int32_t s;
-    bool make_program_run_at_startup=false;
+    bool make_program_run_at_startup = false;
 
     Globals::all_stats.clear();
     Globals::speed_stats.clear();
@@ -131,24 +132,24 @@ int main( int argc, char *argv[] )
         cmd.parse( argc, argv );
 
         Globals::is_daemon = daemon_switch.getValue();
-        make_program_run_at_startup=startup_switch.getValue();
+        make_program_run_at_startup = startup_switch.getValue();
     }
     catch ( ArgException &e ) // catch any exceptions
     {
         cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     }
 
-    if (Globals::is_daemon==false)
+    if ( Globals::is_daemon == false )
     {
         cout << "Smart Traffic Meter version " << version << endl;
     }
 
-    Globals::program_path=Utils::get_program_path(argv);
-    Globals::cwd=Utils::get_path(Globals::program_path);
+    Globals::program_path = Utils::get_program_path( argv );
+    Globals::cwd = Utils::get_path( Globals::program_path );
 
-    chdir(Globals::cwd.c_str());
+    chdir( Globals::cwd.c_str() );
 
-    if (make_program_run_at_startup==true)
+    if ( make_program_run_at_startup == true )
     {
         Utils::make_program_run_at_startup();
     }
@@ -174,7 +175,7 @@ int main( int argc, char *argv[] )
         return 0;
     }
 
-    if (Globals::is_daemon==true)
+    if ( Globals::is_daemon == true )
     {
         Utils::sleep_seconds(10);
     }
@@ -283,7 +284,7 @@ int main( int argc, char *argv[] )
     cout << "Monitoring has started" << endl;
 
 #ifndef _NO_WEBSERVER
-    SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi(Settings::settings["html server port"]), 2 );
+    SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["html server port"] ), 2 );
     WebSiteContent::set_web_site_content( http_server );
 
     thread server_thread( [&http_server]()
@@ -293,6 +294,10 @@ int main( int argc, char *argv[] )
 #endif // _NO_WEBSERVER
 
     meter_thread.join();
+
+#ifdef __linux
+    Globals::shared_mem.get()->remove("SmartTrafficMeterSharedMemory");
+#endif // __linux
 
     exit( EXIT_SUCCESS );
 }
@@ -339,17 +344,21 @@ int32_t mkpath( const string& _s, mode_t mode )
         }
 
 #ifdef _WIN32
-        if ( ( mdret = _mkdir( dir.c_str()) ) && errno != EEXIST )
+
+        if ( ( mdret = _mkdir( dir.c_str() ) ) && errno != EEXIST )
         {
             return mdret;
         }
+
 #endif // _WIN32
 
 #ifdef __linux
+
         if ( ( mdret = mkdir( dir.c_str(), mode ) ) && errno != EEXIST )
         {
             return mdret;
         }
+
 #endif // __linux
 
     }

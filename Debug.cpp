@@ -6,6 +6,7 @@
 #ifdef __linux
 #include <execinfo.h>
 #include <unistd.h>
+#include "LinuxUtils.h"
 #endif // __linux
 
 
@@ -17,7 +18,7 @@
 string Debug::get_backtrace( void )
 {
 
-	string out;
+    string out;
 
 #ifdef _WIN32
 
@@ -25,38 +26,38 @@ string Debug::get_backtrace( void )
 
 #ifdef __linux
     void* array[64];
-	size_t size, i;
+    size_t size, i;
 
-	size = backtrace( array, 64 );
+    size = backtrace( array, 64 );
 
 #ifndef __pi__
 
-	//we skip the first two entries
-	//because they refer to the Debug::get_backtrace
-	for ( i = 2; i < size; i++ )
-	{
-		out += resolve( ( unsigned long )array[i] );
-		out += "\n";
-	}
+    //we skip the first two entries
+    //because they refer to the Debug::get_backtrace
+    for ( i = 2; i < size; i++ )
+    {
+        out += LinuxUtils::resolve( ( unsigned long )array[i] );
+        out += "\n";
+    }
 
 #endif // __pi__
 
 #ifdef __pi__
 
-	char** strs = backtrace_symbols( array, size );
+    char** strs = backtrace_symbols( array, size );
 
-	for ( i = 0; i < size; ++i )
-	{
-		out += strs[i];
-		out += "\n";
-	}
+    for ( i = 0; i < size; ++i )
+    {
+        out += strs[i];
+        out += "\n";
+    }
 
-	free( strs );
+    free( strs );
 
 #endif // __pi__
 
 #endif // __linux
 
-return Utils::trim( out );
+    return Utils::trim( out );
 
 }
