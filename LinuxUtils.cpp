@@ -1,3 +1,4 @@
+#ifdef __linux
 #include "config.h"
 #include <iostream>
 #include <fstream>
@@ -29,7 +30,9 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/signal.h>
-#include <stdlib.h>
+#include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
 
 #include "Utils.h"
 #include "Logger.h"
@@ -40,6 +43,15 @@
 #include "InterfaceSpeedMeter.h"
 
 #include "LinuxUtils.h"
+
+#ifndef __pi__
+
+bfd* Debug::abfd = nullptr;
+asymbol ** Debug::syms = nullptr;
+asection* Debug::text = nullptr;
+
+#endif // __pi__
+
 
 using namespace std;
 
@@ -415,3 +427,317 @@ void LinuxUtils::signal_handler(int signal)
     exit( 0 );
 }
 
+/** @brief BecomeDaemon
+  *
+  * @todo: document this function
+  */
+int LinuxUtils::BecomeDaemon(int flags)
+{
+    	int maxfd, fd;
+
+	switch ( fork() )                   /* Become background process */
+	{
+	case -1:
+		return -1;
+
+	case 0:
+		break;                     /* Child falls through... */
+
+	default:
+		_exit( EXIT_SUCCESS );     /* while parent terminates */
+	}
+
+	if ( setsid() == -1 )               /* Become leader of new session */
+		return -1;
+
+	switch ( fork() )                   /* Ensure we are not session leader */
+	{
+	case -1:
+		return -1;
+
+	case 0:
+		break;
+
+	default:
+		_exit( EXIT_SUCCESS );
+	}
+
+	if ( !( flags & BD_NO_UMASK0 ) )
+		umask( 0 );                     /* Clear file mode creation mask */
+
+	if ( !( flags & BD_NO_CHDIR ) )
+	{
+		if ( chdir( "/" ) != 0 )
+		{
+			cout << "can't change working directory" << endl;
+		}
+	}
+
+	if ( !( flags & BD_NO_CLOSE_FILES ) ) /* Close all open files */
+	{
+		maxfd = sysconf( _SC_OPEN_MAX );
+
+		if ( maxfd == -1 )              /* Limit is indeterminate... */
+			maxfd = BD_MAX_CLOSE;       /* so take a guess */
+
+		for ( fd = 0; fd < maxfd; fd++ )
+			close( fd );
+	}
+
+	if ( !( flags & BD_NO_REOPEN_STD_FDS ) )
+	{
+		close( STDIN_FILENO );          /* Reopen standard fd's to /dev/null */
+
+		fd = open( "/dev/null", O_RDWR );
+
+		if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
+			return -1;
+
+		if ( dup2( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
+			return -1;
+
+		if ( dup2( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
+			return -1;
+	}
+
+	return 0;
+}
+
+/** @brief get_all_interfaces
+  *
+  * @todo: document this function
+  */
+map<string, InterfaceInfo> LinuxUtils::get_all_interfaces(void)
+{
+    map<string, InterfaceInfo> interfaces;
+
+    struct ifaddrs *ifaddr, *ipa = nullptr;
+    int family, s;
+    char* host = new char[NI_MAXHOST];
+
+    if ( getifaddrs( &ifaddr ) == -1 )
+    {
+        freeifaddrs( ifaddr );
+        return interfaces;
+    }
+
+    ipa = ifaddr;
+
+    for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
+    {
+        if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 )
+        {
+            continue;
+        }
+
+        family = ifaddr->ifa_addr->sa_family;
+
+
+        /* For an AF_INET* interface address, display the address */
+
+        if ( family == AF_INET )
+        {
+            s = getnameinfo( ifaddr->ifa_addr,
+                             ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
+                             sizeof( struct sockaddr_in6 ),
+                             host, NI_MAXHOST,
+                             NULL, 0U, NI_NUMERICHOST );
+
+            if ( s != 0 )
+            {
+                continue;
+            }
+
+            string interface_name( ifaddr->ifa_name );
+
+            if ( interfaces.find( interface_name ) == interfaces.end() )
+            {
+                InterfaceInfo in;
+                in.set_name( ifaddr->ifa_name );
+                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
+                in.set_ip4( host );
+                interfaces[interface_name] = in;
+            }
+            else
+            {
+                interfaces[interface_name].set_ip4( host );
+            }
+        }
+        else if ( family == AF_INET6 )
+        {
+            s = getnameinfo( ifaddr->ifa_addr,
+                             ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
+                             sizeof( struct sockaddr_in6 ),
+                             host, NI_MAXHOST,
+                             NULL, 0U, NI_NUMERICHOST );
+
+            if ( s != 0 )
+            {
+                continue;
+            }
+
+            string interface_name = string( ifaddr->ifa_name );
+
+            if ( interfaces.find( interface_name ) == interfaces.end() )
+            {
+                InterfaceInfo in;
+                in.set_name( ifaddr->ifa_name );
+                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
+                in.set_ip6( host );
+                interfaces[interface_name] = in;
+            }
+            else
+            {
+                interfaces[interface_name].set_ip6( host );
+            }
+        }
+    }
+
+    delete []host;
+
+    freeifaddrs( ipa );
+
+    return interfaces;
+}
+
+
+
+
+/** @brief get_mac
+  *
+  * @todo: document this function
+  */
+string LinuxUtils::get_mac(char* name)
+{
+    int s;
+    struct ifreq buffer;
+    char* out_buf;
+    string mac;
+
+    out_buf = new char[256];
+    memset( out_buf, 0x00, 256 * sizeof( char ) );
+
+    s = socket( PF_INET, SOCK_DGRAM, 0 );
+
+    memset( &buffer, 0x00, sizeof( buffer ) );
+
+    strcpy( buffer.ifr_name, name );
+
+    ioctl( s, SIOCGIFHWADDR, &buffer );
+
+    close( s );
+
+    for ( s = 0; s < 6; s++ )
+    {
+        sprintf( out_buf, "%.2x-%.2x-%.2x-%.2x-%.2x-%.2x", ( unsigned char ) buffer.ifr_hwaddr.sa_data[0], ( unsigned char ) buffer.ifr_hwaddr.sa_data[1], ( unsigned char ) buffer.ifr_hwaddr.sa_data[2], ( unsigned char ) buffer.ifr_hwaddr.sa_data[3], ( unsigned char ) buffer.ifr_hwaddr.sa_data[4], ( unsigned char ) buffer.ifr_hwaddr.sa_data[5] );
+    }
+
+    mac.clear();
+    mac.append( out_buf );
+
+    delete []out_buf;
+
+    return mac;
+}
+
+/** @brief check_one_instance
+  *
+  * @todo: document this function
+  */
+bool LinuxUtils::check_one_instance(void)
+{
+    int pid_file = open( "smarttrafficmeter.pid", O_CREAT | O_RDWR, 0666 );
+    int rc = flock( pid_file, LOCK_EX | LOCK_NB );
+
+    if ( rc != 0 && ( errno == EWOULDBLOCK ) )
+    {
+        return false;
+    }
+
+    return true;
+}
+
+/** @brief resolve
+  *
+  * @todo: document this function
+  */
+string LinuxUtils::resolve(const unsigned long address)
+{
+	string out;
+
+#ifndef __pi__
+
+	if ( !abfd )
+	{
+		char ename[1024];
+		int l = readlink( "/proc/self/exe", ename, sizeof( ename ) );
+
+		if ( l == -1 )
+		{
+			Logger::LogError( "Failed to find executable." );
+			return out;
+		}
+
+		ename[l] = 0;
+
+		bfd_init();
+
+		abfd = bfd_openr( ename, nullptr );
+
+		if ( !abfd )
+		{
+			Logger::LogError( "bfd_openr failed" );
+			return out;
+		}
+
+		/* oddly, this is required for it to work... */
+		bfd_check_format( abfd, bfd_object );
+
+		unsigned storage_needed = bfd_get_symtab_upper_bound( abfd );
+		syms = ( asymbol ** ) malloc( storage_needed );
+		bfd_canonicalize_symtab( abfd, syms );
+
+		text = bfd_get_section_by_name( abfd, ".text" );
+	}
+
+	long offset = ( ( unsigned long )address ) - text->vma;
+
+	if ( offset > 0 )
+	{
+		const char *file;
+		const char *func;
+		unsigned line;
+
+		if ( bfd_find_nearest_line( abfd, text, syms, offset, &file, &func, &line ) && file )
+		{
+			string file_str( file );
+
+			out.clear();
+			out += "file: ";
+			out += file_str.substr( file_str.rfind( "/" ) + 1, string::npos );
+			out += "\t";
+			out += "func: ";
+			out += func;
+			out += "\t";
+			out += "line: ";
+			out += std::to_string( line );
+		}
+	}
+
+#endif // __pi__
+	return out;
+}
+
+void set_signals_handler(void)
+{
+    signal( SIGINT, LinuxUtils::signal_handler );
+    signal( SIGSEGV, LinuxUtils::signal_handler );
+    signal( SIGTERM, LinuxUtils::signal_handler );
+    signal( SIGABRT, LinuxUtils::signal_handler );
+    signal( SIGILL, LinuxUtils::signal_handler );
+    signal( SIGFPE, LinuxUtils::signal_handler );
+}
+
+
+
+#endif // __linux

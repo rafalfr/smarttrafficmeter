@@ -10,6 +10,7 @@
 #include <functional>
 #include <iostream>
 #include <sstream>
+#include "Utils.h"
 
 namespace SimpleWeb
 {
@@ -290,7 +291,7 @@ protected:
 
 					try
 					{
-						content_length = stoull( it->second );
+						content_length = Utils::stoull( it->second );
 					}
 					catch ( const std::exception &e )
 					{
@@ -439,7 +440,7 @@ protected:
 
 			try
 			{
-				http_version = stof( request->http_version );
+				http_version = Utils::stof( request->http_version );
 			}
 			catch ( const std::exception &e )
 			{

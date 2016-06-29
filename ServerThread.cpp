@@ -2,8 +2,8 @@
 #include <map>
 #include <string>
 #include <cstring>
-#include <sys/socket.h>
-#include <netinet/in.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
 #include <stdio.h>
 
 #include "json/json.h"
@@ -22,6 +22,7 @@ using namespace std;
 
 void* ServerThread::Thread( void )
 {
+#ifdef __linux
 	int sockfd, n;
 	struct sockaddr_in servaddr, cliaddr;
 	socklen_t len;
@@ -160,6 +161,6 @@ void* ServerThread::Thread( void )
 			sendto( sockfd, response.c_str(), response.size(), 0, ( struct sockaddr * ) &cliaddr, sizeof( cliaddr ) );
 		}
 	}
-
+#endif // __linux
 	return 0;
 }

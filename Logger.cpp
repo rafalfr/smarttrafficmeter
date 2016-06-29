@@ -20,7 +20,7 @@ void Logger::LogDebug( const string& message )
 
 	if ( f.good() )
 	{
-		time_t     now = time( 0 );
+		time_t     now = time( nullptr );
 		struct tm  tstruct;
 		char       buf[256];
 		tstruct = *localtime( &now );
@@ -50,7 +50,7 @@ void Logger::LogInfo( const string& message )
 
 	if ( f.good() )
 	{
-		time_t     now = time( 0 );
+		time_t     now = time( nullptr );
 		struct tm  tstruct;
 		char       buf[256];
 		tstruct = *localtime( &now );
@@ -81,7 +81,7 @@ void Logger::LogError( const string& message )
 
 	if ( f.good() )
 	{
-		time_t     now = time( 0 );
+		time_t     now = time( nullptr );
 		struct tm  tstruct;
 		char       buf[256];
 		tstruct = *localtime( &now );

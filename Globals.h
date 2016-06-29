@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <mutex>
 
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
@@ -17,6 +18,9 @@ public:
 
     static bool is_daemon;
     static string cwd;
+    static string program_path;
+
+    static mutex data_load_save_mutex;
 
     //mac, table, date, stats
     static map<string, map<string, map<string, InterfaceStats> > > all_stats;

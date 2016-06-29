@@ -1,12 +1,12 @@
 #include "InterfaceInfo.h"
 
 
-InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), ip4( "" ), ip6( "" )
+InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc(""), ip4( "" ), ip6( "" )
 {
 
 }
 
-InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( "" ), name( "" ), ip4( "" ), ip6( "" )
+InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( "" ), name( "" ), desc(""), ip4( "" ), ip6( "" )
 {
 
 }
@@ -17,6 +17,7 @@ InterfaceInfo::~InterfaceInfo()
     ip4.clear();
     ip6.clear();
     name.clear();
+    desc.clear();
 }
 /** @brief operator=
   *
@@ -34,6 +35,8 @@ InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
         ip6.append( right.get_ip6() );
         name.clear();
         name.append( right.get_name() );
+        desc.clear();
+        desc.append(right.get_desc());
     }
 
     return * this;
@@ -49,6 +52,15 @@ string InterfaceInfo::get_name( void ) const
     return name;
 }
 
+/** @brief get_desc
+  *
+  * @todo: document this function
+  */
+string InterfaceInfo::get_desc(void) const
+{
+    return desc;
+}
+
 string InterfaceInfo::get_ip4( void ) const
 {
     return ip4;
@@ -58,27 +70,37 @@ string InterfaceInfo::get_ip6( void ) const
     return ip6;
 }
 
-void InterfaceInfo::set_mac( const char* _mac )
+void InterfaceInfo::set_mac( const char* t_mac )
 {
     mac.clear();
-    mac.append( _mac );
+    mac.append( t_mac );
 }
 
-void InterfaceInfo::set_name( const char* _name )
+void InterfaceInfo::set_name( const char* t_name )
 {
     name.clear();
-    name.append( _name );
+    name.append( t_name );
 }
 
-void InterfaceInfo::set_ip4( const char* _ip4 )
+/** @brief set_desc
+  *
+  * @todo: document this function
+  */
+void InterfaceInfo::set_desc(const char* t_desc)
+{
+    desc.clear();
+    desc.append(t_desc);
+}
+
+void InterfaceInfo::set_ip4( const char* t_ip4 )
 {
     ip4.clear();
-    ip4.append( _ip4 );
+    ip4.append( t_ip4 );
 }
 
-void InterfaceInfo::set_ip6( const char* _ip6 )
+void InterfaceInfo::set_ip6( const char* t_ip6 )
 {
     ip6.clear();
-    ip6.append( _ip6 );
+    ip6.append( t_ip6 );
 }
 

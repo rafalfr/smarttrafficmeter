@@ -78,7 +78,7 @@ uint64_t InterfaceSpeedMeter::get_tx_speed ( void ) const
 uint64_t InterfaceSpeedMeter::get_time_milisecs ( void )
 {
 	struct timeval  tv;
-	gettimeofday ( &tv, NULL );
+	gettimeofday ( &tv, nullptr );
 
 	return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000 ;
 }

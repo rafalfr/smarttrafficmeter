@@ -2,11 +2,7 @@
 #define DEBUG_H
 
 #include <iostream>
-#ifndef __pi__
 
-#include <bfd.h>
-
-#endif // __pi__
 
 //http://www.opensource.apple.com/source/gdb/gdb-1515/src/binutils/addr2line.c
 //https://github.com/dinhviethoa/linux-sample/blob/master/etpan-symbols.c
@@ -25,16 +21,6 @@ using namespace std;
 
 class Debug
 {
-private:
-
-#ifndef __pi__
-
-	static bfd* abfd;
-	static asymbol **syms;
-	static asection *text;
-	static string resolve( const unsigned long address );
-
-#endif // __pi__
 
 public:
 

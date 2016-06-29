@@ -1,83 +1,13 @@
 #include "Debug.h"
 #include "Utils.h"
 #include "Logger.h"
+
+
+#ifdef __linux
 #include <execinfo.h>
 #include <unistd.h>
+#endif // __linux
 
-#ifndef __pi__
-
-bfd* Debug::abfd = nullptr;
-asymbol ** Debug::syms = nullptr;
-asection* Debug::text = nullptr;
-
-/** @brief resolve
-  *
-  * @todo: document this function
-  */
-string Debug::resolve( const unsigned long address )
-{
-	string out;
-
-	if ( !abfd )
-	{
-		char ename[1024];
-		int l = readlink( "/proc/self/exe", ename, sizeof( ename ) );
-
-		if ( l == -1 )
-		{
-			Logger::LogError( "Failed to find executable." );
-			return out;
-		}
-
-		ename[l] = 0;
-
-		bfd_init();
-
-		abfd = bfd_openr( ename, nullptr );
-
-		if ( !abfd )
-		{
-			Logger::LogError( "bfd_openr failed" );
-			return out;
-		}
-
-		/* oddly, this is required for it to work... */
-		bfd_check_format( abfd, bfd_object );
-
-		unsigned storage_needed = bfd_get_symtab_upper_bound( abfd );
-		syms = ( asymbol ** ) malloc( storage_needed );
-		bfd_canonicalize_symtab( abfd, syms );
-
-		text = bfd_get_section_by_name( abfd, ".text" );
-	}
-
-	long offset = ( ( unsigned long )address ) - text->vma;
-
-	if ( offset > 0 )
-	{
-		const char *file;
-		const char *func;
-		unsigned line;
-
-		if ( bfd_find_nearest_line( abfd, text, syms, offset, &file, &func, &line ) && file )
-		{
-			string file_str( file );
-
-			out.clear();
-			out += "file: ";
-			out += file_str.substr( file_str.rfind( "/" ) + 1, string::npos );
-			out += "\t";
-			out += "func: ";
-			out += func;
-			out += "\t";
-			out += "line: ";
-			out += std::to_string( line );
-		}
-	}
-
-	return out;
-}
-#endif // __pi__
 
 
 /** @brief get_backtrace
@@ -86,9 +16,16 @@ string Debug::resolve( const unsigned long address )
   */
 string Debug::get_backtrace( void )
 {
-	void* array[64];
-	size_t size, i;
+
 	string out;
+
+#ifdef _WIN32
+
+#endif // _WIN32
+
+#ifdef __linux
+    void* array[64];
+	size_t size, i;
 
 	size = backtrace( array, 64 );
 
@@ -118,5 +55,8 @@ string Debug::get_backtrace( void )
 
 #endif // __pi__
 
-	return Utils::trim( out );
+#endif // __linux
+
+return Utils::trim( out );
+
 }

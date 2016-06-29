@@ -7,46 +7,30 @@
 #include <map>
 #include <csignal>
 #include <pthread.h>
-#include <execinfo.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <ifaddrs.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <linux/if_link.h>
 #include <stdio.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <net/if.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/signal.h>
-#include <stdlib.h>
 #include "version.h"
 #include "Utils.h"
 #include "Globals.h"
 #include "Debug.h"
 #include "Logger.h"
 #include "Settings.h"
-#include "BecomeDaemon.h"
 #include "MySQLInterface.h"
-#include "LinuxUtils.h"
 #include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
 #include "WebSiteContent.h"
-#include "server_http.hpp"
 #include "tclap/CmdLine.h"
+
+#ifndef _NO_WEBSERVER
+#include "server_http.hpp"
+#endif // _NO_WEBSERVER
+
 
 #ifdef use_mysql
 
@@ -79,6 +63,10 @@ using namespace TCLAP;
 //http://www.devx.com/cplus/Article/9857
 //http://www.codeproject.com/Articles/5331/Retrieve-the-number-of-bytes-sent-received-and-oth
 //http://dandar3.blogspot.com/2009/03/network-monitor-v07.html
+//https://msdn.microsoft.com/en-us/library/windows/desktop/aa365915(v=vs.85).aspx
+//https://msdn.microsoft.com/en-us/library/windows/desktop/aa365917(v=vs.85).aspx
+
+
 
 //http://stackoverflow.com/questions/10943907/linux-allocator-does-not-release-small-chunks-of-memory/10945602#10945602
 //https://github.com/skanzariya/Memwatch
@@ -86,6 +74,11 @@ using namespace TCLAP;
 //https://regex101.com/
 
 //https://github.com/eidheim/Simple-Web-Server
+
+//http://www.boost.org/doc/libs/1_41_0/more/getting_started/windows.html#or-build-binaries-from-source
+//building boost for windows
+//bootstrap.bat
+//bjam toolset=gcc
 
 // for backtrace code to work compile with -g -rdynamic options
 
@@ -117,11 +110,11 @@ int main( int argc, char *argv[] )
     uint32_t h;
     void *res;
     int32_t s;
+    bool make_program_run_at_startup=false;
 
     Globals::all_stats.clear();
     Globals::speed_stats.clear();
     Settings::settings.clear();
-
 
     string version = string( AutoVersion::FULLVERSION_STRING ) + " built on " + string( __DATE__ ) + " " + string( __TIME__ );
 
@@ -131,28 +124,39 @@ int main( int argc, char *argv[] )
 
         SwitchArg daemon_switch( "d", "daemon", "run the program as daemon", false, NULL );
         cmd.add( daemon_switch );
+
+        SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, NULL );
+        cmd.add( startup_switch );
+
         cmd.parse( argc, argv );
 
         Globals::is_daemon = daemon_switch.getValue();
+        make_program_run_at_startup=startup_switch.getValue();
     }
     catch ( ArgException &e ) // catch any exceptions
     {
         cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     }
 
-    cout << "Smart Traffic Meter version " << version << endl;
-
-    char buf[512];
-
-    if ( getcwd( buf, 512 * sizeof( char ) ) != nullptr )
+    if (Globals::is_daemon==false)
     {
-        Globals::cwd.clear();
-        Globals::cwd.append( buf );
+        cout << "Smart Traffic Meter version " << version << endl;
     }
+
+    Globals::program_path=Utils::get_program_path(argv);
+    Globals::cwd=Utils::get_path(Globals::program_path);
+
+    chdir(Globals::cwd.c_str());
+
+    if (make_program_run_at_startup==true)
+    {
+        Utils::make_program_run_at_startup();
+    }
+
 
     if ( Globals::is_daemon == true )
     {
-        if ( BecomeDaemon( BD_NO_CHDIR | BD_NO_UMASK0 ) == -1 )
+        if ( Utils::BecomeDaemon() == -1 )
         {
             cout << "Can't start as daemon. Process exited" << endl;
             Logger::LogError( "Can't start as daemon. Process exited" );
@@ -170,13 +174,12 @@ int main( int argc, char *argv[] )
         return 0;
     }
 
-    //install handlers for linux systems
-    signal( SIGINT, LinuxUtils::signal_handler );
-    signal( SIGSEGV, LinuxUtils::signal_handler );
-    signal( SIGTERM, LinuxUtils::signal_handler );
-    signal( SIGABRT, LinuxUtils::signal_handler );
-    signal( SIGILL, LinuxUtils::signal_handler );
-    signal( SIGFPE, LinuxUtils::signal_handler );
+    if (Globals::is_daemon==true)
+    {
+        Utils::sleep_seconds(10);
+    }
+
+    Utils::set_signals_handler();
 
     //set default settings
     Settings::settings["storage"] = "sqlite";
@@ -274,17 +277,20 @@ int main( int argc, char *argv[] )
 
 //http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
 
-    thread meter_thread( LinuxUtils::MeterThread );
+
+    thread meter_thread( Utils::MeterThread );
 
     cout << "Monitoring has started" << endl;
 
-    SimpleWeb::Server<SimpleWeb::HTTP> http_server( std::stoi(Settings::settings["html server port"]), 2 );
+#ifndef _NO_WEBSERVER
+    SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi(Settings::settings["html server port"]), 2 );
     WebSiteContent::set_web_site_content( http_server );
 
     thread server_thread( [&http_server]()
     {
         http_server.start();
     } );
+#endif // _NO_WEBSERVER
 
     meter_thread.join();
 
@@ -317,12 +323,12 @@ int32_t mkpath( const string& _s, mode_t mode )
     int32_t mdret = 0;
     string s( _s );
 
-    if ( s[s.size() - 1] != '/' )
+    if ( s[s.size() - 1] != PATH_SEPARATOR_CAHR )
     {
         s += '/';
     }
 
-    while ( ( pos = s.find_first_of( '/', pre ) ) != string::npos )
+    while ( ( pos = s.find_first_of( PATH_SEPARATOR_CAHR, pre ) ) != string::npos )
     {
         dir = s.substr( 0, pos++ );
         pre = pos;
@@ -332,10 +338,20 @@ int32_t mkpath( const string& _s, mode_t mode )
             continue;    // if leading / first time is 0 length
         }
 
+#ifdef _WIN32
+        if ( ( mdret = _mkdir( dir.c_str()) ) && errno != EEXIST )
+        {
+            return mdret;
+        }
+#endif // _WIN32
+
+#ifdef __linux
         if ( ( mdret = mkdir( dir.c_str(), mode ) ) && errno != EEXIST )
         {
             return mdret;
         }
+#endif // __linux
+
     }
 
     return mdret;

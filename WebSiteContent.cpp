@@ -1,3 +1,4 @@
+#include "config.h"
 #include <fstream>
 #include <memory>
 #include <sstream>
@@ -246,8 +247,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
 
         string end_date_str = current_time_str;
-        string up_color_str = "ffbb00";
-        string down_color_str = "0055ff";
+        string up_color_str = "ff0011";
+        string down_color_str = "3344ff";
         string chart_type_str = "bar";
         string chartwidth_str = "600";
         string chartheight_str = "450";
@@ -402,6 +403,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             const string& mac = mac_table.first;
 
             string interface_name = "n/a";
+            string interface_description = "n/a";
             string ip4 = "n/a";
             string ip6 = "n/a";
 
@@ -413,6 +415,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 if ( interface_info.get_mac().compare( mac ) == 0 )
                 {
                     interface_name = interface_info.get_name();
+                    interface_description=interface_info.get_desc();
                     ip4 = interface_info.get_ip4();
                     ip6 = interface_info.get_ip6();
                 }
@@ -422,7 +425,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             canvas_id += Utils::to_string( chart_id );
 
             web_page += "<div title=\"interface name, mac, IP4, IP6\" style=\"width: 100%\" align=\"center\">\n";
+
+#ifdef _WIN32
+            web_page += "<p>" + interface_description + ", " + mac + ", " + ip4;
+#endif // _WIN32
+
+#ifdef __linux
             web_page += "<p>" + interface_name + ", " + mac + ", " + ip4 + ", " + ip6;
+#endif // __linux
+
             web_page += "</p></div>";
 
             web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
@@ -437,51 +448,51 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             if ( stats_type.compare( "yearly" ) == 0 )
             {
-                start_date.year = stoi( start_date_items[0], nullptr, 10 );
+                start_date.year = Utils::stoi( start_date_items[0]);
                 start_date.month = 0;
                 start_date.day = 0;
                 start_date.hour = 0;
 
-                end_date.year = stoi( end_date_items[0], nullptr, 10 );
+                end_date.year = Utils::stoi( end_date_items[0]);
                 end_date.month = 0;
                 end_date.day = 0;
                 end_date.hour = 0;
             }
             else if ( stats_type.compare( "monthly" ) == 0 )
             {
-                start_date.year = stoi( start_date_items[0], nullptr, 10 );
-                start_date.month = stoi( start_date_items[1], nullptr, 10 );
+                start_date.year = Utils::stoi( start_date_items[0]);
+                start_date.month = Utils::stoi( start_date_items[1]);
                 start_date.day = 0;
                 start_date.hour = 0;
 
-                end_date.year = stoi( end_date_items[0], nullptr, 10 );
-                end_date.month = stoi( end_date_items[1], nullptr, 10 );
+                end_date.year = Utils::stoi( end_date_items[0]);
+                end_date.month = Utils::stoi( end_date_items[1]);
                 end_date.day = 0;
                 end_date.hour = 0;
             }
             else if ( stats_type.compare( "daily" ) == 0 )
             {
-                start_date.year = stoi( start_date_items[0], nullptr, 10 );
-                start_date.month = stoi( start_date_items[1], nullptr, 10 );
-                start_date.day = stoi( start_date_items[2], nullptr, 10 );
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
+                start_date.day = Utils::stoi( start_date_items[2] );
                 start_date.hour = 0;
 
-                end_date.year = stoi( end_date_items[0], nullptr, 10 );
-                end_date.month = stoi( end_date_items[1], nullptr, 10 );
-                end_date.day = stoi( end_date_items[2], nullptr, 10 );
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
+                end_date.day = Utils::stoi( end_date_items[2] );
                 end_date.hour = 0;
             }
             else if ( stats_type.compare( "hourly" ) == 0 )
             {
-                start_date.year = stoi( start_date_items[0], nullptr, 10 );
-                start_date.month = stoi( start_date_items[1], nullptr, 10 );
-                start_date.day = stoi( start_date_items[2], nullptr, 10 );
-                start_date.hour = stoi( start_date_items[3], nullptr, 10 );;
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
+                start_date.day = Utils::stoi( start_date_items[2] );
+                start_date.hour = Utils::stoi( start_date_items[3] );
 
-                end_date.year = stoi( end_date_items[0], nullptr, 10 );
-                end_date.month = stoi( end_date_items[1], nullptr, 10 );
-                end_date.day = stoi( end_date_items[2], nullptr, 10 );
-                end_date.hour = stoi( end_date_items[3], nullptr, 10 );;
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
+                end_date.day = Utils::stoi( end_date_items[2] );
+                end_date.hour = Utils::stoi( end_date_items[3] );
             }
 
             //get stats for the current interface
@@ -583,7 +594,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
                 float value = ( ( float )stats.recieved() ) / scale;
 
-                chart_data += std::to_string( value );
+                chart_data += Utils::float_to_string( value );
 
                 if ( i < results.size() - 1 )
                 {
@@ -603,7 +614,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
                 float value = ( ( float )stats.transmited() ) / scale;
 
-                chart_data += std::to_string( value );
+                chart_data += Utils::float_to_string( value );
 
                 if ( i < results.size() - 1 )
                 {
@@ -701,8 +712,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
+        string chartjs_path;
+        chartjs_path+=Globals::cwd+PATH_SEPARATOR+"webpage"+PATH_SEPARATOR+"Chart.js";
+
         ifstream file;
-        file.open( "../../webpage/Chart.js", std::ifstream::in | std::ifstream::binary );
+        file.open( chartjs_path, std::ifstream::in | std::ifstream::binary );
 
         if ( file.is_open() )
         {
@@ -825,7 +839,7 @@ string WebSiteContent::rgba_color( string& hex_color, float a )
     out += ",";
     out += rgb[2];
     out += ",";
-    out += std::to_string( a );
+    out += Utils::float_to_string( a );
     out += ")";
 
     return out;

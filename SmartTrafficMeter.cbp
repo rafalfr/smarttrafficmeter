@@ -6,27 +6,44 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
+			<Target title="Linux Debug">
 				<Option output="bin/Debug/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-Wall" />
+					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="-O0" />
 				</Compiler>
 				<Linker>
+					<Add option="-m64" />
 					<Add library="bfd" />
 				</Linker>
 			</Target>
-			<Target title="Release">
+			<Target title="Linux Release">
 				<Option output="bin/Release/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-m64" />
+					<Add option="-std=c++14" />
+					<Add option="-fexceptions" />
+					<Add option="-rdynamic" />
+				</Compiler>
 				<Linker>
+					<Add option="-m64" />
+					<Add option="-rdynamic" />
+					<Add library="dl" />
+					<Add library="pthread" />
 					<Add library="bfd" />
+					<Add library="boost_system" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_regex" />
+					<Add library="boost_thread" />
+					<Add library="boost_context" />
 				</Linker>
 			</Target>
 			<Target title="pi">
@@ -41,6 +58,65 @@
 					<Add option="-g" />
 					<Add option="-D__pi__" />
 				</Compiler>
+			</Target>
+			<Target title="Windows Release">
+				<Option output="bin/Release/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-w" />
+					<Add option="-std=c++11" />
+					<Add option="-fexceptions" />
+					<Add option="-march=native" />
+					<Add directory="d:/programowanie/C++/boost_1_61_0/" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../smarttrafficmeter" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="ws2_32" />
+					<Add library="Mswsock" />
+					<Add library="iphlpapi" />
+					<Add library="boost_system-mgw49-mt-1_61" />
+					<Add library="boost_coroutine-mgw49-mt-1_61" />
+					<Add library="boost_regex-mgw49-mt-1_61" />
+					<Add library="boost_thread-mgw49-mt-1_61" />
+					<Add library="boost_context-mgw49-mt-1_61" />
+					<Add library="boost_filesystem-mgw49-mt-1_61" />
+					<Add directory="d:/programowanie/C++/boost_1_61_0/stage/lib/" />
+				</Linker>
+			</Target>
+			<Target title="Windows Debug">
+				<Option output="bin/Debug/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-w" />
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="d:/programowanie/C++/boost_1_61_0/" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../smarttrafficmeter" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="ws2_32" />
+					<Add library="Mswsock" />
+					<Add library="iphlpapi" />
+					<Add library="boost_system-mgw49-mt-1_61" />
+					<Add library="boost_coroutine-mgw49-mt-1_61" />
+					<Add library="boost_regex-mgw49-mt-1_61" />
+					<Add library="boost_thread-mgw49-mt-1_61" />
+					<Add library="boost_context-mgw49-mt-1_61" />
+					<Add library="boost_filesystem-mgw49-mt-1_61" />
+					<Add directory="d:/programowanie/C++/boost_1_61_0/stage/lib/" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -57,10 +133,7 @@
 			<Add option="-Wmain" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++14" />
-			<Add option="-m64" />
-			<Add option="-fexceptions" />
-			<Add option="-rdynamic" />
+			<Add option="-std=c++11" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add option="-Duse_sqlite" />
 			<Add directory="sqlite" />
@@ -69,19 +142,6 @@
 			<Add directory="/usr/include/libiberty/" />
 			<Add directory="../smarttrafficmeter" />
 		</Compiler>
-		<Linker>
-			<Add option="-m64" />
-			<Add option="-rdynamic" />
-			<Add library="dl" />
-			<Add library="pthread" />
-			<Add library="boost_system" />
-			<Add library="boost_coroutine" />
-			<Add library="boost_regex" />
-			<Add library="boost_thread" />
-			<Add library="boost_context" />
-		</Linker>
-		<Unit filename="BecomeDaemon.cpp" />
-		<Unit filename="BecomeDaemon.h" />
 		<Unit filename="DataBaseDriver.cpp" />
 		<Unit filename="DataBaseDriver.h" />
 		<Unit filename="Debug.cpp" />
@@ -95,8 +155,16 @@
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
 		<Unit filename="Jsoncpp.cpp" />
-		<Unit filename="LinuxUtils.cpp" />
-		<Unit filename="LinuxUtils.h" />
+		<Unit filename="LinuxUtils.cpp">
+			<Option target="Linux Debug" />
+			<Option target="Linux Release" />
+			<Option target="pi" />
+		</Unit>
+		<Unit filename="LinuxUtils.h">
+			<Option target="Linux Debug" />
+			<Option target="Linux Release" />
+			<Option target="pi" />
+		</Unit>
 		<Unit filename="Logger.cpp" />
 		<Unit filename="Logger.h" />
 		<Unit filename="MySQLInterface.cpp" />
@@ -109,17 +177,30 @@
 		<Unit filename="Utils.h" />
 		<Unit filename="WebSiteContent.cpp" />
 		<Unit filename="WebSiteContent.h" />
+		<Unit filename="WindowsUtils.cpp">
+			<Option target="Windows Release" />
+			<Option target="Windows Debug" />
+		</Unit>
+		<Unit filename="WindowsUtils.h">
+			<Option target="Windows Release" />
+			<Option target="Windows Debug" />
+		</Unit>
 		<Unit filename="config.h" />
 		<Unit filename="defines.h" />
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="resource/win.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="Windows Release" />
+			<Option target="Windows Debug" />
+		</Unit>
 		<Unit filename="serverhttp/server_http.hpp" />
-		<Unit filename="sqlite/sqlite3.h" />
-		<Unit filename="sqlite/sqlite3ext.h" />
 		<Unit filename="sqlite3.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sqlite/sqlite3.h" />
+		<Unit filename="sqlite/sqlite3ext.h" />
 		<Unit filename="tclap/Arg.h" />
 		<Unit filename="tclap/ArgException.h" />
 		<Unit filename="tclap/ArgTraits.h" />

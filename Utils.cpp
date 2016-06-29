@@ -1,15 +1,19 @@
 #include "config.h"
+#include <sstream>
 #include <algorithm>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <boost/filesystem.hpp>
+
+#ifdef __linux
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <ifaddrs.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <linux/if_link.h>
-#include <stdio.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -24,6 +28,14 @@
 #include <sys/time.h>
 #include <sys/file.h>
 #include <errno.h>
+#include "LinuxUtils.h"
+#endif // __linux
+
+
+#ifdef _WIN32
+#include "WindowsUtils.h"
+#endif // _WIN32
+
 
 #ifdef use_sqlite
 #include "sqlite3.h"
@@ -39,128 +51,24 @@ map<string, string> Utils::table_columns;
 
 map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 {
-    map<string, InterfaceInfo> interfaces;
+#ifdef _WIN32
+    return WindowsUtils::get_all_interfaces();
+#endif // _WIN32
 
-    struct ifaddrs *ifaddr, *ipa = nullptr;
-    int family, s;
-    char* host = new char[NI_MAXHOST];
-
-    if ( getifaddrs( &ifaddr ) == -1 )
-    {
-        freeifaddrs( ifaddr );
-        return interfaces;
-    }
-
-    ipa = ifaddr;
-
-    for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
-    {
-        if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 )
-        {
-            continue;
-        }
-
-        family = ifaddr->ifa_addr->sa_family;
-
-
-        /* For an AF_INET* interface address, display the address */
-
-        if ( family == AF_INET )
-        {
-            s = getnameinfo( ifaddr->ifa_addr,
-                             ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
-                             sizeof( struct sockaddr_in6 ),
-                             host, NI_MAXHOST,
-                             NULL, 0U, NI_NUMERICHOST );
-
-            if ( s != 0 )
-            {
-                continue;
-            }
-
-            string interface_name( ifaddr->ifa_name );
-
-            if ( interfaces.find( interface_name ) == interfaces.end() )
-            {
-                InterfaceInfo in;
-                in.set_name( ifaddr->ifa_name );
-                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
-                in.set_ip4( host );
-                interfaces[interface_name] = in;
-            }
-            else
-            {
-                interfaces[interface_name].set_ip4( host );
-            }
-        }
-        else if ( family == AF_INET6 )
-        {
-            s = getnameinfo( ifaddr->ifa_addr,
-                             ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
-                             sizeof( struct sockaddr_in6 ),
-                             host, NI_MAXHOST,
-                             NULL, 0U, NI_NUMERICHOST );
-
-            if ( s != 0 )
-            {
-                continue;
-            }
-
-            string interface_name = string( ifaddr->ifa_name );
-
-            if ( interfaces.find( interface_name ) == interfaces.end() )
-            {
-                InterfaceInfo in;
-                in.set_name( ifaddr->ifa_name );
-                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
-                in.set_ip6( host );
-                interfaces[interface_name] = in;
-            }
-            else
-            {
-                interfaces[interface_name].set_ip6( host );
-            }
-        }
-    }
-
-    delete []host;
-
-    freeifaddrs( ipa );
-
-    return interfaces;
+#ifdef __linux
+    return LinuxUtils::get_all_interfaces();
+#endif // __linux
 }
 
 string Utils::get_mac( char* name )
 {
-    int s;
-    struct ifreq buffer;
-    char* out_buf;
-    string mac;
+#ifdef _WIN32
 
-    out_buf = new char[256];
-    memset( out_buf, 0x00, 256 * sizeof( char ) );
+#endif // _WIN32
 
-    s = socket( PF_INET, SOCK_DGRAM, 0 );
-
-    memset( &buffer, 0x00, sizeof( buffer ) );
-
-    strcpy( buffer.ifr_name, name );
-
-    ioctl( s, SIOCGIFHWADDR, &buffer );
-
-    close( s );
-
-    for ( s = 0; s < 6; s++ )
-    {
-        sprintf( out_buf, "%.2x-%.2x-%.2x-%.2x-%.2x-%.2x", ( unsigned char ) buffer.ifr_hwaddr.sa_data[0], ( unsigned char ) buffer.ifr_hwaddr.sa_data[1], ( unsigned char ) buffer.ifr_hwaddr.sa_data[2], ( unsigned char ) buffer.ifr_hwaddr.sa_data[3], ( unsigned char ) buffer.ifr_hwaddr.sa_data[4], ( unsigned char ) buffer.ifr_hwaddr.sa_data[5] );
-    }
-
-    mac.clear();
-    mac.append( out_buf );
-
-    delete []out_buf;
-
-    return mac;
+#ifdef __linux
+    return LinuxUtils::get_mac(name);
+#endif // __linux
 }
 
 void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
@@ -274,7 +182,29 @@ string Utils::replace( const string& pattern, const string& with, const string& 
 
     return out;
 }
+/** @brief to_string
+  *
+  * @todo: document this function
+  */
+string Utils::float_to_string(float value, int32_t precision)
+{
+    std::ostringstream stm ;
+    stm.precision(precision);
+    stm << value ;
+    return stm.str() ;
+}
 
+/** @brief to_string
+  *
+  * @todo: document this function
+  */
+string Utils::double_to_string(double value, int32_t precision)
+{
+    std::ostringstream stm ;
+    stm.precision(precision);
+    stm << value ;
+    return stm.str() ;
+}
 
 /** @brief to_string
   *
@@ -301,7 +231,46 @@ string Utils::to_string( uint64_t value, uint32_t min_string_lenght )
 
             if ( out.empty() == false || c > 0ULL )
             {
-                out += std::to_string( c );
+                if (c==0ULL)
+                {
+                    out+="0";
+                }
+                else if (c==1ULL)
+                {
+                    out+="1";
+                }
+                else if (c==2ULL)
+                {
+                    out+="2";
+                }
+                else if (c==3ULL)
+                {
+                    out+="3";
+                }
+                else if (c==4ULL)
+                {
+                    out+="4";
+                }
+                else if (c==5ULL)
+                {
+                    out+="5";
+                }
+                else if (c==6ULL)
+                {
+                    out+="6";
+                }
+                else if (c==7ULL)
+                {
+                    out+="7";
+                }
+                else if (c==8ULL)
+                {
+                    out+="8";
+                }
+                else if (c==9ULL)
+                {
+                    out+="9";
+                }
             }
         }
     }
@@ -340,7 +309,46 @@ string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
 
             if ( out.empty() == false || c > 0U )
             {
-                out += std::to_string( c );
+                if (c==0U)
+                {
+                    out+="0";
+                }
+                else if (c==1U)
+                {
+                    out+="1";
+                }
+                else if (c==2U)
+                {
+                    out+="2";
+                }
+                else if (c==3U)
+                {
+                    out+="3";
+                }
+                else if (c==4U)
+                {
+                    out+="4";
+                }
+                else if (c==5U)
+                {
+                    out+="5";
+                }
+                else if (c==6U)
+                {
+                    out+="6";
+                }
+                else if (c==7U)
+                {
+                    out+="7";
+                }
+                else if (c==8U)
+                {
+                    out+="8";
+                }
+                else if (c==9U)
+                {
+                    out+="9";
+                }
             }
         }
     }
@@ -352,6 +360,26 @@ string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
 
     return out;
 }
+
+/** @brief stof
+  *
+  * @todo: document this function
+  */
+float Utils::stof(const string& str)
+{
+    float value;
+
+    std::stringstream stream(str);
+
+    stream>>value;
+    if (stream.fail())
+    {
+        return 0.0f;
+    }
+
+    return value;
+}
+
 
 /** @brief hexcolor_to_strings
   *
@@ -377,21 +405,21 @@ vector<string> Utils::hexcolor_to_strings( string& hex_color )
     // r
     color_item_str = hex_color.substr( 0, 2 );
 
-    color = std::stoi( color_item_str, nullptr, 16 );
+    color = Utils::hstoi( color_item_str );
 
     out.push_back( Utils::to_string( color ) );
 
     // g
     color_item_str = hex_color.substr( 2, 2 );
 
-    color = std::stoi( color_item_str, nullptr, 16 );
+    color = Utils::hstoi( color_item_str );
 
     out.push_back( Utils::to_string( color ) );
 
     // b
     color_item_str = hex_color.substr( 4, 2 );
 
-    color = std::stoi( color_item_str, nullptr, 16 );
+    color = Utils::stoi( color_item_str );
 
     out.push_back( Utils::to_string( color ) );
 
@@ -402,19 +430,20 @@ vector<string> Utils::hexcolor_to_strings( string& hex_color )
 
 /** @brief check_one_instance
   *
-  * @todo: document this function
+  * The function returns true if the current instance is the only one
+  * instance running. Otherwise, the function returns false.
+  * @return bool
+  *
   */
 bool Utils::check_one_instance( void )
 {
-    int pid_file = open( "smarttrafficmeter.pid", O_CREAT | O_RDWR, 0666 );
-    int rc = flock( pid_file, LOCK_EX | LOCK_NB );
+#ifdef _WIN32
+    return WindowsUtils::check_one_instance();
+#endif // _WIN32
 
-    if ( rc != 0 && ( errno == EWOULDBLOCK ) )
-    {
-        return false;
-    }
-
-    return true;
+#ifdef __linux
+    return LinuxUtils::check_one_instance();
+#endif // __linux
 }
 
 /** @brief trim
@@ -471,6 +500,9 @@ string Utils::date_str( const string& type, uint32_t y, uint32_t m, uint32_t d, 
 void Utils::load_data_from_sqlite(void)
 {
 #ifdef use_sqlite
+
+    Globals::data_load_save_mutex.lock();
+
     sqlite3 *db;
     char *zErrMsg = 0;
     int rc;
@@ -526,7 +558,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
             }
             catch ( ... )
             {
@@ -535,7 +567,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
             }
             catch ( ... )
             {
@@ -574,7 +606,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
             }
             catch ( ... )
             {
@@ -583,7 +615,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
             }
             catch ( ... )
             {
@@ -623,7 +655,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
             }
             catch ( ... )
             {
@@ -632,7 +664,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
             }
             catch ( ... )
             {
@@ -672,7 +704,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                rx_bytes = std::stoull( table_columns["rx_bytes"] );
+                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
             }
             catch ( ... )
             {
@@ -681,7 +713,7 @@ void Utils::load_data_from_sqlite(void)
 
             try
             {
-                tx_bytes = std::stoull( table_columns["tx_bytes"] );
+                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
             }
             catch ( ... )
             {
@@ -696,10 +728,10 @@ void Utils::load_data_from_sqlite(void)
         sqlite3_close( db );
     }
 
+    Globals::data_load_save_mutex.unlock();
+
 #endif // use_sqlite
 }
-
-
 
 
 /** @brief load_data_from_files
@@ -714,6 +746,7 @@ void Utils::load_data_from_files(void)
 //    uint32_t h;
 //    uint64_t rx_bytes;
 //    uint64_t tx_bytes;
+//    Globals::data_load_save_mutex.lock();
 //
 //    Utils::get_time( &y, &m, &d, &h );
 //
@@ -779,6 +812,7 @@ void Utils::load_data_from_files(void)
 //            Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
 //        }
 //    }
+//  Globals::data_load_save_mutex.unlock();
 }
 
 /** @brief save_stats_to_sqlite
@@ -787,10 +821,12 @@ void Utils::load_data_from_files(void)
   */
 void Utils::save_stats_to_sqlite(void)
 {
-	#ifdef use_sqlite
+#ifdef use_sqlite
 //http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
 //http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
 //https://www.sqlite.org/cintro.html
+
+    Globals::data_load_save_mutex.lock();
 
     string query;
 
@@ -887,8 +923,28 @@ void Utils::save_stats_to_sqlite(void)
             }
         }
 
+        string query;
+
+        query.clear();
+        query+="DELETE FROM 'hourly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+
+        query.clear();
+        query+="DELETE FROM 'daily' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+
+        query.clear();
+        query+="DELETE FROM 'monthly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+
+        query.clear();
+        query+="DELETE FROM 'yearly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+
         sqlite3_close_v2( db );
     }
+
+    Globals::data_load_save_mutex.unlock();
 
 #endif // use_sqlite
 }
@@ -899,6 +955,7 @@ void Utils::save_stats_to_sqlite(void)
   */
 void Utils::save_stats_to_files(void)
 {
+//  Globals::data_load_save_mutex.lock();
 //    for ( auto const & mac_table : Globals::all_stats )
 //    {
 //        const string& mac = mac_table.first;
@@ -937,6 +994,7 @@ void Utils::save_stats_to_files(void)
 //            }
 //        }
 //    }
+//  Globals::data_load_save_mutex.unlock();
 }
 
 /** @brief callback
@@ -960,7 +1018,212 @@ int Utils::callback(void*, int argc, char** argv, char** azColName)
     else
     {
         return 1;
-	}
+    }
 #endif
 }
+/** @brief stoi
+  *
+  * @todo: document this function
+  */
+int32_t Utils::stoi(const string& str)
+{
+    if (str.size()==0)
+    {
+        return 0;
+    }
+
+    int32_t end_point;
+    bool neg;
+
+    if (str[0]=='-')
+    {
+        neg=true;
+        end_point=1;
+    }
+    else
+    {
+        neg=false;
+        end_point=0;
+    }
+
+    int32_t result=0;
+    int32_t mul=1;
+
+    for(int32_t i=str.size()-1; i>=end_point; i--)
+    {
+        result+=(str[i]-'0')*mul;
+        mul*=10;
+    }
+
+    if (neg==true)
+    {
+        result=-result;
+    }
+
+    return result;
+}
+
+
+/** @brief stoull
+  *
+  * @todo: document this function
+  */
+uint64_t Utils::stoull(const string& str)
+{
+    if (str.size()==0)
+    {
+        return 0ULL;
+    }
+
+    int32_t end_point;
+    bool neg;
+
+    if (str[0]=='-')
+    {
+        neg=true;
+        end_point=1;
+    }
+    else
+    {
+        neg=false;
+        end_point=0;
+    }
+
+    uint64_t result=0ULL;
+    uint64_t mul=1ULL;
+
+    for(int32_t i=str.size()-1; i>=end_point; i--)
+    {
+        result+=(str[i]-'0')*mul;
+        mul*=10ULL;
+    }
+
+    if (neg==true)
+    {
+        result=-result;
+    }
+
+    return result;
+}
+/** @brief hstoi
+  *
+  * @todo: document this function
+  */
+int32_t Utils::hstoi(const string& str)
+{
+    int32_t x;
+    stringstream ss;
+    ss << std::hex << str;
+    ss >> x;
+
+    return x;
+}
+
+/** @brief set_signals_handler
+  *
+  * @todo: document this function
+  */
+void Utils::set_signals_handler(void)
+{
+#ifdef _WIN32
+    WindowsUtils::set_signals_handler();
+#endif // _WIN32
+
+#ifdef __linux
+    LinuxUtils::set_signals_handler();
+#endif // __linux
+}
+
+/** @brief BecomeDaemon
+  *
+  * @todo: document this function
+  */
+int32_t Utils::BecomeDaemon(void)
+{
+#ifdef _WIN32
+    return WindowsUtils::become_daemon();
+#endif // _WIN32
+
+#ifdef __linux
+    return LinuxUtils::BecomeDaemon(BD_NO_CHDIR | BD_NO_UMASK0);
+#endif // __linux
+}
+
+/** @brief MeterThread
+  *
+  * @todo: document this function
+  */
+void Utils::MeterThread(void)
+{
+#ifdef _WIN32
+    WindowsUtils::MeterThread();
+#endif // _WIN32
+
+#ifdef __linux
+    LinuxUtils::MeterThread();
+#endif // __linux
+}
+
+/** @brief make_program_run_at_startup
+  *
+  * @todo: document this function
+  */
+void Utils::make_program_run_at_startup(void)
+{
+#ifdef _WIN32
+    WindowsUtils::make_program_run_at_startup();
+#endif // _WIN32
+
+#ifdef __linux
+
+#endif // __linux
+}
+
+/** @brief get_program_path
+  *
+  * @todo: document this function
+  */
+string Utils::get_program_path(char** argv)
+{
+#ifdef _WIN32
+    return WindowsUtils::get_program_path();
+#endif // _WIN32
+
+#ifdef __linux
+    return string(argv[0]);
+#endif // __linux
+}
+
+/** @brief get_path
+  *
+  * @todo: document this function
+  */
+string Utils::get_path(const string& full_file_path)
+{
+    string path=boost::filesystem::path( full_file_path ).parent_path().generic_string();
+
+#ifdef _WIN32
+    std::replace(path.begin(), path.end(), '/', PATH_SEPARATOR_CAHR);
+#endif // _WIN32
+
+    return path;
+}
+/** @brief sleep
+  *
+  * @todo: document this function
+  */
+void Utils::sleep_seconds(uint32_t seconds)
+{
+#ifdef _WIN32
+    Sleep(1000*seconds);
+#endif // _WIN32
+
+#ifdef __linux
+    sleep(seconds);
+#endif // __linux
+}
+
+
+
+//https://github.com/fmtlib/fmt
 

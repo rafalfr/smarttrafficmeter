@@ -4,6 +4,7 @@
 *.xml
 *.pid
 *.layout
+*.txt
 /bin/*
 /obj/*
 /python/*

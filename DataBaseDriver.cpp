@@ -76,31 +76,28 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
         return results;
     }
 
-    Logger::LogInfo( "database opened" );
-
-
     string from;
     string to;
 
     if ( _table.compare( "hourly" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 ) + "_" + Utils::to_string( _from.hour, 2 ) + ":00-" + Utils::to_string( _from.hour + 1, 2 ) + ":00";
-        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 ) + "_" + Utils::to_string( _to.hour, 2 ) + ":00-" + Utils::to_string( _to.hour + 1, 2 ) + ":00";
+        from = Utils::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 ) + "_" + Utils::to_string( _from.hour, 2 ) + ":00-" + Utils::to_string( _from.hour + 1, 2 ) + ":00";
+        to = Utils::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 ) + "_" + Utils::to_string( _to.hour, 2 ) + ":00-" + Utils::to_string( _to.hour + 1, 2 ) + ":00";
     }
     else if ( _table.compare( "daily" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 );
-        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 );
+        from = Utils::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 ) + "-" + Utils::to_string( _from.day, 2 );
+        to = Utils::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 ) + "-" + Utils::to_string( _to.day, 2 );
     }
     else if ( _table.compare( "monthly" ) == 0 )
     {
-        from = std::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 );
-        to = std::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 );
+        from = Utils::to_string( _from.year ) + "-" + Utils::to_string( _from.month, 2 );
+        to = Utils::to_string( _to.year ) + "-" + Utils::to_string( _to.month, 2 );
     }
     else if ( _table.compare( "yearly" ) == 0 )
     {
-        from = std::to_string( _from.year );
-        to = std::to_string( _to.year );
+        from = Utils::to_string( _from.year );
+        to = Utils::to_string( _to.year );
     }
 
     query.clear();
@@ -115,7 +112,6 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
     query += to;
     query += "'";
     query += ";";
-    Logger::LogInfo( query );
     query_results.clear();
     rc = sqlite3_exec( db, query.c_str(), DataBaseDriver::callback, nullptr, &zErrMsg );
 
@@ -128,7 +124,7 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
             try
             {
-                rx_bytes = std::stoull( result["rx_bytes"] );
+                rx_bytes = Utils::stoull( result["rx_bytes"] );
             }
             catch ( ... )
             {
@@ -137,7 +133,7 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
             try
             {
-                tx_bytes = std::stoull( result["tx_bytes"] );
+                tx_bytes = Utils::stoull( result["tx_bytes"] );
             }
             catch ( ... )
             {
