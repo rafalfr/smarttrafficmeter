@@ -1,3 +1,4 @@
+#include "config.h"
 #include "DataBaseDriver.h"
 #include "Logger.h"
 #include "Utils.h"

@@ -101,28 +101,39 @@
 
 1447666685 /usr/include/mysql//my_alloc.h
 
-1462879995 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+1467238060 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+	"InterfaceInfo.h"
 	"InterfaceInfo.h"
 
-1450961306 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
+	<string>
 	<string>
 
-1451574821 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1467290906 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+	"InterfaceSpeedMeter.h"
+	<sys/time.h>
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
 1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
 	<list>
 	<map>
+	<list>
+	<map>
 
-1462040350 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1467291132 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+	<limits>
+	"InterfaceStats.h"
 	<limits>
 	"InterfaceStats.h"
 
 1462040321 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
 	<stdint.h>
+	<stdint.h>
 
 1442349788 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
+	"MySQLInterface.h"
+	<iostream>
 	"MySQLInterface.h"
 	<iostream>
 
@@ -130,8 +141,11 @@
 	"config.h"
 	<cstdint>
 	"mysql.h"
+	"config.h"
+	<cstdint>
+	"mysql.h"
 
-1465507532 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1467231530 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -146,10 +160,24 @@
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
+	"ServerThread.h"
+	<map>
+	<string>
+	<cstring>
+	<stdio.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	"json/json.h"
+	"Utils.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
 
 1465507589 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 
-1465333640 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1467291428 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -199,10 +227,79 @@
 	"server_http.hpp"
 	"tclap/CmdLine.h"
 	"sqlite3.h"
+	"config.h"
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+	<regex>
+	<map>
+	<csignal>
+	<pthread.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<stdio.h>
+	<sys/stat.h>
+	"version.h"
+	"Utils.h"
+	"Globals.h"
+	"Debug.h"
+	"Logger.h"
+	"Settings.h"
+	"MySQLInterface.h"
+	"ServerThread.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"WebSiteContent.h"
+	"tclap/CmdLine.h"
+	"server_http.hpp"
+	"sqlite3.h"
 
 1467065348 "
 
 1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
+	"json/json.h"
+	<json/assertions.h>
+	<json/reader.h>
+	<json/value.h>
+	"json_tool.h"
+	<utility>
+	<cstdio>
+	<cassert>
+	<cstring>
+	<istream>
+	<sstream>
+	<memory>
+	<set>
+	<json/assertions.h>
+	<json/value.h>
+	<json/writer.h>
+	<math.h>
+	<sstream>
+	<utility>
+	<cstring>
+	<cassert>
+	<cpptl/conststring.h>
+	<cstddef>
+	<algorithm>
+	"json_valueiterator.inl"
+	<json/writer.h>
+	"json_tool.h"
+	<iomanip>
+	<memory>
+	<sstream>
+	<utility>
+	<set>
+	<cassert>
+	<cstring>
+	<cstdio>
+	<float.h>
+	<ieeefp.h>
+	<cmath>
+	<float.h>
 	"json/json.h"
 	<json/assertions.h>
 	<json/reader.h>
@@ -268,14 +365,42 @@
 	<stdlib.h>
 	<sstream>
 	"config.h"
+	<cpptl/config.h>
+	"config.h"
+	"forwards.h"
+	"forwards.h"
+	<string>
+	<vector>
+	<exception>
+	<map>
+	<cpptl/smallmap.h>
+	<cpptl/forwards.h>
+	"features.h"
+	"value.h"
+	<deque>
+	<iosfwd>
+	<stack>
+	<string>
+	<istream>
+	"value.h"
+	<vector>
+	<string>
+	<ostream>
+	<stdlib.h>
+	<sstream>
+	"config.h"
 
-1465506810 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+	<map>
+	<string>
+	<vector>
+	"InterfaceInfo.h"
 	<map>
 	<string>
 	<vector>
 	"InterfaceInfo.h"
 
-1465506953 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1467373059 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
 	<algorithm>
 	<arpa/inet.h>
@@ -306,10 +431,44 @@
 	"Utils.h"
 	"Logger.h"
 	"Globals.h"
+	"config.h"
+	<sstream>
+	<algorithm>
+	<cstring>
+	<cstdio>
+	<cstdlib>
+	<ctime>
+	<boost/filesystem.hpp>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<csignal>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<sys/file.h>
+	<errno.h>
+	"LinuxUtils.h"
+	"WindowsUtils.h"
+	"sqlite3.h"
+	"Utils.h"
+	"Logger.h"
+	"Globals.h"
 
-1465505744 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 
-1461275044 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1447938407 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BecomeDaemon.cpp
 	<iostream>
@@ -379,11 +538,73 @@
 	<unicode/utf16.h>
 	<ctype.h>
 	<math.h>
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"config.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<TargetConditionals.h>
+	<ctype.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/ioctl.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<tcl.h>
+	"sqlite3rtree.h"
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<ctype.h>
+	<math.h>
 
 1461005789 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
+	<stdarg.h>
 
-1449848865 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
+1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<cstring>
+	<time.h>
+	"Logger.h"
 	<iostream>
 	<fstream>
 	<string>
@@ -393,26 +614,37 @@
 
 1449848887 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
 	<string>
+	<string>
 
 1451343823 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
+	"Settings.h"
 	"Settings.h"
 
 1451343845 /home/rafal/Programowanie/C++/smarttrafficmeter/Settings.h
 	<map>
 	<string>
+	<map>
+	<string>
 
-1461881550 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+1467231302 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
 	<execinfo.h>
 	<unistd.h>
+	"Debug.h"
+	"Utils.h"
+	"Logger.h"
+	<execinfo.h>
+	<unistd.h>
+	"LinuxUtils.h"
 
-1461354919 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
 	<iostream>
 	<bfd.h>
+	<iostream>
 
-1452118956 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
+1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
 	<boost/asio.hpp>
 	<boost/asio/spawn.hpp>
 	<boost/regex.hpp>
@@ -421,14 +653,41 @@
 	<functional>
 	<iostream>
 	<sstream>
+	<boost/asio.hpp>
+	<boost/asio/spawn.hpp>
+	<boost/regex.hpp>
+	<unordered_map>
+	<thread>
+	<functional>
+	<iostream>
+	<sstream>
+	"Utils.h"
 
 1463249193 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
+	<string>
+	"server_http.hpp"
 	<string>
 	"server_http.hpp"
 
 1465551424 tp.hpp"
 
-1465388909 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1467295049 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+	<fstream>
+	<memory>
+	<sstream>
+	<regex>
+	"WebSiteContent.h"
+	"json/json.h"
+	"defines.h"
+	"Utils.h"
+	"Logger.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"sqlite3.h"
+	"config.h"
 	<fstream>
 	<memory>
 	<sstream>
@@ -465,8 +724,30 @@
 	<iomanip>
 	<algorithm>
 	<stdlib.h>
+	<tclap/SwitchArg.h>
+	<tclap/MultiSwitchArg.h>
+	<tclap/UnlabeledValueArg.h>
+	<tclap/UnlabeledMultiArg.h>
+	<tclap/XorHandler.h>
+	<tclap/HelpVisitor.h>
+	<tclap/VersionVisitor.h>
+	<tclap/IgnoreRestVisitor.h>
+	<tclap/CmdLineOutput.h>
+	<tclap/StdOutput.h>
+	<tclap/Constraint.h>
+	<tclap/ValuesConstraint.h>
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<iomanip>
+	<algorithm>
+	<stdlib.h>
 
 1294014046 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/SwitchArg.h
+	<string>
+	<vector>
+	<tclap/Arg.h>
 	<string>
 	<vector>
 	<tclap/Arg.h>
@@ -488,10 +769,26 @@
 	<tclap/CmdLineInterface.h>
 	<tclap/ArgTraits.h>
 	<tclap/StandardTraits.h>
+	<config.h>
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<iomanip>
+	<cstdio>
+	<sstream>
+	<strstream>
+	<tclap/ArgException.h>
+	<tclap/Visitor.h>
+	<tclap/CmdLineInterface.h>
+	<tclap/ArgTraits.h>
+	<tclap/StandardTraits.h>
 
 1465551426 ndardTraits.h>
 
 1171724040 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgException.h
+	<string>
+	<exception>
 	<string>
 	<exception>
 
@@ -505,13 +802,22 @@
 	<list>
 	<iostream>
 	<algorithm>
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<algorithm>
 
 1295113517 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgTraits.h
 
 1293997974 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StandardTraits.h
 	<config.h>
+	<config.h>
 
 1231545957 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiSwitchArg.h
+	<string>
+	<vector>
+	<tclap/SwitchArg.h>
 	<string>
 	<vector>
 	<tclap/SwitchArg.h>
@@ -523,10 +829,18 @@
 	<vector>
 	<tclap/ValueArg.h>
 	<tclap/OptionalUnlabeledTracker.h>
+	<string>
+	<vector>
+	<tclap/ValueArg.h>
+	<tclap/OptionalUnlabeledTracker.h>
 
 1465551426 ionalUnlabeledTracker.h>
 
 1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValueArg.h
+	<string>
+	<vector>
+	<tclap/Arg.h>
+	<tclap/Constraint.h>
 	<string>
 	<vector>
 	<tclap/Arg.h>
@@ -541,8 +855,15 @@
 	<iostream>
 	<iomanip>
 	<algorithm>
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<iomanip>
+	<algorithm>
 
 1190926182 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/OptionalUnlabeledTracker.h
+	<string>
 	<string>
 
 1171724392 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledMultiArg.h
@@ -550,8 +871,16 @@
 	<vector>
 	<tclap/MultiArg.h>
 	<tclap/OptionalUnlabeledTracker.h>
+	<string>
+	<vector>
+	<tclap/MultiArg.h>
+	<tclap/OptionalUnlabeledTracker.h>
 
 1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiArg.h
+	<string>
+	<vector>
+	<tclap/Arg.h>
+	<tclap/Constraint.h>
 	<string>
 	<vector>
 	<tclap/Arg.h>
@@ -563,8 +892,16 @@
 	<vector>
 	<algorithm>
 	<iostream>
+	<tclap/Arg.h>
+	<string>
+	<vector>
+	<algorithm>
+	<iostream>
 
 1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/HelpVisitor.h
+	<tclap/CmdLineInterface.h>
+	<tclap/CmdLineOutput.h>
+	<tclap/Visitor.h>
 	<tclap/CmdLineInterface.h>
 	<tclap/CmdLineOutput.h>
 	<tclap/Visitor.h>
@@ -578,8 +915,17 @@
 	<iostream>
 	<iomanip>
 	<algorithm>
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<iomanip>
+	<algorithm>
 
 1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/VersionVisitor.h
+	<tclap/CmdLineInterface.h>
+	<tclap/CmdLineOutput.h>
+	<tclap/Visitor.h>
 	<tclap/CmdLineInterface.h>
 	<tclap/CmdLineOutput.h>
 	<tclap/Visitor.h>
@@ -587,8 +933,19 @@
 1095526461 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/IgnoreRestVisitor.h
 	<tclap/Visitor.h>
 	<tclap/Arg.h>
+	<tclap/Visitor.h>
+	<tclap/Arg.h>
 
 1302373832 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StdOutput.h
+	<string>
+	<vector>
+	<list>
+	<iostream>
+	<algorithm>
+	<tclap/CmdLineInterface.h>
+	<tclap/CmdLineOutput.h>
+	<tclap/XorHandler.h>
+	<tclap/Arg.h>
 	<string>
 	<vector>
 	<list>
@@ -606,8 +963,18 @@
 	<config.h>
 	<sstream>
 	<strstream>
+	<string>
+	<vector>
+	<tclap/Constraint.h>
+	<config.h>
+	<sstream>
+	<strstream>
 
-1464879361 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+	"DataBaseDriver.h"
+	"Logger.h"
+	"Utils.h"
+	"sqlite3.h"
 	"DataBaseDriver.h"
 	"Logger.h"
 	"Utils.h"
@@ -619,15 +986,30 @@
 	<string>
 	"defines.h"
 	"InterfaceStats.h"
+	<map>
+	<vector>
+	<string>
+	"defines.h"
+	"InterfaceStats.h"
 
 1460839381 /home/rafal/Programowanie/C++/smarttrafficmeter/defines.h
 
-1465505076 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+1467290609 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+	"Globals.h"
 	"Globals.h"
 
-1465505731 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
+1467236388 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
 	<map>
 	<string>
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"DataBaseDriver.h"
+	<map>
+	<string>
+	<mutex>
+	<boost/scoped_ptr.hpp>
+	<boost/interprocess/shared_memory_object.hpp>
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
@@ -635,7 +1017,7 @@
 
 1467048922 river.h"
 
-1465557455 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1467237610 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -676,14 +1058,63 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 	"LinuxUtils.h"
+	"config.h"
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+	<regex>
+	<map>
+	<csignal>
+	<execinfo.h>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<stdio.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<sys/signal.h>
+	<iostream>
+	<unistd.h>
+	<fcntl.h>
+	<boost/filesystem/operations.hpp>
+	<boost/filesystem/path.hpp>
+	<boost/predef.h>
+	"Utils.h"
+	"Logger.h"
+	"Debug.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"LinuxUtils.h"
 
 1466069830 s.h"
 
-1465557360 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+1467233186 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+	<map>
+	<string>
+	"InterfaceInfo.h"
+	<bfd.h>
 
 1465553998 source:d:\programowanie\c++\smarttrafficmeter\becomedaemon.cpp
 
-1467141188 source:d:\programowanie\c++\smarttrafficmeter\websitecontent.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\websitecontent.cpp
 	"config.h"
 	<fstream>
 	<memory>
@@ -1084,7 +1515,7 @@
 	<signal.h>
 	<boost/config/posix_features.hpp>
 
-1467204434 d:\programowanie\c++\smarttrafficmeter\version.h
+1467368384 d:\programowanie\c++\smarttrafficmeter\version.h
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\platform\symbian.hpp
 	<cstdlib>
@@ -10392,10 +10823,12 @@
 1465551424 d:\programowanie\c++\smarttrafficmeter\logger.h
 	<string>
 
-1467048922 d:\programowanie\c++\smarttrafficmeter\globals.h
+1467366226 d:\programowanie\c++\smarttrafficmeter\globals.h
 	<map>
 	<string>
 	<mutex>
+	<boost/scoped_ptr.hpp>
+	<boost/interprocess/shared_memory_object.hpp>
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
@@ -10440,27 +10873,28 @@
 	"Utils.h"
 	"sqlite3.h"
 
-1465907568 source:d:\programowanie\c++\smarttrafficmeter\debug.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
 	<execinfo.h>
 	<unistd.h>
+	"LinuxUtils.h"
 
 1465905124 d:\programowanie\c++\smarttrafficmeter\debug.h
 	<iostream>
 
-1467048936 source:d:\programowanie\c++\smarttrafficmeter\globals.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\globals.cpp
 	"Globals.h"
 
-1466513966 source:d:\programowanie\c++\smarttrafficmeter\interfaceinfo.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\interfaceinfo.cpp
 	"InterfaceInfo.h"
 
-1465554252 source:d:\programowanie\c++\smarttrafficmeter\interfacespeedmeter.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\interfacespeedmeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
-1465551424 source:d:\programowanie\c++\smarttrafficmeter\interfacestats.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\interfacestats.cpp
 	<limits>
 	"InterfaceStats.h"
 
@@ -10557,13 +10991,13 @@
 	"InterfaceSpeedMeter.h"
 	"LinuxUtils.h"
 
-1466069834 d:\programowanie\c++\smarttrafficmeter\linuxutils.h
+1467366226 d:\programowanie\c++\smarttrafficmeter\linuxutils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
 	<bfd.h>
 
-1467202188 source:d:\programowanie\c++\smarttrafficmeter\main.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -10585,7 +11019,6 @@
 	"Debug.h"
 	"Logger.h"
 	"Settings.h"
-	"BecomeDaemon.h"
 	"MySQLInterface.h"
 	"ServerThread.h"
 	"InterfaceInfo.h"
@@ -10754,12 +11187,14 @@
 	<sstream>
 	<strstream>
 
-1466071494 source:d:\programowanie\c++\smarttrafficmeter\serverthread.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\serverthread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
 	<cstring>
 	<stdio.h>
+	<sys/socket.h>
+	<netinet/in.h>
 	"json/json.h"
 	"Utils.h"
 	"Globals.h"
@@ -10825,7 +11260,7 @@
 	<ctype.h>
 	<math.h>
 
-1467202040 source:d:\programowanie\c++\smarttrafficmeter\utils.cpp
+1467366226 source:d:\programowanie\c++\smarttrafficmeter\utils.cpp
 	"config.h"
 	<sstream>
 	<algorithm>
@@ -11006,554 +11441,1238 @@
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
 
-1467291132 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
-	<limits>
-	"InterfaceStats.h"
-
-1462040321 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
-	<stdint.h>
-
-1441399213 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
-	"json/json.h"
-	<json/assertions.h>
-	<json/reader.h>
-	<json/value.h>
-	"json_tool.h"
-	<utility>
-	<cstdio>
-	<cassert>
-	<cstring>
-	<istream>
-	<sstream>
-	<memory>
-	<set>
-	<json/assertions.h>
-	<json/value.h>
-	<json/writer.h>
-	<math.h>
-	<sstream>
-	<utility>
-	<cstring>
-	<cassert>
-	<cpptl/conststring.h>
-	<cstddef>
-	<algorithm>
-	"json_valueiterator.inl"
-	<json/writer.h>
-	"json_tool.h"
-	<iomanip>
-	<memory>
-	<sstream>
-	<utility>
-	<set>
-	<cassert>
-	<cstring>
-	<cstdio>
-	<float.h>
-	<ieeefp.h>
-	<cmath>
-	<float.h>
-
-1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/json/json.h
-	<cpptl/config.h>
-	"config.h"
-	"forwards.h"
-	"forwards.h"
-	<string>
-	<vector>
-	<exception>
-	<map>
-	<cpptl/smallmap.h>
-	<cpptl/forwards.h>
-	"features.h"
-	"value.h"
-	<deque>
-	<iosfwd>
-	<stack>
-	<string>
-	<istream>
-	"value.h"
-	<vector>
-	<string>
-	<ostream>
-	<stdlib.h>
-	<sstream>
-	"config.h"
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
-
-1442349788 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
-	"MySQLInterface.h"
-	<iostream>
-
-1444738512 /home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.h
-	"config.h"
-	<cstdint>
-	"mysql.h"
-
-1451343823 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
-	"Settings.h"
-
-1451343845 /home/rafal/Programowanie/C++/smarttrafficmeter/Settings.h
-	<map>
-	<string>
-
-1461005789 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
-	<vxWorks.h>
-	<pthread.h>
-	"mingw.h"
-	"_mingw.h"
-	<stdarg.h>
-	"config.h"
-	<stdint.h>
-	<inttypes.h>
-	<intrin.h>
-	<cmnintrin.h>
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<assert.h>
-	<stddef.h>
-	<TargetConditionals.h>
-	<ctype.h>
-	<time.h>
-	<sys/sysctl.h>
-	<malloc/malloc.h>
-	<libkern/OSAtomic.h>
-	<malloc.h>
-	<pthread.h>
-	"windows.h"
-	<sys/cygwin.h>
-	<errno.h>
-	<process.h>
-	<math.h>
-	<sys/types.h>
-	<sys/stat.h>
-	<fcntl.h>
-	<unistd.h>
-	<sys/time.h>
-	<errno.h>
-	<sys/mman.h>
-	<sys/ioctl.h>
-	<sys/file.h>
-	<sys/param.h>
-	<semaphore.h>
-	<limits.h>
-	<sys/mount.h>
-	<utime.h>
-	<sys/dcmd_blk.h>
-	<sys/statvfs.h>
-	<dlfcn.h>
-	<tcl.h>
-	"sqlite3rtree.h"
-	<unicode/utypes.h>
-	<unicode/uregex.h>
-	<unicode/ustring.h>
-	<unicode/ucol.h>
-	<unicode/ubrk.h>
-	<unicode/utf16.h>
-	<ctype.h>
-	<math.h>
-
-1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
-	"DataBaseDriver.h"
-	"Logger.h"
-	"Utils.h"
-	"sqlite3.h"
-
-1462027816 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
-	<map>
-	<vector>
-	<string>
-	"defines.h"
-	"InterfaceStats.h"
-
-1460839381 /home/rafal/Programowanie/C++/smarttrafficmeter/defines.h
-
-1449848887 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
-	<string>
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
-	<map>
-	<string>
-	<vector>
-	"InterfaceInfo.h"
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
-	<string>
-
-1461005789 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
-	<stdarg.h>
-
-1467291428 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
-	"config.h"
-	<iostream>
-	<fstream>
-	<vector>
-	<string>
-	<regex>
-	<map>
-	<csignal>
-	<pthread.h>
-	<string.h>
-	<stdio.h>
-	<stdlib.h>
-	<unistd.h>
-	<stdio.h>
-	<sys/stat.h>
-	"version.h"
-	"Utils.h"
-	"Globals.h"
-	"Debug.h"
-	"Logger.h"
-	"Settings.h"
-	"MySQLInterface.h"
-	"ServerThread.h"
-	"InterfaceInfo.h"
-	"InterfaceStats.h"
-	"InterfaceSpeedMeter.h"
-	"WebSiteContent.h"
-	"tclap/CmdLine.h"
-	"server_http.hpp"
-	"sqlite3.h"
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
-
-1467236388 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
-	<map>
-	<string>
-	<mutex>
-	<boost/scoped_ptr.hpp>
-	<boost/interprocess/shared_memory_object.hpp>
-	"InterfaceInfo.h"
-	"InterfaceStats.h"
-	"InterfaceSpeedMeter.h"
-	"DataBaseDriver.h"
-
-1441399213 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
-	<list>
-	<map>
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
-	<iostream>
-
-1465507589 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
-
-1463249193 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
-	<string>
-	"server_http.hpp"
-
-1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
-	<boost/asio.hpp>
-	<boost/asio/spawn.hpp>
-	<boost/regex.hpp>
-	<unordered_map>
-	<thread>
-	<functional>
-	<iostream>
-	<sstream>
-	"Utils.h"
-
-1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
-	<tclap/SwitchArg.h>
-	<tclap/MultiSwitchArg.h>
-	<tclap/UnlabeledValueArg.h>
-	<tclap/UnlabeledMultiArg.h>
-	<tclap/XorHandler.h>
-	<tclap/HelpVisitor.h>
-	<tclap/VersionVisitor.h>
-	<tclap/IgnoreRestVisitor.h>
-	<tclap/CmdLineOutput.h>
-	<tclap/StdOutput.h>
-	<tclap/Constraint.h>
-	<tclap/ValuesConstraint.h>
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<iomanip>
-	<algorithm>
-	<stdlib.h>
-
-1294014046 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/SwitchArg.h
-	<string>
-	<vector>
-	<tclap/Arg.h>
-
-1302480521 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Arg.h
-	<config.h>
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<iomanip>
-	<cstdio>
-	<sstream>
-	<strstream>
-	<tclap/ArgException.h>
-	<tclap/Visitor.h>
-	<tclap/CmdLineInterface.h>
-	<tclap/ArgTraits.h>
-	<tclap/StandardTraits.h>
-
-1171724040 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgException.h
-	<string>
-	<exception>
-
-1142709395 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Visitor.h
-
-1231545957 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineInterface.h
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<algorithm>
-
-1295113517 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgTraits.h
-
-1293997974 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StandardTraits.h
-	<config.h>
-
-1231545957 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiSwitchArg.h
-	<string>
-	<vector>
-	<tclap/SwitchArg.h>
-
-1247670584 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledValueArg.h
-	<string>
-	<vector>
-	<tclap/ValueArg.h>
-	<tclap/OptionalUnlabeledTracker.h>
-
-1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValueArg.h
-	<string>
-	<vector>
-	<tclap/Arg.h>
-	<tclap/Constraint.h>
-
-1140519915 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Constraint.h
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<iomanip>
-	<algorithm>
-
-1190926182 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/OptionalUnlabeledTracker.h
-	<string>
-
-1171724392 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledMultiArg.h
-	<string>
-	<vector>
-	<tclap/MultiArg.h>
-	<tclap/OptionalUnlabeledTracker.h>
-
-1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiArg.h
-	<string>
-	<vector>
-	<tclap/Arg.h>
-	<tclap/Constraint.h>
-
-1294014046 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/XorHandler.h
-	<tclap/Arg.h>
-	<string>
-	<vector>
-	<algorithm>
-	<iostream>
-
-1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/HelpVisitor.h
-	<tclap/CmdLineInterface.h>
-	<tclap/CmdLineOutput.h>
-	<tclap/Visitor.h>
-
-1142709395 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineOutput.h
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<iomanip>
-	<algorithm>
-
-1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/VersionVisitor.h
-	<tclap/CmdLineInterface.h>
-	<tclap/CmdLineOutput.h>
-	<tclap/Visitor.h>
-
-1095526461 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/IgnoreRestVisitor.h
-	<tclap/Visitor.h>
-	<tclap/Arg.h>
-
-1302373832 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StdOutput.h
-	<string>
-	<vector>
-	<list>
-	<iostream>
-	<algorithm>
-	<tclap/CmdLineInterface.h>
-	<tclap/CmdLineOutput.h>
-	<tclap/XorHandler.h>
-	<tclap/Arg.h>
-
-1293994247 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValuesConstraint.h
-	<string>
-	<vector>
-	<tclap/Constraint.h>
-	<config.h>
-	<sstream>
-	<strstream>
-
-1467231302 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
-	"Debug.h"
-	"Utils.h"
-	"Logger.h"
-	<execinfo.h>
-	<unistd.h>
-	"LinuxUtils.h"
-
-1467233186 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
-	<map>
-	<string>
-	"InterfaceInfo.h"
-	<bfd.h>
-
-1467290609 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
-	"Globals.h"
-
-1467238060 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
-	"InterfaceInfo.h"
-
-1467290906 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
-	"InterfaceSpeedMeter.h"
-	<sys/time.h>
-
-1467237610 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
-	"config.h"
-	<iostream>
-	<fstream>
-	<vector>
-	<string>
-	<regex>
-	<map>
-	<csignal>
-	<execinfo.h>
-	<arpa/inet.h>
-	<sys/socket.h>
-	<netdb.h>
-	<ifaddrs.h>
-	<string.h>
-	<stdio.h>
-	<stdlib.h>
-	<unistd.h>
-	<linux/if_link.h>
-	<stdio.h>
-	<sys/ioctl.h>
-	<sys/types.h>
-	<sys/socket.h>
-	<net/if.h>
-	<sys/ioctl.h>
-	<sys/types.h>
-	<sys/socket.h>
-	<net/if.h>
-	<sys/types.h>
-	<sys/stat.h>
-	<sys/time.h>
-	<sys/signal.h>
-	<iostream>
-	<unistd.h>
-	<fcntl.h>
-	<boost/filesystem/operations.hpp>
-	<boost/filesystem/path.hpp>
-	<boost/predef.h>
-	"Utils.h"
-	"Logger.h"
-	"Debug.h"
-	"Globals.h"
-	"Settings.h"
-	"InterfaceStats.h"
-	"InterfaceSpeedMeter.h"
-	"LinuxUtils.h"
-
-1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
-	<iostream>
-	<fstream>
-	<string>
-	<cstring>
-	<time.h>
-	"Logger.h"
-
-1467231530 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
-	"ServerThread.h"
-	<map>
-	<string>
-	<cstring>
-	<stdio.h>
-	<sys/socket.h>
-	<netinet/in.h>
-	"json/json.h"
-	"Utils.h"
-	"Globals.h"
-	"Settings.h"
-	"InterfaceInfo.h"
-	"InterfaceStats.h"
-	"InterfaceSpeedMeter.h"
-
-1467373059 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
-	"config.h"
-	<sstream>
-	<algorithm>
-	<cstring>
-	<cstdio>
-	<cstdlib>
-	<ctime>
-	<boost/filesystem.hpp>
-	<arpa/inet.h>
-	<sys/socket.h>
-	<netdb.h>
-	<ifaddrs.h>
-	<unistd.h>
-	<linux/if_link.h>
-	<sys/ioctl.h>
-	<sys/types.h>
-	<sys/socket.h>
-	<net/if.h>
-	<sys/ioctl.h>
-	<sys/types.h>
-	<sys/socket.h>
-	<net/if.h>
-	<csignal>
-	<sys/types.h>
-	<sys/stat.h>
-	<sys/time.h>
-	<sys/file.h>
-	<errno.h>
-	"LinuxUtils.h"
-	"WindowsUtils.h"
-	"sqlite3.h"
-	"Utils.h"
-	"Logger.h"
-	"Globals.h"
-
 1467214256 /home/rafal/Programowanie/C++/smarttrafficmeter/WindowsUtils.h
 	<map>
 	<string>
 	<windows.h>
 	"InterfaceInfo.h"
 
-1467295049 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
-	"config.h"
-	<fstream>
-	<memory>
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\shared_memory_object.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/creation_tags.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/interprocess/interprocess_fwd.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<boost/interprocess/detail/os_file_functions.hpp>
+	<boost/interprocess/detail/shared_dir_helpers.hpp>
+	<boost/interprocess/permissions.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<cstddef>
+	<string>
+	<fcntl.h>
+	<sys/mman.h>
+	<unistd.h>
+	<sys/stat.h>
+	<sys/sysctl.h>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\config_begin.hpp
+	<boost/config.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\workaround.hpp
+	<boost/config.hpp>
+	<unistd.h>
+	"TargetConditionals.h"
+	"AvailabilityMacros.h"
+	<sys/types.h>
+	<sys/param.h>
+	<sys/sysctl.h>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\creation_tags.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\config_end.hpp
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\exceptions.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/errors.hpp>
+	<stdexcept>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\errors.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<stdarg.h>
+	<string>
+	<boost/interprocess/detail/win32_api.hpp>
+	<errno.h>
+	<cstring>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\win32_api.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/date_time/filetime_functions.hpp>
+	<cstddef>
+	<cstring>
+	<cstdlib>
+	<cstdio>
+	<boost/assert.hpp>
+	<string>
+	<vector>
+	<windows.h>
+	<wbemidl.h>
+	<objbase.h>
+	<shlobj.h>
+	<cstdarg>
+	<boost/detail/interlocked.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475628 d:\programowanie\c++\boost_1_61_0\\boost\detail\interlocked.hpp
+	<boost/config.hpp>
+	<windows.h>
+	<intrin.h>
+	<intrin.h>
+	<intrin.h>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\interprocess_fwd.hpp
+	<boost/config.hpp>
+	<boost/cstdint.hpp>
+	<boost/interprocess/detail/std_fwd.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<cstddef>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\std_fwd.hpp
+	<boost/config.hpp>
+	<boost/move/detail/std_ns_begin.hpp>
+	<boost/move/detail/std_ns_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\os_file_functions.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/errors.hpp>
+	<boost/interprocess/permissions.hpp>
+	<string>
+	<limits>
+	<climits>
+	<boost/move/detail/type_traits.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<fcntl.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<errno.h>
+	<cstdio>
+	<dirent.h>
+	<sys/file.h>
+	<cstring>
+	<cstdlib>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\permissions.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/interprocess_fwd.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\shared_dir_helpers.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/os_file_functions.hpp>
+	<boost/interprocess/errors.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<string>
+	<boost/interprocess/detail/windows_intermodule_singleton.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\windows_intermodule_singleton.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/container/string.hpp>
+	<boost/assert.hpp>
+	<boost/interprocess/detail/intermodule_singleton_common.hpp>
+	<boost/interprocess/sync/windows/winapi_semaphore_wrapper.hpp>
+	<boost/interprocess/sync/windows/winapi_mutex_wrapper.hpp>
+	<boost/interprocess/sync/scoped_lock.hpp>
+	<boost/cstdint.hpp>
+	<string>
+	<boost/container/map.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\string.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/new_allocator.hpp>
+	<boost/container/throw_exception.hpp>
+	<boost/container/detail/alloc_helpers.hpp>
+	<boost/container/detail/allocator_version_traits.hpp>
+	<boost/container/detail/allocation_type.hpp>
+	<boost/container/detail/iterator.hpp>
+	<boost/container/detail/iterators.hpp>
+	<boost/container/detail/min_max.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/next_capacity.hpp>
+	<boost/container/detail/to_raw_pointer.hpp>
+	<boost/container/detail/version_type.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<boost/container/detail/minimal_char_traits_header.hpp>
+	<boost/functional/hash.hpp>
+	<algorithm>
+	<functional>
+	<iosfwd>
+	<istream>
+	<ostream>
+	<ios>
+	<locale>
+	<cstddef>
+	<climits>
+	<boost/container/detail/type_traits.hpp>
+	<boost/move/traits.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\config_begin.hpp
+	<boost/config.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\workaround.hpp
+	<boost/config.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\container_fwd.hpp
+	<boost/config.hpp>
+	<boost/container/detail/std_fwd.hpp>
+	<cstddef>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\std_fwd.hpp
+	<boost/config.hpp>
+	<boost/move/detail/std_ns_begin.hpp>
+	<boost/move/detail/std_ns_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\allocator_traits.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/placement_new.hpp>
+	<boost/container/detail/std_fwd.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/detail/has_member_function_callable_with.hpp>
+	<boost/intrusive/detail/has_member_function_callable_with.hpp>
+	<boost/intrusive/detail/has_member_function_callable_with.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\mpl.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/move/detail/type_traits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<cstddef>
+	<boost/container/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\mpl.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/move/detail/type_traits.hpp>
+	<cstddef>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\config_begin.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\config_end.hpp
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\config_end.hpp
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\type_traits.hpp
+	<boost/config.hpp>
+	<boost/move/detail/type_traits.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\placement_new.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\pointer_traits.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_rebind.hpp>
+	<boost/intrusive/detail/pointer_element.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<cstddef>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\workaround.hpp
+	<boost/config.hpp>
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\pointer_rebind.hpp
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\pointer_element.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+
+1462475542 d:\programowanie\c++\boost_1_61_0\\boost\move\detail\fwd_macros.hpp
+	<boost/config.hpp>
+	<boost/move/detail/workaround.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\has_member_function_callable_with.hpp
+	<cstddef>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\new_allocator.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/throw_exception.hpp>
+	<cstddef>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\throw_exception.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<stdexcept>
+	<string>
+	<new>
+	<boost/assert.hpp>
+	<cstdlib>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\alloc_helpers.hpp
+	<boost/config.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<boost/move/utility_core.hpp>
+
+1462475542 d:\programowanie\c++\boost_1_61_0\\boost\move\adl_move_swap.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/move/detail/workaround.hpp>
+	<utility>
+	<bits/stl_algobase.h>
+	<bits/stl_move.h>
+	<bits/move.h>
+	<type_traits>
+	<utility>
+	<algorithm>
+	<boost/move/utility_core.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\allocator_version_traits.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/throw_exception.hpp>
+	<boost/container/detail/multiallocation_chain.hpp>
+	<boost/container/detail/version_type.hpp>
+	<boost/container/detail/allocation_type.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\multiallocation_chain.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/container/detail/to_raw_pointer.hpp>
+	<boost/container/detail/transform_iterator.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/intrusive/slist.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\to_raw_pointer.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/to_raw_pointer.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\to_raw_pointer.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/detail/pointer_element.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\transform_iterator.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/iterator.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\iterator.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/iterator.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\iterator.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/intrusive/detail/std_fwd.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/move/detail/iterator_traits.hpp>
+	<boost/move/detail/meta_utils_core.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\std_fwd.hpp
+	<boost/config.hpp>
+	<boost/move/detail/std_ns_begin.hpp>
+	<boost/move/detail/std_ns_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\slist.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/slist_hook.hpp>
+	<boost/intrusive/circular_slist_algorithms.hpp>
+	<boost/intrusive/linear_slist_algorithms.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/detail/is_stateful_value_traits.hpp>
+	<boost/intrusive/detail/default_header_holder.hpp>
+	<boost/intrusive/detail/uncast.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/iterator.hpp>
+	<boost/intrusive/detail/slist_iterator.hpp>
+	<boost/intrusive/detail/array_initializer.hpp>
+	<boost/intrusive/detail/exception_disposer.hpp>
+	<boost/intrusive/detail/equal_to_value.hpp>
+	<boost/intrusive/detail/key_nodeptr_comp.hpp>
+	<boost/intrusive/detail/simple_disposers.hpp>
+	<boost/intrusive/detail/size_holder.hpp>
+	<boost/intrusive/detail/algorithm.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\intrusive_fwd.hpp
+	<boost/config.hpp>
+	<boost/cstdint.hpp>
+	<cstddef>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\link_mode.hpp
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\assert.hpp
+	<boost/config.hpp>
+	<boost/assert.hpp>
+	<boost/assert.hpp>
+	<boost/assert.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\slist_hook.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/slist_node.hpp>
+	<boost/intrusive/circular_slist_algorithms.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/options.hpp>
+	<boost/intrusive/detail/generic_hook.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\slist_node.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_rebind.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\circular_slist_algorithms.hpp
+	<cstddef>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/common_slist_algorithms.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\common_slist_algorithms.hpp
+	<boost/config.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<cstddef>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\algo_type.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\options.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/pack_options.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\pack_options.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\generic_hook.hpp
+	<boost/config.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/node_holder.hpp>
+	<boost/static_assert.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\node_holder.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\linear_slist_algorithms.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/common_slist_algorithms.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\minimal_pair_header.hpp
+	<boost/config.hpp>
+	<bits/stl_pair.h>
+	<utility>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\get_value_traits.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/hook_traits.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\hook_traits.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/parent_from_member.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/to_raw_pointer.hpp>
+	<boost/intrusive/detail/node_holder.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\parent_from_member.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<cstddef>
+	<boost/static_assert.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\is_stateful_value_traits.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/function_detector.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\function_detector.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\default_header_holder.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/to_raw_pointer.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\uncast.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\slist_iterator.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/detail/std_fwd.hpp>
+	<boost/intrusive/detail/iiterator.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\iiterator.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/detail/iterator.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/is_stateful_value_traits.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\array_initializer.hpp
+	<boost/config.hpp>
+	<boost/config.hpp>
+	<boost/core/no_exceptions_support.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\exception_disposer.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\equal_to_value.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\key_nodeptr_comp.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\ebo_functor_holder.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/move/utility_core.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\simple_disposers.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\size_holder.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\algorithm.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\minimal_less_equal_header.hpp
+	<boost/config.hpp>
+	<bits/stl_function.h>
+	<functional>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\version_type.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\allocation_type.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\iterators.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/static_assert.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/intrusive/detail/reverse_iterator.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+	<boost/container/detail/variadic_templates_tools.hpp>
+	<boost/container/detail/iterator.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\reverse_iterator.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/iterator.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\variadic_templates_tools.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<cstddef>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\min_max.hpp
+	<boost/config.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\next_capacity.hpp
+	<boost/config.hpp>
+	<boost/container/throw_exception.hpp>
+	<boost/container/detail/min_max.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\minimal_char_traits_header.hpp
+	<boost/config.hpp>
+	<iosfwd>
+	<bits/char_traits.h>
+	<string>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\intermodule_singleton_common.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/atomic.hpp>
+	<boost/interprocess/detail/os_thread_functions.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/interprocess/detail/mpl.hpp>
+	<boost/interprocess/sync/spin/wait.hpp>
+	<boost/assert.hpp>
+	<cstddef>
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<string>
 	<sstream>
-	<regex>
-	"WebSiteContent.h"
-	"json/json.h"
-	"defines.h"
-	"Utils.h"
-	"Logger.h"
-	"Globals.h"
-	"Settings.h"
-	"InterfaceInfo.h"
-	"InterfaceStats.h"
-	"InterfaceSpeedMeter.h"
-	"sqlite3.h"
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\atomic.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/cstdint.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<atomic.h>
+	<machine/builtins.h>
+	<c_asm.h>
+	<builtins.h>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\os_thread_functions.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/streams/bufferstream.hpp>
+	<boost/interprocess/detail/posix_time_types_wrk.hpp>
+	<cstddef>
+	<ostream>
+	<boost/interprocess/detail/win32_api.hpp>
+	<process.h>
+	<pthread.h>
+	<unistd.h>
+	<sched.h>
+	<time.h>
+	<sys/types.h>
+	<sys/param.h>
+	<sys/sysctl.h>
+	<mach/mach_time.h>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\streams\bufferstream.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<iosfwd>
+	<ios>
+	<istream>
+	<ostream>
+	<string>
+	<cstddef>
+	<boost/assert.hpp>
+	<boost/interprocess/interprocess_fwd.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\posix_time_types_wrk.hpp
+	<boost/config.hpp>
+	<boost/date_time/microsec_time_clock.hpp>
+	<boost/date_time/posix_time/ptime.hpp>
+	<boost/date_time/posix_time/posix_time_duration.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\mpl.hpp
+	<boost/config.hpp>
+	<cstddef>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\spin\wait.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/os_thread_functions.hpp>
+	<iostream>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\windows\winapi_semaphore_wrapper.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/creation_tags.hpp>
+	<boost/interprocess/permissions.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<boost/interprocess/detail/posix_time_types_wrk.hpp>
+	<boost/interprocess/sync/windows/winapi_wrapper_common.hpp>
+	<boost/interprocess/errors.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<limits>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\windows\winapi_wrapper_common.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<boost/interprocess/detail/posix_time_types_wrk.hpp>
+	<boost/interprocess/errors.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<limits>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\windows\winapi_mutex_wrapper.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/creation_tags.hpp>
+	<boost/interprocess/permissions.hpp>
+	<boost/interprocess/detail/win32_api.hpp>
+	<boost/interprocess/detail/posix_time_types_wrk.hpp>
+	<boost/interprocess/sync/windows/winapi_wrapper_common.hpp>
+	<boost/interprocess/errors.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<limits>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\scoped_lock.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/interprocess_fwd.hpp>
+	<boost/interprocess/sync/lock_options.hpp>
+	<boost/interprocess/exceptions.hpp>
+	<boost/interprocess/detail/mpl.hpp>
+	<boost/interprocess/detail/type_traits.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/interprocess/detail/posix_time_types_wrk.hpp>
+	<boost/interprocess/detail/simple_swap.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\sync\lock_options.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/workaround.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\type_traits.hpp
+	<boost/config.hpp>
+	<boost/interprocess/detail/config_begin.hpp>
+	<boost/interprocess/detail/config_end.hpp>
+
+1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\simple_swap.hpp
+	<boost/config.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\map.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/container/new_allocator.hpp>
+	<boost/container/throw_exception.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/tree.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/value_init.hpp>
+	<boost/container/detail/pair.hpp>
+	<boost/move/traits.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+	<boost/move/detail/move_helpers.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/static_assert.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<initializer_list>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\tree.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/container/options.hpp>
+	<boost/container/detail/algorithm.hpp>
+	<boost/container/detail/compare_functors.hpp>
+	<boost/container/detail/destroyers.hpp>
+	<boost/container/detail/iterator.hpp>
+	<boost/container/detail/iterators.hpp>
+	<boost/container/detail/node_alloc_holder.hpp>
+	<boost/container/detail/pair.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/rbtree.hpp>
+	<boost/intrusive/avltree.hpp>
+	<boost/intrusive/splaytree.hpp>
+	<boost/intrusive/sgtree.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/detail/tree_value_compare.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+	<boost/move/detail/move_helpers.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<boost/container/detail/std_fwd.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\options.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/container_fwd.hpp>
+	<boost/intrusive/pack_options.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\algorithm.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/algorithm.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\compare_functors.hpp
+	<boost/config.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\destroyers.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/detail/to_raw_pointer.hpp>
+	<boost/container/detail/version_type.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\node_alloc_holder.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/detail/addressof.hpp>
+	<boost/container/detail/alloc_helpers.hpp>
+	<boost/container/detail/allocator_version_traits.hpp>
+	<boost/container/detail/construct_in_place.hpp>
+	<boost/container/detail/destroyers.hpp>
+	<boost/container/detail/iterator_to_raw_pointer.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/placement_new.hpp>
+	<boost/container/detail/to_raw_pointer.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/version_type.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/options.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/fwd_macros.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\addressof.hpp
+	<boost/config.hpp>
+	<cstddef>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\construct_in_place.hpp
+	<boost/config.hpp>
+	<boost/container/allocator_traits.hpp>
+	<boost/container/detail/iterators.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\iterator_to_raw_pointer.hpp
+	<boost/config.hpp>
+	<boost/container/detail/iterator.hpp>
+	<boost/container/detail/to_raw_pointer.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\pair.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/type_traits.hpp>
+	<boost/container/detail/mpl.hpp>
+	<boost/container/detail/std_fwd.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/container/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\rbtree.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/set_hook.hpp>
+	<boost/intrusive/detail/rbtree_node.hpp>
+	<boost/intrusive/bstree.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/rbtree_algorithms.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\set_hook.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/rbtree_node.hpp>
+	<boost/intrusive/rbtree_algorithms.hpp>
+	<boost/intrusive/options.hpp>
+	<boost/intrusive/detail/generic_hook.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\rbtree_node.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_rebind.hpp>
+	<boost/intrusive/rbtree_algorithms.hpp>
+	<boost/intrusive/pointer_plus_bits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\rbtree_algorithms.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\bstree_algorithms.hpp
+	<cstddef>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/bstree_algorithms_base.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/uncast.hpp>
+	<boost/intrusive/detail/math.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\bstree_algorithms_base.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/uncast.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\math.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<climits>
+	<boost/intrusive/detail/mpl.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\pointer_plus_bits.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\tree_node.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_rebind.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\bstree.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/bs_set_hook.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/detail/tree_iterator.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/is_stateful_value_traits.hpp>
+	<boost/intrusive/detail/empty_node_checker.hpp>
+	<boost/intrusive/detail/default_header_holder.hpp>
+	<boost/intrusive/detail/reverse_iterator.hpp>
+	<boost/intrusive/detail/exception_disposer.hpp>
+	<boost/intrusive/detail/node_cloner_disposer.hpp>
+	<boost/intrusive/detail/key_nodeptr_comp.hpp>
+	<boost/intrusive/detail/simple_disposers.hpp>
+	<boost/intrusive/detail/size_holder.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/algorithm.hpp>
+	<boost/intrusive/detail/tree_value_compare.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/parent_from_member.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\bs_set_hook.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<boost/intrusive/options.hpp>
+	<boost/intrusive/detail/generic_hook.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\tree_iterator.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/detail/std_fwd.hpp>
+	<boost/intrusive/detail/iiterator.hpp>
+	<boost/intrusive/detail/bstree_algorithms_base.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\empty_node_checker.hpp
+	<boost/config.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\node_cloner_disposer.hpp
+	<boost/config.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/assert.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\tree_value_compare.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\parent_from_member.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/parent_from_member.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\avltree.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/avl_set_hook.hpp>
+	<boost/intrusive/detail/avltree_node.hpp>
+	<boost/intrusive/bstree.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/avltree_algorithms.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\avl_set_hook.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/avltree_node.hpp>
+	<boost/intrusive/avltree_algorithms.hpp>
+	<boost/intrusive/options.hpp>
+	<boost/intrusive/detail/generic_hook.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\avltree_node.hpp
+	<boost/config.hpp>
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/detail/workaround.hpp>
+	<boost/intrusive/pointer_rebind.hpp>
+	<boost/intrusive/avltree_algorithms.hpp>
+	<boost/intrusive/pointer_plus_bits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\avltree_algorithms.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/ebo_functor_holder.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\splaytree.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/bstree.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/function_detector.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/splaytree_algorithms.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/intrusive/detail/key_nodeptr_comp.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\splaytree_algorithms.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/detail/uncast.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<cstddef>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\sgtree.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<boost/intrusive/detail/assert.hpp>
+	<boost/static_assert.hpp>
+	<boost/intrusive/bs_set_hook.hpp>
+	<boost/intrusive/bstree.hpp>
+	<boost/intrusive/detail/tree_node.hpp>
+	<boost/intrusive/pointer_traits.hpp>
+	<boost/intrusive/detail/mpl.hpp>
+	<boost/intrusive/detail/math.hpp>
+	<boost/intrusive/detail/get_value_traits.hpp>
+	<boost/intrusive/sgtree_algorithms.hpp>
+	<boost/intrusive/detail/key_nodeptr_comp.hpp>
+	<boost/intrusive/link_mode.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/adl_move_swap.hpp>
+	<cstddef>
+	<boost/intrusive/detail/minimal_less_equal_header.hpp>
+	<boost/intrusive/detail/minimal_pair_header.hpp>
+	<cmath>
+	<cstddef>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\sgtree_algorithms.hpp
+	<boost/intrusive/detail/config_begin.hpp>
+	<boost/intrusive/intrusive_fwd.hpp>
+	<cstddef>
+	<boost/intrusive/detail/algo_type.hpp>
+	<boost/intrusive/bstree_algorithms.hpp>
+	<boost/intrusive/detail/config_end.hpp>
+
+1462475542 d:\programowanie\c++\boost_1_61_0\\boost\move\detail\move_helpers.hpp
+	<boost/config.hpp>
+	<boost/move/core.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/move/detail/type_traits.hpp>
+
+1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\value_init.hpp
+	<boost/config.hpp>
+	<boost/container/detail/config_begin.hpp>
+	<boost/container/detail/workaround.hpp>
+	<boost/container/detail/config_end.hpp>
 
