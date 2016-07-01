@@ -2,37 +2,35 @@
 
 #include <sys/time.h>
 
-InterfaceSpeedMeter::InterfaceSpeedMeter()
+InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
 {
-	max_buf_items = 5;
-	map<string, uint64_t> item;
+    map<string, uint64_t> item;
 
-	uint64_t time = get_time_milisecs();
+    uint64_t time = get_time_milisecs();
 
-	item["rx"] = 0;
-	item["tx"] = 0;
-	item["time"] = time;
-	buf.push_front ( item );
+    item["rx"] = 0;
+    item["tx"] = 0;
+    item["time"] = time;
+    buf.push_front( item );
 }
 
 
-InterfaceSpeedMeter::InterfaceSpeedMeter ( const InterfaceSpeedMeter& ism )
+InterfaceSpeedMeter::InterfaceSpeedMeter( const InterfaceSpeedMeter& ism ) : max_buf_items( ism.max_buf_items ), buf()
 {
-	//copy constructor with a buf deep copy
-	for ( auto const & stats : ism.buf )
-	{
-		uint64_t rx = stats.at ( "rx" );
-		uint64_t tx = stats.at ( "tx" );
-		uint64_t time = stats.at ( "time" );
-		map<string, uint64_t> item;
+    //copy constructor with a buf deep copy
+    for ( auto const & stats : ism.buf )
+    {
+        uint64_t rx = stats.at( "rx" );
+        uint64_t tx = stats.at( "tx" );
+        uint64_t time = stats.at( "time" );
+        map<string, uint64_t> item;
 
-		item["rx"] = rx;
-		item["tx"] = tx;
-		item["time"] = time;
+        item["rx"] = rx;
+        item["tx"] = tx;
+        item["time"] = time;
 
-		buf.push_front ( item );
-	}
-	max_buf_items = ism.max_buf_items;
+        buf.push_front( item );
+    }
 }
 
 InterfaceSpeedMeter::~InterfaceSpeedMeter()
@@ -40,64 +38,64 @@ InterfaceSpeedMeter::~InterfaceSpeedMeter()
 
 }
 
-uint64_t InterfaceSpeedMeter::get_rx_speed ( void ) const
+uint64_t InterfaceSpeedMeter::get_rx_speed( void ) const
 {
-	const map<string, uint64_t> & first = buf.front();
-	const map<string, uint64_t> & last = buf.back();
-	uint64_t data = first.at ( "rx" ) - last.at ( "rx" );
-	uint64_t time = first.at ( "time" ) - last.at ( "time" );
+    const map<string, uint64_t> & first = buf.front();
+    const map<string, uint64_t> & last = buf.back();
+    uint64_t data = first.at( "rx" ) - last.at( "rx" );
+    uint64_t time = first.at( "time" ) - last.at( "time" );
 
-	if ( time > 0 )
-	{
-		/*time is in miliseconds, so we multiply the result by 1000 to get speed in bits/s */
-		return ( 8ULL * 1000ULL * data ) / time;
-	}
-	else
-	{
-		return 0;
-	}
+    if ( time > 0 )
+    {
+        /*time is in miliseconds, so we multiply the result by 1000 to get speed in bits/s */
+        return ( 8ULL * 1000ULL * data ) / time;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-uint64_t InterfaceSpeedMeter::get_tx_speed ( void ) const
+uint64_t InterfaceSpeedMeter::get_tx_speed( void ) const
 {
-	const map<string, uint64_t> & first = buf.front();
-	const map<string, uint64_t> & last = buf.back();
-	uint64_t data = first.at ( "tx" ) - last.at ( "tx" );
-	uint64_t time = first.at ( "time" ) - last.at ( "time" );
+    const map<string, uint64_t> & first = buf.front();
+    const map<string, uint64_t> & last = buf.back();
+    uint64_t data = first.at( "tx" ) - last.at( "tx" );
+    uint64_t time = first.at( "time" ) - last.at( "time" );
 
-	if ( time > 0 )
-	{
-		return ( 8ULL * 1000ULL * data ) / time;
-	}
-	else
-	{
-		return 0;
-	}
+    if ( time > 0 )
+    {
+        return ( 8ULL * 1000ULL * data ) / time;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-uint64_t InterfaceSpeedMeter::get_time_milisecs ( void )
+uint64_t InterfaceSpeedMeter::get_time_milisecs( void )
 {
-	struct timeval  tv;
-	gettimeofday ( &tv, nullptr );
+    struct timeval  tv;
+    gettimeofday( &tv, nullptr );
 
-	return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000 ;
+    return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000 ;
 }
 
 
-void InterfaceSpeedMeter::update ( uint64_t _rx, uint64_t _tx )
+void InterfaceSpeedMeter::update( uint64_t _rx, uint64_t _tx )
 {
-	map<string, uint64_t> item;
+    map<string, uint64_t> item;
 
-	uint64_t time = get_time_milisecs();
+    uint64_t time = get_time_milisecs();
 
-	item["rx"] = _rx;
-	item["tx"] = _tx;
-	item["time"] = time;
+    item["rx"] = _rx;
+    item["tx"] = _tx;
+    item["time"] = time;
 
-	buf.push_front ( item );
+    buf.push_front( item );
 
-	while ( buf.size() >= max_buf_items )
-	{
-		buf.pop_back();
-	}
+    while ( buf.size() >= max_buf_items )
+    {
+        buf.pop_back();
+    }
 }

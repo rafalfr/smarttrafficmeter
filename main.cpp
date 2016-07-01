@@ -109,8 +109,6 @@ int main( int argc, char *argv[] )
     uint32_t m;
     uint32_t d;
     uint32_t h;
-    void *res;
-    int32_t s;
     bool make_program_run_at_startup = false;
 
     Globals::all_stats.clear();
@@ -123,10 +121,10 @@ int main( int argc, char *argv[] )
     {
         CmdLine cmd( "Command description message", ' ', version );
 
-        SwitchArg daemon_switch( "d", "daemon", "run the program as daemon", false, NULL );
+        SwitchArg daemon_switch( "d", "daemon", "run the program as daemon", false, nullptr );
         cmd.add( daemon_switch );
 
-        SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, NULL );
+        SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, nullptr );
         cmd.add( startup_switch );
 
         cmd.parse( argc, argv );
@@ -147,7 +145,10 @@ int main( int argc, char *argv[] )
     Globals::program_path = Utils::get_program_path( argv );
     Globals::cwd = Utils::get_path( Globals::program_path );
 
-    chdir( Globals::cwd.c_str() );
+    if ( chdir( Globals::cwd.c_str() ) == -1 )
+    {
+        Logger::LogError( "cannot change working directory" );
+    }
 
     if ( make_program_run_at_startup == true )
     {
@@ -177,7 +178,7 @@ int main( int argc, char *argv[] )
 
     if ( Globals::is_daemon == true )
     {
-        Utils::sleep_seconds(10);
+        Utils::sleep_seconds( 10 );
     }
 
     Utils::set_signals_handler();
@@ -296,7 +297,7 @@ int main( int argc, char *argv[] )
     meter_thread.join();
 
 #ifdef __linux
-    Globals::shared_mem.get()->remove("SmartTrafficMeterSharedMemory");
+    Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
 #endif // __linux
 
     exit( EXIT_SUCCESS );

@@ -504,7 +504,7 @@ void Utils::load_data_from_sqlite(void)
     Globals::data_load_save_mutex.lock();
 
     sqlite3 *db;
-    char *zErrMsg = 0;
+    char *zErrMsg = nullptr;
     int rc;
     uint32_t y;
     uint32_t m;
@@ -525,7 +525,7 @@ void Utils::load_data_from_sqlite(void)
         const InterfaceInfo& in = kv.second;
         const string& mac = in.get_mac();
 
-        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, NULL );
+        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -534,7 +534,7 @@ void Utils::load_data_from_sqlite(void)
 
         query.clear();
         query += "DELETE FROM yearly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc != SQLITE_OK )
         {
@@ -550,7 +550,7 @@ void Utils::load_data_from_sqlite(void)
         query += "'";
         query += ";";
         table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc == SQLITE_OK )
         {
@@ -582,7 +582,7 @@ void Utils::load_data_from_sqlite(void)
 ///
         query.clear();
         query += "DELETE FROM monthly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc != SQLITE_OK )
         {
@@ -598,7 +598,7 @@ void Utils::load_data_from_sqlite(void)
         query += "'";
         query += ";";
         table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc == SQLITE_OK )
         {
@@ -630,7 +630,7 @@ void Utils::load_data_from_sqlite(void)
 ///
         query.clear();
         query += "DELETE FROM daily WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc != SQLITE_OK )
         {
@@ -647,7 +647,7 @@ void Utils::load_data_from_sqlite(void)
         query += ";";
 
         table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc == SQLITE_OK )
         {
@@ -679,7 +679,7 @@ void Utils::load_data_from_sqlite(void)
 ///
         query.clear();
         query += "DELETE FROM hourly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc != SQLITE_OK )
         {
@@ -696,7 +696,7 @@ void Utils::load_data_from_sqlite(void)
         query += ";";
 
         table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, NULL, &zErrMsg );
+        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
         if ( rc == SQLITE_OK )
         {
@@ -833,13 +833,13 @@ void Utils::save_stats_to_sqlite(void)
     for ( auto const & mac_table : Globals::all_stats )
     {
         sqlite3 *db;
-        char *zErrMsg = 0;
+        char *zErrMsg = nullptr;
         int rc;
 
         const string& mac = mac_table.first;
         const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
-        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL );
+        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -853,7 +853,7 @@ void Utils::save_stats_to_sqlite(void)
             query.clear();
             query += "CREATE TABLE IF NOT EXISTS '" + table_name + "' ('row' VARCHAR(45) NULL,'rx_bytes' UNSIGNED BIG INT NULL,'tx_bytes' UNSIGNED BIG INT NULL,PRIMARY KEY ('row'));";
 
-            rc = sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+            rc = sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
 
             if ( rc != SQLITE_OK )
             {
@@ -867,7 +867,7 @@ void Utils::save_stats_to_sqlite(void)
             query += "DELETE FROM " + table_name + " WHERE ";
             query += "row NOT LIKE ";
             query += "'2%%';";
-            rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
             if ( rc != SQLITE_OK )
             {
@@ -894,7 +894,7 @@ void Utils::save_stats_to_sqlite(void)
                 query += ",";
                 query += Utils::to_string( tx );
                 query += ");";
-                rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+                rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
                 if ( rc != SQLITE_OK )
                 {
@@ -912,7 +912,7 @@ void Utils::save_stats_to_sqlite(void)
                 query += Utils::to_string( tx );
                 query += " WHERE row='" + row + "'";
                 query += ";";
-                rc = sqlite3_exec( db, query.c_str(), callback, 0, &zErrMsg );
+                rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
                 if ( rc != SQLITE_OK )
                 {
@@ -923,23 +923,23 @@ void Utils::save_stats_to_sqlite(void)
             }
         }
 
-        string query;
-
-        query.clear();
-        query+="DELETE FROM 'hourly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
-
-        query.clear();
-        query+="DELETE FROM 'daily' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
-
-        query.clear();
-        query+="DELETE FROM 'monthly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
-
-        query.clear();
-        query+="DELETE FROM 'yearly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-        sqlite3_exec( db, query.c_str(), Utils::callback, 0, &zErrMsg );
+//        string query;
+//
+//        query.clear();
+//        query+="DELETE FROM 'hourly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
+//
+//        query.clear();
+//        query+="DELETE FROM 'daily' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
+//
+//        query.clear();
+//        query+="DELETE FROM 'monthly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
+//
+//        query.clear();
+//        query+="DELETE FROM 'yearly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
+//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
 
         sqlite3_close_v2( db );
     }

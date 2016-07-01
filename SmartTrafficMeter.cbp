@@ -167,7 +167,6 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
-			<Add option="-Duse_sqlite" />
 			<Add directory="sqlite" />
 			<Add directory="serverhttp" />
 			<Add directory="/usr/include/mysql/" />

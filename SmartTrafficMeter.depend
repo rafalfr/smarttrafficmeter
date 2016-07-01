@@ -11006,7 +11006,7 @@
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
 
-1462040350 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1467291132 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
 	<limits>
 	"InterfaceStats.h"
 
@@ -11185,7 +11185,7 @@
 1461005789 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
 
-1467236975 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1467291428 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -11416,13 +11416,13 @@
 	"InterfaceInfo.h"
 	<bfd.h>
 
-1467237760 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+1467290609 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
 1467238060 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1467290906 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
@@ -11497,7 +11497,7 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1467233451 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1467373059 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
 	<sstream>
 	<algorithm>
@@ -11539,7 +11539,7 @@
 	<windows.h>
 	"InterfaceInfo.h"
 
-1467214256 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1467295049 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	"config.h"
 	<fstream>
 	<memory>

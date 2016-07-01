@@ -203,7 +203,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^\\\/(hourly|daily|monthly|yearly)\\\/?(.*)?\\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
         // http://127.0.0.1:8080/daily/
 
@@ -211,6 +211,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t m;
         uint32_t d;
         uint32_t h;
+
+        uint64_t rx_in_period = 0ULL;
+        uint64_t tx_in_period = 0ULL;
+        string unit;
+        float scale;
 
         string web_page;
 
@@ -415,7 +420,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 if ( interface_info.get_mac().compare( mac ) == 0 )
                 {
                     interface_name = interface_info.get_name();
-                    interface_description=interface_info.get_desc();
+                    interface_description = interface_info.get_desc();
                     ip4 = interface_info.get_ip4();
                     ip6 = interface_info.get_ip6();
                 }
@@ -448,25 +453,25 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             if ( stats_type.compare( "yearly" ) == 0 )
             {
-                start_date.year = Utils::stoi( start_date_items[0]);
+                start_date.year = Utils::stoi( start_date_items[0] );
                 start_date.month = 0;
                 start_date.day = 0;
                 start_date.hour = 0;
 
-                end_date.year = Utils::stoi( end_date_items[0]);
+                end_date.year = Utils::stoi( end_date_items[0] );
                 end_date.month = 0;
                 end_date.day = 0;
                 end_date.hour = 0;
             }
             else if ( stats_type.compare( "monthly" ) == 0 )
             {
-                start_date.year = Utils::stoi( start_date_items[0]);
-                start_date.month = Utils::stoi( start_date_items[1]);
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
                 start_date.day = 0;
                 start_date.hour = 0;
 
-                end_date.year = Utils::stoi( end_date_items[0]);
-                end_date.month = Utils::stoi( end_date_items[1]);
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
                 end_date.day = 0;
                 end_date.hour = 0;
             }
@@ -511,6 +516,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             //scale obtained stats
             uint64_t max_value = 0ULL;
+            rx_in_period = 0ULL;
+            tx_in_period = 0ULL;
 
             for ( auto & row_stats : results )
             {
@@ -525,10 +532,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 {
                     max_value = stats.transmited();
                 }
+
+                rx_in_period += stats.recieved();
+                tx_in_period += stats.transmited();
             }
 
-            string unit;
-            float scale;
 
             if ( max_value >= 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL )
             {
@@ -573,7 +581,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             for ( auto const & row_stats : results )
             {
                 chart_data += "\"";
-                chart_data += Utils::replace("_",", ",row_stats.first);
+                chart_data += Utils::replace( "_", ", ", row_stats.first );
                 chart_data += "\"";
 
                 if ( i < results.size() - 1 )
@@ -653,6 +661,18 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             web_page += "<br>\n";
 
             chart_id++;
+
+            web_page += "<div style=\"width: 100%\" align=\"center\">\n";
+            float value = ( ( float )rx_in_period ) / scale;
+            web_page += "<p>";
+            web_page += "total download: " + Utils::float_to_string( value ) + " " + unit;
+            web_page += ",  ";
+            value = ( ( float )tx_in_period ) / scale;
+            web_page += "total upload: " + Utils::float_to_string( value ) + " " + unit;
+            web_page += "</p>";
+            web_page += "</div>";
+            web_page += "<br>";
+            web_page += "<hr>";
         }
 
         chart_id = 0;
@@ -687,6 +707,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             chart_id++;
         }
 
+
         //finish generating html
         web_page += "}\n";
         web_page += "</script>\n";
@@ -713,7 +734,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         string chartjs_path;
-        chartjs_path+=Globals::cwd+PATH_SEPARATOR+"webpage"+PATH_SEPARATOR+"Chart.js";
+        chartjs_path += Globals::cwd + PATH_SEPARATOR + "webpage" + PATH_SEPARATOR + "Chart.js";
 
         ifstream file;
         file.open( chartjs_path, std::ifstream::in | std::ifstream::binary );
