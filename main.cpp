@@ -89,7 +89,7 @@ using namespace TCLAP;
 //cbp2make
 //binutils-dev
 //libboost1.58-dev (libboost1.50-dev raspberry pi)
-//libboost-context-dev libboost-coroutine-dev libboost-regex-dev libboost-thread-dev libboost-system-dev
+//libboost-context-dev libboost-coroutine-dev libboost-regex-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev
 
 /* generowanie pliku makefile i kompilacja za pomocą make
 cbp2make -in SmartTrafficMeter.cbp
