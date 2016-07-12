@@ -78,8 +78,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
-					<Add option="-Wall" />
-					<Add option="-g" />
+					<Add option="-w" />
+					<Add option="-march=native" />
 					<Add option="-D__pi__" />
 				</Compiler>
 				<Linker>
@@ -105,7 +105,6 @@
 					<Add option="-fexceptions" />
 					<Add option="-march=native" />
 					<Add option="-std=c++14" />
-					<Add option="-march=native" />
 					<Add option="-O0" />
 					<Add option="-D__WIN32" />
 					<Add directory="E:/programowanie/C++/boost_1_61_0" />
@@ -232,11 +231,11 @@
 			<Option target="Windows Debug" />
 		</Unit>
 		<Unit filename="serverhttp/server_http.hpp" />
+		<Unit filename="sqlite/sqlite3.h" />
+		<Unit filename="sqlite/sqlite3ext.h" />
 		<Unit filename="sqlite3.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sqlite/sqlite3.h" />
-		<Unit filename="sqlite/sqlite3ext.h" />
 		<Unit filename="tclap/Arg.h" />
 		<Unit filename="tclap/ArgException.h" />
 		<Unit filename="tclap/ArgTraits.h" />
