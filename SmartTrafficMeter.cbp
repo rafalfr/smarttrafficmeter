@@ -79,10 +79,10 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-w" />
-					<Add option="-march=native" />
 					<Add option="-D__pi__" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add library="rt" />
 					<Add library="dl" />
 					<Add library="bfd" />
@@ -157,19 +157,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wnon-virtual-dtor" />
-			<Add option="-Winit-self" />
-			<Add option="-Wredundant-decls" />
-			<Add option="-Wcast-align" />
-			<Add option="-Wundef" />
-			<Add option="-Wfloat-equal" />
-			<Add option="-Winline" />
-			<Add option="-Wmissing-declarations" />
-			<Add option="-Weffc++" />
-			<Add option="-Wmain" />
-			<Add option="-Wzero-as-null-pointer-constant" />
-			<Add option="-Wextra" />
-			<Add option="-Wall" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add directory="sqlite" />
 			<Add directory="serverhttp" />

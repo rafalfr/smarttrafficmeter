@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -Isqlite -Iserverhttp -I/usr/include/mysql/ -I/usr/include/libiberty/ -I../smarttrafficmeter
-CFLAGS = -Wnon-virtual-dtor -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wmissing-declarations -Weffc++ -Wmain -Wzero-as-null-pointer-constant -Wextra -Wall -DGLIBCXX_FORCE_NEW
+CFLAGS = -DGLIBCXX_FORCE_NEW
 RESINC = 
 LIBDIR = 
 LIB = 
@@ -41,12 +41,12 @@ DEP_LINUX_RELEASE =
 OUT_LINUX_RELEASE = bin/Release/SmartTrafficMeter
 
 INC_PI = $(INC)
-CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -w -march=native -D__pi__
+CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -w -D__pi__
 RESINC_PI = $(RESINC)
 RCFLAGS_PI = $(RCFLAGS)
 LIBDIR_PI = $(LIBDIR)
 LIB_PI = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_coroutine -lboost_regex -lboost_thread -lboost_context
-LDFLAGS_PI = $(LDFLAGS)
+LDFLAGS_PI = $(LDFLAGS) -s
 OBJDIR_PI = obj/pi
 DEP_PI = 
 OUT_PI = bin/pi/SmartTrafficMeter
