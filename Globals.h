@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include <mutex>
+#include <boost/thread.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/interprocess/shared_memory_object.hpp>
 
@@ -22,7 +22,7 @@ public:
     static string cwd;
     static string program_path;
 
-    static mutex data_load_save_mutex;
+    static boost::mutex data_load_save_mutex;
 
     static boost::scoped_ptr<boost::interprocess::shared_memory_object> shared_mem;
 

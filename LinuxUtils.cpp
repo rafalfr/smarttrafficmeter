@@ -145,10 +145,6 @@ void* LinuxUtils::MeterThread( void )
             {
                 struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
 
-//				printf ( "\t\ttx_packets = %10u; rx_packets = %10u\n"
-//						 "\t\ttx_bytes   = %10u; rx_bytes   = %10u\n",
-//						 stats->tx_packets, stats->rx_packets,
-//						 stats->tx_bytes, stats->rx_bytes );
 
                 Utils::get_time( &y, &m, &d, &h );
 
@@ -555,17 +551,19 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
             string interface_name( ifaddr->ifa_name );
 
-            if ( interfaces.find( interface_name ) == interfaces.end() )
+            string mac=get_mac( ifaddr->ifa_name );
+
+            if ( interfaces.find( mac ) == interfaces.end() )
             {
                 InterfaceInfo in;
                 in.set_name( ifaddr->ifa_name );
-                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
+                in.set_mac( mac.c_str() );
                 in.set_ip4( host );
-                interfaces[interface_name] = in;
+                interfaces[mac] = in;
             }
             else
             {
-                interfaces[interface_name].set_ip4( host );
+                interfaces[mac].set_ip4( host );
             }
         }
         else if ( family == AF_INET6 )
@@ -583,17 +581,19 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
             string interface_name = string( ifaddr->ifa_name );
 
-            if ( interfaces.find( interface_name ) == interfaces.end() )
+            string mac=get_mac( ifaddr->ifa_name );
+
+            if ( interfaces.find( mac ) == interfaces.end() )
             {
                 InterfaceInfo in;
                 in.set_name( ifaddr->ifa_name );
-                in.set_mac( get_mac( ifaddr->ifa_name ).c_str() );
+                in.set_mac( mac.c_str() );
                 in.set_ip6( host );
                 interfaces[interface_name] = in;
             }
             else
             {
-                interfaces[interface_name].set_ip6( host );
+                interfaces[mac].set_ip6( host );
             }
         }
     }

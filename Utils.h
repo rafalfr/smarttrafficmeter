@@ -77,6 +77,8 @@ public:
 
 	static void sleep_seconds(uint32_t seconds);
 
+	static string to_narrow(const wchar_t * src);
+
 };
 
 #endif // UTILS_H

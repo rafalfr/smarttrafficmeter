@@ -1,6 +1,7 @@
 #ifndef SERVER_HTTP_HPP
 #define	SERVER_HTTP_HPP
 
+#include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/spawn.hpp>
 #include <boost/regex.hpp>
@@ -204,7 +205,7 @@ public:
 protected:
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::acceptor acceptor;
-	std::vector<std::thread> threads;
+	std::vector<boost::thread> threads;
 
 	size_t timeout_request;
 	size_t timeout_content;

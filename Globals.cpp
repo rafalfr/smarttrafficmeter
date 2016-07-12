@@ -3,7 +3,7 @@
 bool Globals::is_daemon=false;
 string Globals::cwd;
 string Globals::program_path;
-mutex Globals::data_load_save_mutex;
+boost::mutex Globals::data_load_save_mutex;
 boost::scoped_ptr<boost::interprocess::shared_memory_object> Globals::shared_mem;
 
 DataBaseDriver Globals::db_drv;

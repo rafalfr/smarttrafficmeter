@@ -31,6 +31,9 @@
 #include "server_http.hpp"
 #endif // _NO_WEBSERVER
 
+#ifdef __WIN32
+#include <direct.h>
+#endif // __WIN32
 
 #ifdef use_mysql
 
@@ -275,12 +278,12 @@ int main( int argc, char *argv[] )
     }
 
 
-    thread stats_server_thread( ServerThread::Thread );
+    boost::thread stats_server_thread( ServerThread::Thread );
 
 //http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
 
 
-    thread meter_thread( Utils::MeterThread );
+    boost::thread meter_thread( Utils::MeterThread );
 
     cout << "Monitoring has started" << endl;
 
@@ -288,7 +291,7 @@ int main( int argc, char *argv[] )
     SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["html server port"] ), 2 );
     WebSiteContent::set_web_site_content( http_server );
 
-    thread server_thread( [&http_server]()
+    boost::thread server_thread( [&http_server]()
     {
         http_server.start();
     } );
@@ -418,7 +421,6 @@ void save_stats_to_mysql( void )
 
 //			if ( res == false )
 //			{
-//				printf( "can't create table" );
 //				continue;
 //			}
 
@@ -465,7 +467,6 @@ void save_stats_to_mysql( void )
 
                 if ( res == false )
                 {
-                    printf( "error\n" );
                     continue;
                 }
             }
@@ -484,8 +485,6 @@ void save_stats_to_mysql( void )
   */
 void load_settings( void )
 {
-    //mkpath( "/etc/smarttrafficmeter", 0644 );
-
     ifstream file;
     file.open( Settings::settings["database directory"] + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
 

@@ -1,9 +1,27 @@
-#ifdef _WIN32
+#ifdef __WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#define NDIS_SUPPORT_NDIS6 1
+
 #include <fstream>
 #include <stdio.h>
 #include <windows.h>
 #include <winsock2.h>
 #include <iphlpapi.h>
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <iphlpapi.h>
+#include <Ntddndis.h>
+#include <Netioapi.h>
+
+#include <objbase.h>
+#include <wtypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 
 #include "config.h"
 #include "WindowsUtils.h"
@@ -24,437 +42,516 @@ using namespace std;
   *
   * @todo: document this function
   */
-void WindowsUtils::MeterThread( void )
+void WindowsUtils::MeterThread ( void )
 {
 // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365943(v=vs.85).aspx
 
 //https://github.com/eidheim/Simple-WebSocket-Server
 
-    uint32_t y = 0;
-    uint32_t m = 0;
-    uint32_t d = 0;
-    uint32_t h = 0;
-    uint32_t ph = 0;
-    static uint64_t p_time = 0;
+	uint32_t y = 0;
+	uint32_t m = 0;
+	uint32_t d = 0;
+	uint32_t h = 0;
+	uint32_t ph = 0;
+	static uint64_t p_time = 0;
 
-    uint32_t refresh_interval=1;	//statistics refresh interval in seconds
-    uint32_t save_interval=30*60; 	//save interval in seconds
+	uint32_t refresh_interval = 1;	//statistics refresh interval in seconds
+	uint32_t save_interval = 30 * 60; 	//save interval in seconds
 
-    char buf[16];
+	char buf[16];
 
-    try
-    {
-        refresh_interval = Utils::stoi( Settings::settings["stats refresh interval"] );
-    }
-    catch ( ... )
-    {
-        refresh_interval = 1;
-    }
+	try
+	{
+		refresh_interval = Utils::stoi ( Settings::settings["stats refresh interval"] );
+	}
+	catch ( ... )
+	{
+		refresh_interval = 1;
+	}
 
-    try
-    {
-        save_interval = Utils::stoi( Settings::settings["stats save interval"] );
-    }
-    catch ( ... )
-    {
-        save_interval = 30 * 60;
-    }
+	try
+	{
+		save_interval = Utils::stoi ( Settings::settings["stats save interval"] );
+	}
+	catch ( ... )
+	{
+		save_interval = 30 * 60;
+	}
 
-    string row;
-    string current_row;
-    vector<map<string, InterfaceStats>::const_iterator> rows4remove;
+	string row;
+	string current_row;
+	vector<map<string, InterfaceStats>::const_iterator> rows4remove;
 
-    while ( true )
-    {
+	while ( true )
+	{
+		PIP_INTERFACE_INFO pInfo = NULL;
+		ULONG ulOutBufLen = 0;
 
-        DWORD dwSize = 0;
-        DWORD dwRetVal = 0;
+		DWORD dwRetVal = 0;
 
-        MIB_IFTABLE *pIfTable;
-        MIB_IFROW *pIfRow;
+		int i;
 
-        // Allocate memory for our pointers.
-        pIfTable = ( MIB_IFTABLE * ) MALLOC( sizeof( MIB_IFTABLE ) );
+		dwRetVal = GetInterfaceInfo ( NULL, &ulOutBufLen );
+		if ( dwRetVal == ERROR_INSUFFICIENT_BUFFER )
+		{
+			pInfo = ( IP_INTERFACE_INFO * ) MALLOC ( ulOutBufLen );
+			if ( pInfo == NULL )
+			{
+				Sleep ( refresh_interval * 1000 );
+				continue;
+			}
+		}
 
-        if ( pIfTable == NULL )
-        {
-            return;
-        }
+		dwRetVal = GetInterfaceInfo ( pInfo, &ulOutBufLen );
 
-        dwSize = sizeof( MIB_IFTABLE );
+		if ( dwRetVal == NO_ERROR )
+		{
+			for ( i = 0; i < pInfo->NumAdapters; i++ )
+			{
+				ULONG retVal = 0;
+				ULONG ifIndex;
 
-        if ( GetIfTable( pIfTable, &dwSize, FALSE ) == ERROR_INSUFFICIENT_BUFFER )
-        {
-            FREE( pIfTable );
-            pIfTable = ( MIB_IFTABLE * ) MALLOC( dwSize );
+				MIB_IF_ROW2 ifRow;
 
-            if ( pIfTable == NULL )
-            {
-                return;
-            }
-        }
+				SecureZeroMemory ( ( PVOID ) &ifRow, sizeof ( MIB_IF_ROW2 ) );
 
-        if ( ( dwRetVal = GetIfTable( pIfTable, &dwSize, FALSE ) ) == NO_ERROR )
-        {
+				ifIndex = pInfo->Adapter[i].Index;
 
-            for (uint32_t i = 0; i < pIfTable->dwNumEntries; i++ )
-            {
-                pIfRow = ( MIB_IFROW * ) & pIfTable->table[i];
+				ifRow.InterfaceIndex = ifIndex;
 
-                DWORD status=pIfRow->dwOperStatus;
+				retVal = GetIfEntry2 ( &ifRow );
 
-                // skip inactive interfaces
-                if (status!=IF_OPER_STATUS_OPERATIONAL)
-                {
-                    continue;
-                }
+				if ( ifRow.AdminStatus != NET_IF_ADMIN_STATUS_UP )
+				{
+					continue;
+				}
 
-                // skip interfaces with no mac
-                if ((pIfRow->dwPhysAddrLen)==0)
-                {
-                    continue;
-                }
+				char buf[8];
+				string mac;
 
-                if (pIfRow->dwDescrLen==0)
-                {
-                    continue;
-                }
+				if ( ifRow.PhysicalAddressLength == 0 )
+				{
 
-                string mac;
+					const GUID& guid = ifRow.InterfaceGuid;
+					sprintf ( buf, "%08lX-%04hX-%04hX-%02hhX%02hhX-%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX",
+					          guid.Data1, guid.Data2, guid.Data3,
+					          guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
+					          guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7] );
+					mac += buf;
+				}
+				else
+				{
+					for ( int j = 0; j < ( int ) ifRow.PhysicalAddressLength; j++ )
+					{
+						memset ( buf, 0, 8 * sizeof ( char ) );
 
-                mac.clear();
-                for (uint32_t j = 0; j < pIfRow->dwPhysAddrLen; j++ )
-                {
+						if ( j == ( ifRow.PhysicalAddressLength - 1 ) )
+						{
+							sprintf ( buf, "%.2x", ( int ) ifRow.PermanentPhysicalAddress[j] );
+						}
+						else
+						{
+							sprintf ( buf, "%.2x-", ( int ) ifRow.PermanentPhysicalAddress[j] );
+						}
+						mac += buf;
+					}
+				}
 
-                    memset( buf, 0, 16 * sizeof( char ) );
-                    sprintf( buf, "%.2x", ( int ) pIfRow->bPhysAddr[j] );
-                    mac.append( buf );
+				uint64_t rx_bytes = ifRow.InOctets ;
+				uint64_t tx_bytes = ifRow.OutOctets ;
 
-                    if ( j < ( pIfRow->dwPhysAddrLen - 1 ) )
-                    {
-                        mac += "-";
-                    }
-                }
+				Utils::get_time ( &y, &m, &d, &h );
 
-                DWORD rx_bytes=pIfRow->dwInOctets;
-                DWORD tx_bytes=pIfRow->dwOutOctets;
+				if ( Globals::speed_stats.find ( mac ) == Globals::speed_stats.end() )
+				{
+					InterfaceSpeedMeter ism;
+					Globals::speed_stats[mac] = ism;
+				}
+				row.clear();
+				row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 ) + "_" + Utils::to_string ( h, 2 ) + ":00-" + Utils::to_string ( h + 1, 2 ) + ":00";
 
-                Utils::get_time( &y, &m, &d, &h );
+				if ( Globals::all_stats[mac]["hourly"].find ( row ) == Globals::all_stats[mac]["hourly"].end() )
+				{
+					InterfaceStats hstats;
+					Globals::all_stats[mac]["hourly"][row] = hstats;
+				}
 
-                if ( Globals::speed_stats.find( mac ) == Globals::speed_stats.end() )
-                {
-                    InterfaceSpeedMeter ism;
-                    Globals::speed_stats[mac] = ism;
-                }
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-
-                if ( Globals::all_stats[mac]["hourly"].find( row ) == Globals::all_stats[mac]["hourly"].end() )
-                {
-                    InterfaceStats hstats;
-                    Globals::all_stats[mac]["hourly"][row] = hstats;
-                }
-
-                Globals::all_stats[mac]["hourly"][row].update( tx_bytes, rx_bytes );
-
-
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
-
-                if ( Globals::all_stats[mac]["daily"].find( row ) == Globals::all_stats[mac]["daily"].end() )
-                {
-                    InterfaceStats dstats;
-                    Globals::all_stats[mac]["daily"][row] = dstats;
-                }
-
-                Globals::all_stats[mac]["daily"][row].update( tx_bytes, rx_bytes );
-
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
-
-                if ( Globals::all_stats[mac]["monthly"].find( row ) == Globals::all_stats[mac]["monthly"].end() )
-                {
-                    InterfaceStats mstats;
-                    Globals::all_stats[mac]["monthly"][row] = mstats;
-                }
-
-                Globals::all_stats[mac]["monthly"][row].update( tx_bytes, rx_bytes );
+				Globals::all_stats[mac]["hourly"][row].update ( tx_bytes, rx_bytes );
 
 
-                row.clear();
-                row += Utils::to_string( y );
+				row.clear();
+				row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 );
 
-                if ( Globals::all_stats[mac]["yearly"].find( row ) == Globals::all_stats[mac]["yearly"].end() )
-                {
-                    InterfaceStats ystats;
-                    Globals::all_stats[mac]["yearly"][row] = ystats;
-                }
+				if ( Globals::all_stats[mac]["daily"].find ( row ) == Globals::all_stats[mac]["daily"].end() )
+				{
+					InterfaceStats dstats;
+					Globals::all_stats[mac]["daily"][row] = dstats;
+				}
 
-                Globals::all_stats[mac]["yearly"][row].update( tx_bytes, rx_bytes );
+				Globals::all_stats[mac]["daily"][row].update ( tx_bytes, rx_bytes );
 
-                Globals::speed_stats[mac].update( rx_bytes, tx_bytes );
-            }
-        }
-        else
-        {
-            if ( pIfTable != NULL )
-            {
-                FREE( pIfTable );
-                pIfTable = nullptr;
-            }
+				row.clear();
+				row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 );
 
-            return;
-        }
+				if ( Globals::all_stats[mac]["monthly"].find ( row ) == Globals::all_stats[mac]["monthly"].end() )
+				{
+					InterfaceStats mstats;
+					Globals::all_stats[mac]["monthly"][row] = mstats;
+				}
 
-        if ( pIfTable != NULL )
-        {
-            FREE( pIfTable );
-            pIfTable = nullptr;
-        }
+				Globals::all_stats[mac]["monthly"][row].update ( tx_bytes, rx_bytes );
 
-        if ( Globals::is_daemon == false )
-        {
-            for ( auto const & mac_speedinfo : Globals::speed_stats )
-            {
-                const string& mac = mac_speedinfo.first;
-                const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-                cout << mac << endl;
+				row.clear();
+				row += Utils::to_string ( y );
 
-                double speed = ( double )ism.get_tx_speed();
+				if ( Globals::all_stats[mac]["yearly"].find ( row ) == Globals::all_stats[mac]["yearly"].end() )
+				{
+					InterfaceStats ystats;
+					Globals::all_stats[mac]["yearly"][row] = ystats;
+				}
 
-                if ( speed < 1000.0 )
-                {
-                    cout << "up: " << speed << " b/s\t";
-                }
-                else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0;
-                    cout << "up: " << speed << " Kb/s\t";
-                }
-                else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0 * 1000.0;
-                    cout << "up: " << speed << " Mb/s\t";
-                }
-                else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0 * 1000.0 * 1000.0;
-                    cout << "up: " << speed << " Gb/s\t";
-                }
+				Globals::all_stats[mac]["yearly"][row].update ( tx_bytes, rx_bytes );
 
-                speed = ( double )ism.get_rx_speed();
+				Globals::speed_stats[mac].update ( rx_bytes, tx_bytes );
+			}
+		}
 
-                if ( speed < 1000.0 )
-                {
-                    cout << "down: " << speed << " b/s" << endl;
-                }
-                else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0;
-                    cout << "down: " << speed << " Kb/s" << endl;
-                }
-                else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0 * 1000.0;
-                    cout << "down: " << speed << " Mb/s" << endl;
-                }
-                else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
-                {
-                    speed /= 1000.0 * 1000.0 * 1000.0;
-                    cout << "down: " << speed << " Gb/s" << endl;
-                }
+		FREE ( pInfo );
 
-                cout << endl;
-            }
+		if ( Globals::is_daemon == false )
+		{
+			for ( auto const & mac_speedinfo : Globals::speed_stats )
+			{
+				const string& mac = mac_speedinfo.first;
+				const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-            cout << "-------------------------------" << endl;
-        }
+				cout << mac << endl;
 
-        SYSTEMTIME st;
-        GetSystemTime(&st);
-        uint64_t c_time = st.wSecond * 1000ULL + st.wMilliseconds;
+				double speed = ( double ) ism.get_tx_speed();
 
-        MSG msg;
-        bool close_event=PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE);
+				if ( speed < 1000.0 )
+				{
+					cout << "up: " << speed << " b/s\t";
+				}
+				else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0;
+					cout << "up: " << speed << " Kb/s\t";
+				}
+				else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0 * 1000.0;
+					cout << "up: " << speed << " Mb/s\t";
+				}
+				else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0 * 1000.0 * 1000.0;
+					cout << "up: " << speed << " Gb/s\t";
+				}
 
-        if (close_event)
-        {
-            Logger::LogInfo("closing event");
-        }
+				speed = ( double ) ism.get_rx_speed();
 
-        if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) || close_event==true)
-        {
-            const string& storage = Settings::settings["storage"];
+				if ( speed < 1000.0 )
+				{
+					cout << "down: " << speed << " b/s" << endl;
+				}
+				else if ( speed >= 1000.0 && speed < 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0;
+					cout << "down: " << speed << " Kb/s" << endl;
+				}
+				else if ( speed >= 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0 * 1000.0;
+					cout << "down: " << speed << " Mb/s" << endl;
+				}
+				else if ( speed >= 1000.0 * 1000.0 * 1000.0 && speed < 1000.0 * 1000.0 * 1000.0 * 1000.0 )
+				{
+					speed /= 1000.0 * 1000.0 * 1000.0;
+					cout << "down: " << speed << " Gb/s" << endl;
+				}
 
-            if ( Utils::contians( storage, "mysql" ) )
-            {
+				cout << endl;
+			}
+
+			cout << "-------------------------------" << endl;
+		}
+
+		SYSTEMTIME st;
+		GetSystemTime ( &st );
+		uint64_t c_time = st.wSecond * 1000ULL + st.wMilliseconds;
+
+		MSG msg;
+		bool close_event = PeekMessage ( &msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE );
+
+		if ( close_event )
+		{
+			Logger::LogInfo ( "closing event" );
+		}
+
+		if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) || close_event == true )
+		{
+			const string& storage = Settings::settings["storage"];
+
+			if ( Utils::contians ( storage, "mysql" ) )
+			{
 #ifdef use_mysql
-                //save_stats_to_mysql();
+				//save_stats_to_mysql();
 #endif // use_mysql
-            }
+			}
 
-            if ( Utils::contians( storage, "sqlite" ) )
-            {
+			if ( Utils::contians ( storage, "sqlite" ) )
+			{
 #ifdef use_sqlite
-                Utils::save_stats_to_sqlite();
+				Utils::save_stats_to_sqlite();
 #endif // use_sqlite
-            }
+			}
 
-            if ( Utils::contians( storage, "files" ) )
-            {
-                Utils::save_stats_to_files();
-            }
+			if ( Utils::contians ( storage, "files" ) )
+			{
+				Utils::save_stats_to_files();
+			}
 
-            /* remove unused rows from the all_stats container */
+			/* remove unused rows from the all_stats container */
 
-            for ( auto const & mac_table : Globals::all_stats )
-            {
-                const string& mac = mac_table.first;
+			for ( auto const & mac_table : Globals::all_stats )
+			{
+				const string& mac = mac_table.first;
 
-                const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+				const map<string, map<string, InterfaceStats> > & table = mac_table.second;
 
-                for ( auto const & table_row : table )
-                {
-                    const string& table_name = table_row.first;	//hourly, daily, etc..
+				for ( auto const & table_row : table )
+				{
+					const string& table_name = table_row.first;	//hourly, daily, etc..
 
-                    current_row.clear();
+					current_row.clear();
 
-                    if ( table_name.compare( "hourly" ) == 0 )
-                    {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-                    }
-                    else if ( table_name.compare( "daily" ) == 0 )
-                    {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
-                    }
-                    else if ( table_name.compare( "monthly" ) == 0 )
-                    {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
-                    }
-                    else if ( table_name.compare( "yearly" ) == 0 )
-                    {
-                        current_row += Utils::to_string( y );
-                    }
+					if ( table_name.compare ( "hourly" ) == 0 )
+					{
+						current_row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 ) + "_" + Utils::to_string ( h, 2 ) + ":00-" + Utils::to_string ( h + 1, 2 ) + ":00";
+					}
+					else if ( table_name.compare ( "daily" ) == 0 )
+					{
+						current_row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 );
+					}
+					else if ( table_name.compare ( "monthly" ) == 0 )
+					{
+						current_row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 );
+					}
+					else if ( table_name.compare ( "yearly" ) == 0 )
+					{
+						current_row += Utils::to_string ( y );
+					}
 
-                    const map<string, InterfaceStats> & row = table_row.second;
+					const map<string, InterfaceStats> & row = table_row.second;
 
-                    rows4remove.clear();
+					rows4remove.clear();
 
-                    for ( map<string, InterfaceStats>::const_iterator it = row.cbegin(); it != row.cend(); )
-                    {
-                        const string& row_in_table = it->first;	//subsequent rows in the current table
+					for ( map<string, InterfaceStats>::const_iterator it = row.cbegin(); it != row.cend(); )
+					{
+						const string& row_in_table = it->first;	//subsequent rows in the current table
 
-                        if ( row_in_table.compare( current_row ) != 0 )
-                        {
-                            rows4remove.push_back( it );
-                        }
+						if ( row_in_table.compare ( current_row ) != 0 )
+						{
+							rows4remove.push_back ( it );
+						}
 
-                        it++;
-                    }
+						it++;
+					}
 
-                    for ( uint32_t i = 0; i < rows4remove.size(); i++ )
-                    {
-                        Globals::all_stats[mac][table_name].erase( rows4remove[i] );
-                    }
+					for ( uint32_t i = 0; i < rows4remove.size(); i++ )
+					{
+						Globals::all_stats[mac][table_name].erase ( rows4remove[i] );
+					}
 
-                    rows4remove.clear();
-                }
-            }
+					rows4remove.clear();
+				}
+			}
 
-            p_time = c_time;
-            ph = h;
-        }
+			p_time = c_time;
+			ph = h;
+		}
 
-        Sleep( refresh_interval*1000);
-    }
+		Sleep ( refresh_interval * 1000 );
+	}
 }
 
 /** @brief get_all_interfaces
   *
   * @todo: document this function
   */
-map<std::string, InterfaceInfo> WindowsUtils::get_all_interfaces( void )
+map<std::string, InterfaceInfo> WindowsUtils::get_all_interfaces ( void )
 {
-    char buf[16];
-    map<string, InterfaceInfo> interfaces;
+	char buf[16];
+	map<string, InterfaceInfo> interfaces;
 
-    PIP_ADAPTER_INFO pAdapterInfo;
-    PIP_ADAPTER_INFO pAdapter = NULL;
-    DWORD dwRetVal = 0;
-    UINT i;
+	PIP_ADAPTER_INFO pAdapterInfo;
+	PIP_ADAPTER_INFO pAdapter = NULL;
+	DWORD dwRetVal = 0;
+	UINT i;
 
-    ULONG ulOutBufLen = sizeof( IP_ADAPTER_INFO );
-    pAdapterInfo = ( IP_ADAPTER_INFO * ) MALLOC( sizeof( IP_ADAPTER_INFO ) );
+	ULONG ulOutBufLen = sizeof ( IP_ADAPTER_INFO );
+	pAdapterInfo = ( IP_ADAPTER_INFO * ) MALLOC ( sizeof ( IP_ADAPTER_INFO ) );
 
-    if ( pAdapterInfo == NULL )
-    {
-        return interfaces;
-    }
+	if ( pAdapterInfo == NULL )
+	{
+		return interfaces;
+	}
 
-    if ( GetAdaptersInfo( pAdapterInfo, &ulOutBufLen ) == ERROR_BUFFER_OVERFLOW )
-    {
-        FREE( pAdapterInfo );
-        pAdapterInfo = ( IP_ADAPTER_INFO * ) MALLOC( ulOutBufLen );
+	if ( GetAdaptersInfo ( pAdapterInfo, &ulOutBufLen ) == ERROR_BUFFER_OVERFLOW )
+	{
+		FREE ( pAdapterInfo );
+		pAdapterInfo = ( IP_ADAPTER_INFO * ) MALLOC ( ulOutBufLen );
 
-        if ( pAdapterInfo == NULL )
-        {
-            return interfaces;
-        }
-    }
+		if ( pAdapterInfo == NULL )
+		{
+			return interfaces;
+		}
+	}
 
-    if ( ( dwRetVal = GetAdaptersInfo( pAdapterInfo, &ulOutBufLen ) ) == NO_ERROR )
-    {
-        InterfaceInfo in;
+	if ( ( dwRetVal = GetAdaptersInfo ( pAdapterInfo, &ulOutBufLen ) ) == NO_ERROR )
+	{
+		pAdapter = pAdapterInfo;
 
-        pAdapter = pAdapterInfo;
+		while ( pAdapter )
+		{
+			if ( ( pAdapter->AddressLength ) == 0 )
+			{
+				pAdapter = pAdapter->Next;
+				continue;
+			}
 
-        while ( pAdapter )
-        {
-            in.set_name( pAdapter->AdapterName );
-            in.set_desc( pAdapter->Description );
+			InterfaceInfo in;
 
-            string mac;
+			in.set_name ( pAdapter->AdapterName );
+			in.set_desc ( pAdapter->Description );
 
-            for ( i = 0; i < pAdapter->AddressLength; i++ )
-            {
-                memset( buf, 0, 16 * sizeof( char ) );
-                sprintf( buf, "%.2x", ( int ) pAdapter->Address[i] );
-                mac.append( buf );
+			string mac;
 
-                if ( i < ( pAdapter->AddressLength - 1 ) )
-                {
-                    mac += "-";
-                }
-            }
+			for ( i = 0; i < pAdapter->AddressLength; i++ )
+			{
+				memset ( buf, 0, 16 * sizeof ( char ) );
+				sprintf ( buf, "%.2x", ( int ) pAdapter->Address[i] );
+				mac.append ( buf );
 
-            in.set_mac( mac.c_str() );
-            in.set_ip4( pAdapter->IpAddressList.IpAddress.String );
-            interfaces[in.get_name()] = in;
+				if ( i < ( pAdapter->AddressLength - 1 ) )
+				{
+					mac += "-";
+				}
+			}
 
-            pAdapter = pAdapter->Next;
-            printf( "\n" );
-        }
-    }
-    else
-    {
-        return interfaces;
+			in.set_mac ( mac.c_str() );
+			in.set_ip4 ( pAdapter->IpAddressList.IpAddress.String );
+			interfaces[mac] = in;
 
-    }
+			pAdapter = pAdapter->Next;
+		}
+	}
+	else
+	{
+		return interfaces;
 
-    if ( pAdapterInfo )
-        FREE( pAdapterInfo );
+	}
 
-    return interfaces;
+	if ( pAdapterInfo )
+	{
+		FREE ( pAdapterInfo );
+	}
+
+// now we use different api to get interfaces without assigned ip4 or ip6 (e.g. ppp interfaces)
+
+	PIP_INTERFACE_INFO pInfo = NULL;
+	ulOutBufLen = 0;
+
+	dwRetVal = 0;
+
+	dwRetVal = GetInterfaceInfo ( NULL, &ulOutBufLen );
+	if ( dwRetVal == ERROR_INSUFFICIENT_BUFFER )
+	{
+		pInfo = ( IP_INTERFACE_INFO * ) MALLOC ( ulOutBufLen );
+		if ( pInfo == NULL )
+		{
+			return interfaces;
+		}
+	}
+
+	dwRetVal = GetInterfaceInfo ( pInfo, &ulOutBufLen );
+
+	if ( dwRetVal == NO_ERROR )
+	{
+		for ( i = 0; i < pInfo->NumAdapters; i++ )
+		{
+			ULONG retVal = 0;
+			ULONG ifIndex;
+
+			MIB_IF_ROW2 ifRow;
+
+			SecureZeroMemory ( ( PVOID ) &ifRow, sizeof ( MIB_IF_ROW2 ) );
+
+			ifIndex = pInfo->Adapter[i].Index;
+
+			ifRow.InterfaceIndex = ifIndex;
+
+			retVal = GetIfEntry2 ( &ifRow );
+
+			if ( ifRow.AdminStatus != NET_IF_ADMIN_STATUS_UP )
+			{
+				continue;
+			}
+
+			char buf[8];
+			string mac;
+
+			if ( ifRow.PhysicalAddressLength == 0 )
+			{
+
+				const GUID& guid = ifRow.InterfaceGuid;
+				sprintf ( buf, "%08lX-%04hX-%04hX-%02hhX%02hhX-%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX",
+				          guid.Data1, guid.Data2, guid.Data3,
+				          guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
+				          guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7] );
+				mac += buf;
+			}
+			else
+			{
+				for ( int j = 0; j < ( int ) ifRow.PhysicalAddressLength; j++ )
+				{
+					memset ( buf, 0, 8 * sizeof ( char ) );
+
+					if ( j == ( ifRow.PhysicalAddressLength - 1 ) )
+					{
+						sprintf ( buf, "%.2x", ( int ) ifRow.PermanentPhysicalAddress[j] );
+					}
+					else
+					{
+						sprintf ( buf, "%.2x-", ( int ) ifRow.PermanentPhysicalAddress[j] );
+					}
+					mac += buf;
+				}
+			}
+
+			//add the current interface if it does not exist in the map
+			if ( interfaces.find ( mac ) == interfaces.end() )
+			{
+				InterfaceInfo in;
+				in.set_mac ( mac.c_str() );
+				in.set_desc ( Utils::to_narrow ( ifRow.Description ).c_str() );
+				interfaces[mac] = in;
+			}
+		}
+	}
+
+	return interfaces;
 }
 
 /** @brief console_ctrl_handler
   *
   * @todo: document this function
   */
-BOOL WINAPI WindowsUtils::console_ctrl_handler(DWORD fdwCtrlType)
+BOOL WINAPI WindowsUtils::console_ctrl_handler ( DWORD fdwCtrlType )
 {
-    signal_handler(nullptr);
+	signal_handler ( nullptr );
 }
 
 
@@ -462,45 +559,45 @@ BOOL WINAPI WindowsUtils::console_ctrl_handler(DWORD fdwCtrlType)
   *
   * @todo: document this function
   */
-LONG WindowsUtils::signal_handler(LPEXCEPTION_POINTERS exceptionInfo)
+LONG WindowsUtils::signal_handler ( LPEXCEPTION_POINTERS exceptionInfo )
 {
 //http://win32easy.blogspot.com/2011/03/exception-handling-inform-your-users.html
 
-    const string& storage = Settings::settings["storage"];
+	const string& storage = Settings::settings["storage"];
 
 
-    if (exceptionInfo!=nullptr)
-    {
-        char message[512];
-        memset(message,0,512*sizeof(char));
-        sprintf(message,"An exception occured which wasnt handled!\nCode: 0x%08X\nAddress: 0x%08X",
-                exceptionInfo->ExceptionRecord->ExceptionCode,
-                exceptionInfo->ExceptionRecord->ExceptionAddress);
+	if ( exceptionInfo != nullptr )
+	{
+		char message[512];
+		memset ( message, 0, 512 * sizeof ( char ) );
+		sprintf ( message, "An exception occured which wasn't handled!\nCode: 0x%08X\nAddress: 0x%08X",
+		          exceptionInfo->ExceptionRecord->ExceptionCode,
+		          exceptionInfo->ExceptionRecord->ExceptionAddress );
 
-        Logger::LogError(message);
-    }
+		Logger::LogError ( message );
+	}
 
 
-    if ( Utils::contians( storage, "mysql" ) )
-    {
+	if ( Utils::contians ( storage, "mysql" ) )
+	{
 #ifdef use_mysql
-        //save_stats_to_mysql();
+		//save_stats_to_mysql();
 #endif // use_mysql
-    }
+	}
 
-    if ( Utils::contians( storage, "sqlite" ) )
-    {
+	if ( Utils::contians ( storage, "sqlite" ) )
+	{
 #ifdef use_sqlite
-        Utils::save_stats_to_sqlite();
+		Utils::save_stats_to_sqlite();
 #endif // use_sqlite
-    }
+	}
 
-    if ( Utils::contians( storage, "files" ) )
-    {
-        Utils::save_stats_to_files();
-    }
+	if ( Utils::contians ( storage, "files" ) )
+	{
+		Utils::save_stats_to_files();
+	}
 
-    exit(0);
+	exit ( 0 );
 }
 
 
@@ -508,145 +605,145 @@ LONG WindowsUtils::signal_handler(LPEXCEPTION_POINTERS exceptionInfo)
   *
   * @todo: document this function
   */
-void WindowsUtils::set_signals_handler(void)
+void WindowsUtils::set_signals_handler ( void )
 {
 //http://stackoverflow.com/questions/3640633/setconsolectrlhandler-routine-issue
 //http://stackoverflow.com/questions/8698881/intercept-wm-close-for-cleanup-operations
 //http://stackoverflow.com/questions/9478684/how-does-task-manager-kill-my-program
 
-    //SetConsoleCtrlHandler( ( PHANDLER_ROUTINE ) &WindowsUtils::signal_handler, TRUE );
-    SetConsoleCtrlHandler( (PHANDLER_ROUTINE) WindowsUtils::console_ctrl_handler, TRUE );
-    SetUnhandledExceptionFilter( ( LPTOP_LEVEL_EXCEPTION_FILTER ) &WindowsUtils::signal_handler );
+	//SetConsoleCtrlHandler( ( PHANDLER_ROUTINE ) &WindowsUtils::signal_handler, TRUE );
+	SetConsoleCtrlHandler ( ( PHANDLER_ROUTINE ) WindowsUtils::console_ctrl_handler, TRUE );
+	SetUnhandledExceptionFilter ( ( LPTOP_LEVEL_EXCEPTION_FILTER ) &WindowsUtils::signal_handler );
 }
 
 /** @brief become_daemon
   *
   * @todo: document this function
   */
-int WindowsUtils::become_daemon(void)
+int WindowsUtils::become_daemon ( void )
 {
-    // START /B "" SmartTrafficMeter --daemon
-    //fclose(stdout);
-    //fclose(stderr);
-    //fclose(stdin);
-    if (FreeConsole()!=0)
-    {
-        return 0;
-    }
-    else
-    {
-        return -1;
-    }
+	// START /B "" SmartTrafficMeter --daemon
+	//fclose(stdout);
+	//fclose(stderr);
+	//fclose(stdin);
+	if ( FreeConsole() != 0 )
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
 
-    return 0;
+	return 0;
 }
 
 /** @brief make_program_run_at_startup
   *
   * @todo: document this function
   */
-void WindowsUtils::make_program_run_at_startup(void)
+void WindowsUtils::make_program_run_at_startup ( void )
 {
-    //http://www.cplusplus.com/forum/windows/58636/
+	//http://www.cplusplus.com/forum/windows/58636/
 
-    HKEY hKey = NULL;
+	HKEY hKey = NULL;
 
-    LONG sts = RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\"), 0, KEY_ALL_ACCESS, &hKey);
+	LONG sts = RegOpenKeyEx ( HKEY_CURRENT_USER, TEXT ( "Software\\Microsoft\\Windows\\CurrentVersion\\Run\\" ), 0, KEY_ALL_ACCESS, &hKey );
 
-    if (sts==ERROR_SUCCESS)
-    {
-        char data[1024];
-        DWORD data_length = 1024*sizeof(char);
-        DWORD type = REG_SZ;
-        memset(data,0,data_length);
-        LONG nError = RegQueryValueEx(hKey, "SmartTrafficMeter", NULL, &type, (LPBYTE)&data, &data_length);
+	if ( sts == ERROR_SUCCESS )
+	{
+		char data[1024];
+		DWORD data_length = 1024 * sizeof ( char );
+		DWORD type = REG_SZ;
+		memset ( data, 0, data_length );
+		LONG nError = RegQueryValueEx ( hKey, "SmartTrafficMeter", NULL, &type, ( LPBYTE ) &data, &data_length );
 
-        if (nError==ERROR_FILE_NOT_FOUND)
-        {
-            Logger::LogInfo("creating registry value");
+		if ( nError == ERROR_FILE_NOT_FOUND )
+		{
+			Logger::LogInfo ( "creating registry value" );
 
-            string command("\"");
-            command+=Globals::program_path;
-            command+="\"";
-            command+=" --daemon";
-            DWORD commnad_length=strlen(command.c_str())*sizeof(char);
-            LONG nError=RegSetValueEx(hKey, TEXT("SmartTrafficMeter"), NULL, REG_SZ, (LPBYTE)command.c_str(), commnad_length);
+			string command ( "\"" );
+			command += Globals::program_path;
+			command += "\"";
+			command += " --daemon";
+			DWORD commnad_length = strlen ( command.c_str() ) * sizeof ( char );
+			LONG nError = RegSetValueEx ( hKey, TEXT ( "SmartTrafficMeter" ), NULL, REG_SZ, ( LPBYTE ) command.c_str(), commnad_length );
 
-            if (nError!=ERROR_SUCCESS)
-            {
-                Logger::LogError("Cannot create registry value");
+			if ( nError != ERROR_SUCCESS )
+			{
+				Logger::LogError ( "Cannot create registry value" );
 
-                LPVOID lpMsgBuf;
-                DWORD dw = GetLastError();
+				LPVOID lpMsgBuf;
+				DWORD dw = GetLastError();
 
-                FormatMessage(
-                    FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                    FORMAT_MESSAGE_FROM_SYSTEM |
-                    FORMAT_MESSAGE_IGNORE_INSERTS,
-                    NULL,
-                    dw,
-                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                    (LPTSTR) &lpMsgBuf,
-                    0, NULL );
+				FormatMessage (
+				    FORMAT_MESSAGE_ALLOCATE_BUFFER |
+				    FORMAT_MESSAGE_FROM_SYSTEM |
+				    FORMAT_MESSAGE_IGNORE_INSERTS,
+				    NULL,
+				    dw,
+				    MAKELANGID ( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+				    ( LPTSTR ) &lpMsgBuf,
+				    0, NULL );
 
-                Logger::LogDebug((const char*)lpMsgBuf);
+				Logger::LogDebug ( ( const char* ) lpMsgBuf );
 
-                LocalFree(lpMsgBuf);
-            }
-        }
-    }
+				LocalFree ( lpMsgBuf );
+			}
+		}
+	}
 
-    RegCloseKey(hKey);
+	RegCloseKey ( hKey );
 }
 
 /** @brief check_one_instance
   *
   * @todo: document this function
   */
-bool WindowsUtils::check_one_instance(void)
+bool WindowsUtils::check_one_instance ( void )
 {
 //http://stackoverflow.com/questions/4191465/how-to-run-only-one-instance-of-application
 
-    HANDLE  m_hStartEvent = CreateEventW( NULL, FALSE, FALSE, L"Global\\SMTAPP" );
+	HANDLE  m_hStartEvent = CreateEventW ( NULL, FALSE, FALSE, L"Global\\SMTAPP" );
 
-    if(m_hStartEvent == NULL)
-    {
-        CloseHandle( m_hStartEvent );
-        return false;
-    }
+	if ( m_hStartEvent == NULL )
+	{
+		CloseHandle ( m_hStartEvent );
+		return false;
+	}
 
-    if ( GetLastError() == ERROR_ALREADY_EXISTS )
-    {
-        CloseHandle( m_hStartEvent );
-        m_hStartEvent = NULL;
-        // already exist
-        return false;
-    }
+	if ( GetLastError() == ERROR_ALREADY_EXISTS )
+	{
+		CloseHandle ( m_hStartEvent );
+		m_hStartEvent = NULL;
+		// already exist
+		return false;
+	}
 
-    // the only instance, start in a usual way
-    return true;
+	// the only instance, start in a usual way
+	return true;
 }
 /** @brief get_program_path
   *
   * @todo: document this function
   */
-string WindowsUtils::get_program_path(void)
+string WindowsUtils::get_program_path ( void )
 {
-    char ownPth[MAX_PATH];
+	char ownPth[MAX_PATH];
 
-    memset(ownPth,0,MAX_PATH*sizeof(char));
+	memset ( ownPth, 0, MAX_PATH * sizeof ( char ) );
 
-    HMODULE hModule = GetModuleHandle(NULL);
-    if (hModule != NULL)
-    {
-        GetModuleFileName(hModule,ownPth, (sizeof(ownPth)));
+	HMODULE hModule = GetModuleHandle ( NULL );
+	if ( hModule != NULL )
+	{
+		GetModuleFileName ( hModule, ownPth, ( sizeof ( ownPth ) ) );
 
-        return string(ownPth);
-    }
-    else
-    {
-        return "";
-    }
+		return string ( ownPth );
+	}
+	else
+	{
+		return "";
+	}
 }
 
 
