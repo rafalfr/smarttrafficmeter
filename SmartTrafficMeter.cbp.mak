@@ -11,165 +11,183 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -Isqlite -I/usr/include/mysql/ -I/usr/include/libiberty/
-CFLAGS = -Wmain -std=c++11 -Wextra -Wall -fexceptions -rdynamic -DGLIBCXX_FORCE_NEW -Duse_sqlite
+INC = -Isqlite -Iserverhttp -I/usr/include/mysql/ -I/usr/include/libiberty/ -I../smarttrafficmeter
+CFLAGS = -Wnon-virtual-dtor -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wmissing-declarations -Weffc++ -Wmain -Wzero-as-null-pointer-constant -Wextra -Wall -DGLIBCXX_FORCE_NEW
 RESINC = 
 LIBDIR = 
-LIB = -ldl -lpthread
-LDFLAGS = -rdynamic
+LIB = 
+LDFLAGS = 
 
-INC_DEBUG = $(INC)
-CFLAGS_DEBUG = $(CFLAGS) -Wall -g -O0
-RESINC_DEBUG = $(RESINC)
-RCFLAGS_DEBUG = $(RCFLAGS)
-LIBDIR_DEBUG = $(LIBDIR)
-LIB_DEBUG = $(LIB)-lbfd
-LDFLAGS_DEBUG = $(LDFLAGS)
-OBJDIR_DEBUG = obj/Debug
-DEP_DEBUG = 
-OUT_DEBUG = bin/Debug/SmartTrafficMeter
+INC_LINUX_DEBUG = $(INC)
+CFLAGS_LINUX_DEBUG = $(CFLAGS) -Wall -m64 -g -O0 -march=native
+RESINC_LINUX_DEBUG = $(RESINC)
+RCFLAGS_LINUX_DEBUG = $(RCFLAGS)
+LIBDIR_LINUX_DEBUG = $(LIBDIR)
+LIB_LINUX_DEBUG = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_coroutine -lboost_regex -lboost_thread -lboost_context -lboost_filesystem
+LDFLAGS_LINUX_DEBUG = $(LDFLAGS) -m64
+OBJDIR_LINUX_DEBUG = obj/Debug
+DEP_LINUX_DEBUG = 
+OUT_LINUX_DEBUG = bin/Debug/SmartTrafficMeter
 
-INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -g
-RESINC_RELEASE = $(RESINC)
-RCFLAGS_RELEASE = $(RCFLAGS)
-LIBDIR_RELEASE = $(LIBDIR)
-LIB_RELEASE = $(LIB)-lbfd
-LDFLAGS_RELEASE = $(LDFLAGS)
-OBJDIR_RELEASE = obj/Release
-DEP_RELEASE = 
-OUT_RELEASE = bin/Release/SmartTrafficMeter
+INC_LINUX_RELEASE = $(INC)
+CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -flto -O3 -Weffc++ -Wall -std=c++14 -m64 -fexceptions -rdynamic -march=native
+RESINC_LINUX_RELEASE = $(RESINC)
+RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
+LIBDIR_LINUX_RELEASE = $(LIBDIR)
+LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_coroutine -lboost_regex -lboost_thread -lboost_context -lboost_filesystem
+LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -flto -s -m64 -rdynamic
+OBJDIR_LINUX_RELEASE = obj/Release
+DEP_LINUX_RELEASE = 
+OUT_LINUX_RELEASE = bin/Release/SmartTrafficMeter
 
 INC_PI = $(INC)
 CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -Wall -g -D__pi__
 RESINC_PI = $(RESINC)
 RCFLAGS_PI = $(RCFLAGS)
 LIBDIR_PI = $(LIBDIR)
-LIB_PI = $(LIB)
+LIB_PI = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_coroutine -lboost_regex -lboost_thread -lboost_context
 LDFLAGS_PI = $(LDFLAGS)
 OBJDIR_PI = obj/pi
 DEP_PI = 
 OUT_PI = bin/pi/SmartTrafficMeter
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/sqlite3.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/Utils.o $(OBJDIR_DEBUG)/Settings.o $(OBJDIR_DEBUG)/ServerThread.o $(OBJDIR_DEBUG)/BecomeDaemon.o $(OBJDIR_DEBUG)/MySQLInterface.o $(OBJDIR_DEBUG)/Logger.o $(OBJDIR_DEBUG)/Jsoncpp.o $(OBJDIR_DEBUG)/InterfaceStats.o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_DEBUG)/InterfaceInfo.o $(OBJDIR_DEBUG)/Debug.o
+OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/Jsoncpp.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/ServerThread.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/sqlite3.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/Utils.o $(OBJDIR_RELEASE)/Settings.o $(OBJDIR_RELEASE)/ServerThread.o $(OBJDIR_RELEASE)/BecomeDaemon.o $(OBJDIR_RELEASE)/MySQLInterface.o $(OBJDIR_RELEASE)/Logger.o $(OBJDIR_RELEASE)/Jsoncpp.o $(OBJDIR_RELEASE)/InterfaceStats.o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_RELEASE)/InterfaceInfo.o $(OBJDIR_RELEASE)/Debug.o
+OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/Jsoncpp.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/ServerThread.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o
 
-OBJ_PI = $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/main.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/ServerThread.o $(OBJDIR_PI)/BecomeDaemon.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/Jsoncpp.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/Debug.o
+OBJ_PI = $(OBJDIR_PI)/main.o $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/Debug.o $(OBJDIR_PI)/Globals.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/Jsoncpp.o $(OBJDIR_PI)/LinuxUtils.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/DataBaseDriver.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/ServerThread.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/WebSiteContent.o
 
-all: debug release pi
+all: linux_debug linux_release pi
 
-clean: clean_debug clean_release clean_pi
+clean: clean_linux_debug clean_linux_release clean_pi
 
-before_debug: 
+before_linux_debug: 
 	test -d bin/Debug || mkdir -p bin/Debug
-	test -d $(OBJDIR_DEBUG) || mkdir -p $(OBJDIR_DEBUG)
+	test -d $(OBJDIR_LINUX_DEBUG) || mkdir -p $(OBJDIR_LINUX_DEBUG)
 
-after_debug: 
+after_linux_debug: 
 
-debug: before_debug out_debug after_debug
+linux_debug: before_linux_debug out_linux_debug after_linux_debug
 
-out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
-	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+out_linux_debug: before_linux_debug $(OBJ_LINUX_DEBUG) $(DEP_LINUX_DEBUG)
+	$(LD) $(LIBDIR_LINUX_DEBUG) -o $(OUT_LINUX_DEBUG) $(OBJ_LINUX_DEBUG)  $(LDFLAGS_LINUX_DEBUG) $(LIB_LINUX_DEBUG)
 
-$(OBJDIR_DEBUG)/sqlite3.o: sqlite3.c
-	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c sqlite3.c -o $(OBJDIR_DEBUG)/sqlite3.o
+$(OBJDIR_LINUX_DEBUG)/main.o: main.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c main.cpp -o $(OBJDIR_LINUX_DEBUG)/main.o
 
-$(OBJDIR_DEBUG)/main.o: main.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c main.cpp -o $(OBJDIR_DEBUG)/main.o
+$(OBJDIR_LINUX_DEBUG)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c sqlite3.c -o $(OBJDIR_LINUX_DEBUG)/sqlite3.o
 
-$(OBJDIR_DEBUG)/Utils.o: Utils.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Utils.cpp -o $(OBJDIR_DEBUG)/Utils.o
+$(OBJDIR_LINUX_DEBUG)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Debug.cpp -o $(OBJDIR_LINUX_DEBUG)/Debug.o
 
-$(OBJDIR_DEBUG)/Settings.o: Settings.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Settings.cpp -o $(OBJDIR_DEBUG)/Settings.o
+$(OBJDIR_LINUX_DEBUG)/Globals.o: Globals.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Globals.cpp -o $(OBJDIR_LINUX_DEBUG)/Globals.o
 
-$(OBJDIR_DEBUG)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c ServerThread.cpp -o $(OBJDIR_DEBUG)/ServerThread.o
+$(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o: InterfaceInfo.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceInfo.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o
 
-$(OBJDIR_DEBUG)/BecomeDaemon.o: BecomeDaemon.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c BecomeDaemon.cpp -o $(OBJDIR_DEBUG)/BecomeDaemon.o
+$(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o
 
-$(OBJDIR_DEBUG)/MySQLInterface.o: MySQLInterface.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c MySQLInterface.cpp -o $(OBJDIR_DEBUG)/MySQLInterface.o
+$(OBJDIR_LINUX_DEBUG)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceStats.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o
 
-$(OBJDIR_DEBUG)/Logger.o: Logger.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Logger.cpp -o $(OBJDIR_DEBUG)/Logger.o
+$(OBJDIR_LINUX_DEBUG)/Jsoncpp.o: Jsoncpp.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Jsoncpp.cpp -o $(OBJDIR_LINUX_DEBUG)/Jsoncpp.o
 
-$(OBJDIR_DEBUG)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Jsoncpp.cpp -o $(OBJDIR_DEBUG)/Jsoncpp.o
+$(OBJDIR_LINUX_DEBUG)/LinuxUtils.o: LinuxUtils.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c LinuxUtils.cpp -o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o
 
-$(OBJDIR_DEBUG)/InterfaceStats.o: InterfaceStats.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c InterfaceStats.cpp -o $(OBJDIR_DEBUG)/InterfaceStats.o
+$(OBJDIR_LINUX_DEBUG)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Logger.cpp -o $(OBJDIR_LINUX_DEBUG)/Logger.o
 
-$(OBJDIR_DEBUG)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_DEBUG)/InterfaceSpeedMeter.o
+$(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o: DataBaseDriver.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c DataBaseDriver.cpp -o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o
 
-$(OBJDIR_DEBUG)/InterfaceInfo.o: InterfaceInfo.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c InterfaceInfo.cpp -o $(OBJDIR_DEBUG)/InterfaceInfo.o
+$(OBJDIR_LINUX_DEBUG)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c MySQLInterface.cpp -o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o
 
-$(OBJDIR_DEBUG)/Debug.o: Debug.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c Debug.cpp -o $(OBJDIR_DEBUG)/Debug.o
+$(OBJDIR_LINUX_DEBUG)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c ServerThread.cpp -o $(OBJDIR_LINUX_DEBUG)/ServerThread.o
 
-clean_debug: 
-	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
+$(OBJDIR_LINUX_DEBUG)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Settings.cpp -o $(OBJDIR_LINUX_DEBUG)/Settings.o
+
+$(OBJDIR_LINUX_DEBUG)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Utils.cpp -o $(OBJDIR_LINUX_DEBUG)/Utils.o
+
+$(OBJDIR_LINUX_DEBUG)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o
+
+clean_linux_debug: 
+	rm -f $(OBJ_LINUX_DEBUG) $(OUT_LINUX_DEBUG)
 	rm -rf bin/Debug
-	rm -rf $(OBJDIR_DEBUG)
+	rm -rf $(OBJDIR_LINUX_DEBUG)
 
-before_release: 
+before_linux_release: 
 	test -d bin/Release || mkdir -p bin/Release
-	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
+	test -d $(OBJDIR_LINUX_RELEASE) || mkdir -p $(OBJDIR_LINUX_RELEASE)
 
-after_release: 
+after_linux_release: 
 
-release: before_release out_release after_release
+linux_release: before_linux_release out_linux_release after_linux_release
 
-out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
-	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
+out_linux_release: before_linux_release $(OBJ_LINUX_RELEASE) $(DEP_LINUX_RELEASE)
+	$(LD) $(LIBDIR_LINUX_RELEASE) -o $(OUT_LINUX_RELEASE) $(OBJ_LINUX_RELEASE)  $(LDFLAGS_LINUX_RELEASE) $(LIB_LINUX_RELEASE)
 
-$(OBJDIR_RELEASE)/sqlite3.o: sqlite3.c
-	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c sqlite3.c -o $(OBJDIR_RELEASE)/sqlite3.o
+$(OBJDIR_LINUX_RELEASE)/main.o: main.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c main.cpp -o $(OBJDIR_LINUX_RELEASE)/main.o
 
-$(OBJDIR_RELEASE)/main.o: main.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c main.cpp -o $(OBJDIR_RELEASE)/main.o
+$(OBJDIR_LINUX_RELEASE)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c sqlite3.c -o $(OBJDIR_LINUX_RELEASE)/sqlite3.o
 
-$(OBJDIR_RELEASE)/Utils.o: Utils.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Utils.cpp -o $(OBJDIR_RELEASE)/Utils.o
+$(OBJDIR_LINUX_RELEASE)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Debug.cpp -o $(OBJDIR_LINUX_RELEASE)/Debug.o
 
-$(OBJDIR_RELEASE)/Settings.o: Settings.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Settings.cpp -o $(OBJDIR_RELEASE)/Settings.o
+$(OBJDIR_LINUX_RELEASE)/Globals.o: Globals.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Globals.cpp -o $(OBJDIR_LINUX_RELEASE)/Globals.o
 
-$(OBJDIR_RELEASE)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c ServerThread.cpp -o $(OBJDIR_RELEASE)/ServerThread.o
+$(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o: InterfaceInfo.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceInfo.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o
 
-$(OBJDIR_RELEASE)/BecomeDaemon.o: BecomeDaemon.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c BecomeDaemon.cpp -o $(OBJDIR_RELEASE)/BecomeDaemon.o
+$(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o
 
-$(OBJDIR_RELEASE)/MySQLInterface.o: MySQLInterface.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c MySQLInterface.cpp -o $(OBJDIR_RELEASE)/MySQLInterface.o
+$(OBJDIR_LINUX_RELEASE)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceStats.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o
 
-$(OBJDIR_RELEASE)/Logger.o: Logger.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Logger.cpp -o $(OBJDIR_RELEASE)/Logger.o
+$(OBJDIR_LINUX_RELEASE)/Jsoncpp.o: Jsoncpp.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Jsoncpp.cpp -o $(OBJDIR_LINUX_RELEASE)/Jsoncpp.o
 
-$(OBJDIR_RELEASE)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Jsoncpp.cpp -o $(OBJDIR_RELEASE)/Jsoncpp.o
+$(OBJDIR_LINUX_RELEASE)/LinuxUtils.o: LinuxUtils.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c LinuxUtils.cpp -o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o
 
-$(OBJDIR_RELEASE)/InterfaceStats.o: InterfaceStats.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c InterfaceStats.cpp -o $(OBJDIR_RELEASE)/InterfaceStats.o
+$(OBJDIR_LINUX_RELEASE)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Logger.cpp -o $(OBJDIR_LINUX_RELEASE)/Logger.o
 
-$(OBJDIR_RELEASE)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_RELEASE)/InterfaceSpeedMeter.o
+$(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o: DataBaseDriver.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c DataBaseDriver.cpp -o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o
 
-$(OBJDIR_RELEASE)/InterfaceInfo.o: InterfaceInfo.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c InterfaceInfo.cpp -o $(OBJDIR_RELEASE)/InterfaceInfo.o
+$(OBJDIR_LINUX_RELEASE)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c MySQLInterface.cpp -o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o
 
-$(OBJDIR_RELEASE)/Debug.o: Debug.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c Debug.cpp -o $(OBJDIR_RELEASE)/Debug.o
+$(OBJDIR_LINUX_RELEASE)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c ServerThread.cpp -o $(OBJDIR_LINUX_RELEASE)/ServerThread.o
 
-clean_release: 
-	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
+$(OBJDIR_LINUX_RELEASE)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Settings.cpp -o $(OBJDIR_LINUX_RELEASE)/Settings.o
+
+$(OBJDIR_LINUX_RELEASE)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Utils.cpp -o $(OBJDIR_LINUX_RELEASE)/Utils.o
+
+$(OBJDIR_LINUX_RELEASE)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o
+
+clean_linux_release: 
+	rm -f $(OBJ_LINUX_RELEASE) $(OUT_LINUX_RELEASE)
 	rm -rf bin/Release
-	rm -rf $(OBJDIR_RELEASE)
+	rm -rf $(OBJDIR_LINUX_RELEASE)
 
 before_pi: 
 	test -d bin/pi || mkdir -p bin/pi
@@ -182,49 +200,58 @@ pi: before_pi out_pi after_pi
 out_pi: before_pi $(OBJ_PI) $(DEP_PI)
 	$(LD) $(LIBDIR_PI) -o $(OUT_PI) $(OBJ_PI)  $(LDFLAGS_PI) $(LIB_PI)
 
-$(OBJDIR_PI)/sqlite3.o: sqlite3.c
-	$(CC) $(CFLAGS_PI) $(INC_PI) -c sqlite3.c -o $(OBJDIR_PI)/sqlite3.o
-
 $(OBJDIR_PI)/main.o: main.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c main.cpp -o $(OBJDIR_PI)/main.o
 
-$(OBJDIR_PI)/Utils.o: Utils.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Utils.cpp -o $(OBJDIR_PI)/Utils.o
+$(OBJDIR_PI)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_PI) $(INC_PI) -c sqlite3.c -o $(OBJDIR_PI)/sqlite3.o
 
-$(OBJDIR_PI)/Settings.o: Settings.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Settings.cpp -o $(OBJDIR_PI)/Settings.o
+$(OBJDIR_PI)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Debug.cpp -o $(OBJDIR_PI)/Debug.o
 
-$(OBJDIR_PI)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c ServerThread.cpp -o $(OBJDIR_PI)/ServerThread.o
-
-$(OBJDIR_PI)/BecomeDaemon.o: BecomeDaemon.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c BecomeDaemon.cpp -o $(OBJDIR_PI)/BecomeDaemon.o
-
-$(OBJDIR_PI)/MySQLInterface.o: MySQLInterface.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c MySQLInterface.cpp -o $(OBJDIR_PI)/MySQLInterface.o
-
-$(OBJDIR_PI)/Logger.o: Logger.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Logger.cpp -o $(OBJDIR_PI)/Logger.o
-
-$(OBJDIR_PI)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Jsoncpp.cpp -o $(OBJDIR_PI)/Jsoncpp.o
-
-$(OBJDIR_PI)/InterfaceStats.o: InterfaceStats.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceStats.cpp -o $(OBJDIR_PI)/InterfaceStats.o
-
-$(OBJDIR_PI)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_PI)/InterfaceSpeedMeter.o
+$(OBJDIR_PI)/Globals.o: Globals.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Globals.cpp -o $(OBJDIR_PI)/Globals.o
 
 $(OBJDIR_PI)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceInfo.cpp -o $(OBJDIR_PI)/InterfaceInfo.o
 
-$(OBJDIR_PI)/Debug.o: Debug.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Debug.cpp -o $(OBJDIR_PI)/Debug.o
+$(OBJDIR_PI)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_PI)/InterfaceSpeedMeter.o
+
+$(OBJDIR_PI)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceStats.cpp -o $(OBJDIR_PI)/InterfaceStats.o
+
+$(OBJDIR_PI)/Jsoncpp.o: Jsoncpp.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Jsoncpp.cpp -o $(OBJDIR_PI)/Jsoncpp.o
+
+$(OBJDIR_PI)/LinuxUtils.o: LinuxUtils.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c LinuxUtils.cpp -o $(OBJDIR_PI)/LinuxUtils.o
+
+$(OBJDIR_PI)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Logger.cpp -o $(OBJDIR_PI)/Logger.o
+
+$(OBJDIR_PI)/DataBaseDriver.o: DataBaseDriver.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c DataBaseDriver.cpp -o $(OBJDIR_PI)/DataBaseDriver.o
+
+$(OBJDIR_PI)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c MySQLInterface.cpp -o $(OBJDIR_PI)/MySQLInterface.o
+
+$(OBJDIR_PI)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c ServerThread.cpp -o $(OBJDIR_PI)/ServerThread.o
+
+$(OBJDIR_PI)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Settings.cpp -o $(OBJDIR_PI)/Settings.o
+
+$(OBJDIR_PI)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Utils.cpp -o $(OBJDIR_PI)/Utils.o
+
+$(OBJDIR_PI)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c WebSiteContent.cpp -o $(OBJDIR_PI)/WebSiteContent.o
 
 clean_pi: 
 	rm -f $(OBJ_PI) $(OUT_PI)
 	rm -rf bin/pi
 	rm -rf $(OBJDIR_PI)
 
-.PHONY: before_debug after_debug clean_debug before_release after_release clean_release before_pi after_pi clean_pi
+.PHONY: before_linux_debug after_linux_debug clean_linux_debug before_linux_release after_linux_release clean_linux_release before_pi after_pi clean_pi
 
