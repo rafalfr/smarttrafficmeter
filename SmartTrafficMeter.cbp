@@ -88,6 +88,7 @@
 					<Add library="rt" />
 					<Add library="dl" />
 					<Add library="pthread" />
+					<Add library="boost_system" />
 					<Add library="boost_thread" />
 					<Add library="boost_filesystem" />
 				</Linker>

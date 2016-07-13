@@ -45,7 +45,7 @@ CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -std=c++11 
 RESINC_PI = $(RESINC)
 RCFLAGS_PI = $(RCFLAGS)
 LIBDIR_PI = $(LIBDIR)
-LIB_PI = $(LIB)-lrt -ldl -lpthread -lboost_thread -lboost_filesystem
+LIB_PI = $(LIB)-lrt -ldl -lpthread -lboost_system -lboost_thread -lboost_filesystem
 LDFLAGS_PI = $(LDFLAGS) -s
 OBJDIR_PI = obj/pi
 DEP_PI = 
