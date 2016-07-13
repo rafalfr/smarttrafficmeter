@@ -24,10 +24,10 @@
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
-#include "WebSiteContent.h"
 #include "tclap/CmdLine.h"
 
 #ifndef _NO_WEBSERVER
+#include "WebSiteContent.h"
 #include "server_http.hpp"
 #endif // _NO_WEBSERVER
 
