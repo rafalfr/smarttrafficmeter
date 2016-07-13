@@ -1,5 +1,7 @@
 #ifndef WEBSITECONTENT_H
 #define WEBSITECONTENT_H
+
+#ifndef _NO_WEBSERVER
 #include <string>
 #include "server_http.hpp"
 
@@ -14,5 +16,7 @@ private:
 public:
 	static void set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& server );
 };
+
+#endif // _NO_WEBSERVER
 
 #endif // WEBSITECONTENT_H

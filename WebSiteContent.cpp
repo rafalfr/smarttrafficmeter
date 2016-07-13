@@ -1,3 +1,4 @@
+#ifndef _NO_WEBSERVER
 #include "config.h"
 #include <fstream>
 #include <memory>
@@ -866,7 +867,7 @@ string WebSiteContent::rgba_color ( string& hex_color, float a )
 	return out;
 }
 
-
+#endif // _NO_WEBSERVER
 
 
 //http://html-online.com/editor/
