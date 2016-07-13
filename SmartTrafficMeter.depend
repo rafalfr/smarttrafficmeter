@@ -34,31 +34,33 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1467201104 SpeedMeter.h"
+1468241244 SpeedMeter.h"
 
 1438114312 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1467214256 Info.h"
+1468241244 Info.h"
 
 1438114303 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceInfo.h
 	<string>
 
-1462475628 
+1468241244 
 
 1439318091 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.cpp
 	"InterfaceStats.h"
 
-1467366226 Stats.h"
+1468241244 Stats.h"
 
 1438804233 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceStats.h
 	<stdint.h>
+
+1468241244 
 
 1439559255 source:/home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
-1467366226 h>
+1468241244 h>
 
 1439496120 /home/rafal/Programowanie/C++/SmartTrafficMeter/InterfaceSpeedMeter.h
 	<list>
@@ -83,7 +85,7 @@
 	"typelib.h"
 	"my_alloc.h"
 
-1465551424 h"
+1468241244 h"
 
 1453737101 /usr/include/mysql//mysql_version.h
 	<custom_conf.h>
@@ -316,7 +318,7 @@
 	"server_http.hpp"
 	"sqlite3.h"
 
-1467065348 "
+1468323142 "
 
 1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
 	"json/json.h"
@@ -870,7 +872,7 @@
 	<unistd.h>
 	"LinuxUtils.h"
 
-1466069830 s.h"
+1468241244 s.h"
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
 	<iostream>
@@ -914,7 +916,7 @@
 	<string>
 	"server_http.hpp"
 
-1465551424 tp.hpp"
+1468241244 tp.hpp"
 
 1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	<fstream>
@@ -1035,7 +1037,7 @@
 	<vector>
 	<tclap/Arg.h>
 
-1465551426 .h>
+1468241244 .h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Arg.h
 	<config.h>
@@ -1081,7 +1083,7 @@
 	<tclap/ArgTraits.h>
 	<tclap/StandardTraits.h>
 
-1465551426 ndardTraits.h>
+1468241244 ndardTraits.h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgException.h
 	<string>
@@ -1091,7 +1093,7 @@
 	<string>
 	<exception>
 
-1465551426 >
+1468241244 >
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Visitor.h
 
@@ -1130,7 +1132,7 @@
 	<vector>
 	<tclap/SwitchArg.h>
 
-1465551426 tchArg.h>
+1468241244 tchArg.h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledValueArg.h
 	<string>
@@ -1146,7 +1148,7 @@
 	<tclap/ValueArg.h>
 	<tclap/OptionalUnlabeledTracker.h>
 
-1465551426 ionalUnlabeledTracker.h>
+1468241244 ionalUnlabeledTracker.h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValueArg.h
 	<string>
@@ -1162,7 +1164,7 @@
 	<tclap/Arg.h>
 	<tclap/Constraint.h>
 
-1465551426 straint.h>
+1468241244 straint.h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Constraint.h
 	<string>
@@ -1245,7 +1247,7 @@
 	<tclap/CmdLineOutput.h>
 	<tclap/Visitor.h>
 
-1465551426 itor.h>
+1468241244 itor.h>
 
 1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineOutput.h
 	<string>
@@ -1400,7 +1402,7 @@
 	"InterfaceSpeedMeter.h"
 	"DataBaseDriver.h"
 
-1467366226 river.h"
+1468236277 river.h"
 
 1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
@@ -1681,7 +1683,7 @@
 	<boost/asio/write.hpp>
 	<boost/asio/write_at.hpp>
 
-1462475444 o/write_at.hpp>
+1462475446 o/write_at.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\async_result.hpp
 	<boost/asio/detail/config.hpp>
@@ -1689,7 +1691,7 @@
 	<boost/asio/detail/push_options.hpp>
 	<boost/asio/detail/pop_options.hpp>
 
-1462475444 o/detail/pop_options.hpp>
+1462475446 o/detail/pop_options.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\config.hpp
 	<boost/config.hpp>
@@ -1700,7 +1702,7 @@
 	<unistd.h>
 	<linux/version.h>
 
-1462475444 sion.h>
+1462475446 sion.h>
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config.hpp
 	<boost/config/user.hpp>
@@ -1709,7 +1711,7 @@
 	<boost/config/select_platform_config.hpp>
 	<boost/config/suffix.hpp>
 
-1462475466 fig/suffix.hpp>
+1462475560 fig/suffix.hpp>
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\user.hpp
 
@@ -1737,7 +1739,7 @@
 	"boost/config/compiler/pgi.hpp"
 	"boost/config/compiler/visualc.hpp"
 
-1462475466 fig/compiler/visualc.hpp"
+1462475468 fig/compiler/visualc.hpp"
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\compiler\nvcc.hpp
 
@@ -1746,7 +1748,7 @@
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\compiler\cray.hpp
 	"boost/config/compiler/common_edg.hpp"
 
-1462475466 fig/compiler/common_edg.hpp"
+1462475468 fig/compiler/common_edg.hpp"
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\compiler\common_edg.hpp
 
@@ -1825,7 +1827,7 @@
 	"boost/config/stdlib/modena.hpp"
 	"boost/config/stdlib/dinkumware.hpp"
 
-1462475466 fig/stdlib/dinkumware.hpp"
+1462475468 fig/stdlib/dinkumware.hpp"
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\stdlib\stlport.hpp
 	<cstddef>
@@ -1837,7 +1839,7 @@
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\stdlib\libcomo.hpp
 	<boost/config/no_tr1/utility.hpp>
 
-1462475466 fig/no_tr1/utility.hpp>
+1462475468 fig/no_tr1/utility.hpp>
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\no_tr1\utility.hpp
 	<utility>
@@ -1861,7 +1863,7 @@
 	<cstddef>
 	<boost/config/posix_features.hpp>
 
-1462475466 fig/posix_features.hpp>
+1462475468 fig/posix_features.hpp>
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\config\posix_features.hpp
 	<unistd.h>
@@ -2024,7 +2026,7 @@
 	<boost/asio/impl/io_service.hpp>
 	<boost/asio/impl/io_service.ipp>
 
-1462475444 o/impl/io_service.ipp>
+1462475446 o/impl/io_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\noncopyable.hpp
 	<boost/asio/detail/config.hpp>
@@ -2060,12 +2062,12 @@
 	<memory>
 	<boost/utility/addressof.hpp>
 
-1462475444 lity/addressof.hpp>
+1462475446 lity/addressof.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\utility\addressof.hpp
 	<boost/core/addressof.hpp>
 
-1462475588 e/addressof.hpp>
+1462475474 e/addressof.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\core\addressof.hpp
 	<boost/config.hpp>
@@ -2075,7 +2077,7 @@
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\detail\workaround.hpp
 	<boost/config.hpp>
 
-1462475516 fig.hpp>
+1462475476 fig.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\handler_alloc_hook.hpp
 	<boost/asio/detail/config.hpp>
@@ -2084,7 +2086,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/handler_alloc_hook.ipp>
 
-1462475444 o/impl/handler_alloc_hook.ipp>
+1462475446 o/impl/handler_alloc_hook.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\handler_alloc_hook.ipp
 	<boost/asio/detail/config.hpp>
@@ -2131,7 +2133,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_tss_ptr.ipp>
 
-1462475444 o/detail/impl/win_tss_ptr.ipp>
+1462475446 o/detail/impl/win_tss_ptr.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\socket_types.hpp
 	<boost/asio/detail/config.hpp>
@@ -2182,7 +2184,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/throw_error.ipp>
 
-1462475444 o/detail/impl/throw_error.ipp>
+1462475446 o/detail/impl/throw_error.ipp>
 
 1462475604 d:\programowanie\c++\boost_1_61_0\\boost\system\error_code.hpp
 	<boost/system/config.hpp>
@@ -2216,7 +2218,7 @@
 	<boost/predef/platform/windows_phone.h>
 	<boost/predef/platform/windows_runtime.h>
 
-1462475564 def/platform/windows_runtime.h>
+1462475566 def/platform/windows_runtime.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\platform\mingw.h
 	<boost/predef/version_number.h>
@@ -2226,7 +2228,7 @@
 	<boost/predef/detail/test.h>
 	<boost/predef/detail/test.h>
 
-1462475564 def/detail/test.h>
+1462475566 def/detail/test.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\version_number.h
 
@@ -2279,7 +2281,7 @@
 	<boost/config.hpp>
 	<boost/version.hpp>
 
-1462475466 sion.hpp>
+1462475468 sion.hpp>
 
 1462475466 d:\programowanie\c++\boost_1_61_0\\boost\cstdint.hpp
 	<boost/config.hpp>
@@ -2315,7 +2317,7 @@
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\utility\enable_if.hpp
 	<boost/core/enable_if.hpp>
 
-1462475474 e/enable_if.hpp>
+1462475608 e/enable_if.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\core\enable_if.hpp
 	"boost/config.hpp"
@@ -2369,7 +2371,7 @@
 	<boost/exception/exception.hpp>
 	<boost/current_function.hpp>
 
-1462475608 rent_function.hpp>
+1462475610 rent_function.hpp>
 
 1462475608 d:\programowanie\c++\boost_1_61_0\\boost\exception\exception.hpp
 
@@ -2393,7 +2395,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/error.ipp>
 
-1462475444 o/impl/error.ipp>
+1462475446 o/impl/error.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\error.ipp
 	<boost/asio/detail/config.hpp>
@@ -2410,7 +2412,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/posix_tss_ptr.ipp>
 
-1462475444 o/detail/impl/posix_tss_ptr.ipp>
+1462475446 o/detail/impl/posix_tss_ptr.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\posix_tss_ptr.ipp
 	<boost/asio/detail/config.hpp>
@@ -2473,7 +2475,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/winsock_init.ipp>
 
-1462475444 o/detail/impl/winsock_init.ipp>
+1462475446 o/detail/impl/winsock_init.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\winsock_init.ipp
 	<boost/asio/detail/config.hpp>
@@ -2504,7 +2506,7 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/handler_type.hpp>
 
-1462475444 o/handler_type.hpp>
+1462475446 o/handler_type.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\service_registry.hpp
 	<boost/asio/detail/config.hpp>
@@ -2517,7 +2519,7 @@
 	<boost/asio/detail/impl/service_registry.hpp>
 	<boost/asio/detail/impl/service_registry.ipp>
 
-1462475444 o/detail/impl/service_registry.ipp>
+1462475446 o/detail/impl/service_registry.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\mutex.hpp
 	<boost/asio/detail/config.hpp>
@@ -2526,7 +2528,7 @@
 	<boost/asio/detail/posix_mutex.hpp>
 	<boost/asio/detail/std_mutex.hpp>
 
-1462475444 o/detail/std_mutex.hpp>
+1462475446 o/detail/std_mutex.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_mutex.hpp
 	<boost/asio/detail/config.hpp>
@@ -2549,7 +2551,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_mutex.ipp>
 
-1462475444 o/detail/impl/win_mutex.ipp>
+1462475446 o/detail/impl/win_mutex.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\win_mutex.ipp
 	<boost/asio/detail/config.hpp>
@@ -2568,7 +2570,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/posix_mutex.ipp>
 
-1462475444 o/detail/impl/posix_mutex.ipp>
+1462475446 o/detail/impl/posix_mutex.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\posix_mutex.ipp
 	<boost/asio/detail/config.hpp>
@@ -2618,7 +2620,7 @@
 	<boost/asio/detail/impl/win_iocp_io_service.hpp>
 	<boost/asio/detail/impl/win_iocp_io_service.ipp>
 
-1462475444 o/detail/impl/win_iocp_io_service.ipp>
+1462475446 o/detail/impl/win_iocp_io_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\limits.hpp
 	<boost/asio/detail/config.hpp>
@@ -2638,7 +2640,7 @@
 	<boost/asio/detail/posix_thread.hpp>
 	<boost/asio/detail/std_thread.hpp>
 
-1462475444 o/detail/std_thread.hpp>
+1462475446 o/detail/std_thread.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_thread.hpp
 	<boost/asio/detail/config.hpp>
@@ -2666,7 +2668,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_thread.ipp>
 
-1462475444 o/detail/impl/win_thread.ipp>
+1462475446 o/detail/impl/win_thread.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\win_thread.ipp
 	<boost/asio/detail/config.hpp>
@@ -2685,7 +2687,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/posix_thread.ipp>
 
-1462475444 o/detail/impl/posix_thread.ipp>
+1462475446 o/detail/impl/posix_thread.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\posix_thread.ipp
 	<boost/asio/detail/config.hpp>
@@ -2715,7 +2717,7 @@
 	<boost/asio/detail/win_iocp_operation.hpp>
 	<boost/asio/detail/task_io_service_operation.hpp>
 
-1462475444 o/detail/task_io_service_operation.hpp>
+1462475446 o/detail/task_io_service_operation.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\win_iocp_operation.hpp
 	<boost/asio/detail/config.hpp>
@@ -2736,7 +2738,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/handler_tracking.ipp>
 
-1462475444 o/detail/impl/handler_tracking.ipp>
+1462475446 o/detail/impl/handler_tracking.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\cstdint.hpp
 	<boost/asio/detail/config.hpp>
@@ -2752,7 +2754,7 @@
 	<boost/asio/detail/posix_static_mutex.hpp>
 	<boost/asio/detail/std_static_mutex.hpp>
 
-1462475444 o/detail/std_static_mutex.hpp>
+1462475446 o/detail/std_static_mutex.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_static_mutex.hpp
 	<boost/asio/detail/config.hpp>
@@ -2767,7 +2769,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_static_mutex.ipp>
 
-1462475444 o/detail/impl/win_static_mutex.ipp>
+1462475446 o/detail/impl/win_static_mutex.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\win_static_mutex.ipp
 	<boost/asio/detail/config.hpp>
@@ -2854,7 +2856,7 @@
 	"boost/config.hpp"
 	"boost/detail/workaround.hpp"
 
-1462475478 ail/workaround.hpp"
+1462475614 ail/workaround.hpp"
 
 1462475588 d:\programowanie\c++\boost_1_61_0\\boost\shared_ptr.hpp
 	<boost/smart_ptr/shared_ptr.hpp>
@@ -3016,14 +3018,14 @@
 	<boost/predef/hardware.h>
 	<boost/predef/version.h>
 
-1462475564 def/version.h>
+1462475566 def/version.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\language.h
 	<boost/predef/language/stdc.h>
 	<boost/predef/language/stdcpp.h>
 	<boost/predef/language/objc.h>
 
-1462475564 def/language/objc.h>
+1462475566 def/language/objc.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\language\stdc.h
 	<boost/predef/version_number.h>
@@ -3061,7 +3063,7 @@
 	<boost/predef/architecture/x86.h>
 	<boost/predef/architecture/z.h>
 
-1462475564 def/architecture/z.h>
+1462475566 def/architecture/z.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\architecture\alpha.h
 	<boost/predef/version_number.h>
@@ -3191,7 +3193,7 @@
 	<boost/predef/compiler/visualc.h>
 	<boost/predef/compiler/watcom.h>
 
-1462475564 def/compiler/watcom.h>
+1462475566 def/compiler/watcom.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\compiler\borland.h
 	<boost/predef/version_number.h>
@@ -3405,7 +3407,7 @@
 	<boost/predef/library/c.h>
 	<boost/predef/library/std.h>
 
-1462475564 def/library/std.h>
+1462475566 def/library/std.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\library\c.h
 	<boost/predef/library/c/_prefix.h>
@@ -3414,12 +3416,12 @@
 	<boost/predef/library/c/vms.h>
 	<boost/predef/library/c/zos.h>
 
-1462475564 def/library/c/zos.h>
+1462475566 def/library/c/zos.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\library\c\_prefix.h
 	<boost/predef/detail/_cassert.h>
 
-1462475564 def/detail/_cassert.h>
+1462475566 def/detail/_cassert.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\detail\_cassert.h
 	<cassert>
@@ -3464,12 +3466,12 @@
 	<boost/predef/library/std/stlport.h>
 	<boost/predef/library/std/vacpp.h>
 
-1462475564 def/library/std/vacpp.h>
+1462475566 def/library/std/vacpp.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\library\std\_prefix.h
 	<boost/predef/detail/_exception.h>
 
-1462475564 def/detail/_exception.h>
+1462475566 def/detail/_exception.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\detail\_exception.h
 	<exception>
@@ -3554,7 +3556,7 @@
 	<boost/predef/os/vms.h>
 	<boost/predef/os/windows.h>
 
-1462475564 def/os/windows.h>
+1462475566 def/os/windows.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\os\aix.h
 	<boost/predef/version_number.h>
@@ -3698,7 +3700,7 @@
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\other.h
 	<boost/predef/other/endian.h>
 
-1462475564 def/other/endian.h>
+1462475566 def/other/endian.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\other\endian.h
 	<boost/predef/version_number.h>
@@ -3721,7 +3723,7 @@
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\hardware.h
 	<boost/predef/hardware/simd.h>
 
-1462475564 def/hardware/simd.h>
+1462475566 def/hardware/simd.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\hardware\simd.h
 	<boost/predef/hardware/simd/x86.h>
@@ -3739,7 +3741,7 @@
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\hardware\simd\x86\versions.h
 	<boost/predef/version_number.h>
 
-1462475564 def/version_number.h>
+1462475566 def/version_number.h>
 
 1462475564 d:\programowanie\c++\boost_1_61_0\\boost\predef\hardware\simd\x86_amd.h
 	<boost/predef/version_number.h>
@@ -3904,7 +3906,7 @@
 	<boost/type_traits/intrinsics.hpp>
 	<boost/type_traits/integral_constant.hpp>
 
-1462475616 e_traits/integral_constant.hpp>
+1462475608 e_traits/integral_constant.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\intrinsics.hpp
 	<boost/config.hpp>
@@ -3922,14 +3924,14 @@
 	<boost/type_traits/is_volatile.hpp>
 	<boost/type_traits/is_void.hpp>
 
-1462475616 e_traits/is_void.hpp>
+1462475488 e_traits/is_void.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\detail\config.hpp
 	<boost/config.hpp>
 	<boost/version.hpp>
 	<boost/detail/workaround.hpp>
 
-1462475616 ail/workaround.hpp>
+1462475520 ail/workaround.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\is_same.hpp
 	<boost/type_traits/integral_constant.hpp>
@@ -4091,7 +4093,7 @@
 	<boost/type_traits/is_void.hpp>
 	<boost/type_traits/is_reference.hpp>
 
-1462475544 e_traits/is_reference.hpp>
+1462475546 e_traits/is_reference.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\remove_reference.hpp
 	<boost/config.hpp>
@@ -4314,7 +4316,7 @@
 	<boost/mpl/aux_/config/ctps.hpp>
 	<boost/mpl/aux_/config/workaround.hpp>
 
-1462475544 /aux_/config/workaround.hpp>
+1462475546 /aux_/config/workaround.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\value_wknd.hpp
 	<boost/mpl/aux_/static_cast.hpp>
@@ -4323,7 +4325,7 @@
 	<boost/mpl/aux_/config/workaround.hpp>
 	<boost/mpl/int.hpp>
 
-1462475576 /int.hpp>
+1462475578 /int.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\static_cast.hpp
 	<boost/mpl/aux_/config/workaround.hpp>
@@ -4346,13 +4348,13 @@
 	<boost/mpl/int_fwd.hpp>
 	<boost/mpl/aux_/integral_wrapper.hpp>
 
-1462475544 /aux_/integral_wrapper.hpp>
+1462475546 /aux_/integral_wrapper.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\int_fwd.hpp
 	<boost/mpl/aux_/adl_barrier.hpp>
 	<boost/mpl/aux_/nttp_decl.hpp>
 
-1462475544 /aux_/nttp_decl.hpp>
+1462475546 /aux_/nttp_decl.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\adl_barrier.hpp
 	<boost/mpl/aux_/config/adl.hpp>
@@ -4374,7 +4376,7 @@
 	<boost/mpl/aux_/config/nttp.hpp>
 	<boost/preprocessor/cat.hpp>
 
-1462475544 processor/cat.hpp>
+1462475546 processor/cat.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\nttp.hpp
 	<boost/mpl/aux_/config/msvc.hpp>
@@ -4399,7 +4401,7 @@
 	<boost/mpl/aux_/adl_barrier.hpp>
 	<boost/mpl/aux_/config/static_constant.hpp>
 
-1462475544 /aux_/config/static_constant.hpp>
+1462475546 /aux_/config/static_constant.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\static_constant.hpp
 	<boost/config.hpp>
@@ -4422,7 +4424,7 @@
 	<boost/mpl/aux_/config/lambda.hpp>
 	<boost/mpl/aux_/config/overload_resolution.hpp>
 
-1462475544 /aux_/config/overload_resolution.hpp>
+1462475546 /aux_/config/overload_resolution.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\lambda_fwd.hpp
 	<boost/mpl/void_fwd.hpp>
@@ -4433,12 +4435,12 @@
 	<boost/mpl/aux_/template_arity_fwd.hpp>
 	<boost/mpl/bool.hpp>
 
-1462475544 /bool.hpp>
+1462475546 /bool.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\void_fwd.hpp
 	<boost/mpl/aux_/adl_barrier.hpp>
 
-1462475544 /aux_/adl_barrier.hpp>
+1462475546 /aux_/adl_barrier.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\na.hpp
 	<boost/mpl/bool.hpp>
@@ -4446,7 +4448,7 @@
 	<boost/mpl/aux_/config/msvc.hpp>
 	<boost/mpl/aux_/config/ctps.hpp>
 
-1462475544 /aux_/config/ctps.hpp>
+1462475546 /aux_/config/ctps.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\bool.hpp
 	<boost/mpl/bool_fwd.hpp>
@@ -4475,7 +4477,7 @@
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\lambda_arity_param.hpp
 	<boost/mpl/aux_/config/ttp.hpp>
 
-1462475544 /aux_/config/ttp.hpp>
+1462475546 /aux_/config/ttp.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\template_arity_fwd.hpp
 
@@ -4574,7 +4576,7 @@
 	<boost/preprocessor/comma_if.hpp>
 	<boost/preprocessor/repeat.hpp>
 
-1462475544 processor/repeat.hpp>
+1462475546 processor/repeat.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\preprocessor\def_params_tail.hpp
 	<boost/mpl/limits/arity.hpp>
@@ -4627,7 +4629,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/preprocessor/arithmetic/sub.hpp>
 
-1462475544 processor/arithmetic/sub.hpp>
+1462475546 processor/arithmetic/sub.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\preprocessor\tuple.hpp
 
@@ -5154,7 +5156,7 @@
 	<boost/mpl/aux_/na_spec.hpp>
 	<boost/mpl/aux_/lambda_support.hpp>
 
-1462475544 /aux_/lambda_support.hpp>
+1462475546 /aux_/lambda_support.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\nested_type_wknd.hpp
 	<boost/mpl/aux_/config/gcc.hpp>
@@ -5166,14 +5168,14 @@
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\pp_counter.hpp
 	<boost/mpl/aux_/config/msvc.hpp>
 
-1462475544 /aux_/config/msvc.hpp>
+1462475546 /aux_/config/msvc.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\logical.hpp
 	<boost/mpl/or.hpp>
 	<boost/mpl/and.hpp>
 	<boost/mpl/not.hpp>
 
-1462475544 /not.hpp>
+1462475546 /not.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\or.hpp
 	<boost/mpl/aux_/config/use_preprocessed.hpp>
@@ -5185,7 +5187,7 @@
 	<boost/mpl/aux_/include_preprocessed.hpp>
 	<boost/mpl/aux_/logical_op.hpp>
 
-1462475544 /aux_/logical_op.hpp>
+1462475546 /aux_/logical_op.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\use_preprocessed.hpp
 
@@ -5196,7 +5198,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/preprocessor/stringize.hpp>
 
-1462475544 processor/stringize.hpp>
+1462475546 processor/stringize.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\compiler.hpp
 	<boost/mpl/aux_/config/dtp.hpp>
@@ -5269,7 +5271,7 @@
 	<boost/rational.hpp>
 	<boost/ratio/mpl/rational_c_tag.hpp>
 
-1462475576 io/mpl/rational_c_tag.hpp>
+1462475578 io/mpl/rational_c_tag.hpp>
 
 1462475576 d:\programowanie\c++\boost_1_61_0\\boost\ratio\config.hpp
 	<boost/config.hpp>
@@ -5344,7 +5346,7 @@
 1462475576 d:\programowanie\c++\boost_1_61_0\\boost\ratio\ratio_fwd.hpp
 	<boost/ratio/config.hpp>
 
-1462475576 io/config.hpp>
+1462475578 io/config.hpp>
 
 1462475576 d:\programowanie\c++\boost_1_61_0\\boost\ratio\detail\overflow_helpers.hpp
 	<boost/ratio/config.hpp>
@@ -5358,7 +5360,7 @@
 	<boost/core/enable_if.hpp>
 	<boost/integer_traits.hpp>
 
-1462475576 eger_traits.hpp>
+1462475578 eger_traits.hpp>
 
 1462475578 d:\programowanie\c++\boost_1_61_0\\boost\rational.hpp
 	<boost/config.hpp>
@@ -5384,7 +5386,7 @@
 	<boost/config.hpp>
 	<boost/detail/call_traits.hpp>
 
-1462475620 ail/call_traits.hpp>
+1462475622 ail/call_traits.hpp>
 
 1462475620 d:\programowanie\c++\boost_1_61_0\\boost\detail\call_traits.hpp
 	<boost/config.hpp>
@@ -5622,7 +5624,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/timer_queue_set.ipp>
 
-1462475444 o/detail/impl/timer_queue_set.ipp>
+1462475446 o/detail/impl/timer_queue_set.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\timer_queue_set.ipp
 	<boost/asio/detail/config.hpp>
@@ -5668,7 +5670,7 @@
 	<boost/asio/detail/win_fenced_block.hpp>
 	<boost/asio/detail/null_fenced_block.hpp>
 
-1462475444 o/detail/null_fenced_block.hpp>
+1462475446 o/detail/null_fenced_block.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_fenced_block.hpp
 	<boost/asio/detail/push_options.hpp>
@@ -5741,14 +5743,14 @@
 	<boost/asio/detail/impl/task_io_service.hpp>
 	<boost/asio/detail/impl/task_io_service.ipp>
 
-1462475444 o/detail/impl/task_io_service.ipp>
+1462475446 o/detail/impl/task_io_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\atomic_count.hpp
 	<boost/asio/detail/config.hpp>
 	<atomic>
 	<boost/detail/atomic_count.hpp>
 
-1462475444 ail/atomic_count.hpp>
+1462475446 ail/atomic_count.hpp>
 
 1462475588 d:\programowanie\c++\boost_1_61_0\\boost\detail\atomic_count.hpp
 	<boost/smart_ptr/detail/atomic_count.hpp>
@@ -5812,7 +5814,7 @@
 	<boost/asio/detail/posix_event.hpp>
 	<boost/asio/detail/std_event.hpp>
 
-1462475444 o/detail/std_event.hpp>
+1462475446 o/detail/std_event.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_event.hpp
 	<boost/asio/detail/config.hpp>
@@ -5829,7 +5831,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_event.ipp>
 
-1462475444 o/detail/impl/win_event.ipp>
+1462475446 o/detail/impl/win_event.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\assert.hpp
 	<boost/asio/detail/config.hpp>
@@ -5853,7 +5855,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/posix_event.ipp>
 
-1462475444 o/detail/impl/posix_event.ipp>
+1462475446 o/detail/impl/posix_event.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\posix_event.ipp
 	<boost/asio/detail/config.hpp>
@@ -5875,7 +5877,7 @@
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\reactor_fwd.hpp
 	<boost/asio/detail/config.hpp>
 
-1462475444 o/detail/config.hpp>
+1462475446 o/detail/config.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\task_io_service.hpp
 	<boost/asio/detail/addressof.hpp>
@@ -5905,7 +5907,7 @@
 	<boost/asio/detail/null_reactor.hpp>
 	<boost/asio/detail/select_reactor.hpp>
 
-1462475444 o/detail/select_reactor.hpp>
+1462475446 o/detail/select_reactor.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\epoll_reactor.hpp
 	<boost/asio/detail/config.hpp>
@@ -5926,7 +5928,7 @@
 	<boost/asio/detail/impl/epoll_reactor.hpp>
 	<boost/asio/detail/impl/epoll_reactor.ipp>
 
-1462475444 o/detail/impl/epoll_reactor.ipp>
+1462475446 o/detail/impl/epoll_reactor.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\object_pool.hpp
 	<boost/asio/detail/noncopyable.hpp>
@@ -5945,7 +5947,7 @@
 	<boost/asio/detail/eventfd_select_interrupter.hpp>
 	<boost/asio/detail/pipe_select_interrupter.hpp>
 
-1462475444 o/detail/pipe_select_interrupter.hpp>
+1462475446 o/detail/pipe_select_interrupter.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\socket_select_interrupter.hpp
 	<boost/asio/detail/config.hpp>
@@ -5954,7 +5956,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/socket_select_interrupter.ipp>
 
-1462475444 o/detail/impl/socket_select_interrupter.ipp>
+1462475446 o/detail/impl/socket_select_interrupter.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\socket_select_interrupter.ipp
 	<boost/asio/detail/config.hpp>
@@ -5984,21 +5986,21 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/socket_ops.ipp>
 
-1462475444 o/detail/impl/socket_ops.ipp>
+1462475446 o/detail/impl/socket_ops.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\shared_ptr.hpp
 	<boost/asio/detail/config.hpp>
 	<memory>
 	<boost/shared_ptr.hpp>
 
-1462475482 red_ptr.hpp>
+1462475580 red_ptr.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\weak_ptr.hpp
 	<boost/asio/detail/config.hpp>
 	<memory>
 	<boost/weak_ptr.hpp>
 
-1462475444 k_ptr.hpp>
+1462475446 k_ptr.hpp>
 
 1462475588 d:\programowanie\c++\boost_1_61_0\\boost\weak_ptr.hpp
 	<boost/smart_ptr/weak_ptr.hpp>
@@ -6034,7 +6036,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/eventfd_select_interrupter.ipp>
 
-1462475444 o/detail/impl/eventfd_select_interrupter.ipp>
+1462475446 o/detail/impl/eventfd_select_interrupter.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\eventfd_select_interrupter.ipp
 	<boost/asio/detail/config.hpp>
@@ -6056,7 +6058,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/pipe_select_interrupter.ipp>
 
-1462475444 o/detail/impl/pipe_select_interrupter.ipp>
+1462475446 o/detail/impl/pipe_select_interrupter.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\pipe_select_interrupter.ipp
 	<boost/asio/detail/config.hpp>
@@ -6109,7 +6111,7 @@
 	<boost/asio/detail/impl/kqueue_reactor.hpp>
 	<boost/asio/detail/impl/kqueue_reactor.ipp>
 
-1462475444 o/detail/impl/kqueue_reactor.ipp>
+1462475446 o/detail/impl/kqueue_reactor.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\kqueue_reactor.hpp
 	<boost/asio/detail/config.hpp>
@@ -6146,7 +6148,7 @@
 	<boost/asio/detail/impl/dev_poll_reactor.hpp>
 	<boost/asio/detail/impl/dev_poll_reactor.ipp>
 
-1462475444 o/detail/impl/dev_poll_reactor.ipp>
+1462475446 o/detail/impl/dev_poll_reactor.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\hash_map.hpp
 	<boost/asio/detail/config.hpp>
@@ -6209,14 +6211,14 @@
 	<boost/asio/detail/impl/select_reactor.hpp>
 	<boost/asio/detail/impl/select_reactor.ipp>
 
-1462475444 o/detail/impl/select_reactor.ipp>
+1462475446 o/detail/impl/select_reactor.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\fd_set_adapter.hpp
 	<boost/asio/detail/config.hpp>
 	<boost/asio/detail/posix_fd_set_adapter.hpp>
 	<boost/asio/detail/win_fd_set_adapter.hpp>
 
-1462475444 o/detail/win_fd_set_adapter.hpp>
+1462475446 o/detail/win_fd_set_adapter.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\posix_fd_set_adapter.hpp
 	<boost/asio/detail/config.hpp>
@@ -6255,7 +6257,7 @@
 	<boost/asio/detail/null_signal_blocker.hpp>
 	<boost/asio/detail/posix_signal_blocker.hpp>
 
-1462475444 o/detail/posix_signal_blocker.hpp>
+1462475446 o/detail/posix_signal_blocker.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\null_signal_blocker.hpp
 	<boost/asio/detail/config.hpp>
@@ -6296,7 +6298,7 @@
 	<boost/type_traits/remove_reference.hpp>
 	<boost/utility/enable_if.hpp>
 
-1462475620 lity/enable_if.hpp>
+1462475622 lity/enable_if.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\socket_base.hpp
 	<boost/asio/detail/config.hpp>
@@ -6367,7 +6369,7 @@
 	<functional>
 	<boost/function.hpp>
 
-1462475444 ction.hpp>
+1462475446 ction.hpp>
 
 1462475488 d:\programowanie\c++\boost_1_61_0\\boost\function.hpp
 	<functional>
@@ -6477,7 +6479,7 @@
 	<boost/cstdint.hpp>
 	<boost/static_assert.hpp>
 
-1462475516 tic_assert.hpp>
+1462475546 tic_assert.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\has_trivial_copy.hpp
 	<boost/type_traits/intrinsics.hpp>
@@ -6504,7 +6506,7 @@
 	<boost/type_traits/declval.hpp>
 	<boost/noncopyable.hpp>
 
-1462475620 copyable.hpp>
+1462475622 copyable.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\is_constructible.hpp
 	<boost/type_traits/integral_constant.hpp>
@@ -6722,7 +6724,7 @@
 	<utility>
 	<boost/move/detail/config_end.hpp>
 
-1462475542 e/detail/config_end.hpp>
+1462475544 e/detail/config_end.hpp>
 
 1462475542 d:\programowanie\c++\boost_1_61_0\\boost\move\detail\config_begin.hpp
 	<boost/config.hpp>
@@ -6829,7 +6831,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/buffer_sequence_adapter.ipp>
 
-1462475444 o/detail/impl/buffer_sequence_adapter.ipp>
+1462475446 o/detail/impl/buffer_sequence_adapter.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\buffer_sequence_adapter.ipp
 	<boost/asio/detail/config.hpp>
@@ -6897,7 +6899,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_iocp_socket_service_base.ipp>
 
-1462475444 o/detail/impl/win_iocp_socket_service_base.ipp>
+1462475446 o/detail/impl/win_iocp_socket_service_base.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\win_iocp_socket_connect_op.hpp
 	<boost/asio/detail/config.hpp>
@@ -7074,7 +7076,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/reactive_socket_service_base.ipp>
 
-1462475444 o/detail/impl/reactive_socket_service_base.ipp>
+1462475446 o/detail/impl/reactive_socket_service_base.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\reactive_socket_recv_op.hpp
 	<boost/asio/detail/config.hpp>
@@ -7206,7 +7208,7 @@
 	<boost/asio/detail/impl/winrt_timer_scheduler.hpp>
 	<boost/asio/detail/impl/winrt_timer_scheduler.ipp>
 
-1462475444 o/detail/impl/winrt_timer_scheduler.ipp>
+1462475446 o/detail/impl/winrt_timer_scheduler.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\winrt_timer_scheduler.hpp
 	<boost/asio/detail/config.hpp>
@@ -7238,7 +7240,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/timer_queue_ptime.ipp>
 
-1462475444 o/detail/impl/timer_queue_ptime.ipp>
+1462475446 o/detail/impl/timer_queue_ptime.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\timer_queue_ptime.ipp
 	<boost/asio/detail/config.hpp>
@@ -7317,7 +7319,7 @@
 	<boost/asio/impl/serial_port_base.hpp>
 	<boost/asio/impl/serial_port_base.ipp>
 
-1462475444 o/impl/serial_port_base.ipp>
+1462475446 o/impl/serial_port_base.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\serial_port_base.hpp
 	<boost/asio/detail/push_options.hpp>
@@ -7357,7 +7359,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/reactive_serial_port_service.ipp>
 
-1462475444 o/detail/impl/reactive_serial_port_service.ipp>
+1462475446 o/detail/impl/reactive_serial_port_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\descriptor_ops.hpp
 	<boost/asio/detail/config.hpp>
@@ -7368,7 +7370,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/descriptor_ops.ipp>
 
-1462475444 o/detail/impl/descriptor_ops.ipp>
+1462475446 o/detail/impl/descriptor_ops.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\descriptor_ops.ipp
 	<boost/asio/detail/config.hpp>
@@ -7396,7 +7398,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/reactive_descriptor_service.ipp>
 
-1462475444 o/detail/impl/reactive_descriptor_service.ipp>
+1462475446 o/detail/impl/reactive_descriptor_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\descriptor_read_op.hpp
 	<boost/asio/detail/config.hpp>
@@ -7444,7 +7446,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_iocp_serial_port_service.ipp>
 
-1462475444 o/detail/impl/win_iocp_serial_port_service.ipp>
+1462475446 o/detail/impl/win_iocp_serial_port_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\win_iocp_handle_service.hpp
 	<boost/asio/detail/config.hpp>
@@ -7463,7 +7465,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_iocp_handle_service.ipp>
 
-1462475444 o/detail/impl/win_iocp_handle_service.ipp>
+1462475446 o/detail/impl/win_iocp_handle_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\win_iocp_handle_read_op.hpp
 	<boost/asio/detail/config.hpp>
@@ -7540,7 +7542,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/signal_set_service.ipp>
 
-1462475444 o/detail/impl/signal_set_service.ipp>
+1462475446 o/detail/impl/signal_set_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\signal_handler.hpp
 	<boost/asio/detail/config.hpp>
@@ -7623,7 +7625,7 @@
 	<array>
 	<boost/array.hpp>
 
-1462475444 ay.hpp>
+1462475446 ay.hpp>
 
 1462475440 d:\programowanie\c++\boost_1_61_0\\boost\array.hpp
 	<boost/detail/workaround.hpp>
@@ -7721,7 +7723,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/winrt_ssocket_service_base.ipp>
 
-1462475444 o/detail/impl/winrt_ssocket_service_base.ipp>
+1462475446 o/detail/impl/winrt_ssocket_service_base.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\winrt_async_manager.hpp
 	<boost/asio/detail/config.hpp>
@@ -7791,7 +7793,7 @@
 	<boost/asio/basic_deadline_timer.hpp>
 	<boost/date_time/posix_time/posix_time_types.hpp>
 
-1462475444 e_time/posix_time/posix_time_types.hpp>
+1462475446 e_time/posix_time/posix_time_types.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\steady_timer.hpp
 	<boost/asio/detail/config.hpp>
@@ -7799,7 +7801,7 @@
 	<boost/chrono/system_clocks.hpp>
 	<boost/asio/basic_waitable_timer.hpp>
 
-1462475444 o/basic_waitable_timer.hpp>
+1462475446 o/basic_waitable_timer.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\basic_waitable_timer.hpp
 	<boost/asio/detail/config.hpp>
@@ -7877,7 +7879,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/buffered_read_stream.hpp>
 
-1462475444 o/impl/buffered_read_stream.hpp>
+1462475446 o/impl/buffered_read_stream.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\buffer_resize_guard.hpp
 	<boost/asio/detail/config.hpp>
@@ -7935,7 +7937,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/buffered_write_stream.hpp>
 
-1462475444 o/impl/buffered_write_stream.hpp>
+1462475446 o/impl/buffered_write_stream.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\buffered_write_stream_fwd.hpp
 
@@ -7955,7 +7957,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/write.hpp>
 
-1462475444 o/impl/write.hpp>
+1462475446 o/impl/write.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\write.hpp
 	<boost/asio/buffer.hpp>
@@ -8020,7 +8022,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/connect.hpp>
 
-1462475444 o/impl/connect.hpp>
+1462475446 o/impl/connect.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\connect.hpp
 	<boost/asio/detail/bind_handler.hpp>
@@ -8050,7 +8052,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/generic/detail/impl/endpoint.ipp>
 
-1462475444 o/generic/detail/impl/endpoint.ipp>
+1462475446 o/generic/detail/impl/endpoint.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\generic\detail\impl\endpoint.ipp
 	<boost/asio/detail/config.hpp>
@@ -8117,7 +8119,7 @@
 	<boost/asio/ip/impl/address.hpp>
 	<boost/asio/ip/impl/address.ipp>
 
-1462475444 o/ip/impl/address.ipp>
+1462475446 o/ip/impl/address.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\address_v4.hpp
 	<boost/asio/detail/config.hpp>
@@ -8132,7 +8134,7 @@
 	<boost/asio/ip/impl/address_v4.hpp>
 	<boost/asio/ip/impl/address_v4.ipp>
 
-1462475444 o/ip/impl/address_v4.ipp>
+1462475446 o/ip/impl/address_v4.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\impl\address_v4.hpp
 	<boost/asio/detail/throw_error.hpp>
@@ -8165,7 +8167,7 @@
 	<boost/asio/ip/impl/address_v6.hpp>
 	<boost/asio/ip/impl/address_v6.ipp>
 
-1462475444 o/ip/impl/address_v6.ipp>
+1462475446 o/ip/impl/address_v6.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\impl\address_v6.hpp
 	<boost/asio/detail/throw_error.hpp>
@@ -8210,7 +8212,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/ip/impl/basic_endpoint.hpp>
 
-1462475444 o/ip/impl/basic_endpoint.hpp>
+1462475446 o/ip/impl/basic_endpoint.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\detail\endpoint.hpp
 	<boost/asio/detail/config.hpp>
@@ -8223,7 +8225,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/ip/detail/impl/endpoint.ipp>
 
-1462475444 o/ip/detail/impl/endpoint.ipp>
+1462475446 o/ip/detail/impl/endpoint.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\detail\impl\endpoint.ipp
 	<boost/asio/detail/config.hpp>
@@ -8383,7 +8385,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/resolver_service_base.ipp>
 
-1462475444 o/detail/impl/resolver_service_base.ipp>
+1462475446 o/detail/impl/resolver_service_base.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\resolver_service_base.ipp
 	<boost/asio/detail/config.hpp>
@@ -8399,7 +8401,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/ip/impl/host_name.ipp>
 
-1462475444 o/ip/impl/host_name.ipp>
+1462475446 o/ip/impl/host_name.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\ip\impl\host_name.ipp
 	<boost/asio/detail/config.hpp>
@@ -8508,7 +8510,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/local/detail/impl/endpoint.ipp>
 
-1462475444 o/local/detail/impl/endpoint.ipp>
+1462475446 o/local/detail/impl/endpoint.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\local\detail\impl\endpoint.ipp
 	<boost/asio/detail/config.hpp>
@@ -8602,7 +8604,7 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/posix/basic_stream_descriptor.hpp>
 
-1462475444 o/posix/basic_stream_descriptor.hpp>
+1462475446 o/posix/basic_stream_descriptor.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\read.hpp
 	<boost/asio/detail/config.hpp>
@@ -8614,7 +8616,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/read.hpp>
 
-1462475444 o/impl/read.hpp>
+1462475446 o/impl/read.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\read.hpp
 	<algorithm>
@@ -8645,7 +8647,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/read_at.hpp>
 
-1462475444 o/impl/read_at.hpp>
+1462475446 o/impl/read_at.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\read_at.hpp
 	<algorithm>
@@ -8678,13 +8680,13 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/read_until.hpp>
 
-1462475444 o/impl/read_until.hpp>
+1462475446 o/impl/read_until.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\regex_fwd.hpp
 	<boost/regex_fwd.hpp>
 	<boost/regex/v4/match_flags.hpp>
 
-1462475444 ex/v4/match_flags.hpp>
+1462475446 ex/v4/match_flags.hpp>
 
 1462475580 d:\programowanie\c++\boost_1_61_0\\boost\regex_fwd.hpp
 	<boost/regex/config.hpp>
@@ -9027,7 +9029,7 @@
 1462475512 d:\programowanie\c++\boost_1_61_0\\boost\integer\static_log2.hpp
 	"boost/integer_fwd.hpp"
 
-1462475512 eger_fwd.hpp"
+1462475514 eger_fwd.hpp"
 
 1462475490 d:\programowanie\c++\boost_1_61_0\\boost\functional\hash\extensions.hpp
 	<boost/config.hpp>
@@ -9161,13 +9163,13 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/basic_serial_port.hpp>
 
-1462475444 o/basic_serial_port.hpp>
+1462475446 o/basic_serial_port.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\signal_set.hpp
 	<boost/asio/detail/config.hpp>
 	<boost/asio/basic_signal_set.hpp>
 
-1462475444 o/basic_signal_set.hpp>
+1462475446 o/basic_signal_set.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\strand.hpp
 	<boost/asio/detail/config.hpp>
@@ -9191,7 +9193,7 @@
 	<boost/asio/detail/impl/strand_service.hpp>
 	<boost/asio/detail/impl/strand_service.ipp>
 
-1462475444 o/detail/impl/strand_service.ipp>
+1462475446 o/detail/impl/strand_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\strand_service.hpp
 	<boost/asio/detail/addressof.hpp>
@@ -9214,7 +9216,7 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/basic_streambuf.hpp>
 
-1462475444 o/basic_streambuf.hpp>
+1462475446 o/basic_streambuf.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\version.hpp
 
@@ -9255,7 +9257,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/detail/impl/win_object_handle_service.ipp>
 
-1462475444 o/detail/impl/win_object_handle_service.ipp>
+1462475446 o/detail/impl/win_object_handle_service.ipp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\detail\impl\win_object_handle_service.ipp
 	<boost/asio/detail/config.hpp>
@@ -9310,7 +9312,7 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/windows/basic_object_handle.hpp>
 
-1462475444 o/windows/basic_object_handle.hpp>
+1462475446 o/windows/basic_object_handle.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\windows\overlapped_ptr.hpp
 	<boost/asio/detail/config.hpp>
@@ -9347,13 +9349,13 @@
 	<boost/asio/detail/config.hpp>
 	<boost/asio/windows/basic_random_access_handle.hpp>
 
-1462475444 o/windows/basic_random_access_handle.hpp>
+1462475446 o/windows/basic_random_access_handle.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\windows\stream_handle.hpp
 	<boost/asio/detail/config.hpp>
 	<boost/asio/windows/basic_stream_handle.hpp>
 
-1462475444 o/windows/basic_stream_handle.hpp>
+1462475446 o/windows/basic_stream_handle.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\write_at.hpp
 	<boost/asio/detail/config.hpp>
@@ -9366,7 +9368,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/write_at.hpp>
 
-1462475444 o/impl/write_at.hpp>
+1462475446 o/impl/write_at.hpp>
 
 1462475444 d:\programowanie\c++\boost_1_61_0\\boost\asio\impl\write_at.hpp
 	<boost/asio/buffer.hpp>
@@ -9395,7 +9397,7 @@
 	<boost/asio/detail/pop_options.hpp>
 	<boost/asio/impl/spawn.hpp>
 
-1462475444 o/impl/spawn.hpp>
+1462475446 o/impl/spawn.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\all.hpp
 	<boost/coroutine/attributes.hpp>
@@ -9409,7 +9411,7 @@
 	<boost/coroutine/stack_traits.hpp>
 	<boost/coroutine/standard_stack_allocator.hpp>
 
-1462475474 outine/standard_stack_allocator.hpp>
+1462475476 outine/standard_stack_allocator.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\attributes.hpp
 	<cstddef>
@@ -9417,7 +9419,7 @@
 	<boost/coroutine/flags.hpp>
 	<boost/coroutine/stack_allocator.hpp>
 
-1462475474 outine/stack_allocator.hpp>
+1462475476 outine/stack_allocator.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\flags.hpp
 
@@ -9438,7 +9440,7 @@
 	<boost/config.hpp>
 	<boost/coroutine/posix/segmented_stack_allocator.hpp>
 
-1462475474 outine/posix/segmented_stack_allocator.hpp>
+1462475476 outine/posix/segmented_stack_allocator.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\posix\segmented_stack_allocator.hpp
 	<cstddef>
@@ -9448,7 +9450,7 @@
 	<boost/coroutine/stack_context.hpp>
 	<boost/coroutine/stack_traits.hpp>
 
-1462475474 outine/stack_traits.hpp>
+1462475476 outine/stack_traits.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\config.hpp
 	<boost/config.hpp>
@@ -9460,7 +9462,7 @@
 	<boost/config.hpp>
 	<boost/coroutine/detail/config.hpp>
 
-1462475474 outine/detail/config.hpp>
+1462475476 outine/detail/config.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\stack_traits.hpp
 	<cstddef>
@@ -9482,7 +9484,7 @@
 	<boost/coroutine/asymmetric_coroutine.hpp>
 	<boost/coroutine/symmetric_coroutine.hpp>
 
-1462475474 outine/symmetric_coroutine.hpp>
+1462475476 outine/symmetric_coroutine.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\asymmetric_coroutine.hpp
 	<cstddef>
@@ -9508,7 +9510,7 @@
 	<boost/coroutine/detail/push_coroutine_synthesized.hpp>
 	<boost/coroutine/stack_context.hpp>
 
-1462475474 outine/stack_context.hpp>
+1462475476 outine/stack_context.hpp>
 
 1462475542 d:\programowanie\c++\boost_1_61_0\\boost\move\move.hpp
 	<boost/config.hpp>
@@ -9644,7 +9646,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/mpl/has_xxx.hpp>
 
-1462475544 /has_xxx.hpp>
+1462475546 /has_xxx.hpp>
 
 1462475520 d:\programowanie\c++\boost_1_61_0\\boost\iterator\iterator_traits.hpp
 	<boost/detail/iterator.hpp>
@@ -10041,7 +10043,7 @@
 	<boost/preprocessor/facilities/empty.hpp>
 	<boost/preprocessor/control/while.hpp>
 
-1462475620 processor/control/while.hpp>
+1462475622 processor/control/while.hpp>
 
 1462475566 d:\programowanie\c++\boost_1_61_0\\boost\preprocessor\control\deduce_d.hpp
 	<boost/preprocessor/control/while.hpp>
@@ -10105,7 +10107,7 @@
 1462475620 d:\programowanie\c++\boost_1_61_0\\boost\utility\identity_type.hpp
 	<boost/type_traits/function_traits.hpp>
 
-1462475620 e_traits/function_traits.hpp>
+1462475622 e_traits/function_traits.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\function_traits.hpp
 	<boost/config.hpp>
@@ -10126,7 +10128,7 @@
 	<boost/type_traits/has_minus.hpp>
 	<boost/type_traits/has_minus_assign.hpp>
 
-1462475620 e_traits/has_minus_assign.hpp>
+1462475622 e_traits/has_minus_assign.hpp>
 
 1462475616 d:\programowanie\c++\boost_1_61_0\\boost\type_traits\integral_promotion.hpp
 	<boost/config.hpp>
@@ -10325,7 +10327,7 @@
 	<boost/mpl/aux_/na.hpp>
 	<boost/mpl/aux_/arity_spec.hpp>
 
-1462475544 /aux_/arity_spec.hpp>
+1462475546 /aux_/arity_spec.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\apply.hpp
 	<boost/mpl/apply_fwd.hpp>
@@ -10353,7 +10355,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/mpl/aux_/count_args.hpp>
 
-1462475544 /aux_/count_args.hpp>
+1462475546 /aux_/count_args.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\apply_fwd.hpp
 	<boost/mpl/aux_/na.hpp>
@@ -10391,13 +10393,13 @@
 	<boost/preprocessor/iterate.hpp>
 	<boost/mpl/aux_/msvc_dtw.hpp>
 
-1462475544 /aux_/msvc_dtw.hpp>
+1462475546 /aux_/msvc_dtw.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\has_apply.hpp
 	<boost/mpl/has_xxx.hpp>
 	<boost/mpl/aux_/config/has_apply.hpp>
 
-1462475544 /aux_/config/has_apply.hpp>
+1462475546 /aux_/config/has_apply.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\has_apply.hpp
 	<boost/mpl/aux_/config/has_xxx.hpp>
@@ -10414,7 +10416,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/preprocessor/arithmetic/add.hpp>
 
-1462475544 processor/arithmetic/add.hpp>
+1462475546 processor/arithmetic/add.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\config\bcc.hpp
 	<boost/mpl/aux_/config/workaround.hpp>
@@ -10422,7 +10424,7 @@
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\msvc_dtw.hpp
 	<boost/mpl/aux_/preprocessor/params.hpp>
 
-1462475544 /aux_/preprocessor/params.hpp>
+1462475546 /aux_/preprocessor/params.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\lambda.hpp
 	<boost/mpl/lambda_fwd.hpp>
@@ -10490,7 +10492,7 @@
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\next.hpp
 	<boost/mpl/next_prior.hpp>
 
-1462475544 /next_prior.hpp>
+1462475546 /next_prior.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\next_prior.hpp
 	<boost/mpl/aux_/common_name_wknd.hpp>
@@ -10506,7 +10508,7 @@
 	<boost/mpl/aux_/nttp_decl.hpp>
 	<boost/mpl/aux_/na_spec.hpp>
 
-1462475544 /aux_/na_spec.hpp>
+1462475546 /aux_/na_spec.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\preprocessor\partial_spec_params.hpp
 	<boost/mpl/limits/arity.hpp>
@@ -10515,7 +10517,7 @@
 	<boost/mpl/aux_/preprocessor/sub.hpp>
 	<boost/preprocessor/comma_if.hpp>
 
-1462475544 processor/comma_if.hpp>
+1462475546 processor/comma_if.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\preprocessor\repeat.hpp
 	<boost/mpl/aux_/config/preprocessor.hpp>
@@ -10532,7 +10534,7 @@
 	<boost/preprocessor/repeat.hpp>
 	<boost/preprocessor/inc.hpp>
 
-1462475544 processor/inc.hpp>
+1462475546 processor/inc.hpp>
 
 1462475566 d:\programowanie\c++\boost_1_61_0\\boost\preprocessor\expr_if.hpp
 	<boost/preprocessor/control/expr_if.hpp>
@@ -10629,7 +10631,7 @@
 	<boost/preprocessor/cat.hpp>
 	<boost/mpl/aux_/config/eti.hpp>
 
-1462475544 /aux_/config/eti.hpp>
+1462475546 /aux_/config/eti.hpp>
 
 1462475544 d:\programowanie\c++\boost_1_61_0\\boost\mpl\aux_\has_rebind.hpp
 	<boost/mpl/aux_/config/msvc.hpp>
@@ -10863,7 +10865,7 @@
 	<boost/cstdint.hpp>
 	<boost/context/detail/config.hpp>
 
-1462475470 text/detail/config.hpp>
+1462475472 text/detail/config.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\preallocated.hpp
 	<cstddef>
@@ -10876,7 +10878,7 @@
 	<boost/config.hpp>
 	<boost/coroutine/detail/flags.hpp>
 
-1462475474 outine/detail/flags.hpp>
+1462475476 outine/detail/flags.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\flags.hpp
 	<boost/config.hpp>
@@ -10912,12 +10914,12 @@
 	<boost/coroutine/detail/trampoline_pull.hpp>
 	<boost/coroutine/exceptions.hpp>
 
-1462475474 outine/exceptions.hpp>
+1462475476 outine/exceptions.hpp>
 
 1462475482 d:\programowanie\c++\boost_1_61_0\\boost\exception_ptr.hpp
 	<boost/exception/detail/exception_ptr.hpp>
 
-1462475482 eption/detail/exception_ptr.hpp>
+1462475484 eption/detail/exception_ptr.hpp>
 
 1462475482 d:\programowanie\c++\boost_1_61_0\\boost\exception\detail\exception_ptr.hpp
 	<boost/config.hpp>
@@ -10983,7 +10985,7 @@
 	<string>
 	<boost/exception/current_exception_cast.hpp>
 
-1462475482 eption/current_exception_cast.hpp>
+1462475484 eption/current_exception_cast.hpp>
 
 1462475482 d:\programowanie\c++\boost_1_61_0\\boost\exception\get_error_info.hpp
 	<boost/exception/exception.hpp>
@@ -11003,13 +11005,13 @@
 	<boost/coroutine/detail/config.hpp>
 	<boost/coroutine/detail/data.hpp>
 
-1462475474 outine/detail/data.hpp>
+1462475476 outine/detail/data.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\data.hpp
 	<boost/config.hpp>
 	<boost/coroutine/detail/coroutine_context.hpp>
 
-1462475474 outine/detail/coroutine_context.hpp>
+1462475476 outine/detail/coroutine_context.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\pull_coroutine_object.hpp
 	<boost/assert.hpp>
@@ -11033,7 +11035,7 @@
 	<boost/coroutine/detail/coroutine_context.hpp>
 	<boost/coroutine/detail/pull_coroutine_impl.hpp>
 
-1462475474 outine/detail/pull_coroutine_impl.hpp>
+1462475476 outine/detail/pull_coroutine_impl.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\push_coroutine_impl.hpp
 	<boost/assert.hpp>
@@ -11065,7 +11067,7 @@
 	<boost/coroutine/exceptions.hpp>
 	<boost/coroutine/flags.hpp>
 
-1462475474 outine/flags.hpp>
+1462475476 outine/flags.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\setup.hpp
 	<boost/assert.hpp>
@@ -11100,14 +11102,14 @@
 	<boost/coroutine/detail/coroutine_context.hpp>
 	<boost/coroutine/detail/push_coroutine_impl.hpp>
 
-1462475474 outine/detail/push_coroutine_impl.hpp>
+1462475476 outine/detail/push_coroutine_impl.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\symmetric_coroutine.hpp
 	<boost/config.hpp>
 	<boost/coroutine/detail/symmetric_coroutine_call.hpp>
 	<boost/coroutine/detail/symmetric_coroutine_yield.hpp>
 
-1462475474 outine/detail/symmetric_coroutine_yield.hpp>
+1462475476 outine/detail/symmetric_coroutine_yield.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\detail\symmetric_coroutine_call.hpp
 	<boost/assert.hpp>
@@ -11174,7 +11176,7 @@
 	<boost/coroutine/windows/protected_stack_allocator.hpp>
 	<boost/coroutine/posix/protected_stack_allocator.hpp>
 
-1462475474 outine/posix/protected_stack_allocator.hpp>
+1462475476 outine/posix/protected_stack_allocator.hpp>
 
 1462475474 d:\programowanie\c++\boost_1_61_0\\boost\coroutine\windows\protected_stack_allocator.hpp
 	<windows.h>
@@ -11810,7 +11812,7 @@
 	<iterator>
 	<boost/io/ios_state.hpp>
 
-1462475516 ios_state.hpp>
+1462475518 ios_state.hpp>
 
 1462475516 d:\programowanie\c++\boost_1_61_0\\boost\io\ios_state.hpp
 	<boost/io_fwd.hpp>
@@ -11905,7 +11907,7 @@
 	<sys/sysctl.h>
 	<boost/interprocess/detail/config_end.hpp>
 
-1462475514 erprocess/detail/config_end.hpp>
+1462475516 erprocess/detail/config_end.hpp>
 
 1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\config_begin.hpp
 	<boost/config.hpp>
@@ -11919,7 +11921,7 @@
 	<sys/param.h>
 	<sys/sysctl.h>
 
-1462475514 l.h>
+1462475516 l.h>
 
 1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\creation_tags.hpp
 	<boost/config.hpp>
@@ -12150,7 +12152,7 @@
 	<boost/config.hpp>
 	<boost/move/detail/type_traits.hpp>
 
-1462475542 e/detail/type_traits.hpp>
+1462475544 e/detail/type_traits.hpp>
 
 1462475470 d:\programowanie\c++\boost_1_61_0\\boost\container\detail\placement_new.hpp
 	<boost/config.hpp>
@@ -12182,7 +12184,7 @@
 	<boost/config.hpp>
 	<boost/move/detail/workaround.hpp>
 
-1462475542 e/detail/workaround.hpp>
+1462475544 e/detail/workaround.hpp>
 
 1462475516 d:\programowanie\c++\boost_1_61_0\\boost\intrusive\detail\has_member_function_callable_with.hpp
 	<cstddef>
@@ -12655,7 +12657,7 @@
 	<boost/date_time/posix_time/ptime.hpp>
 	<boost/date_time/posix_time/posix_time_duration.hpp>
 
-1462475514 e_time/posix_time/posix_time_duration.hpp>
+1462475516 e_time/posix_time/posix_time_duration.hpp>
 
 1462475514 d:\programowanie\c++\boost_1_61_0\\boost\interprocess\detail\mpl.hpp
 	<boost/config.hpp>
@@ -13186,9 +13188,13 @@
 	<boost/thread/barrier.hpp>
 	<boost/thread/future.hpp>
 
+1462475608 ead/future.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\thread.hpp
 	<boost/thread/thread_only.hpp>
 	<boost/thread/detail/thread_group.hpp>
+
+1462475608 ead/detail/thread_group.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\thread_only.hpp
 	<boost/thread/detail/platform.hpp>
@@ -13198,9 +13204,13 @@
 	<boost/thread/detail/thread_interruption.hpp>
 	<boost/thread/v2/thread.hpp>
 
+1462475608 ead/v2/thread.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\detail\platform.hpp
 	<boost/config.hpp>
 	<boost/config/requires_threads.hpp>
+
+1462475608 fig/requires_threads.hpp>
 
 1462475468 e:\programowanie\c++\boost_1_61_0\boost\config.hpp
 	<boost/config/user.hpp>
@@ -15753,6 +15763,8 @@
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\intrusive_ptr.hpp
 	<boost/smart_ptr/intrusive_ptr.hpp>
 
+1462475588 rt_ptr/intrusive_ptr.hpp>
+
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\smart_ptr\intrusive_ptr.hpp
 	<boost/config.hpp>
 	<boost/assert.hpp>
@@ -16398,6 +16410,8 @@
 	<boost/thread/pthread/mutex.hpp>
 	<boost/thread/lockable_traits.hpp>
 
+1462475608 ead/lockable_traits.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\win32\mutex.hpp
 	<boost/thread/win32/basic_timed_mutex.hpp>
 	<boost/thread/exceptions.hpp>
@@ -16441,6 +16455,8 @@
 	<boost/date_time/time_resolution_traits.hpp>
 	<boost/date_time/gregorian/conversion.hpp>
 
+1462475478 e_time/gregorian/conversion.hpp>
+
 1462475478 e:\programowanie\c++\boost_1_61_0\boost\date_time\gregorian\conversion.hpp
 	<cstring>
 	<string>
@@ -16450,8 +16466,12 @@
 	<boost/date_time/special_defs.hpp>
 	<boost/date_time/gregorian/gregorian_types.hpp>
 
+1462475478 e_time/gregorian/gregorian_types.hpp>
+
 1462475454 e:\programowanie\c++\boost_1_61_0\boost\chrono\ceil.hpp
 	<boost/chrono/duration.hpp>
+
+1462475454 ono/duration.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\pthread\mutex.hpp
 	<boost/thread/detail/config.hpp>
@@ -16520,6 +16540,8 @@
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\enable_shared_from_this.hpp
 	<boost/smart_ptr/enable_shared_from_this.hpp>
 
+1462475588 rt_ptr/enable_shared_from_this.hpp>
+
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\smart_ptr\enable_shared_from_this.hpp
 	<boost/smart_ptr/weak_ptr.hpp>
 	<boost/smart_ptr/shared_ptr.hpp>
@@ -16568,6 +16590,8 @@
 	<boost/thread/win32/thread_heap_alloc.hpp>
 	<boost/thread/pthread/thread_heap_alloc.hpp>
 
+1462475608 ead/pthread/thread_heap_alloc.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\pthread\thread_heap_alloc.hpp
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
@@ -16592,6 +16616,8 @@
 	<boost/type_traits/is_convertible.hpp>
 	<boost/thread/detail/move.hpp>
 
+1462475608 ead/detail/move.hpp>
+
 1462475474 e:\programowanie\c++\boost_1_61_0\boost\core\ref.hpp
 	<boost/config.hpp>
 	<boost/utility/addressof.hpp>
@@ -16602,6 +16628,8 @@
 
 1462475452 e:\programowanie\c++\boost_1_61_0\boost\bind.hpp
 	<boost/bind/bind.hpp>
+
+1462475452 d/bind.hpp>
 
 1462475452 e:\programowanie\c++\boost_1_61_0\boost\bind\bind.hpp
 	<boost/config.hpp>
@@ -16632,6 +16660,8 @@
 	<boost/bind/bind_mf_cc.hpp>
 	<boost/bind/bind_mf2_cc.hpp>
 	<boost/bind/placeholders.hpp>
+
+1462475452 d/placeholders.hpp>
 
 1462475474 e:\programowanie\c++\boost_1_61_0\boost\ref.hpp
 	<boost/core/ref.hpp>
@@ -16691,6 +16721,8 @@
 1462475452 e:\programowanie\c++\boost_1_61_0\boost\bind\storage.hpp
 	<boost/config.hpp>
 	<boost/bind/arg.hpp>
+
+1462475452 d/arg.hpp>
 
 1462475452 e:\programowanie\c++\boost_1_61_0\boost\bind\bind_template.hpp
 
@@ -16811,6 +16843,8 @@
 	<boost/thread/detail/config.hpp>
 	<boost/thread/detail/delete.hpp>
 
+1462475608 ead/detail/delete.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\v2\thread.hpp
 	<boost/thread/detail/config.hpp>
 	<boost/chrono/system_clocks.hpp>
@@ -16818,10 +16852,14 @@
 	<boost/thread/condition_variable.hpp>
 	<boost/thread/lock_types.hpp>
 
+1462475608 ead/lock_types.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\condition_variable.hpp
 	<boost/thread/detail/platform.hpp>
 	<boost/thread/win32/condition_variable.hpp>
 	<boost/thread/pthread/condition_variable.hpp>
+
+1462475608 ead/pthread/condition_variable.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\win32\condition_variable.hpp
 	<boost/thread/win32/thread_primitives.hpp>
@@ -16868,6 +16906,8 @@
 	<boost/thread/csbl/memory/config.hpp>
 	<boost/move/unique_ptr.hpp>
 	<boost/move/make_unique.hpp>
+
+1462475608 e/make_unique.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\memory\config.hpp
 	<boost/config.hpp>
@@ -17014,6 +17054,8 @@
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic.hpp
 	<boost/atomic/atomic.hpp>
 
+1462475448 mic/atomic.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\atomic.hpp
 	<boost/atomic/capabilities.hpp>
 	<boost/atomic/fences.hpp>
@@ -17021,16 +17063,22 @@
 	<boost/atomic/detail/atomic_template.hpp>
 	<boost/atomic/detail/operations.hpp>
 
+1462475448 mic/detail/operations.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\capabilities.hpp
 	<boost/atomic/detail/config.hpp>
 	<boost/atomic/detail/platform.hpp>
 	<boost/atomic/detail/int_sizes.hpp>
+
+1462475448 mic/detail/int_sizes.hpp>
 
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\config.hpp
 	<boost/config.hpp>
 
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\platform.hpp
 	<boost/atomic/detail/config.hpp>
+
+1462475448 mic/detail/config.hpp>
 
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\int_sizes.hpp
 	<boost/atomic/detail/config.hpp>
@@ -17050,10 +17098,14 @@
 	<boost/atomic/detail/operations_lockfree.hpp>
 	<boost/atomic/detail/ops_emulated.hpp>
 
+1462475448 mic/detail/ops_emulated.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\operations_lockfree.hpp
 	<boost/atomic/detail/config.hpp>
 	<boost/atomic/detail/platform.hpp>
 	<boost/atomic/detail/operations_fwd.hpp>
+
+1462475448 mic/detail/operations_fwd.hpp>
 
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\operations_fwd.hpp
 	<cstddef>
@@ -17068,6 +17120,8 @@
 	<boost/atomic/detail/lockpool.hpp>
 	<boost/atomic/capabilities.hpp>
 
+1462475448 mic/capabilities.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\storage_type.hpp
 	<cstddef>
 	<boost/cstdint.hpp>
@@ -17078,6 +17132,8 @@
 	<boost/atomic/detail/config.hpp>
 	<boost/atomic/detail/link.hpp>
 
+1462475448 mic/detail/link.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\link.hpp
 	<boost/atomic/detail/config.hpp>
 	<boost/config/auto_link.hpp>
@@ -17087,11 +17143,15 @@
 	<boost/atomic/detail/operations.hpp>
 	<boost/atomic/detail/atomic_flag.hpp>
 
+1462475448 mic/detail/atomic_flag.hpp>
+
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\atomic_flag.hpp
 	<boost/assert.hpp>
 	<boost/memory_order.hpp>
 	<boost/atomic/detail/config.hpp>
 	<boost/atomic/detail/operations_lockfree.hpp>
+
+1462475448 mic/detail/operations_lockfree.hpp>
 
 1462475448 e:\programowanie\c++\boost_1_61_0\boost\atomic\detail\atomic_template.hpp
 	<cstddef>
@@ -17167,6 +17227,8 @@
 	<boost/thread/lockable_traits.hpp>
 	<boost/thread/lock_options.hpp>
 
+1462475608 ead/lock_options.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\lock_algorithms.hpp
 	<boost/thread/detail/config.hpp>
 	<boost/thread/lock_types.hpp>
@@ -17200,12 +17262,16 @@
 	<boost/thread/csbl/memory/shared_ptr.hpp>
 	<boost/type_traits/decay.hpp>
 
+1462475608 e_traits/decay.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\detail\memory.hpp
 	<boost/config.hpp>
 	<boost/thread/csbl/memory/pointer_traits.hpp>
 	<boost/thread/csbl/memory/allocator_arg.hpp>
 	<boost/thread/csbl/memory/allocator_traits.hpp>
 	<boost/thread/csbl/memory/scoped_allocator.hpp>
+
+1462475608 ead/csbl/memory/scoped_allocator.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\memory\pointer_traits.hpp
 	<boost/thread/csbl/memory/config.hpp>
@@ -17247,6 +17313,8 @@
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\memory\allocator_arg.hpp
 	<boost/thread/csbl/memory/config.hpp>
 	<boost/container/scoped_allocator.hpp>
+
+1462475608 tainer/scoped_allocator.hpp>
 
 1462475470 e:\programowanie\c++\boost_1_61_0\boost\container\scoped_allocator.hpp
 	<boost/container/detail/config_begin.hpp>
@@ -17338,6 +17406,8 @@
 	<boost/container/detail/workaround.hpp>
 	<boost/container/detail/std_fwd.hpp>
 
+1462475470 tainer/detail/std_fwd.hpp>
+
 1462475470 e:\programowanie\c++\boost_1_61_0\boost\container\detail\dispatch_uses_allocator.hpp
 	<boost/container/detail/config_begin.hpp>
 	<boost/container/detail/workaround.hpp>
@@ -17355,6 +17425,8 @@
 1462475470 e:\programowanie\c++\boost_1_61_0\boost\container\uses_allocator.hpp
 	<boost/container/uses_allocator_fwd.hpp>
 	<boost/container/detail/type_traits.hpp>
+
+1462475470 tainer/detail/type_traits.hpp>
 
 1462475470 e:\programowanie\c++\boost_1_61_0\boost\container\detail\addressof.hpp
 	<boost/config.hpp>
@@ -17382,6 +17454,8 @@
 	<boost/thread/csbl/memory/config.hpp>
 	<boost/container/allocator_traits.hpp>
 
+1462475608 tainer/allocator_traits.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\memory\scoped_allocator.hpp
 	<boost/thread/csbl/memory/config.hpp>
 	<boost/container/scoped_allocator.hpp>
@@ -17396,6 +17470,8 @@
 	<boost/smart_ptr/make_shared_object.hpp>
 	<boost/smart_ptr/make_shared_array.hpp>
 	<boost/smart_ptr/allocate_shared_array.hpp>
+
+1462475588 rt_ptr/allocate_shared_array.hpp>
 
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\smart_ptr\make_shared_object.hpp
 	<boost/config.hpp>
@@ -17413,9 +17489,13 @@
 	<boost/smart_ptr/detail/array_count_impl.hpp>
 	<boost/smart_ptr/detail/sp_if_array.hpp>
 
+1462475588 rt_ptr/detail/sp_if_array.hpp>
+
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\smart_ptr\detail\array_count_impl.hpp
 	<boost/smart_ptr/detail/array_allocator.hpp>
 	<boost/smart_ptr/detail/sp_counted_impl.hpp>
+
+1462475588 rt_ptr/detail/sp_counted_impl.hpp>
 
 1462475588 e:\programowanie\c++\boost_1_61_0\boost\smart_ptr\detail\array_allocator.hpp
 	<boost/align/align.hpp>
@@ -17423,10 +17503,14 @@
 	<boost/smart_ptr/detail/array_utility.hpp>
 	<boost/type_traits/alignment_of.hpp>
 
+1462475588 e_traits/alignment_of.hpp>
+
 1462475440 e:\programowanie\c++\boost_1_61_0\boost\align\align.hpp
 	<boost/config.hpp>
 	<boost/align/detail/align_cxx11.hpp>
 	<boost/align/detail/align.hpp>
+
+1462475440 gn/detail/align.hpp>
 
 1462475440 e:\programowanie\c++\boost_1_61_0\boost\align\detail\align_cxx11.hpp
 	<memory>
@@ -17608,6 +17692,8 @@
 1462475616 e:\programowanie\c++\boost_1_61_0\boost\utility\declval.hpp
 	<boost/type_traits/declval.hpp>
 
+1462475616 e_traits/declval.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\future.hpp
 	<boost/thread/detail/config.hpp>
 	<boost/thread/condition_variable.hpp>
@@ -17665,6 +17751,8 @@
 	<boost/detail/atomic_undef_macros.hpp>
 	<boost/detail/atomic_redef_macros.hpp>
 
+1462475608 ail/atomic_redef_macros.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\detail\invoker.hpp
 	<boost/config.hpp>
 	<boost/utility/result_of.hpp>
@@ -17676,16 +17764,22 @@
 	<boost/thread/detail/variadic_header.hpp>
 	<boost/thread/detail/variadic_footer.hpp>
 
+1462475608 ead/detail/variadic_footer.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\tuple.hpp
 	<boost/config.hpp>
 	<boost/tuple/tuple.hpp>
 	<tuple>
+
+1462475608 le/tuple.hpp>
 
 1462475614 e:\programowanie\c++\boost_1_61_0\boost\tuple\tuple.hpp
 	"boost/config.hpp"
 	"boost/static_assert.hpp"
 	"boost/ref.hpp"
 	"boost/tuple/detail/tuple_basic.hpp"
+
+1462475614 le/detail/tuple_basic.hpp"
 
 1462475614 e:\programowanie\c++\boost_1_61_0\boost\tuple\detail\tuple_basic.hpp
 	<utility>
@@ -17736,6 +17830,8 @@
 	<boost/preprocessor/facilities/intercept.hpp>
 	<boost/preprocessor/repetition/enum_params.hpp>
 	<boost/preprocessor/repetition/repeat_from_to.hpp>
+
+1462475608 processor/repetition/repeat_from_to.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\detail\variadic_footer.hpp
 
@@ -17944,6 +18040,8 @@
 	<boost/thread/executors/executor.hpp>
 	<boost/thread/executors/executor_adaptor.hpp>
 
+1462475608 ead/executors/executor_adaptor.hpp>
+
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\executors\executor.hpp
 	<boost/thread/detail/config.hpp>
 	<boost/thread/detail/delete.hpp>
@@ -17956,6 +18054,8 @@
 	<boost/thread/detail/config.hpp>
 	<boost/thread/detail/nullary_function.hpp>
 	<boost/thread/csbl/functional.hpp>
+
+1462475608 ead/csbl/functional.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\functional.hpp
 	<boost/config.hpp>
@@ -18205,6 +18305,8 @@
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\optional.hpp
 	"boost/optional/optional.hpp"
 
+1462475560 ional/optional.hpp"
+
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\optional\optional.hpp
 	<new>
 	<iosfwd>
@@ -18243,6 +18345,8 @@
 	<boost/optional/detail/optional_relops.hpp>
 	<boost/optional/detail/optional_swap.hpp>
 
+1462475560 ional/detail/optional_swap.hpp>
+
 1462475474 e:\programowanie\c++\boost_1_61_0\boost\core\explicit_operator_bool.hpp
 	<boost/config.hpp>
 
@@ -18258,6 +18362,8 @@
 	<boost/type_traits/is_default_constructible.hpp>
 	<boost/type_traits/remove_all_extents.hpp>
 	<boost/type_traits/has_trivial_constructor.hpp>
+
+1462475616 e_traits/has_trivial_constructor.hpp>
 
 1462475616 e:\programowanie\c++\boost_1_61_0\boost\type_traits\remove_all_extents.hpp
 	<boost/config.hpp>
@@ -18285,6 +18391,8 @@
 	<boost/type_traits/is_assignable.hpp>
 	<boost/type_traits/remove_const.hpp>
 
+1462475616 e_traits/remove_const.hpp>
+
 1462475616 e:\programowanie\c++\boost_1_61_0\boost\type_traits\is_assignable.hpp
 	<boost/type_traits/integral_constant.hpp>
 	<boost/detail/workaround.hpp>
@@ -18301,6 +18409,8 @@
 	<boost/type_traits/is_const.hpp>
 	<boost/type_traits/is_volatile.hpp>
 	<boost/type_traits/is_assignable.hpp>
+
+1462475616 e_traits/is_assignable.hpp>
 
 1462475616 e:\programowanie\c++\boost_1_61_0\boost\type_traits\has_nothrow_assign.hpp
 	<boost/type_traits/integral_constant.hpp>
@@ -18342,6 +18452,8 @@
 	<boost/type_traits/is_pod.hpp>
 	<boost/type_traits/is_volatile.hpp>
 
+1462475616 e_traits/is_volatile.hpp>
+
 1462475616 e:\programowanie\c++\boost_1_61_0\boost\type_traits\has_nothrow_copy.hpp
 	<boost/type_traits/intrinsics.hpp>
 	<boost/type_traits/integral_constant.hpp>
@@ -18358,8 +18470,12 @@
 	<boost/type_traits/is_copy_constructible.hpp>
 	<boost/type_traits/has_trivial_copy.hpp>
 
+1462475616 e_traits/has_trivial_copy.hpp>
+
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\none.hpp
 	"boost/none_t.hpp"
+
+1462475560 e_t.hpp"
 
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\none_t.hpp
 
@@ -18390,6 +18506,8 @@
 	"boost/type_traits/has_nothrow_copy.hpp"
 	"boost/mpl/void.hpp"
 
+1462475478 /void.hpp"
+
 1462475546 e:\programowanie\c++\boost_1_61_0\boost\mpl\void.hpp
 	<boost/mpl/void_fwd.hpp>
 	<boost/mpl/bool.hpp>
@@ -18401,11 +18519,15 @@
 	<boost/type_traits/is_integral.hpp>
 	<boost/type_traits/is_const.hpp>
 
+1462475560 e_traits/is_const.hpp>
+
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\optional\detail\optional_relops.hpp
 
 1462475560 e:\programowanie\c++\boost_1_61_0\boost\optional\detail\optional_swap.hpp
 	<boost/core/swap.hpp>
 	<boost/optional/optional_fwd.hpp>
+
+1462475560 ional/optional_fwd.hpp>
 
 1462475608 e:\programowanie\c++\boost_1_61_0\boost\thread\csbl\vector.hpp
 	<boost/config.hpp>
@@ -25387,4 +25509,371 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 	"sqlite3.h"
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+	"config.h"
+	"DataBaseDriver.h"
+	"Logger.h"
+	"Utils.h"
+	"sqlite3.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
+	<map>
+	<vector>
+	<string>
+	"defines.h"
+	"InterfaceStats.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/defines.h
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
+	<stdint.h>
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
+	<string>
+
+1468363268 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+	<map>
+	<string>
+	<vector>
+	"InterfaceInfo.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.h
+	<string>
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
+	<stdarg.h>
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+	"Debug.h"
+	"Utils.h"
+	"Logger.h"
+	<execinfo.h>
+	<unistd.h>
+	"LinuxUtils.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
+	<iostream>
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+	<map>
+	<string>
+	"InterfaceInfo.h"
+	<bfd.h>
+
+1468363268 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+	"Globals.h"
+
+1468363268 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
+	<map>
+	<string>
+	<boost/thread.hpp>
+	<boost/scoped_ptr.hpp>
+	<boost/interprocess/shared_memory_object.hpp>
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"DataBaseDriver.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
+	<list>
+	<map>
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+	"InterfaceInfo.h"
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+	"InterfaceSpeedMeter.h"
+	<sys/time.h>
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Jsoncpp.cpp
+	"json/json.h"
+	<json/assertions.h>
+	<json/reader.h>
+	<json/value.h>
+	"json_tool.h"
+	<utility>
+	<cstdio>
+	<cassert>
+	<cstring>
+	<istream>
+	<sstream>
+	<memory>
+	<set>
+	<json/assertions.h>
+	<json/value.h>
+	<json/writer.h>
+	<math.h>
+	<sstream>
+	<utility>
+	<cstring>
+	<cassert>
+	<cpptl/conststring.h>
+	<cstddef>
+	<algorithm>
+	"json_valueiterator.inl"
+	<json/writer.h>
+	"json_tool.h"
+	<iomanip>
+	<memory>
+	<sstream>
+	<utility>
+	<set>
+	<cassert>
+	<cstring>
+	<cstdio>
+	<float.h>
+	<ieeefp.h>
+	<cmath>
+	<float.h>
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/json/json.h
+	<cpptl/config.h>
+	"config.h"
+	"forwards.h"
+	"forwards.h"
+	<string>
+	<vector>
+	<exception>
+	<map>
+	<cpptl/smallmap.h>
+	<cpptl/forwards.h>
+	"features.h"
+	"value.h"
+	<deque>
+	<iosfwd>
+	<stack>
+	<string>
+	<istream>
+	"value.h"
+	<vector>
+	<string>
+	<ostream>
+	<stdlib.h>
+	<sstream>
+	"config.h"
+
+1468363268 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+	"config.h"
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+	<regex>
+	<map>
+	<csignal>
+	<execinfo.h>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<stdio.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<sys/signal.h>
+	<iostream>
+	<unistd.h>
+	<fcntl.h>
+	<boost/filesystem/operations.hpp>
+	<boost/filesystem/path.hpp>
+	<boost/predef.h>
+	"Utils.h"
+	"Logger.h"
+	"Debug.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"LinuxUtils.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/Settings.h
+	<map>
+	<string>
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<cstring>
+	<time.h>
+	"Logger.h"
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
+	"MySQLInterface.h"
+	<iostream>
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.h
+	"config.h"
+	<cstdint>
+	"mysql.h"
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+	"ServerThread.h"
+	<map>
+	<string>
+	<cstring>
+	<stdio.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	"json/json.h"
+	"Utils.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
+	"Settings.h"
+
+1468157534 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"config.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<TargetConditionals.h>
+	<ctype.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/ioctl.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<tcl.h>
+	"sqlite3rtree.h"
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<ctype.h>
+	<math.h>
+
+1468363268 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+	"config.h"
+	<sstream>
+	<algorithm>
+	<cstring>
+	<cstdio>
+	<cstdlib>
+	<ctime>
+	<boost/filesystem.hpp>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<netdb.h>
+	<ifaddrs.h>
+	<unistd.h>
+	<linux/if_link.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<net/if.h>
+	<csignal>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/time.h>
+	<sys/file.h>
+	<errno.h>
+	"LinuxUtils.h"
+	"WindowsUtils.h"
+	"sqlite3.h"
+	"Utils.h"
+	"Logger.h"
+	"Globals.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/WindowsUtils.h
+	<map>
+	<string>
+	<windows.h>
+	"InterfaceInfo.h"
+
+1468363268 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+	"config.h"
+	<fstream>
+	<memory>
+	<sstream>
+	<regex>
+	"WebSiteContent.h"
+	"json/json.h"
+	"defines.h"
+	"Utils.h"
+	"Logger.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"sqlite3.h"
+
+1468157534 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
+	<string>
+	"server_http.hpp"
+
+1468363268 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
+	<boost/thread.hpp>
+	<boost/asio.hpp>
+	<boost/asio/spawn.hpp>
+	<boost/regex.hpp>
+	<unordered_map>
+	<thread>
+	<functional>
+	<iostream>
+	<sstream>
+	"Utils.h"
 

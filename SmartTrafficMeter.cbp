@@ -80,6 +80,7 @@
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-w" />
 					<Add option="-D__pi__" />
+					<Add option="-D_NO_WEBSERVER" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
