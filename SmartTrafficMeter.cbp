@@ -78,6 +78,7 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
+					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add option="-D__pi__" />
 					<Add option="-D_NO_WEBSERVER" />

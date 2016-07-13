@@ -41,7 +41,7 @@ DEP_LINUX_RELEASE =
 OUT_LINUX_RELEASE = bin/Release/SmartTrafficMeter
 
 INC_PI = $(INC)
-CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -w -D__pi__ -D_NO_WEBSERVER
+CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -std=c++11 -w -D__pi__ -D_NO_WEBSERVER
 RESINC_PI = $(RESINC)
 RCFLAGS_PI = $(RCFLAGS)
 LIBDIR_PI = $(LIBDIR)
