@@ -88,11 +88,8 @@
 					<Add library="rt" />
 					<Add library="dl" />
 					<Add library="pthread" />
-					<Add library="boost_system" />
-					<Add library="boost_coroutine" />
-					<Add library="boost_regex" />
 					<Add library="boost_thread" />
-					<Add library="boost_context" />
+					<Add library="boost_filesystem" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
