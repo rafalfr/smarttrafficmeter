@@ -87,7 +87,6 @@
 					<Add option="-s" />
 					<Add library="rt" />
 					<Add library="dl" />
-					<Add library="bfd" />
 					<Add library="pthread" />
 					<Add library="boost_system" />
 					<Add library="boost_coroutine" />
