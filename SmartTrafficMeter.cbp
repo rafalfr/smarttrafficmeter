@@ -81,7 +81,6 @@
 					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add option="-D__pi__" />
-					<Add option="-D_NO_WEBSERVER" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -91,6 +90,9 @@
 					<Add library="boost_system" />
 					<Add library="boost_thread" />
 					<Add library="boost_filesystem" />
+					<Add library="boost_regex" />
+					<Add library="boost_context" />
+					<Add library="boost_coroutine" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
