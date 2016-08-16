@@ -1,5 +1,6 @@
 #include "Globals.h"
 
+bool Globals::terminate_program=false;
 bool Globals::is_daemon=false;
 string Globals::cwd;
 string Globals::program_path;

@@ -1254,6 +1254,13 @@ string Utils::to_narrow ( const wchar_t* src )
 
 	return out;
 }
+void Utils::set_endsession_handler(void)
+{
+#ifdef __WIN32
+WindowsUtils::handle_endsession_message();
+#endif // __WIN32
+}
+
 
 
 //https://github.com/fmtlib/fmt

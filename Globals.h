@@ -18,6 +18,7 @@ class Globals
 {
 public:
 
+    static bool terminate_program;
     static bool is_daemon;
     static string cwd;
     static string program_path;

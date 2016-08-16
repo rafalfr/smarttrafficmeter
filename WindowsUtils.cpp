@@ -10,12 +10,15 @@
 #include <windows.h>
 #include <winsock2.h>
 #include <iphlpapi.h>
+#include <string.h>
+#include <tchar.h>
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <Ntddndis.h>
 #include <Netioapi.h>
+#include <Wtsapi32.h>
 
 #include <objbase.h>
 #include <wtypes.h>
@@ -84,6 +87,16 @@ void WindowsUtils::MeterThread ( void )
 
 	while ( true )
 	{
+	    if (Globals::terminate_program==true)
+        {
+            return;
+        }
+
+        MSG msg;
+        memset(&msg,0,sizeof(msg));
+        PeekMessage(&msg,NULL,0,0,PM_REMOVE);
+        DispatchMessage(&msg);
+
 		PIP_INTERFACE_INFO pInfo = NULL;
 		ULONG ulOutBufLen = 0;
 
@@ -282,15 +295,15 @@ void WindowsUtils::MeterThread ( void )
 		GetSystemTime ( &st );
 		uint64_t c_time = st.wSecond * 1000ULL + st.wMilliseconds;
 
-		MSG msg;
-		bool close_event = PeekMessage ( &msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE );
+//		MSG msg;
+//		bool close_event = PeekMessage ( &msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE );
+//
+//		if ( close_event )
+//		{
+//			Logger::LogInfo ( "closing event" );
+//		}
 
-		if ( close_event )
-		{
-			Logger::LogInfo ( "closing event" );
-		}
-
-		if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) || close_event == true )
+		if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) )
 		{
 			const string& storage = Settings::settings["storage"];
 
@@ -551,7 +564,32 @@ map<std::string, InterfaceInfo> WindowsUtils::get_all_interfaces ( void )
   */
 BOOL WINAPI WindowsUtils::console_ctrl_handler ( DWORD fdwCtrlType )
 {
+    char mesg[128];
+
+    switch(fdwCtrlType)
+    {
+    case CTRL_C_EVENT:
+        Logger::LogInfo("CTRL_C_EVENT");
+        break;
+    case CTRL_BREAK_EVENT:
+        Logger::LogInfo("CTRL_BREAK_EVENT");
+        break;
+    case CTRL_CLOSE_EVENT:
+        Logger::LogInfo("CTRL_CLOSE_EVENT");
+        break;
+    case CTRL_LOGOFF_EVENT:
+        Logger::LogInfo("CTRL_LOGOFF_EVENT");
+        break;
+    case CTRL_SHUTDOWN_EVENT:
+        Logger::LogInfo("CTRL_SHUTDOWN_EVENT");
+        break;
+
+    }
+
 	signal_handler ( nullptr );
+
+	return TRUE;
+
 }
 
 
@@ -626,14 +664,14 @@ int WindowsUtils::become_daemon ( void )
 	//fclose(stdout);
 	//fclose(stderr);
 	//fclose(stdin);
-	if ( FreeConsole() != 0 )
-	{
-		return 0;
-	}
-	else
-	{
-		return -1;
-	}
+//	if ( FreeConsole() != 0 )
+//	{
+//		return 0;
+//	}
+//	else
+//	{
+//		return -1;
+//	}
 
 	return 0;
 }
@@ -746,6 +784,55 @@ string WindowsUtils::get_program_path ( void )
 	}
 }
 
+LRESULT APIENTRY WindowsUtils::WndProc(HWND handle, UINT umsg, WPARAM wparam, LPARAM lparam)
+{
+    if(umsg==WM_QUERYENDSESSION)
+    {
+        Logger::LogInfo("WM_QUERYENDSESSION");
+        return TRUE;
+    }
+    else if(umsg==WM_ENDSESSION)
+    {
+        Logger::LogInfo("WM_ENDSESSION");
+        return 0;
+    }
+    else if(umsg==WM_CLOSE)
+    {
+        Logger::LogInfo("WM_CLOSE");
+        return 0;
+    }
+    else if(umsg==WM_DESTROY)
+    {
+        Logger::LogInfo("WM_DESTROY");
+        PostQuitMessage( 0 );
+        return 0;
+    }
+    else
+    {
+        return DefWindowProc(handle,umsg,wparam,lparam);
+    }
+}
+void WindowsUtils::handle_endsession_message(void)
+{
+    HINSTANCE instance=GetModuleHandle(NULL);
+
+    LPCTSTR MainWndClass = TEXT("SmartTrafficMeterAW");
+
+    WNDCLASSEX wcx;
+    memset(&wcx,0,sizeof(wcx));
+    wcx.cbSize=sizeof(wcx);
+    wcx.hInstance=instance;
+    wcx.style=0;
+    wcx.lpfnWndProc=WindowsUtils::WndProc;
+    wcx.lpszClassName=MainWndClass;
+    RegisterClassEx(&wcx);
+
+    //HWND window=CreateWindowEx(0,MainWndClass,NULL,WS_POPUP,0,0,0,0,NULL,NULL,instance,NULL);
+    //SetWindowPos(window,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
+    //WTSRegisterSessionNotification(window,NOTIFY_FOR_ALL_SESSIONS);
+}
+
+//http://www.codeproject.com/KB/winsdk/console_event_handling.aspx?display=PrintAll
 
 
 #endif // _WIN32

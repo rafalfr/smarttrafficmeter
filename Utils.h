@@ -79,6 +79,8 @@ public:
 
 	static string to_narrow(const wchar_t * src);
 
+	static void set_endsession_handler(void);
+
 };
 
 #endif // UTILS_H

@@ -395,6 +395,9 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 
 		web_page += "</head>\n";
 		web_page += "<body>\n";
+		web_page+="<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+		web_page+="<p><a href=\"/savedata\">save all data</a></p>\n";
+		web_page+="</div>";
 		web_page += "<table style=\"text-align: center; width: " + chartwidth_str + "px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		web_page += "<tbody>\n";
 		web_page += "<tr>\n";
@@ -843,6 +846,57 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		response << "Cache-Control: no-cache, public";
 		response << "\r\n\r\n" << content_stream.rdbuf();
 	};
+
+	server.resource["\\/savedata$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	{
+		stringstream content_stream;
+
+		const string& storage = Settings::settings["storage"];
+
+		if ( Utils::contians ( storage, "mysql" ) )
+		{
+#ifdef use_mysql
+			//save_stats_to_mysql();
+#endif // use_mysql
+		}
+
+		if ( Utils::contians ( storage, "sqlite" ) )
+		{
+#ifdef use_sqlite
+			Utils::save_stats_to_sqlite();
+#endif // use_sqlite
+		}
+
+		if ( Utils::contians ( storage, "files" ) )
+		{
+			Utils::save_stats_to_files();
+		}
+
+		string web_page;
+		web_page += "<!doctype html>\n";
+		web_page += "<html>\n";
+		web_page += "<head>\n";
+		web_page += "<title>data save</title>";
+		web_page += "<style>\n";
+		web_page += "p {color:black; font-family: arial}\n";
+		web_page += "</style>\n";
+		web_page += "</head>\n";
+		web_page += "<body>\n";
+		web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+		web_page += "<p>all data saved</p>\n";
+		web_page += "</div>";
+		web_page += "</body>\n";
+		web_page += "</html>";
+
+		content_stream << web_page;
+
+		content_stream.seekp ( 0, ios::end );
+		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		response << "Cache-Control: no-cache, public";
+		response << "\r\n\r\n" << content_stream.rdbuf();
+	};
+
 }
 /** @brief rgba_color
   *

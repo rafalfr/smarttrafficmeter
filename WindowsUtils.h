@@ -1,7 +1,7 @@
 #ifndef WINDOWSUTILS_H
 #define WINDOWSUTILS_H
 
-#ifdef _WIN32
+#ifdef __WIN32
 #include <map>
 #include <string>
 #include <windows.h>
@@ -20,6 +20,10 @@ public:
     static void make_program_run_at_startup(void);
     static bool check_one_instance( void );
     static string get_program_path(void);
+    static void handle_endsession_message(void);
+
+private:
+    static LRESULT APIENTRY WndProc(HWND handle, UINT umsg, WPARAM wparam, LPARAM lparam);
 };
 
 #endif // _WIN32

@@ -185,6 +185,8 @@ int main( int argc, char *argv[] )
     }
 
     Utils::set_signals_handler();
+    Utils::set_endsession_handler();
+
 
     //set default settings
     Settings::settings["storage"] = "sqlite";
