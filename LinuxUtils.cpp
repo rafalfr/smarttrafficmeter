@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/signal.h>
+#include <sys/utsname.h>
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
@@ -779,6 +780,50 @@ string LinuxUtils::get_get_program_path( const char* argv0 )
                 path, boost::filesystem::current_path(), ec ) );
         return p.make_preferred().string();
     }
+}
+
+/** @brief get_user_host
+  *
+  * @todo: document this function
+  */
+void LinuxUtils::get_user_host(string& user, string& host)
+{
+        char hostname[HOST_NAME_MAX];
+        char username[LOGIN_NAME_MAX];
+
+        memset(hostname,0,HOST_NAME_MAX*sizeof(char));
+        memset(username,0,LOGIN_NAME_MAX*sizeof(char));
+
+        gethostname( hostname, HOST_NAME_MAX );
+        getlogin_r( username, LOGIN_NAME_MAX );
+
+        user.clear();
+        user.append(username);
+
+        host.clear();
+        host.append(hostname);
+}
+
+
+/** @brief get_os_info
+  *
+  * @todo: document this function
+  */
+void LinuxUtils::get_os_info(string& os_info)
+{
+	struct utsname info;
+	memset(&info,0,sizeof(info));
+
+	uname(&info);
+
+	os_info.clear();
+	os_info.append(info.sysname);
+	os_info.append(", ");
+	os_info.append(info.release);
+	os_info.append(", ");
+	os_info.append(info.version);
+	os_info.append(", ");
+	os_info.append(info.machine);
 }
 
 

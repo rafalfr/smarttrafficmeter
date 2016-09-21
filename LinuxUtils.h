@@ -46,6 +46,10 @@ public:
 
     static string get_get_program_path(const char* argv0);
 
+    static void get_user_host(string& user,string& host);
+
+    static void get_os_info(string& os_info);
+
 };
 
 #endif // __linux

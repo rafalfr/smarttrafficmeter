@@ -29,7 +29,13 @@ public:
 
 	static string get_mac( char* name );
 
+	static void get_user_host(string& user, string& host);
+
+	static void get_os_info(string& os_info);
+
 	static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
+
+	static void get_time_from_milisec(time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 	static bool contians( const string& str, const string& key );
 
