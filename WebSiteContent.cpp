@@ -29,9 +29,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 {
     server.default_resource["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
+        // http://html-color-codes.info/html-editor/
+        // http://jsbin.com/biwefacino/edit?html,css,js,output
+        // http://www.awwwards.com/10-html-css-online-code-editors-for-web-developers.html
         string row;
         ifstream file;
-        string page;
         stringstream content_stream;
 
         uint32_t start_year;
@@ -48,14 +50,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string host_name;
         string os_info;
 
-        Utils::get_user_host(user_name,host_name);
+        Utils::get_user_host( user_name, host_name );
 
-        content_stream << user_name << "<br>\n";
-        content_stream << host_name << "<br>\n";
-
-        Utils::get_os_info(os_info);
-
-        content_stream<<os_info<<"<br>\n";
+        Utils::get_os_info( os_info );
 
         time_t t = time( nullptr );
         Utils::get_time_from_milisec( t, &end_year, &end_month, &end_day, &end_hour );
@@ -71,53 +68,261 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string start_day_str = Utils::to_string( start_day );
         string start_hour_str = Utils::to_string( start_hour );
 
-        string hourly_past_day = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past day<a>";
+        string hourly_past_day = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past day</a>";
 
         Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 7ULL, &start_year, &start_month, &start_day, &start_hour );
         start_year_str = Utils::to_string( start_year );
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
         start_hour_str = Utils::to_string( start_hour );
-        string hourly_past_week = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past week<a>";
-        string daily_past_week = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past week<a>";
-        content_stream << hourly_past_week;
-        content_stream << "<br>\n";
-
+        string hourly_past_week = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past week</a>";
+        string daily_past_week = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past week</a>";
 
         Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 30ULL, &start_year, &start_month, &start_day, &start_hour );
         start_year_str = Utils::to_string( start_year );
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
         start_hour_str = Utils::to_string( start_hour );
-        string hourly_past_month = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past month<a>";
-        string daily_past_month = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past month<a>";
+        string hourly_past_month = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past month</a>";
+        string daily_past_month = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past month</a>";
 
-        content_stream << "hourly stats<br>\n";
-        content_stream << hourly_past_day << "</br>\n";
-        content_stream << hourly_past_week << "</br>\n";
-        content_stream << hourly_past_month << "</br>\n";
+        Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 365ULL, &start_year, &start_month, &start_day, &start_hour );
+        start_year_str = Utils::to_string( start_year );
+        start_month_str = Utils::to_string( start_month );
+        start_day_str = Utils::to_string( start_day );
+        start_hour_str = Utils::to_string( start_hour );
+        string monthly_past_year="<a href=\"monthly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past year</a>";
 
-        content_stream << "daily stats<br>\n";
-        content_stream << daily_past_week << "<br>\n";
-        content_stream << daily_past_month << "<br>\n";
+        string page;
 
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: justify;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body>\n";
+        page += "<table style=\"margin-left: auto; margin-right: auto; width: 437px;\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<h1>Smart Traffic Meter</h1>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td style=\"font-family: Verdana,Arial,Helvetica,sans-serif; font-size: x-large; font-style: normal; line-height: normal; color: #000000; vertical-align: middle; text-align: center; position: relative; visibility: visible;\">\n";
+        page += "<pre>" + user_name + " @ " + host_name + "</pre>\n";
+        page += "<pre>" + os_info + "</pre>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<br>\n";
+        page += "<h2>available network interfaces</h2>\n";
+        page += "<ol>\n";
 
-
-        content_stream << "<h1>Request from " << request->remote_endpoint_address << " (" << request->remote_endpoint_port << ")</h1>";
-        content_stream << request->method << " " << request->path << " HTTP/" << request->http_version << "<br>";
-
-        for ( auto& header : request->header )
+        for ( auto const & mac_info : Globals::interfaces )
         {
-            content_stream << header.first << ": " << header.second << "<br>";
+            const InterfaceInfo& interface_info = mac_info.second;
+
+            const string& interface_mac = interface_info.get_mac();
+            const string& interface_name = interface_info.get_name();
+            const string& interface_description = interface_info.get_desc();
+            const string& ip4 = interface_info.get_ip4();
+            const string& ip6 = interface_info.get_ip6();
+
+            page += "<li>\n";
+            page += "<p>";
+
+            if ( interface_description.empty() == false )
+            {
+                page += interface_description + ",\t";
+            }
+
+            page += interface_name + ",\t" + interface_mac + ",\t" + ip4 + ",\t" + ip6;
+            page += "</p>\n";
+            page += "</li>\n";
         }
 
-        content_stream << link;
+        page += "</ol>\n</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<h2>hourly stats</h2>\n";
+        page += "<p style=\"text-align: center;\">";
+        page += "<tab1>";
+        page += "<a href=\"/hourly/\">all hourly stats</a>";
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += hourly_past_day;
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += hourly_past_week;
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += hourly_past_month;
+        page += "</tab1>\n";
+        page += "</p>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<h2>daily stats</h2>\n";
+        page += "<p style=\"text-align: center;\">";
+        page += "<tab1>";
+        page += "<a href=\"/daily/\">all daily stats</a>";
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += daily_past_week;
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += daily_past_month;
+        page += "</tab1>\n";
+        page+="</p>";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<h2>monthly stats</h2>\n";
+		page += "<p style=\"text-align: center;\">";
+        page += "<tab1>";
+        page += "<a href=\"/monthly/\">all monthly stats</a>";
+        page += "</tab1>\n";
+        page += "<tab1>";
+        page += monthly_past_year;
+        page += "</tab1>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<h2>yearly stats</h2>\n";
+		page += "<p style=\"text-align: center;\">";
+        page += "<tab1>";
+        page += "<a href=\"/yearly/\">all yearly stats</a>";
+        page += "</tab1>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
+        page+="<p style=\"text-align: center;\">";
+        page+="<a href=\"/legalinfo/\">legal info</a>\n";
+        page+="</p>";
+
+        page += "</body>\n";
+        page += "</html>\n";
+
+        //content_stream << "<h1>Request from " << request->remote_endpoint_address << " (" << request->remote_endpoint_port << ")</h1>";
+        //content_stream << request->method << " " << request->path << " HTTP/" << request->http_version << "<br>";
+
+//        for ( auto& header : request->header )
+//        {
+//            content_stream << header.first << ": " << header.second << "<br>";
+//        }
+
+        content_stream << page;
 
         content_stream.seekp( 0, ios::end );
 
-        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n\r\n" << content_stream.rdbuf();
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
+
+    server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    {
+		string page;
+
+		page+="boost libraries";
+		page+="<a href=\"http://www.boost.org/\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"http://www.boost.org/users/license.html\">license</a>\n";
+		page+="<br>";
+
+		page+="chart.js";
+		page+="<a href=\"http://www.chartjs.org/\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"http://www.chartjs.org/docs/#notes-license\">license</a>\n";
+		page+="<br>";
+
+		page+="JsonCpp";
+		page+="<a href=\"https://github.com/open-source-parsers/jsoncpp\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE\">license</a>\n";
+		page+="<br>";
+
+		page+="Simple-Web-Server";
+		page+="<a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a>\n";
+		page+="<br>";
+
+		page+="SQLite";
+		page+="<a href=\"https://www.sqlite.org/\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"https://www.sqlite.org/copyright.html\">license</a>\n";
+		page+="<br>";
+
+		page+="TCLAP";
+		page+="<a href=\"http://tclap.sourceforge.net/\">home page</a>\n";
+		page+="<br>";
+		page+="<a href=\"https://opensource.org/licenses/mit-license.php\">license</a>\n";
+		page+="<br>";
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "Cache-Control: public, max-age=1800";
+        response << "\r\n\r\n" << content_stream.rdbuf();
+    };
 
     server.resource["^\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {

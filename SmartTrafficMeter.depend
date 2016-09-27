@@ -26085,7 +26085,7 @@
 	<limits>
 	"InterfaceStats.h"
 
-1474466564 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1474489083 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26117,6 +26117,7 @@
 	<sys/stat.h>
 	<sys/time.h>
 	<sys/signal.h>
+	<sys/utsname.h>
 	<iostream>
 	<unistd.h>
 	<fcntl.h>
@@ -26330,7 +26331,7 @@
 	<sstream>
 	"Utils.h"
 
-1474466635 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1474488775 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
 	<sstream>
 	<algorithm>
