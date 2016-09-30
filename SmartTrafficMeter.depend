@@ -25963,14 +25963,13 @@
 	<cstdint>
 	"mysql.h"
 
-1467231530 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1475236457 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
 	<cstring>
 	<stdio.h>
-	<sys/socket.h>
-	<netinet/in.h>
+	<boost/asio.hpp>
 	"json/json.h"
 	"Utils.h"
 	"Globals.h"
@@ -25979,7 +25978,8 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1465507589 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
+1475236496 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
+	<boost/asio.hpp>
 
 1473852481 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
 	<map>
@@ -26372,4 +26372,22 @@
 	<string>
 	<windows.h>
 	"InterfaceInfo.h"
+
+1475236115 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+	"config.h"
+	<fstream>
+	<memory>
+	<sstream>
+	<regex>
+	"WebSiteContent.h"
+	"json/json.h"
+	"defines.h"
+	"Utils.h"
+	"Logger.h"
+	"Globals.h"
+	"Settings.h"
+	"InterfaceInfo.h"
+	"InterfaceStats.h"
+	"InterfaceSpeedMeter.h"
+	"sqlite3.h"
 

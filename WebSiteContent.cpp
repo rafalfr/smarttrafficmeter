@@ -91,7 +91,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
         start_hour_str = Utils::to_string( start_hour );
-        string monthly_past_year="<a href=\"monthly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past year</a>";
+        string monthly_past_year = "<a href=\"monthly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past year</a>";
 
         string page;
 
@@ -221,14 +221,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<tab1>";
         page += daily_past_month;
         page += "</tab1>\n";
-        page+="</p>";
+        page += "</p>";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td>\n";
         page += "<br>\n";
         page += "<h2>monthly stats</h2>\n";
-		page += "<p style=\"text-align: center;\">";
+        page += "<p style=\"text-align: center;\">";
         page += "<tab1>";
         page += "<a href=\"/monthly/\">all monthly stats</a>";
         page += "</tab1>\n";
@@ -241,7 +241,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td>\n";
         page += "<br>\n";
         page += "<h2>yearly stats</h2>\n";
-		page += "<p style=\"text-align: center;\">";
+        page += "<p style=\"text-align: center;\">";
         page += "<tab1>";
         page += "<a href=\"/yearly/\">all yearly stats</a>";
         page += "</tab1>\n";
@@ -249,9 +249,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
-        page+="<p style=\"text-align: center;\">";
-        page+="<a href=\"/legalinfo/\">legal info</a>\n";
-        page+="</p>";
+        page += "<p style=\"text-align: center;\">";
+        page += "<a href=\"/legalinfo/\">legal info</a>\n";
+        page += "</p>";
 
         page += "</body>\n";
         page += "</html>\n";
@@ -276,43 +276,43 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
-		string page;
+        string page;
 
-		page+="boost libraries";
-		page+="<a href=\"http://www.boost.org/\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"http://www.boost.org/users/license.html\">license</a>\n";
-		page+="<br>";
+        page += "boost libraries";
+        page += "<a href=\"http://www.boost.org/\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"http://www.boost.org/users/license.html\">license</a>\n";
+        page += "<br>";
 
-		page+="chart.js";
-		page+="<a href=\"http://www.chartjs.org/\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"http://www.chartjs.org/docs/#notes-license\">license</a>\n";
-		page+="<br>";
+        page += "chart.js";
+        page += "<a href=\"http://www.chartjs.org/\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"http://www.chartjs.org/docs/#notes-license\">license</a>\n";
+        page += "<br>";
 
-		page+="JsonCpp";
-		page+="<a href=\"https://github.com/open-source-parsers/jsoncpp\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE\">license</a>\n";
-		page+="<br>";
+        page += "JsonCpp";
+        page += "<a href=\"https://github.com/open-source-parsers/jsoncpp\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE\">license</a>\n";
+        page += "<br>";
 
-		page+="Simple-Web-Server";
-		page+="<a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a>\n";
-		page+="<br>";
+        page += "Simple-Web-Server";
+        page += "<a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a>\n";
+        page += "<br>";
 
-		page+="SQLite";
-		page+="<a href=\"https://www.sqlite.org/\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"https://www.sqlite.org/copyright.html\">license</a>\n";
-		page+="<br>";
+        page += "SQLite";
+        page += "<a href=\"https://www.sqlite.org/\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"https://www.sqlite.org/copyright.html\">license</a>\n";
+        page += "<br>";
 
-		page+="TCLAP";
-		page+="<a href=\"http://tclap.sourceforge.net/\">home page</a>\n";
-		page+="<br>";
-		page+="<a href=\"https://opensource.org/licenses/mit-license.php\">license</a>\n";
-		page+="<br>";
+        page += "TCLAP";
+        page += "<a href=\"http://tclap.sourceforge.net/\">home page</a>\n";
+        page += "<br>";
+        page += "<a href=\"https://opensource.org/licenses/mit-license.php\">license</a>\n";
+        page += "<br>";
 
         stringstream content_stream;
         content_stream << page;
@@ -323,6 +323,206 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "Cache-Control: public, max-age=1800";
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
+
+    server.resource["^\\/download\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    {
+
+        uint32_t y;
+        uint32_t m;
+        uint32_t d;
+        uint32_t h;
+        string csv;
+
+        //option: name, value
+        map<string, string> options;
+
+        Utils::get_time( &y, &m, &d, &h );
+
+        string current_time_str;
+
+        // hourly, daily, monthly, yearly
+        string stats_type = request->path_match[1];
+
+        current_time_str = Utils::date_str( stats_type, y, m, d, h );
+
+        //set default optional parameters values
+        string start_date_str;
+
+        if ( stats_type.compare( "yearly" ) == 0 )
+        {
+            start_date_str = "1900";
+        }
+        else if ( stats_type.compare( "monthly" ) == 0 )
+        {
+            start_date_str = "1900-01";
+        }
+        else if ( stats_type.compare( "daily" ) == 0 )
+        {
+            start_date_str = "1900-01-01";
+        }
+        else if ( stats_type.compare( "hourly" ) == 0 )
+        {
+            start_date_str = "1900-01-01-00";
+        }
+
+        string end_date_str = current_time_str;
+        string options_str = request->path_match[2];
+
+        //parse parameters string
+        vector<string> options_items = Utils::split( options_str, "&" );
+
+        for ( auto const & options_item : options_items )
+        {
+            vector<string> option_value = Utils::split( options_item, "=" );
+
+            if ( option_value[0].size() > 0 && option_value[1].size() > 0 )
+            {
+                if ( regex_match( option_value[0], regex( "(start|end)" ) ) == true )
+                {
+                    options[option_value[0]] = option_value[1];
+                }
+            }
+        }
+
+        //get parameters from the options map
+        if ( options.find( "start" ) != options.end() )
+        {
+            const string& value = options["start"];
+
+            if ( stats_type.compare( "yearly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                start_date_str = value;
+            }
+        }
+
+        if ( options.find( "end" ) != options.end() )
+        {
+            const string& value = options["end"];
+
+            if ( stats_type.compare( "yearly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 && regex_match( value, regex( "^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}-[[:digit:]]{1,2}$" ) ) == true )
+            {
+                end_date_str = value;
+            }
+        }
+
+        // get stats for each network interface
+        for ( auto const & mac_table : Globals::all_stats )
+        {
+            const string& mac = mac_table.first;
+
+            string interface_name = "n/a";
+            string interface_description = "n/a";
+            string ip4 = "n/a";
+            string ip6 = "n/a";
+
+            // get interface inforamtion
+            for ( auto const & mac_info : Globals::interfaces )
+            {
+                const InterfaceInfo& interface_info = mac_info.second;
+
+                if ( interface_info.get_mac().compare( mac ) == 0 )
+                {
+                    interface_name = interface_info.get_name();
+                    interface_description = interface_info.get_desc();
+                    ip4 = interface_info.get_ip4();
+                    ip6 = interface_info.get_ip6();
+                }
+            }
+
+            const vector<string>& start_date_items = Utils::split( start_date_str, "-" );
+            const vector<string>& end_date_items = Utils::split( end_date_str, "-" );
+
+            struct date start_date;
+            struct date end_date;
+
+            if ( stats_type.compare( "yearly" ) == 0 )
+            {
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = 0;
+                start_date.day = 0;
+                start_date.hour = 0;
+
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = 0;
+                end_date.day = 0;
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "monthly" ) == 0 )
+            {
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
+                start_date.day = 0;
+                start_date.hour = 0;
+
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
+                end_date.day = 0;
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "daily" ) == 0 )
+            {
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
+                start_date.day = Utils::stoi( start_date_items[2] );
+                start_date.hour = 0;
+
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
+                end_date.day = Utils::stoi( end_date_items[2] );
+                end_date.hour = 0;
+            }
+            else if ( stats_type.compare( "hourly" ) == 0 )
+            {
+                start_date.year = Utils::stoi( start_date_items[0] );
+                start_date.month = Utils::stoi( start_date_items[1] );
+                start_date.day = Utils::stoi( start_date_items[2] );
+                start_date.hour = Utils::stoi( start_date_items[3] );
+
+                end_date.year = Utils::stoi( end_date_items[0] );
+                end_date.month = Utils::stoi( end_date_items[1] );
+                end_date.day = Utils::stoi( end_date_items[2] );
+                end_date.hour = Utils::stoi( end_date_items[3] );
+            }
+
+            //get stats for the current interface
+            map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, stats_type, start_date, end_date );
+
+            for ( auto & row_stats : results )
+            {
+                const InterfaceStats& stats = row_stats.second;
+                const string& row = row_stats.first;
+// TODO (rafal#1#09/30/16): implement csv creation
+
+                //stats.recieved();
+                //stats.transmited();
+            }
+        }
+    };
+
 
     server.resource["^\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
