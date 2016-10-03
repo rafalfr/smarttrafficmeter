@@ -324,7 +324,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^\\/download\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^\\/download\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
 
         uint32_t y;
@@ -342,6 +342,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         // hourly, daily, monthly, yearly
         string stats_type = request->path_match[1];
+        cout << stats_type << endl;
 
         current_time_str = Utils::date_str( stats_type, y, m, d, h );
 
@@ -511,16 +512,37 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             //get stats for the current interface
             map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, stats_type, start_date, end_date );
 
+            if ( interface_description.empty() == false )
+            {
+                csv+= interface_description + ", ";
+            }
+
+            csv += interface_name + ", " + mac + ", " + ip4 + ", " + ip6+"\r\n";
+            csv += "date, recieved, transitted\r\n";
+
             for ( auto & row_stats : results )
             {
                 const InterfaceStats& stats = row_stats.second;
                 const string& row = row_stats.first;
-// TODO (rafal#1#09/30/16): implement csv creation
 
-                //stats.recieved();
-                //stats.transmited();
+                if ( stats.recieved() != 0ULL || stats.transmited() != 0ULL )
+                {
+                    csv += row + "," + Utils::to_string( stats.recieved() ) + "," + Utils::to_string( stats.transmited() ) + "\r\n";
+                }
             }
+
+            csv += "\r\n";
         }
+
+        stringstream out_stream;
+        out_stream << csv;
+
+        out_stream.seekp( 0, ios::end );
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+        response << "Content-Type: text/csv; charset=utf-8" << "\r\n";
+        response << "Cache-Control: public, max-age=0" << "\r\n";
+        response << "Content-Disposition: attachment; filename=\"" + stats_type + "_" + start_date_str + "_to_" + end_date_str + ".csv\"";
+        response << "\r\n\r\n" << out_stream.rdbuf();
     };
 
 
@@ -706,7 +728,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "<!doctype html>\n";
         web_page += "<html>\n";
         web_page += "<head>\n";
-        web_page += "<title>daily statistics</title>";
+        web_page += "<title>statistics</title>";
         web_page += "<script src=\"/Chart.js\"></script>\n";
 
         web_page += "<style>\n";
@@ -1040,6 +1062,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "</tr>\n";
         web_page += "</tbody>\n";
         web_page += "</table>\n";
+        web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
+        web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&end=" + end_date_str + "\">download this stats</a>\n";
+        web_page += "</p>\n</div>\n";
         web_page += "</body>\n";
         web_page += "</html>";
 
