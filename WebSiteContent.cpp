@@ -276,43 +276,103 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
+		// https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
+
         string page;
 
-        page += "boost libraries";
-        page += "<a href=\"http://www.boost.org/\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"http://www.boost.org/users/license.html\">license</a>\n";
-        page += "<br>";
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: justify;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body>\n";
 
-        page += "chart.js";
-        page += "<a href=\"http://www.chartjs.org/\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"http://www.chartjs.org/docs/#notes-license\">license</a>\n";
-        page += "<br>";
+        page += "<h1>legal inforamtion</h1>\n";
+        page += "<br><br>\n";
+        page += "<div style=\"align=\"center\">\n";
+        page += "<p>\n";
+        page += "Smart Traffic Meter is released under the <a href=\"https://opensource.org/licenses/GPL-3.0\">GNU General Public License, version 3 (GPL-3.0)</a> license.\n";
+        page += "</p>\n";
+        page += "</div>\n";
 
-        page += "JsonCpp";
-        page += "<a href=\"https://github.com/open-source-parsers/jsoncpp\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE\">license</a>\n";
-        page += "<br>";
+        page += "<table border=\"0\" cellspacing=\"30\" cellpadding=\"10\" align=\"center\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>boost libraries</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://www.boost.org/\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://www.boost.org/users/license.html\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>Chart.js</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://www.chartjs.org/\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://opensource.org/licenses/MIT\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>JsonCpp</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/open-source-parsers/jsoncpp\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>Simple-Web-Server</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>SQLite</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://www.sqlite.org/\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://www.sqlite.org/copyright.html\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>TCLAP</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://tclap.sourceforge.net/\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://opensource.org/licenses/mit-license.php\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
 
-        page += "Simple-Web-Server";
-        page += "<a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a>\n";
-        page += "<br>";
-
-        page += "SQLite";
-        page += "<a href=\"https://www.sqlite.org/\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"https://www.sqlite.org/copyright.html\">license</a>\n";
-        page += "<br>";
-
-        page += "TCLAP";
-        page += "<a href=\"http://tclap.sourceforge.net/\">home page</a>\n";
-        page += "<br>";
-        page += "<a href=\"https://opensource.org/licenses/mit-license.php\">license</a>\n";
-        page += "<br>";
+        page += "</body>\n";
+        page += "</html>\n";
 
         stringstream content_stream;
         content_stream << page;
@@ -514,10 +574,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             if ( interface_description.empty() == false )
             {
-                csv+= interface_description + ", ";
+                csv += interface_description + ", ";
             }
 
-            csv += interface_name + ", " + mac + ", " + ip4 + ", " + ip6+"\r\n";
+            csv += interface_name + ", " + mac + ", " + ip4 + ", " + ip6 + "\r\n";
             csv += "date, recieved, transitted\r\n";
 
             for ( auto & row_stats : results )
