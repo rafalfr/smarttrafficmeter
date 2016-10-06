@@ -176,6 +176,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td style=\"font-family: Verdana,Arial,Helvetica,sans-serif; font-size: x-large; font-style: normal; line-height: normal; color: #000000; vertical-align: middle; text-align: center; position: relative; visibility: visible;\">\n";
         page += "<pre>" + user_name + " @ " + host_name + "</pre>\n";
         page += "<pre>" + os_info + "</pre>\n";
+		page += "<pre> pid: " + Utils::to_string(static_cast<uint64_t>(getpid()),1) + "</pre>\n";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
@@ -272,6 +273,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
+        page += "<p style=\"text-align: center;\">";
+        page += "<a href=\"/stop/\">stop Smart Traffic Meter</a>\n";
+        page += "</p>";
+        page+="<br><br>\n";
         page += "<p style=\"text-align: center;\">";
         page += "<a href=\"/legalinfo/\">legal info</a>\n";
         page += "</p>";
@@ -1323,6 +1328,77 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         response << "Cache-Control: no-cache, public";
         response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
+    server.resource["^/stop/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body>\n";
+		page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+		page+="<p>\n";
+		page+="Smart Traffic Meter will terminate soon";
+		page+="</p>\n";
+		page+="</div>\n";
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "Cache-Control: public, max-age=0";
+        response << "\r\n\r\n" << content_stream.rdbuf();
+
+        Globals::terminate_program=true;
+
     };
 
 }

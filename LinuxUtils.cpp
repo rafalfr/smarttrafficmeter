@@ -126,7 +126,7 @@ void* LinuxUtils::MeterThread( void )
     string current_row;
     vector<map<string, InterfaceStats>::const_iterator> rows4remove;
 
-    while ( true )
+    while ( Globals::terminate_program==false )
     {
 
         if ( getifaddrs( &ifaddr ) == -1 )

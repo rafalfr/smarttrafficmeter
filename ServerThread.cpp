@@ -201,6 +201,13 @@ void ServerThread::UDPServer::do_receive( void )
         boost::asio::buffer( msg, max_length ), m_sender_endpoint,
         [this]( boost::system::error_code ec, std::size_t bytes_recvd )
     {
+
+    	if (Globals::terminate_program==true)
+		{
+			return;
+		}
+
+
         if ( !ec && bytes_recvd > 0 )
         {
             do_send( bytes_recvd );
@@ -327,8 +334,13 @@ void ServerThread::UDPServer::do_send( std::size_t length )
 
     m_socket.async_send_to(
         boost::asio::buffer( response.c_str(), response.size() ), m_sender_endpoint,
-        [this]( boost::system::error_code , std::size_t )
+        [this]( boost::system::error_code, std::size_t )
     {
+    	if (Globals::terminate_program==true)
+		{
+			return;
+		}
+
         do_receive();
     } );
 }

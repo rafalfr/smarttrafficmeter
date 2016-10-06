@@ -315,13 +315,35 @@ int main( int argc, char *argv[] )
     SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["html server port"] ), 2 );
     WebSiteContent::set_web_site_content( http_server );
 
-    boost::thread server_thread( [&http_server]()
+    boost::thread web_server_thread( [&http_server]()
     {
         http_server.start();
     } );
 #endif // _NO_WEBSERVER
 
     meter_thread.join();
+
+    stats_server_thread.interrupt();
+    web_server_thread.interrupt();
+
+    if ( Utils::contians( storage, "mysql" ) )
+    {
+#ifdef use_mysql
+        //save_stats_to_mysql();
+#endif // use_mysql
+    }
+
+    if ( Utils::contians( storage, "sqlite" ) )
+    {
+#ifdef use_sqlite
+        Utils::save_stats_to_sqlite();
+#endif // use_sqlite
+    }
+
+    if ( Utils::contians( storage, "files" ) )
+    {
+        Utils::save_stats_to_files();
+    }
 
 #ifdef __linux
     Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
