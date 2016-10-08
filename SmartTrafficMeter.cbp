@@ -192,6 +192,8 @@
 		<Unit filename="Logger.h" />
 		<Unit filename="MySQLInterface.cpp" />
 		<Unit filename="MySQLInterface.h" />
+		<Unit filename="Resources.cpp" />
+		<Unit filename="Resources.h" />
 		<Unit filename="ServerThread.cpp" />
 		<Unit filename="ServerThread.h" />
 		<Unit filename="Settings.cpp" />
@@ -208,6 +210,7 @@
 			<Option target="Windows Release" />
 			<Option target="Windows Debug" />
 		</Unit>
+		<Unit filename="chartjs.cpp" />
 		<Unit filename="config.h" />
 		<Unit filename="defines.h" />
 		<Unit filename="json/json-forwards.h" />

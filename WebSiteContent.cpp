@@ -34,6 +34,7 @@ If not, see http://www.gnu.org/licenses/.
 #include "Logger.h"
 #include "Globals.h"
 #include "Settings.h"
+#include "Resources.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
@@ -1170,24 +1171,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
-        string chartjs_path;
-        chartjs_path += Globals::cwd + PATH_SEPARATOR + "webpage" + PATH_SEPARATOR + "Chart.js";
+		stringstream out_stream;
 
-        ifstream file;
-        file.open( chartjs_path, std::ifstream::in | std::ifstream::binary );
+		out_stream<<Resources::chart_js;
+        out_stream.seekp( 0, ios::end );
 
-        if ( file.is_open() )
-        {
-            stringstream input_file_stream;
-            input_file_stream << file.rdbuf();
-            file.close();
-
-            input_file_stream.seekp( 0, ios::end );
-            response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
-            response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
-            response << "Cache-Control: public, max-age=1800";
-            response << "\r\n\r\n" << input_file_stream.rdbuf();
-        }
+        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "Cache-Control: public, max-age=1800";
+        response << "\r\n\r\n" << out_stream.rdbuf();
     };
 
     server.resource["\\/stats.json$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )

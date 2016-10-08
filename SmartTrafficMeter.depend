@@ -26068,7 +26068,7 @@
 	<ctype.h>
 	<math.h>
 
-1475687239 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1475763941 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
 	"config.h"
 	"DataBaseDriver.h"
 	"Logger.h"
@@ -26165,7 +26165,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1475763984 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1475942462 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26390,4 +26390,9 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 	"sqlite3.h"
+
+1475942248 source:/home/rafal/Programowanie/C++/smarttrafficmeter/chartjs.cpp
+	"Resources.h"
+
+1475942236 /home/rafal/Programowanie/C++/smarttrafficmeter/Resources.h
 
