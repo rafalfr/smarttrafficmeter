@@ -177,7 +177,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td style=\"font-family: Verdana,Arial,Helvetica,sans-serif; font-size: x-large; font-style: normal; line-height: normal; color: #000000; vertical-align: middle; text-align: center; position: relative; visibility: visible;\">\n";
         page += "<pre>" + user_name + " @ " + host_name + "</pre>\n";
         page += "<pre>" + os_info + "</pre>\n";
-		page += "<pre> pid: " + Utils::to_string(static_cast<uint64_t>(getpid()),1) + "</pre>\n";
+        page += "<pre> pid: " + Utils::to_string( static_cast<uint64_t>( getpid() ), 1 ) + "</pre>\n";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
@@ -277,7 +277,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<p style=\"text-align: center;\">";
         page += "<a href=\"/stop/\">stop Smart Traffic Meter</a>\n";
         page += "</p>";
-        page+="<br><br>\n";
+        page += "<br><br>\n";
         page += "<p style=\"text-align: center;\">";
         page += "<a href=\"/legalinfo/\">legal info</a>\n";
         page += "</p>";
@@ -305,7 +305,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
-		// https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
+        // https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
 
         string page;
 
@@ -1171,15 +1171,17 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
-		stringstream out_stream;
-
-		out_stream<<Resources::chart_js;
-        out_stream.seekp( 0, ios::end );
-
-        response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
-        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "HTTP/1.1 200 OK\r\n";
+        response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        response << "Content-Encoding: gzip\r\n";
+		response << "Content-Length: " << Resources::chart_js_length << "\r\n";
         response << "Cache-Control: public, max-age=1800";
-        response << "\r\n\r\n" << out_stream.rdbuf();
+        response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::chart_js_length; i++ )
+        {
+            response << Resources::chart_js[i];
+        }
     };
 
     server.resource["\\/stats.json$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
@@ -1372,11 +1374,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</style>\n";
         page += "</head>\n";
         page += "<body>\n";
-		page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
-		page+="<p>\n";
-		page+="Smart Traffic Meter will terminate soon";
-		page+="</p>\n";
-		page+="</div>\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+        page += "<p>\n";
+        page += "Smart Traffic Meter will terminate soon";
+        page += "</p>\n";
+        page += "</div>\n";
         page += "</body>\n";
         page += "</html>\n";
 
@@ -1389,7 +1391,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "Cache-Control: public, max-age=0";
         response << "\r\n\r\n" << content_stream.rdbuf();
 
-        Globals::terminate_program=true;
+        Globals::terminate_program = true;
 
     };
 
