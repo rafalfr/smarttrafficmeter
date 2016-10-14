@@ -302,6 +302,21 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
+    server.resource["^/customrange/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    {
+        string page;
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+
+        response <<  "HTTP/1.1 200 OK\r\n";
+        response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
 
     server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
     {
@@ -336,7 +351,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "font-family: Arial,Helvetica,sans-serif;\n";
         page += "text-transform: none;\n";
         page += "font-size: large;\n";
-        page += "text-align: justify;\n";
         page += "font-weight: normal;\n";
         page += "color: black;\n";
         page += "}\n";
@@ -359,9 +373,16 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         page += "<h1>legal inforamtion</h1>\n";
         page += "<br><br>\n";
-        page += "<div style=\"align=\"center\">\n";
+        page += "<div align=\"center\">\n";
+        page += "<p>\n";
+        page += "Copyright &copy; 2016 Rafał Frączek\n";
+        page += "</p>\n";
         page += "<p>\n";
         page += "Smart Traffic Meter is released under the <a href=\"https://opensource.org/licenses/GPL-3.0\">GNU General Public License, version 3 (GPL-3.0)</a> license.\n";
+        page += "</p>\n";
+        page += "<p><br></p>\n";
+        page += "<p>\n";
+        page += "Made possible with the following open source software\n";
         page += "</p>\n";
         page += "</div>\n";
 
@@ -1174,7 +1195,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "HTTP/1.1 200 OK\r\n";
         response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
         response << "Content-Encoding: gzip\r\n";
-		response << "Content-Length: " << Resources::chart_js_length << "\r\n";
+        response << "Content-Length: " << Resources::chart_js_length << "\r\n";
         response << "Cache-Control: public, max-age=1800";
         response << "\r\n\r\n";
 
