@@ -165,7 +165,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "}\n";
         page += "</style>\n";
         page += "</head>\n";
-        page += "<body>\n";
+        page += "<body background=\"background.png\">\n";
         page += "<table style=\"margin-left: auto; margin-right: auto; width: 437px;\">\n";
         page += "<tbody>\n";
         page += "<tr>\n";
@@ -369,7 +369,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "}\n";
         page += "</style>\n";
         page += "</head>\n";
-        page += "<body>\n";
+        page += "<body background=\"background.png\">\n";
 
         page += "<h1>legal inforamtion</h1>\n";
         page += "<br><br>\n";
@@ -846,7 +846,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "</style>\n";
 
         web_page += "</head>\n";
-        web_page += "<body>\n";
+        web_page += "<body background=\"../background.png\">\n";
         web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
         web_page += "<p><a href=\"/savedata\">save all data</a></p>\n";
         web_page += "</div>";
@@ -1190,6 +1190,32 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     };
 
+    server.resource["\\/background.png$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+    {
+
+        ifstream file;
+        file.open( "../../webpage/crossword.png", std::ifstream::in | std::ifstream::binary );
+		// TODO (rafal#1#10/22/16): usunąć wczytywanie tła z pliku
+
+        if ( file.is_open() )
+        {
+            stringstream input_file_stream;
+            input_file_stream << file.rdbuf();
+            file.close();
+
+            input_file_stream.seekp( 0, ios::end );
+
+            response << "HTTP/1.1 200 OK\r\n";
+            response << "Content-Type: image/png\r\n";
+            response << "Accept-Ranges: bytes\r\n";
+            response << "Content-Length: " << input_file_stream.tellp() << "\r\n";
+            response << "Cache-Control: public, max-age=1800";
+            response << "\r\n\r\n";
+            response << input_file_stream.rdbuf();
+        }
+    };
+
+
     server.resource["\\/Chart.js$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         response << "HTTP/1.1 200 OK\r\n";
@@ -1329,7 +1355,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "p {color:black; font-family: arial}\n";
         web_page += "</style>\n";
         web_page += "</head>\n";
-        web_page += "<body>\n";
+        web_page += "<body background=\"../background.png\">\n";
         web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
         web_page += "<p>all data saved</p>\n";
         web_page += "</div>";
@@ -1394,7 +1420,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "}\n";
         page += "</style>\n";
         page += "</head>\n";
-        page += "<body>\n";
+        page += "<body background=\"../background.png\">\n";
         page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
         page += "<p>\n";
         page += "Smart Traffic Meter will terminate soon";
