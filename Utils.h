@@ -49,6 +49,8 @@ public:
 
 	static void save_stats_to_files( void );
 
+	static void save_stats_to_mysql( void );
+
 	static string get_mac( char* name );
 
 	static void get_user_host(string& user, string& host);
@@ -108,6 +110,10 @@ public:
 	static string to_narrow(const wchar_t * src);
 
 	static void set_endsession_handler(void);
+
+	static bool dir_exists( const char *path );
+
+	static int32_t make_path( const string& _s, mode_t mode );
 
 };
 

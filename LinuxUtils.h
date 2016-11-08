@@ -73,6 +73,10 @@ public:
 
     static void get_os_info(string& os_info);
 
+    static bool dir_exists( const char *path );
+
+    static int32_t make_path( const string& _s, mode_t mode );
+
 };
 
 #endif // __linux

@@ -68,65 +68,7 @@ If not, see http://www.gnu.org/licenses/.
 using namespace std;
 using namespace TCLAP;
 
-//http://www.man7.org/tlpi/code/online/all_files_alpha.html
-//http://man7.org/linux/man-pages/man3/getifaddrs.3.html
-//http://stackoverflow.com/questions/1519585/how-to-get-mac-address-for-an-interface-in-linux-using-a-c-program
-//http://stackoverflow.com/questions/18100097/portable-way-to-check-if-directory-exists-windows-linux-c
-//http://stackoverflow.com/questions/675039/how-can-i-create-directory-tree-in-c-linux
-//http://stackoverflow.com/questions/5339200/how-to-create-a-single-instance-application-in-c-or-c
-//http://stackoverflow.com/questions/77005/how-to-generate-a-stacktrace-when-my-gcc-c-app-crashes/77336#77336
-//http://stackoverflow.com/questions/15129089/is-there-a-way-to-dump-stack-trace-with-line-number-from-a-linux-release-binary
-//http://www.opensource.apple.com/source/gdb/gdb-1515/src/binutils/addr2line.c
-//https://gist.github.com/jvranish/4441299
-//http://stackoverflow.com/questions/10520762/what-happens-with-mapiterator-when-i-remove-entry-from-map?lq=1
-//http://stackoverflow.com/questions/8234779/how-to-remove-from-a-map-while-iterating-it
-//http://stackoverflow.com/questions/1528298/get-path-of-executable
-
-//https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
-
-//Windows
-//http://www.codeproject.com/Articles/499465/Simple-Windows-Service-in-Cplusplus
-//http://www.devx.com/cplus/Article/9857
-//http://www.codeproject.com/Articles/5331/Retrieve-the-number-of-bytes-sent-received-and-oth
-//http://dandar3.blogspot.com/2009/03/network-monitor-v07.html
-//https://msdn.microsoft.com/en-us/library/windows/desktop/aa365915(v=vs.85).aspx
-//https://msdn.microsoft.com/en-us/library/windows/desktop/aa365917(v=vs.85).aspx
-
-
-
-//http://stackoverflow.com/questions/10943907/linux-allocator-does-not-release-small-chunks-of-memory/10945602#10945602
-//https://github.com/skanzariya/Memwatch
-
-//https://regex101.com/
-
-//https://github.com/eidheim/Simple-Web-Server
-
-//http://www.boost.org/doc/libs/1_41_0/more/getting_started/windows.html#or-build-binaries-from-source
-//building boost for windows
-//bootstrap.bat
-//bjam toolset=gcc
-
-// for backtrace code to work compile with -g -rdynamic options
-
-//required packages
-//libsqlite3-dev
-//libmysqlclient-dev
-//cbp2make
-//binutils-dev
-//libboost1.58-dev (libboost1.50-dev raspberry libboost-thread1.50-dev pi)
-//libboost-context-dev libboost-coroutine-dev libboost-regex-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev
-
-/* generowanie pliku makefile i kompilacja za pomocą make
-cbp2make -in SmartTrafficMeter.cbp
-make clean -f SmartTrafficMeter.cbp.mak
-make -f SmartTrafficMeter.cbp.mak
-*/
-
-void save_stats_to_mysql( void );
 void load_settings( void );
-int32_t dirExists( const char *path );
-int32_t mkpath( const std::string& s, mode_t mode );
-
 
 int main( int argc, char *argv[] )
 {
@@ -265,11 +207,10 @@ int main( int argc, char *argv[] )
     if ( Utils::starts_with( storage, "mysql" ) )
     {
 #ifdef use_mysql
-        save_stats_to_mysql();
+
 #endif // use_mysql
     }
 
-    //save all stats
     if ( Utils::starts_with( storage, "sqlite" ) )
     {
 #ifdef use_sqlite
@@ -303,9 +244,6 @@ int main( int argc, char *argv[] )
 
 
     boost::thread stats_server_thread( ServerThread::Thread );
-
-//http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
-
 
     boost::thread meter_thread( Utils::MeterThread );
 
@@ -351,179 +289,6 @@ int main( int argc, char *argv[] )
 
     exit( EXIT_SUCCESS );
 }
-
-
-int32_t dirExists( const char *path )
-{
-    struct stat info;
-
-    if ( stat( path, &info ) != 0 )
-    {
-        return 0;
-    }
-    else if ( info.st_mode & S_IFDIR )
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-int32_t mkpath( const string& _s, mode_t mode )
-{
-    size_t pre = 0, pos;
-    string dir;
-    int32_t mdret = 0;
-    string s( _s );
-
-    if ( s[s.size() - 1] != PATH_SEPARATOR_CAHR )
-    {
-        s += '/';
-    }
-
-    while ( ( pos = s.find_first_of( PATH_SEPARATOR_CAHR, pre ) ) != string::npos )
-    {
-        dir = s.substr( 0, pos++ );
-        pre = pos;
-
-        if ( dir.size() == 0 )
-        {
-            continue;    // if leading / first time is 0 length
-        }
-
-#ifdef _WIN32
-
-        if ( ( mdret = _mkdir( dir.c_str() ) ) && errno != EEXIST )
-        {
-            return mdret;
-        }
-
-#endif // _WIN32
-
-#ifdef __linux
-
-        if ( ( mdret = mkdir( dir.c_str(), mode ) ) && errno != EEXIST )
-        {
-            return mdret;
-        }
-
-#endif // __linux
-
-    }
-
-    return mdret;
-}
-
-
-
-void save_stats_to_mysql( void )
-{
-#ifdef use_mysql
-    //http://zetcode.com/db/mysqlc/
-
-    MYSQL *conn = mysql_init( NULL );
-
-
-    for ( const auto & mac_table : all_stats )
-    {
-        bool res;
-
-
-        string mac = mac_table.first;
-        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
-
-        if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", NULL, 0, NULL, 0 ) != NULL )
-        {
-            string query( "CREATE DATABASE IF NOT EXISTS `" );
-            query.append( mac.c_str() );
-            query.append( "`" );
-            mysql_query( conn, query.c_str() );
-        }
-        else
-        {
-            cout << mysql_error( conn ) << endl;
-            mysql_close( conn );
-            conn = NULL;
-            return;
-        }
-
-        mysql_close( conn );
-
-        if ( mysql_real_connect( conn, "127.0.0.1", "root", "dvj5rfx2", mac.c_str(), 0, NULL, 0 ) != NULL )
-        {
-            continue;
-        }
-
-        for ( const auto & table_row : table )
-        {
-            string table_name = table_row.first;
-
-            string query;
-            query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
-
-            mysql_query( conn, query.c_str() );
-
-//			if ( res == false )
-//			{
-//				continue;
-//			}
-
-            const map<string, InterfaceStats> row = table_row.second;
-
-            for ( auto const row_stats : row )
-            {
-                string row = row_stats.first;
-                const InterfaceStats& stats = row_stats.second;
-                uint64_t rx = stats.recieved();
-                uint64_t tx = stats.transmited();
-
-                string query;
-                query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
-                query += "'";
-                query += row;
-                query += "'";
-                query += ",";
-                query += Utils::to_string( rx );
-                query += ",";
-                query += Utils::to_string( tx );
-                query += ");";
-
-                mysql_query( conn, query.c_str() );
-
-//				if ( res == false )
-//				{
-//					printf( "error\n" );
-//					continue;
-//				}
-
-
-                query.clear();
-                query += "UPDATE OR IGNORE " + table_name + " SET ";
-                query += "rx_bytes=";
-                query += Utils::to_string( rx );
-                query += ", ";
-                query += "tx_bytes=";
-                query += Utils::to_string( tx );
-                query += " WHERE row='" + row + "'";
-                query += ";";
-
-                mysql_query( conn, query.c_str() );
-
-                if ( res == false )
-                {
-                    continue;
-                }
-            }
-        }
-
-        mysql_close( conn );
-    }
-
-#endif // use_mysql
-}
-
 
 /** @brief load_settings
   *

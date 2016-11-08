@@ -25848,7 +25848,7 @@
 1475687493 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
 	<iostream>
 
-1475687349 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+1478640175 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
 	<map>
 	<string>
 	<vector>
@@ -25860,7 +25860,7 @@
 1475687402 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
 	<string>
 
-1478457160 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+1478640452 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
@@ -26080,7 +26080,7 @@
 1461005789 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
 
-1475687218 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+1477415353 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
 1477415851 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
@@ -26167,7 +26167,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1478458942 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1478640887 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>

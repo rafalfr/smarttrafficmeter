@@ -69,9 +69,6 @@ using namespace std;
   */
 void WindowsUtils::MeterThread ( void )
 {
-// https://msdn.microsoft.com/en-us/library/windows/desktop/aa365943(v=vs.85).aspx
-
-//https://github.com/eidheim/Simple-WebSocket-Server
 
 	uint32_t y = 0;
 	uint32_t m = 0;
@@ -621,8 +618,6 @@ BOOL WINAPI WindowsUtils::console_ctrl_handler ( DWORD fdwCtrlType )
   */
 LONG WindowsUtils::signal_handler ( LPEXCEPTION_POINTERS exceptionInfo )
 {
-//http://win32easy.blogspot.com/2011/03/exception-handling-inform-your-users.html
-
 	const string& storage = Settings::settings["storage"];
 
 
@@ -667,10 +662,6 @@ LONG WindowsUtils::signal_handler ( LPEXCEPTION_POINTERS exceptionInfo )
   */
 void WindowsUtils::set_signals_handler ( void )
 {
-//http://stackoverflow.com/questions/3640633/setconsolectrlhandler-routine-issue
-//http://stackoverflow.com/questions/8698881/intercept-wm-close-for-cleanup-operations
-//http://stackoverflow.com/questions/9478684/how-does-task-manager-kill-my-program
-
 	//SetConsoleCtrlHandler( ( PHANDLER_ROUTINE ) &WindowsUtils::signal_handler, TRUE );
 	SetConsoleCtrlHandler ( ( PHANDLER_ROUTINE ) WindowsUtils::console_ctrl_handler, TRUE );
 	SetUnhandledExceptionFilter ( ( LPTOP_LEVEL_EXCEPTION_FILTER ) &WindowsUtils::signal_handler );
@@ -704,8 +695,6 @@ int WindowsUtils::become_daemon ( void )
   */
 void WindowsUtils::make_program_run_at_startup ( void )
 {
-	//http://www.cplusplus.com/forum/windows/58636/
-
 	HKEY hKey = NULL;
 
 	LONG sts = RegOpenKeyEx ( HKEY_CURRENT_USER, TEXT ( "Software\\Microsoft\\Windows\\CurrentVersion\\Run\\" ), 0, KEY_ALL_ACCESS, &hKey );
@@ -762,8 +751,6 @@ void WindowsUtils::make_program_run_at_startup ( void )
   */
 bool WindowsUtils::check_one_instance ( void )
 {
-//http://stackoverflow.com/questions/4191465/how-to-run-only-one-instance-of-application
-
 	HANDLE  m_hStartEvent = CreateEventW ( NULL, FALSE, FALSE, L"Global\\SMTAPP" );
 
 	if ( m_hStartEvent == NULL )
@@ -834,6 +821,7 @@ LRESULT APIENTRY WindowsUtils::WndProc(HWND handle, UINT umsg, WPARAM wparam, LP
         return DefWindowProc(handle,umsg,wparam,lparam);
     }
 }
+
 void WindowsUtils::handle_endsession_message(void)
 {
     HINSTANCE instance=GetModuleHandle(NULL);
@@ -854,7 +842,42 @@ void WindowsUtils::handle_endsession_message(void)
     //WTSRegisterSessionNotification(window,NOTIFY_FOR_ALL_SESSIONS);
 }
 
-//http://www.codeproject.com/KB/winsdk/console_event_handling.aspx?display=PrintAll
+bool WindowsUtils::dir_exists(char* path)
+{
+	return false;
+}
+
+int32_t WindowsUtils::make_path(string& _s, mode_t mode)
+{
+    size_t pre = 0, pos;
+    string dir;
+    int32_t mdret = 0;
+    string s( _s );
+
+    if ( s[s.size() - 1] != PATH_SEPARATOR_CAHR )
+    {
+        s += '/';
+    }
+
+    while ( ( pos = s.find_first_of( PATH_SEPARATOR_CAHR, pre ) ) != string::npos )
+    {
+        dir = s.substr( 0, pos++ );
+        pre = pos;
+
+        if ( dir.size() == 0 )
+        {
+            continue;    // if leading / first time is 0 length
+        }
+
+        if ( ( mdret = _mkdir( dir.c_str() ) ) && errno != EEXIST )
+        {
+            return mdret;
+        }
+    }
+
+    return mdret;
+}
+
 
 
 #endif // _WIN32

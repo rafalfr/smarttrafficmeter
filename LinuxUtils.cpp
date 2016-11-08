@@ -849,4 +849,56 @@ void LinuxUtils::get_os_info(string& os_info)
 }
 
 
+bool LinuxUtils::dir_exists(const char* path)
+{
+    struct stat info;
+
+    if ( stat( path, &info ) != 0 )
+    {
+        return false;
+    }
+    else if ( info.st_mode & S_IFDIR )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+int32_t LinuxUtils::make_path(const string& _s, mode_t mode)
+{
+    size_t pre = 0, pos;
+    string dir;
+    int32_t mdret = 0;
+    string s( _s );
+
+    if ( s[s.size() - 1] != PATH_SEPARATOR_CAHR )
+    {
+        s += PATH_SEPARATOR_CAHR;
+    }
+
+    while ( ( pos = s.find_first_of( PATH_SEPARATOR_CAHR, pre ) ) != string::npos )
+    {
+        dir = s.substr( 0, pos++ );
+        pre = pos;
+
+        if ( dir.size() == 0 )
+        {
+            continue;    // if leading / first time is 0 length
+        }
+
+        if ( ( mdret = mkdir( dir.c_str(), mode ) ) && errno != EEXIST )
+        {
+            return mdret;
+        }
+    }
+
+    return mdret;
+}
+
+
+
 #endif // __linux

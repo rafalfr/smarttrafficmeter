@@ -993,24 +993,6 @@ void Utils::save_stats_to_sqlite( void )
             }
         }
 
-//        string query;
-//
-//        query.clear();
-//        query+="DELETE FROM 'hourly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
-//
-//        query.clear();
-//        query+="DELETE FROM 'daily' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
-//
-//        query.clear();
-//        query+="DELETE FROM 'monthly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
-//
-//        query.clear();
-//        query+="DELETE FROM 'yearly' WHERE rx_bytes=\"0\" AND tx_bytes=\"0\";";
-//        sqlite3_exec( db, query.c_str(), Utils::callback, nullptr, &zErrMsg );
-
         sqlite3_close_v2( db );
     }
 
@@ -1066,6 +1048,112 @@ void Utils::save_stats_to_files( void )
 //    }
 //  Globals::data_load_save_mutex.unlock();
 }
+
+void Utils::save_stats_to_mysql(void)
+{
+#ifdef use_mysql
+
+    MYSQL *conn = mysql_init( NULL );
+
+
+    for ( const auto & mac_table : all_stats )
+    {
+        bool res;
+
+
+        string mac = mac_table.first;
+        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+        if ( mysql_real_connect( conn, "127.0.0.1", "root", "password", NULL, 0, NULL, 0 ) != NULL )
+        {
+            string query( "CREATE DATABASE IF NOT EXISTS `" );
+            query.append( mac.c_str() );
+            query.append( "`" );
+            mysql_query( conn, query.c_str() );
+        }
+        else
+        {
+            cout << mysql_error( conn ) << endl;
+            mysql_close( conn );
+            conn = NULL;
+            return;
+        }
+
+        mysql_close( conn );
+
+        if ( mysql_real_connect( conn, "127.0.0.1", "root", "password", mac.c_str(), 0, NULL, 0 ) != NULL )
+        {
+            continue;
+        }
+
+        for ( const auto & table_row : table )
+        {
+            string table_name = table_row.first;
+
+            string query;
+            query += "CREATE TABLE IF NOT EXISTS `" + table_name + "` (`row` VARCHAR(45) NULL,`rx_bytes` BIGINT NULL,`tx_bytes` BIGINT NULL,PRIMARY KEY (`row`));";
+
+            mysql_query( conn, query.c_str() );
+
+//			if ( res == false )
+//			{
+//				continue;
+//			}
+
+            const map<string, InterfaceStats> row = table_row.second;
+
+            for ( auto const row_stats : row )
+            {
+                string row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                uint64_t rx = stats.recieved();
+                uint64_t tx = stats.transmited();
+
+                string query;
+                query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
+                query += "'";
+                query += row;
+                query += "'";
+                query += ",";
+                query += Utils::to_string( rx );
+                query += ",";
+                query += Utils::to_string( tx );
+                query += ");";
+
+                mysql_query( conn, query.c_str() );
+
+//				if ( res == false )
+//				{
+//					printf( "error\n" );
+//					continue;
+//				}
+
+
+                query.clear();
+                query += "UPDATE OR IGNORE " + table_name + " SET ";
+                query += "rx_bytes=";
+                query += Utils::to_string( rx );
+                query += ", ";
+                query += "tx_bytes=";
+                query += Utils::to_string( tx );
+                query += " WHERE row='" + row + "'";
+                query += ";";
+
+                mysql_query( conn, query.c_str() );
+
+                if ( res == false )
+                {
+                    continue;
+                }
+            }
+        }
+
+        mysql_close( conn );
+    }
+
+#endif // use_mysql
+}
+
 
 /** @brief callback
   *
@@ -1327,6 +1415,7 @@ string Utils::to_narrow( const wchar_t* src )
 
     return out;
 }
+
 void Utils::set_endsession_handler( void )
 {
 #ifdef __WIN32
@@ -1335,6 +1424,25 @@ void Utils::set_endsession_handler( void )
 }
 
 
+bool Utils::dir_exists(const char* path)
+{
+#ifdef _WIN32
+    return WindowsUtils::dir_exists(path);
+#endif // _WIN32
 
-//https://github.com/fmtlib/fmt
+#ifdef __linux
+    return LinuxUtils::dir_exists(path);
+#endif // __linux
+}
 
+
+int32_t Utils::make_path(const string& _s, mode_t mode)
+{
+    #ifdef _WIN32
+    return WindowsUtils::make_path(path);
+#endif // _WIN32
+
+#ifdef __linux
+    return LinuxUtils::make_path(_s,mode);
+#endif // __linux
+}
