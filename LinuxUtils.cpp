@@ -233,10 +233,10 @@ void* LinuxUtils::MeterThread( void )
                 {
                     for ( auto const & mac_speedinfo : Globals::speed_stats )
                     {
-                        const string& mac = mac_speedinfo.first;
+                        const string& interface_mac = mac_speedinfo.first;
                         const InterfaceSpeedMeter& ism = mac_speedinfo.second;
 
-                        cout << mac << endl;
+                        cout << interface_mac << endl;
 
                         double speed = ( double )ism.get_tx_speed();
 
@@ -351,11 +351,11 @@ void* LinuxUtils::MeterThread( void )
                         current_row += Utils::to_string( y );
                     }
 
-                    const map<string, InterfaceStats> & row = table_row.second;
+                    const map<string, InterfaceStats> & crow = table_row.second;
 
                     rows4remove.clear();
 
-                    for ( map<string, InterfaceStats>::const_iterator it = row.cbegin(); it != row.cend(); )
+                    for ( map<string, InterfaceStats>::const_iterator it = crow.cbegin(); it != crow.cend(); )
                     {
                         const string& row_in_table = it->first;	//subsequent rows in the current table
 

@@ -1,6 +1,6 @@
 /*
 
-interfacespeedmeter.cpp
+InterfaceSpeedMeter.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -30,8 +30,8 @@ InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
 
     uint64_t time = get_time_milisecs();
 
-    item["rx"] = 0;
-    item["tx"] = 0;
+    item["rx"] = 0ULL;
+    item["tx"] = 0ULL;
     item["time"] = time;
     buf.push_front( item );
 }
@@ -67,14 +67,14 @@ uint64_t InterfaceSpeedMeter::get_rx_speed( void ) const
     uint64_t data = first.at( "rx" ) - last.at( "rx" );
     uint64_t time = first.at( "time" ) - last.at( "time" );
 
-    if ( time > 0 )
+    if ( time > 0ULL )
     {
         /*time is in miliseconds, so we multiply the result by 1000 to get speed in bits/s */
         return ( 8ULL * 1000ULL * data ) / time;
     }
     else
     {
-        return 0;
+        return 0ULL;
     }
 }
 
@@ -85,13 +85,13 @@ uint64_t InterfaceSpeedMeter::get_tx_speed( void ) const
     uint64_t data = first.at( "tx" ) - last.at( "tx" );
     uint64_t time = first.at( "time" ) - last.at( "time" );
 
-    if ( time > 0 )
+    if ( time > 0ULL )
     {
         return ( 8ULL * 1000ULL * data ) / time;
     }
     else
     {
-        return 0;
+        return 0ULL;
     }
 }
 
@@ -100,7 +100,7 @@ uint64_t InterfaceSpeedMeter::get_time_milisecs( void )
     struct timeval  tv;
     gettimeofday( &tv, nullptr );
 
-    return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000 ;
+    return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000ULL ;
 }
 
 

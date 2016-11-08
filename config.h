@@ -23,6 +23,8 @@ If not, see http://www.gnu.org/licenses/.
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 
+#include "version.h"
+
 #if defined(WIN32) || defined(_WIN32)
 #define PATH_SEPARATOR "\\"
 #define PATH_SEPARATOR_CAHR '\\'
@@ -46,5 +48,10 @@ If not, see http://www.gnu.org/licenses/.
 //#define use_mysql
 
 //#define _NO_WEBSERVER
+
+#define PACKAGE "SmartTrafficMeter"
+#define PACKAGE_VERSION FULLVERSION_STRING
+
+#define BOOST_COROUTINE_NO_DEPRECATION_WARNING
 
 #endif // CONFIG_H_INCLUDED

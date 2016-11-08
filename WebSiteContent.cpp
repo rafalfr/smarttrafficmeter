@@ -51,7 +51,7 @@ using namespace std;
   */
 void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& server )
 {
-    server.default_resource["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.default_resource["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         // http://html-color-codes.info/html-editor/
         // http://jsbin.com/biwefacino/edit?html,css,js,output
@@ -302,7 +302,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/customrange/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^/customrange/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         string page;
 
@@ -318,7 +318,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^/legalinfo/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         // https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
 
@@ -1138,7 +1138,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         //genrate chart object
         for ( auto const & mac_table : Globals::all_stats )
         {
-
             string canvas_id = "canvas";
             canvas_id += Utils::to_string( chart_id );
 
@@ -1371,7 +1370,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/stop/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+    server.resource["^/stop/?$"]["GET"] = []( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
     {
         string page;
 

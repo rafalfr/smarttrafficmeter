@@ -44,7 +44,7 @@ private:
 
     public:
         UDPServer( boost::asio::io_service& io_service, short port )
-            : m_socket( io_service, udp::endpoint( udp::v4(), port ) )
+            : m_socket( io_service, udp::endpoint( udp::v4(), port ) ), m_sender_endpoint()
         {
             do_receive();
         }

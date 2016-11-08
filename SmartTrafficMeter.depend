@@ -25837,7 +25837,7 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1475687225 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+1477414735 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
@@ -25860,16 +25860,17 @@
 1475687402 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
 	<string>
 
-1475687414 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+1478457160 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
+	"config.h"
 	<bfd.h>
 
-1475687212 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+1477415383 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1475687200 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1477415505 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
 	"InterfaceSpeedMeter.h"
 	<sys/time.h>
 
@@ -25944,7 +25945,8 @@
 	<sstream>
 	"config.h"
 
-1475687531 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+1478457993 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
+	"version.h"
 
 1475687151 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
 	<iostream>
@@ -25978,7 +25980,7 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1475687373 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
+1478458363 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 	<boost/asio.hpp>
 
 1475687464 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
@@ -26068,7 +26070,7 @@
 	<ctype.h>
 	<math.h>
 
-1475763941 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1477414468 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
 	"config.h"
 	"DataBaseDriver.h"
 	"Logger.h"
@@ -26081,7 +26083,7 @@
 1475687218 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
-1475687184 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1477415851 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
 	<limits>
 	"InterfaceStats.h"
 
@@ -26165,7 +26167,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1476476013 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1478458942 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26391,7 +26393,7 @@
 	"InterfaceSpeedMeter.h"
 	"sqlite3.h"
 
-1476216496 source:/home/rafal/Programowanie/C++/smarttrafficmeter/chartjs.cpp
+1477414453 source:/home/rafal/Programowanie/C++/smarttrafficmeter/chartjs.cpp
 	"Resources.h"
 
 1476216709 /home/rafal/Programowanie/C++/smarttrafficmeter/Resources.h

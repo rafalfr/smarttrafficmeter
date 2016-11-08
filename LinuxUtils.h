@@ -31,6 +31,7 @@ If not, see http://www.gnu.org/licenses/.
 
 #ifndef __pi__
 
+#include "config.h"
 #include <bfd.h>
 
 #endif // __pi__

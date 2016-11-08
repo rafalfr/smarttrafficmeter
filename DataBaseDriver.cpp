@@ -1,6 +1,6 @@
 /*
 
-databasedriver.cpp
+DataBaseDriver.cpp
 
 Copyright (C) 2016 Rafał Frączek
 

@@ -1,6 +1,6 @@
 /*
 
-interfaceinfo.cpp
+InterfaceInfo.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -23,12 +23,12 @@ If not, see http://www.gnu.org/licenses/.
 #include "InterfaceInfo.h"
 
 
-InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc(""), ip4( "" ), ip6( "" )
+InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc( "" ), ip4( "" ), ip6( "" )
 {
 
 }
 
-InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( info.get_mac() ), name( info.get_name() ), desc(""), ip4( info.get_ip4() ), ip6( info.get_ip6() )
+InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( info.get_mac() ), name( info.get_name() ), desc( "" ), ip4( info.get_ip4() ), ip6( info.get_ip6() )
 {
 
 }
@@ -58,7 +58,7 @@ InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
         name.clear();
         name.append( right.get_name() );
         desc.clear();
-        desc.append(right.get_desc());
+        desc.append( right.get_desc() );
     }
 
     return * this;
@@ -78,7 +78,7 @@ string InterfaceInfo::get_name( void ) const
   *
   * @todo: document this function
   */
-string InterfaceInfo::get_desc(void) const
+string InterfaceInfo::get_desc( void ) const
 {
     return desc;
 }
@@ -108,10 +108,10 @@ void InterfaceInfo::set_name( const char* t_name )
   *
   * @todo: document this function
   */
-void InterfaceInfo::set_desc(const char* t_desc)
+void InterfaceInfo::set_desc( const char* t_desc )
 {
     desc.clear();
-    desc.append(t_desc);
+    desc.append( t_desc );
 }
 
 void InterfaceInfo::set_ip4( const char* t_ip4 )

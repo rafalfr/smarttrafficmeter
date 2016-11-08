@@ -890,6 +890,7 @@ void Utils::load_data_from_files( void )
   */
 void Utils::save_stats_to_sqlite( void )
 {
+
 #ifdef use_sqlite
 //http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
 //http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm

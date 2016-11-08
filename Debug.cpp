@@ -1,6 +1,6 @@
 /*
 
-debug.cpp
+Debug.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -43,7 +43,7 @@ string Debug::get_backtrace( void )
     string out;
 
 #ifdef _WIN32
-
+return string("");
 #endif // _WIN32
 
 #ifdef __linux

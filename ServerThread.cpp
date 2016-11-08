@@ -187,7 +187,7 @@ void* ServerThread::Thread( void )
 //		}
 //	}
 
-    return 0;
+    return nullptr;
 }
 
 /** @brief do_receive
@@ -224,7 +224,7 @@ void ServerThread::UDPServer::do_receive( void )
   *
   * @todo: document this function
   */
-void ServerThread::UDPServer::do_send( std::size_t length )
+void ServerThread::UDPServer::do_send( std::size_t )
 {
     string command( msg );
     string response;
