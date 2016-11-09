@@ -93,6 +93,8 @@ public:
 
 	static bool check_one_instance( void );
 
+	static void remove_instance_object(void);
+
 	static void set_signals_handler(void);
 
 	static int32_t BecomeDaemon(void);

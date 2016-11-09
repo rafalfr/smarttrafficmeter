@@ -160,10 +160,10 @@ int main( int argc, char *argv[] )
     Settings::settings["stats server port"] = "32000";
     Settings::settings["html server port"] = "8080";
 
+    load_settings();
+
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
     Globals::db_drv.set_database_dir( Settings::settings["database directory"] );
-
-    load_settings();
 
     Globals::interfaces = Utils::get_all_interfaces();
 
@@ -207,7 +207,6 @@ int main( int argc, char *argv[] )
     if ( Utils::starts_with( storage, "mysql" ) )
     {
 #ifdef use_mysql
-
 #endif // use_mysql
     }
 
@@ -247,7 +246,10 @@ int main( int argc, char *argv[] )
 
     boost::thread meter_thread( Utils::MeterThread );
 
-    cout << "Monitoring has started" << endl;
+    if (Globals::is_daemon==false)
+    {
+        cout << "Monitoring has started" << endl;
+    }
 
 #ifndef _NO_WEBSERVER
     SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["html server port"] ), 2 );
@@ -267,7 +269,6 @@ int main( int argc, char *argv[] )
     if ( Utils::contians( storage, "mysql" ) )
     {
 #ifdef use_mysql
-        //save_stats_to_mysql();
 #endif // use_mysql
     }
 
@@ -297,7 +298,7 @@ int main( int argc, char *argv[] )
 void load_settings( void )
 {
     ifstream file;
-    file.open( Settings::settings["database directory"] + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
+    file.open( Globals::cwd + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
 
     if ( file.is_open() )
     {

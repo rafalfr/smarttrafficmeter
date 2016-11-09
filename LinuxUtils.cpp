@@ -685,6 +685,17 @@ bool LinuxUtils::check_one_instance( void )
     return true;
 }
 
+/** @brief remove_instance_object
+  *
+  * @todo: document this function
+  */
+void LinuxUtils::remove_instance_object(void)
+{
+    Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
+}
+
+
+
 /** @brief resolve
   *
   * @todo: document this function
