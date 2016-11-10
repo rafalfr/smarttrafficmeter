@@ -68,257 +68,258 @@ If not, see http://www.gnu.org/licenses/.
 using namespace std;
 using namespace TCLAP;
 
-void load_settings( void );
+void load_settings ( void );
 
-int main( int argc, char *argv[] )
+int main ( int argc, char *argv[] )
 {
-    uint32_t y;
-    uint32_t m;
-    uint32_t d;
-    uint32_t h;
-    bool make_program_run_at_startup = false;
+	uint32_t y;
+	uint32_t m;
+	uint32_t d;
+	uint32_t h;
+	bool make_program_run_at_startup = false;
 
-    Globals::all_stats.clear();
-    Globals::speed_stats.clear();
-    Settings::settings.clear();
+	Globals::all_stats.clear();
+	Globals::speed_stats.clear();
+	Settings::settings.clear();
 
-    string version = string( AutoVersion::FULLVERSION_STRING ) + " built on " + string( __DATE__ ) + " " + string( __TIME__ );
+	string version = string ( AutoVersion::FULLVERSION_STRING ) + " built on " + string ( __DATE__ ) + " " + string ( __TIME__ );
 
-    try
-    {
-        CmdLine cmd( "Command description message", ' ', version );
+	try
+	{
+		CmdLine cmd ( "Command description message", ' ', version );
 
-        SwitchArg daemon_switch( "d", "daemon", "run the program as daemon", false, nullptr );
-        cmd.add( daemon_switch );
+		SwitchArg daemon_switch ( "d", "daemon", "run the program as daemon", false, nullptr );
+		cmd.add ( daemon_switch );
 
-        SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, nullptr );
-        cmd.add( startup_switch );
+		SwitchArg startup_switch ( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, nullptr );
+		cmd.add ( startup_switch );
 
-        cmd.parse( argc, argv );
+		cmd.parse ( argc, argv );
 
-        Globals::is_daemon = daemon_switch.getValue();
-        make_program_run_at_startup = startup_switch.getValue();
-    }
-    catch ( ArgException &e ) // catch any exceptions
-    {
-        cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
-    }
+		Globals::is_daemon = daemon_switch.getValue();
+		make_program_run_at_startup = startup_switch.getValue();
+	}
+	catch ( ArgException &e ) // catch any exceptions
+	{
+		cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
+	}
 
-    if ( Globals::is_daemon == false )
-    {
-        cout << "Smart Traffic Meter version " << version << endl;
-    }
+	if ( Globals::is_daemon == false )
+	{
+		cout << "Smart Traffic Meter version " << version << endl;
+	}
 
-    Globals::program_path = Utils::get_program_path( argv );
-    Globals::cwd = Utils::get_path( Globals::program_path );
+	Globals::program_path = Utils::get_program_path ( argv );
+	Globals::cwd = Utils::get_path ( Globals::program_path );
 
-    if ( chdir( Globals::cwd.c_str() ) == -1 )
-    {
-        Logger::LogError( "cannot change working directory" );
-    }
+	if ( chdir ( Globals::cwd.c_str() ) == -1 )
+	{
+		Logger::LogError ( "cannot change working directory" );
+	}
 
-    if ( make_program_run_at_startup == true )
-    {
-        Utils::make_program_run_at_startup();
-    }
+	if ( make_program_run_at_startup == true )
+	{
+		Utils::make_program_run_at_startup();
+	}
+
+	if ( Globals::is_daemon == true )
+	{
+		if ( Utils::BecomeDaemon() == -1 )
+		{
+			cout << "Can't start as daemon. Process exited" << endl;
+			Logger::LogError ( "Can't start as daemon. Process exited" );
+			return 0;
+		}
+		else
+		{
+			Logger::LogInfo ( "SmartTrafficMeter has started as daemon" );
+		}
+	}
+
+	if ( Utils::check_one_instance() == false )
+	{
+		Logger::LogError ( "Another instance is already running. Process exited" );
+		return 0;
+	}
+
+	Utils::save_pid_file ( Globals::cwd + PATH_SEPARATOR_CAHR + "stm.pid" );
+
+	if ( Globals::is_daemon == true )
+	{
+		Utils::sleep_seconds ( 10 );
+	}
+
+	Utils::set_signals_handler();
+	Utils::set_endsession_handler();
 
 
-    if ( Globals::is_daemon == true )
-    {
-        if ( Utils::BecomeDaemon() == -1 )
-        {
-            cout << "Can't start as daemon. Process exited" << endl;
-            Logger::LogError( "Can't start as daemon. Process exited" );
-            return 0;
-        }
-        else
-        {
-            Logger::LogInfo( "SmartTrafficMeter has started as daemon" );
-        }
-    }
+	//set default settings
+	Settings::settings["storage"] = "sqlite";
+	Settings::settings["database directory"] = Globals::cwd;
+	Settings::settings["stats refresh interval"] = "1";	//seconds
+	Settings::settings["stats save interval"] = "1800";	//seconds
+	Settings::settings["stats server port"] = "32000";
+	Settings::settings["html server port"] = "8080";
 
-    if ( Utils::check_one_instance() == false )
-    {
-        Logger::LogError( "Another instance is already running. Process exited" );
-        return 0;
-    }
+	load_settings();
 
-    if ( Globals::is_daemon == true )
-    {
-        Utils::sleep_seconds( 10 );
-    }
+	Globals::db_drv.set_database_type ( Settings::settings["storage"] );
+	Globals::db_drv.set_database_dir ( Settings::settings["database directory"] );
 
-    Utils::set_signals_handler();
-    Utils::set_endsession_handler();
+	Globals::interfaces = Utils::get_all_interfaces();
 
+	string row;
 
-    //set default settings
-    Settings::settings["storage"] = "sqlite";
-    Settings::settings["database directory"] = Globals::cwd;
-    Settings::settings["stats refresh interval"] = "1";	//seconds
-    Settings::settings["stats save interval"] = "1800";	//seconds
-    Settings::settings["stats server port"] = "32000";
-    Settings::settings["html server port"] = "8080";
+	for ( auto const & mac_info : Globals::interfaces )
+	{
+		const string& mac = mac_info.second.get_mac();
 
-    load_settings();
+		InterfaceSpeedMeter ism;
+		Globals::speed_stats[mac] = ism;
 
-    Globals::db_drv.set_database_type( Settings::settings["storage"] );
-    Globals::db_drv.set_database_dir( Settings::settings["database directory"] );
+		if ( Globals::all_stats.find ( mac ) == Globals::all_stats.end() )
+		{
+			Utils::get_time ( &y, &m, &d, &h );
 
-    Globals::interfaces = Utils::get_all_interfaces();
+			InterfaceStats hstats;
+			row.clear();
+			row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 ) + "_" + Utils::to_string ( h, 2 ) + ":00-" + Utils::to_string ( h + 1, 2 ) + ":00";
+			Globals::all_stats[mac]["hourly"][row] = hstats;
 
-    string row;
+			InterfaceStats dstats;
+			row.clear();
+			row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 ) + "-" + Utils::to_string ( d, 2 );
+			Globals::all_stats[mac]["daily"][row] = dstats;
 
-    for ( auto const & mac_info : Globals::interfaces )
-    {
-        const string& mac = mac_info.second.get_mac();
+			InterfaceStats mstats;
+			row.clear();
+			row += Utils::to_string ( y ) + "-" + Utils::to_string ( m, 2 );
+			Globals::all_stats[mac]["monthly"][row] = mstats;
 
-        InterfaceSpeedMeter ism;
-        Globals::speed_stats[mac] = ism;
+			InterfaceStats ystats;
+			row.clear();
+			row += Utils::to_string ( y );
+			Globals::all_stats[mac]["yearly"][row] = ystats;
+		}
+	}
 
-        if ( Globals::all_stats.find( mac ) == Globals::all_stats.end() )
-        {
-            Utils::get_time( &y, &m, &d, &h );
+	const string& storage = Settings::settings["storage"];
 
-            InterfaceStats hstats;
-            row.clear();
-            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-            Globals::all_stats[mac]["hourly"][row] = hstats;
-
-            InterfaceStats dstats;
-            row.clear();
-            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
-            Globals::all_stats[mac]["daily"][row] = dstats;
-
-            InterfaceStats mstats;
-            row.clear();
-            row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
-            Globals::all_stats[mac]["monthly"][row] = mstats;
-
-            InterfaceStats ystats;
-            row.clear();
-            row += Utils::to_string( y );
-            Globals::all_stats[mac]["yearly"][row] = ystats;
-        }
-    }
-
-    const string& storage = Settings::settings["storage"];
-
-    if ( Utils::starts_with( storage, "mysql" ) )
-    {
+	if ( Utils::starts_with ( storage, "mysql" ) )
+	{
 #ifdef use_mysql
 #endif // use_mysql
-    }
+	}
 
-    if ( Utils::starts_with( storage, "sqlite" ) )
-    {
+	if ( Utils::starts_with ( storage, "sqlite" ) )
+	{
 #ifdef use_sqlite
-        Utils::load_data_from_sqlite();
+		Utils::load_data_from_sqlite();
 #endif // use_sqlite
-    }
+	}
 
-    if ( Utils::starts_with( storage, "files" ) )
-    {
-        Utils::load_data_from_files();
-    }
+	if ( Utils::starts_with ( storage, "files" ) )
+	{
+		Utils::load_data_from_files();
+	}
 
-    if ( Utils::contians( storage, "mysql" ) )
-    {
+	if ( Utils::contians ( storage, "mysql" ) )
+	{
 #ifdef use_mysql
-        //save_stats_to_mysql();
+		//save_stats_to_mysql();
 #endif // use_mysql
-    }
+	}
 
-    if ( Utils::contians( storage, "sqlite" ) )
-    {
+	if ( Utils::contians ( storage, "sqlite" ) )
+	{
 #ifdef use_sqlite
-        Utils::save_stats_to_sqlite();
+		Utils::save_stats_to_sqlite();
 #endif // use_sqlite
-    }
+	}
 
-    if ( Utils::contians( storage, "files" ) )
-    {
-        Utils::save_stats_to_files();
-    }
+	if ( Utils::contians ( storage, "files" ) )
+	{
+		Utils::save_stats_to_files();
+	}
 
 
-    boost::thread stats_server_thread( ServerThread::Thread );
+	boost::thread stats_server_thread ( ServerThread::Thread );
 
-    boost::thread meter_thread( Utils::MeterThread );
+	boost::thread meter_thread ( Utils::MeterThread );
 
-    if (Globals::is_daemon==false)
-    {
-        cout << "Monitoring has started" << endl;
-    }
+	if ( Globals::is_daemon == false )
+	{
+		cout << "Monitoring has started" << endl;
+	}
 
 #ifndef _NO_WEBSERVER
-    SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["html server port"] ), 2 );
-    WebSiteContent::set_web_site_content( http_server );
+	SimpleWeb::Server<SimpleWeb::HTTP> http_server ( Utils::stoi ( Settings::settings["html server port"] ), 2 );
+	WebSiteContent::set_web_site_content ( http_server );
 
-    boost::thread web_server_thread( [&http_server]()
-    {
-        http_server.start();
-    } );
+	boost::thread web_server_thread ( [&http_server]()
+	{
+		http_server.start();
+	} );
 #endif // _NO_WEBSERVER
 
-    meter_thread.join();
+	meter_thread.join();
 
-    stats_server_thread.interrupt();
-    web_server_thread.interrupt();
+	stats_server_thread.interrupt();
+	web_server_thread.interrupt();
 
-    if ( Utils::contians( storage, "mysql" ) )
-    {
+	if ( Utils::contians ( storage, "mysql" ) )
+	{
 #ifdef use_mysql
 #endif // use_mysql
-    }
+	}
 
-    if ( Utils::contians( storage, "sqlite" ) )
-    {
+	if ( Utils::contians ( storage, "sqlite" ) )
+	{
 #ifdef use_sqlite
-        Utils::save_stats_to_sqlite();
+		Utils::save_stats_to_sqlite();
 #endif // use_sqlite
-    }
+	}
 
-    if ( Utils::contians( storage, "files" ) )
-    {
-        Utils::save_stats_to_files();
-    }
+	if ( Utils::contians ( storage, "files" ) )
+	{
+		Utils::save_stats_to_files();
+	}
 
-#ifdef __linux
-    Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
-#endif // __linux
 
-    exit( EXIT_SUCCESS );
+	Utils::remove_instance_object();
+
+
+	exit ( EXIT_SUCCESS );
 }
 
 /** @brief load_settings
   *
   * @todo: document this function
   */
-void load_settings( void )
+void load_settings ( void )
 {
-    ifstream file;
-    file.open( Globals::cwd + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
+	ifstream file;
+	file.open ( Globals::cwd + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
 
-    if ( file.is_open() )
-    {
-        for ( string line; getline( file, line ); )
-        {
-            // skip over comment lines
-            if ( Utils::starts_with( line, "#" ) )
-            {
-                continue;
-            }
+	if ( file.is_open() )
+	{
+		for ( string line; getline ( file, line ); )
+		{
+			// skip over comment lines
+			if ( Utils::starts_with ( line, "#" ) )
+			{
+				continue;
+			}
 
-            // check if line matches settings pattern
-            if ( regex_match( line, regex( "^[a-z\\s]+\\=[a-z\\s0-9\\/\\.]+$" ) ) )
-            {
-                const vector<string>& items = Utils::split( line, "=" );
-                Settings::settings[items[0]] = items[1];
-            }
-        }
+			// check if line matches settings pattern
+			if ( regex_match ( line, regex ( "^[a-z\\s]+\\=[a-z\\s0-9\\/\\.]+$" ) ) )
+			{
+				const vector<string>& items = Utils::split ( line, "=" );
+				Settings::settings[items[0]] = items[1];
+			}
+		}
 
-        file.close();
-    }
+		file.close();
+	}
 
 }

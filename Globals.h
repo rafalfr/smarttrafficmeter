@@ -41,17 +41,21 @@ class Globals
 public:
 
     static bool terminate_program;
+
     static bool is_daemon;
+
     static string cwd;
+
     static string program_path;
 
     static boost::mutex data_load_save_mutex;
 
     static boost::scoped_ptr<boost::interprocess::shared_memory_object> shared_mem;
 
-    //mac, table, date, stats
     static map<string, map<string, map<string, InterfaceStats> > > all_stats;
+
     static map<string, InterfaceSpeedMeter> speed_stats;
+
     static map<string, InterfaceInfo> interfaces;
 
     static DataBaseDriver db_drv;

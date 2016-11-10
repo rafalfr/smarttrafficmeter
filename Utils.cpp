@@ -1460,3 +1460,16 @@ int32_t Utils::make_path ( const string& _s, mode_t mode )
 	return LinuxUtils::make_path ( _s, mode );
 #endif // __linux
 }
+
+/** @brief save_pid_file
+  *
+  * @todo: document this function
+  */
+void Utils::save_pid_file(const string& pid_file_path)
+{
+#ifdef __linux
+	LinuxUtils::save_pid_file(pid_file_path);
+#endif // __linux
+}
+
+

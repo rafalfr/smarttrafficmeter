@@ -43,6 +43,8 @@
 
 //https://github.com/eidheim/Simple-Web-Server
 
+// https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
+
 //http://www.boost.org/doc/libs/1_41_0/more/getting_started/windows.html#or-build-binaries-from-source
 //building boost for windows
 //bootstrap.bat
@@ -63,3 +65,9 @@ cbp2make -in SmartTrafficMeter.cbp
 make clean -f SmartTrafficMeter.cbp.mak
 make -f SmartTrafficMeter.cbp.mak
 */ 
+
+
+//projektowanie strony internetowej
+// http://html-color-codes.info/html-editor/
+// http://jsbin.com/biwefacino/edit?html,css,js,output
+// http://www.awwwards.com/10-html-css-online-code-editors-for-web-developers.html

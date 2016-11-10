@@ -51,6 +51,8 @@ public:
 
 	static void save_stats_to_mysql( void );
 
+	static void save_pid_file(const string& pid_file_path);
+
 	static string get_mac( char* name );
 
 	static void get_user_host(string& user, string& host);

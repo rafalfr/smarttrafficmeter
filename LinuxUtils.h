@@ -79,6 +79,8 @@ public:
 
     static int32_t make_path( const string& _s, mode_t mode );
 
+    static void save_pid_file(const string& pid_file_path);
+
 };
 
 #endif // __linux
