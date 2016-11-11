@@ -1,6 +1,6 @@
 /*
 
-utils.cpp
+Utils.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -188,10 +188,6 @@ bool Utils::starts_with ( const string& str, const string& key )
   */
 vector<string> Utils::split ( const string& str, const string& delim )
 {
-//http://garajeando.blogspot.com/2014/03/using-c11-to-split-strings-without.html
-//http://www.informit.com/articles/article.aspx?p=2064649&seqNum=
-//http://stackoverflow.com/questions/236129/split-a-string-in-c
-
 	size_t start;
 	size_t end;
 
@@ -250,6 +246,7 @@ string Utils::replace ( const string& pattern, const string& with, const string&
 
 	return out;
 }
+
 /** @brief to_string
   *
   * @todo: document this function
@@ -495,8 +492,6 @@ vector<string> Utils::hexcolor_to_strings ( string& hex_color )
 	return out;
 }
 
-
-
 /** @brief check_one_instance
   *
   * The function returns true if the current instance is the only one
@@ -534,8 +529,6 @@ void Utils::remove_instance_object ( void )
   */
 string Utils::trim ( const std::string& s )
 {
-	//http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
-
 	auto wsfront = std::find_if_not ( s.begin(), s.end(), [] ( int c )
 	{
 		return std::isspace ( c );
@@ -906,9 +899,6 @@ void Utils::save_stats_to_sqlite ( void )
 {
 
 #ifdef use_sqlite
-//http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
-//http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
-//https://www.sqlite.org/cintro.html
 
 	Globals::data_load_save_mutex.lock();
 
@@ -1194,6 +1184,7 @@ int Utils::callback ( void*, int argc, char** argv, char** azColName )
 
 #endif
 }
+
 /** @brief stoi
   *
   * @todo: document this function
@@ -1278,6 +1269,7 @@ uint64_t Utils::stoull ( const string& str )
 
 	return result;
 }
+
 /** @brief hstoi
   *
   * @todo: document this function
@@ -1471,5 +1463,3 @@ void Utils::save_pid_file(const string& pid_file_path)
 	LinuxUtils::save_pid_file(pid_file_path);
 #endif // __linux
 }
-
-

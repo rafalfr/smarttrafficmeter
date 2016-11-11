@@ -1,6 +1,6 @@
 /*
 
-settings.cpp
+Settings.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -22,4 +22,5 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "Settings.h"
 
+// key, value
 map<string,string> Settings::settings;

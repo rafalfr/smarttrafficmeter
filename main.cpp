@@ -122,6 +122,8 @@ int main ( int argc, char *argv[] )
 		Utils::make_program_run_at_startup();
 	}
 
+	Utils::save_pid_file ( Globals::cwd + PATH_SEPARATOR_CAHR + "stm.pid" );
+
 	if ( Globals::is_daemon == true )
 	{
 		if ( Utils::BecomeDaemon() == -1 )
@@ -141,8 +143,6 @@ int main ( int argc, char *argv[] )
 		Logger::LogError ( "Another instance is already running. Process exited" );
 		return 0;
 	}
-
-	Utils::save_pid_file ( Globals::cwd + PATH_SEPARATOR_CAHR + "stm.pid" );
 
 	if ( Globals::is_daemon == true )
 	{

@@ -1,0 +1,11 @@
+[Unit]
+Description=Smart Traffic Meter Daemon
+After=network.target
+
+[Service]
+Type=forking
+Restart=on-failure
+ExecStart=/opt/smarttrafficmeter/smarttrafficmeter --daemon
+
+[Install]
+WantedBy=multi-user.target

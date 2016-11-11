@@ -45,13 +45,15 @@ If not, see http://www.gnu.org/licenses/.
 
 using namespace std;
 
+typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
+
 /** @brief set_web_site_content
   *
   * @todo: document this function
   */
 void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& server )
 {
-	server.default_resource["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.default_resource["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		string row;
 		ifstream file;
@@ -282,24 +284,16 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		page += "</body>\n";
 		page += "</html>\n";
 
-		//content_stream << "<h1>Request from " << request->remote_endpoint_address << " (" << request->remote_endpoint_port << ")</h1>";
-		//content_stream << request->method << " " << request->path << " HTTP/" << request->http_version << "<br>";
-
-//        for ( auto& header : request->header )
-//        {
-//            content_stream << header.first << ": " << header.second << "<br>";
-//        }
-
 		content_stream << page;
 
 		content_stream.seekp ( 0, ios::end );
 
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 	};
 
-	server.resource["^/customrange/?$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["^/customrange/?$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		string page;
 
@@ -308,14 +302,14 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 
 		content_stream.seekp ( 0, ios::end );
 
-		response <<  "HTTP/1.1 200 OK\r\n";
-		response << "Content-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\n";
+		*response << "Content-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 	};
 
 
-	server.resource["^/legalinfo/?$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["^/legalinfo/?$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		string page;
 
@@ -364,7 +358,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		page += "}\n";
 		page += "</style>\n";
 		page += "</head>\n";
-		page += "<body background=\"background.png\">\n";
+		page += "<body background=\"../background.png\">\n";
 
 		page += "<h1>legal inforamtion</h1>\n";
 		page += "<br><br>\n";
@@ -423,13 +417,13 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		content_stream << page;
 
 		content_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "Cache-Control: public, max-age=1800";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "Cache-Control: public, max-age=1800";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 	};
 
-	server.resource["^\\/download\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+	server.resource["^\\/download\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 
 		uint32_t y;
@@ -545,7 +539,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			string ip4 = "n/a";
 			string ip6 = "n/a";
 
-			// get interface inforamtion
+			// get interface information
 			for ( auto const & mac_info : Globals::interfaces )
 			{
 				const InterfaceInfo& interface_info = mac_info.second;
@@ -643,18 +637,16 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		out_stream << csv;
 
 		out_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
-		response << "Content-Type: text/csv; charset=utf-8" << "\r\n";
-		response << "Cache-Control: public, max-age=0" << "\r\n";
-		response << "Content-Disposition: attachment; filename=\"" + stats_type + "_" + start_date_str + "_to_" + end_date_str + ".csv\"";
-		response << "\r\n\r\n" << out_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/csv; charset=utf-8" << "\r\n";
+		*response << "Cache-Control: public, max-age=0" << "\r\n";
+		*response << "Content-Disposition: attachment; filename=\"" + stats_type + "_" + start_date_str + "_to_" + end_date_str + ".csv\"";
+		*response << "\r\n\r\n" << out_stream.rdbuf();
 	};
 
 
-	server.resource["^\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> request )
+	server.resource["^\\/(hourly|daily|monthly|yearly)\\/?(.*)?\\/?$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
-		// http://127.0.0.1:8080/daily/
-
 		uint32_t y;
 		uint32_t m;
 		uint32_t d;
@@ -818,7 +810,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			}
 		}
 
-		// create chart colors
+		// create chart colours
 		string down_fill_color = rgba_color ( down_color_str, 0.5f );
 		string down_stroke_color = rgba_color ( down_color_str, 0.8f );
 		string down_highlightfill_color = rgba_color ( down_color_str, 0.75f );
@@ -862,7 +854,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			string ip4 = "n/a";
 			string ip6 = "n/a";
 
-			// get interface inforamtion
+			// get interface information
 			for ( auto const & mac_info : Globals::interfaces )
 			{
 				const InterfaceInfo& interface_info = mac_info.second;
@@ -1129,8 +1121,8 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		web_page += "<script>\n";
 		web_page += "window.onload = function(){\n";
 
-		//genrate chart object
-		for ( auto const & mac_table : Globals::all_stats )
+		//generate chart objects
+		for ( auto it = Globals::all_stats.begin(); it != Globals::all_stats.end(); it++ )
 		{
 			string canvas_id = "canvas";
 			canvas_id += Utils::to_string ( chart_id );
@@ -1156,7 +1148,6 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			chart_id++;
 		}
 
-
 		//finish generating html
 		web_page += "}\n";
 		web_page += "</script>\n";
@@ -1166,7 +1157,8 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		web_page += "</tbody>\n";
 		web_page += "</table>\n";
 		web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
-		web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&end=" + end_date_str + "\">download this stats</a>\n";
+		web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&end=" + end_date_str + "\">download this stats</a>\n</p>\n";
+		web_page += "<p>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a>\n";
 		web_page += "</p>\n</div>\n";
 		web_page += "</body>\n";
 		web_page += "</html>";
@@ -1176,46 +1168,46 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		out_stream << web_page;
 
 		out_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "Cache-Control: public, max-age=1800";
-		response << "\r\n\r\n" << out_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "Cache-Control: public, max-age=1800";
+		*response << "\r\n\r\n" << out_stream.rdbuf();
 
 	};
 
-	server.resource["\\/background.png$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["\\/background.png$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 
-		response << "HTTP/1.1 200 OK" << "\r\n";
-		response << "Accept-Ranges: bytes" << "\r\n";
-		response << "Content-Type: image/png" << "\r\n";
-		response << "Content-Length: " << Resources::background_image_length << "\r\n";
-		response << "Cache-Control: public, max-age=1800";
-		response << "\r\n\r\n";
+		*response << "HTTP/1.1 200 OK" << "\r\n";
+		*response << "Accept-Ranges: bytes" << "\r\n";
+		*response << "Content-Type: image/png" << "\r\n";
+		*response << "Content-Length: " << Resources::background_image_length << "\r\n";
+		*response << "Cache-Control: public, max-age=1800";
+		*response << "\r\n\r\n";
 
 		for ( uint32_t i = 0; i < Resources::background_image_length; i++ )
 		{
-			response << Resources::background_image[i];
+			*response << Resources::background_image[i];
 		}
 	};
 
 
-	server.resource["\\/Chart.js$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["\\/Chart.js$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
-		response << "HTTP/1.1 200 OK\r\n";
-		response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
-		response << "Content-Encoding: gzip\r\n";
-		response << "Content-Length: " << Resources::chart_js_length << "\r\n";
-		response << "Cache-Control: public, max-age=1800";
-		response << "\r\n\r\n";
+		*response << "HTTP/1.1 200 OK\r\n";
+		*response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+		*response << "Content-Encoding: gzip\r\n";
+		*response << "Content-Length: " << Resources::chart_js_length << "\r\n";
+		*response << "Cache-Control: public, max-age=1800";
+		*response << "\r\n\r\n";
 
 		for ( uint32_t i = 0; i < Resources::chart_js_length; i++ )
 		{
-			response << Resources::chart_js[i];
+			*response << Resources::chart_js[i];
 		}
 	};
 
-	server.resource["\\/stats.json$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["\\/stats.json$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		string row;
 		stringstream content_stream;
@@ -1299,13 +1291,13 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		content_stream << str_response;
 
 		content_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
-		response << "Cache-Control: no-cache, public";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
+		*response << "Cache-Control: no-cache, public";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 	};
 
-	server.resource["\\/savedata$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["\\/savedata$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		stringstream content_stream;
 
@@ -1349,13 +1341,13 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		content_stream << web_page;
 
 		content_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "Cache-Control: no-cache, public";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "Cache-Control: no-cache, public";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 	};
 
-	server.resource["^/stop/?$"]["GET"] = [] ( SimpleWeb::Server<SimpleWeb::HTTP>::Response & response, shared_ptr<SimpleWeb::Server<SimpleWeb::HTTP>::Request> )
+	server.resource["^/stop/?$"]["GET"] = [&server] ( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
 	{
 		string page;
 
@@ -1417,10 +1409,10 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 		content_stream << page;
 
 		content_stream.seekp ( 0, ios::end );
-		response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
-		response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-		response << "Cache-Control: public, max-age=0";
-		response << "\r\n\r\n" << content_stream.rdbuf();
+		*response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+		*response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+		*response << "Cache-Control: public, max-age=0";
+		*response << "\r\n\r\n" << content_stream.rdbuf();
 
 		Globals::terminate_program = true;
 
@@ -1451,40 +1443,3 @@ string WebSiteContent::rgba_color ( string& hex_color, float a )
 }
 
 #endif // _NO_WEBSERVER
-
-
-//http://html-online.com/editor/
-
-/*
-
-<!-- #######  YAY, I AM THE SOURCE EDITOR! #########-->
-<p>&nbsp;</p>
-<table style="height: 72px; margin-left: auto; margin-right: auto;" width="595">
-<tbody>
-<tr>
-<td style="text-align: center;" colspan="3"><strong>eth0, 00-1f-AC-FB, 192.168.0.1<br /></strong></td>
-</tr>
-
-<tr>
-<td rowspan="2"><strong>speed</strong></td>
-<td><span style="color: #800080;"><strong>up</strong></span></td>
-<td><span style="color: #800080;"><strong>135 Kbps</strong></span></td>
-</tr>
-<tr>
-<td><span style="color: #008000;"><strong>down</strong></span></td>
-<td><span style="color: #008000;"><strong>1.4567 Mbps</strong></span></td>
-</tr>
-
-</tbody>
-</table>
-*/
-
-//http://www.w3schools.com/js/js_timing.asp
-//http://www.tutorialspoint.com/ajax/index.htm
-//http://stackoverflow.com/questions/4672691/ajax-responsetext-comes-back-as-undefined
-//https://mathiasbynens.be/notes/xhr-responsetype-json
-//http://www.flotcharts.org/
-//http://www.jqplot.com/
-//https://www.amcharts.com/demos/
-//http://www.uibox.in/item/68
-

@@ -50,6 +50,32 @@
 //bootstrap.bat
 //bjam toolset=gcc
 
+//https://www.abc.se/~m6695/udp.html
+//http://en.cppreference.com/w/cpp/links/libs
+//http://jsoncpp.sourceforge.net/old.html
+
+//http://garajeando.blogspot.com/2014/03/using-c11-to-split-strings-without.html
+//http://www.informit.com/articles/article.aspx?p=2064649&seqNum=
+//http://stackoverflow.com/questions/236129/split-a-string-in-c
+
+//http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+
+//http://stackoverflow.com/questions/18794580/mysql-create-table-if-not-exists-in-phpmyadmin-import
+//http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
+//https://www.sqlite.org/cintro.html
+
+//http://html-online.com/editor/
+
+
+//http://www.w3schools.com/js/js_timing.asp
+//http://www.tutorialspoint.com/ajax/index.htm
+//http://stackoverflow.com/questions/4672691/ajax-responsetext-comes-back-as-undefined
+//https://mathiasbynens.be/notes/xhr-responsetype-json
+//http://www.flotcharts.org/
+//http://www.jqplot.com/
+//https://www.amcharts.com/demos/
+//http://www.uibox.in/item/68
+
 // for backtrace code to work compile with -g -rdynamic options
 
 //required packages

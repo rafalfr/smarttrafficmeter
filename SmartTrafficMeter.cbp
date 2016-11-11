@@ -60,6 +60,9 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
 					<Add option="-Weffc++" />
 					<Add option="-Wall" />
 					<Add option="-std=c++14" />
@@ -183,6 +186,7 @@
 			<Add directory="/usr/include/libiberty/" />
 			<Add directory="../smarttrafficmeter" />
 		</Compiler>
+		<Unit filename="BackgroundImage.cpp" />
 		<Unit filename="DataBaseDriver.cpp" />
 		<Unit filename="DataBaseDriver.h" />
 		<Unit filename="Debug.cpp" />

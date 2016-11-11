@@ -487,21 +487,21 @@ int LinuxUtils::BecomeDaemon ( int flags )
 			close ( fd );
 	}
 
-	if ( ! ( flags & BD_NO_REOPEN_STD_FDS ) )
-	{
-		close ( STDIN_FILENO );         /* Reopen standard fd's to /dev/null */
-
-		fd = open ( "/dev/null", O_RDWR );
-
-		if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
-			return -1;
-
-		if ( dup2 ( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
-			return -1;
-
-		if ( dup2 ( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
-			return -1;
-	}
+//	if ( ! ( flags & BD_NO_REOPEN_STD_FDS ) )
+//	{
+//		close ( STDIN_FILENO );         /* Reopen standard fd's to /dev/null */
+//
+//		fd = open ( "/dev/null", O_RDWR );
+//
+//		if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
+//			return -1;
+//
+//		if ( dup2 ( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
+//			return -1;
+//
+//		if ( dup2 ( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
+//			return -1;
+//	}
 
 	return 0;
 }
