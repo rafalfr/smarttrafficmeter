@@ -6,6 +6,11 @@ After=network.target
 Type=forking
 Restart=on-failure
 ExecStart=/opt/smarttrafficmeter/smarttrafficmeter --daemon
+PIDFile=/opt/smarttrafficmeter/stm.pid
+ExecStopPost=/usr/bin/rm -f /opt/smarttrafficmeter/stm.pid
+TimeoutSec=5
+Restart=always
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
