@@ -20,6 +20,18 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file config.h
+ * @brief Global definitions and constants
+ *
+ * This file contains the global definitions
+ * used in the program.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 

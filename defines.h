@@ -20,6 +20,18 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file defines.h
+ * @brief Globally defined structs
+ *
+ * This file contains the definition of the globally defined structs
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
+
 #ifndef DEFINES_H_INCLUDED
 #define DEFINES_H_INCLUDED
 

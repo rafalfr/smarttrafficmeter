@@ -20,6 +20,17 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file LinuxUtils.h
+ * @brief Class definition for the LinuxUtils
+ *
+ * This file contains the definition of the LinuxUtils class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef LINUXUTILS_H
 #define LINUXUTILS_H
 

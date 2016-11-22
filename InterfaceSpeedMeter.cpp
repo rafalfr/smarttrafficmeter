@@ -19,11 +19,10 @@ You should have received a copy of the GNU General Public License along with Sma
 If not, see http://www.gnu.org/licenses/.
 
 */
-
+#include <sys/time.h>
 #include "InterfaceSpeedMeter.h"
 
-#include <sys/time.h>
-
+/** \copydoc my_func1 */
 InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
 {
     map<string, uint64_t> item;

@@ -31,11 +31,12 @@ If not, see http://www.gnu.org/licenses/.
 #include "LinuxUtils.h"
 #endif // __linux
 
-
-
 /** @brief get_backtrace
   *
-  * @todo: document this function
+  * The method return the backtrace as a string
+  * @param void
+  * @return string
+  *
   */
 string Debug::get_backtrace( void )
 {
@@ -81,5 +82,4 @@ return string("");
 #endif // __linux
 
     return Utils::trim( out );
-
 }

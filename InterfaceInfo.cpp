@@ -22,17 +22,32 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "InterfaceInfo.h"
 
-
+/** \brief default InterfaceInfo constructor
+ *
+ * \param None
+ * \return None
+ *
+ */
 InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc( "" ), ip4( "" ), ip6( "" )
 {
-
 }
 
+/** \brief InterfaceInfo copy constructor
+ *
+ * \param InterfaceInfo
+ * \return None
+ *
+ */
 InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( info.get_mac() ), name( info.get_name() ), desc( "" ), ip4( info.get_ip4() ), ip6( info.get_ip6() )
 {
-
 }
 
+/** \brief InterfaceInfo destructor
+ *
+ * \param None
+ * \return None
+ *
+ */
 InterfaceInfo::~InterfaceInfo()
 {
     mac.clear();
@@ -41,9 +56,11 @@ InterfaceInfo::~InterfaceInfo()
     name.clear();
     desc.clear();
 }
+
 /** @brief operator=
   *
-  * @todo: document this function
+  * @param InterfaceInfo
+  * @return InterfaceInfo
   */
 InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
 {
@@ -64,11 +81,27 @@ InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
     return * this;
 }
 
+/** @brief get_mac
+ *
+ * The function returns the network interface MAC address
+ *
+ * \param void
+ * \return string
+ *
+ */
 string InterfaceInfo::get_mac( void ) const
 {
     return mac;
 }
 
+/** \brief get_name
+ *
+ * The function returns the network interface name
+ *
+ * \param void
+ * \return string
+ *
+ */
 string InterfaceInfo::get_name( void ) const
 {
     return name;
@@ -76,28 +109,65 @@ string InterfaceInfo::get_name( void ) const
 
 /** @brief get_desc
   *
-  * @todo: document this function
+  * The function returns the network interface description
+  *
+  * @param void
+  * @return string
+  *
   */
 string InterfaceInfo::get_desc( void ) const
 {
     return desc;
 }
 
+/** \brief get_ip4
+ *
+ * The function returns the network interface IP4 address
+ *
+ * \param void
+ * \return string
+ *
+ */
 string InterfaceInfo::get_ip4( void ) const
 {
     return ip4;
 }
+
+/** \brief get_ip6
+ *
+ * The function returns the network interface IP6 address
+ *
+ * \param void
+ * \return string
+ *
+ */
 string InterfaceInfo::get_ip6( void ) const
 {
     return ip6;
 }
 
+/** \brief set_mac
+ *
+ * The function sets the MAC address for the network interface
+ *
+ * \param MAC address as a string
+ * \return void
+ *
+ */
 void InterfaceInfo::set_mac( const char* t_mac )
 {
     mac.clear();
     mac.append( t_mac );
 }
 
+/** \brief set_name
+ *
+ * The function sets the MAC address for the network interface
+ *
+ * \param network interface name as a string
+ * \return void
+ *
+ */
 void InterfaceInfo::set_name( const char* t_name )
 {
     name.clear();
@@ -106,7 +176,10 @@ void InterfaceInfo::set_name( const char* t_name )
 
 /** @brief set_desc
   *
-  * @todo: document this function
+  * The function sets the MAC address for the network interface
+  *
+  * @param network interface description as a string
+  * @return void
   */
 void InterfaceInfo::set_desc( const char* t_desc )
 {
@@ -114,15 +187,30 @@ void InterfaceInfo::set_desc( const char* t_desc )
     desc.append( t_desc );
 }
 
+/** \brief set_ip4
+ *
+ * The function sets the IP4 address for the network interface
+ *
+ * \param network interface IP4 address as a const char* buffer
+ * \return void
+ *
+ */
 void InterfaceInfo::set_ip4( const char* t_ip4 )
 {
     ip4.clear();
     ip4.append( t_ip4 );
 }
 
+/** \brief set_ip6
+ *
+ * The function sets the IP6 address for the network interface
+ *
+ * \param network interface IP6 address as a const char* buffer
+ * \return void
+ *
+ */
 void InterfaceInfo::set_ip6( const char* t_ip6 )
 {
     ip6.clear();
     ip6.append( t_ip6 );
 }
-

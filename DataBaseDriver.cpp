@@ -28,31 +28,42 @@ If not, see http://www.gnu.org/licenses/.
 #ifdef use_sqlite
 #include "sqlite3.h"
 
+/**< vector containing results of database query */
 vector < map<string, string> > DataBaseDriver::query_results;
 
 #endif // use_sqlite
 
 /** @brief DataBaseDriver
   *
-  * @todo: document this function
+  * default constructor
+  *
+  * @param None
+  * @return None
+  *
   */
 DataBaseDriver::DataBaseDriver() : database_dir( "" ), database_type( "" )
 {
-
 }
 
 /** @brief ~DataBaseDriver
   *
-  * @todo: document this function
+  * default destructor
+  *
+  * @param None
+  * @return None
+  *
   */
 DataBaseDriver::~DataBaseDriver()
 {
-
 }
 
 /** @brief set_database
   *
-  * @todo: document this function
+  * This method sets the default database type.
+  *
+  * @param string with data base type
+  * @return void
+  *
   */
 void DataBaseDriver::set_database_type( const string& _database_type ) noexcept
 {
@@ -62,7 +73,11 @@ void DataBaseDriver::set_database_type( const string& _database_type ) noexcept
 
 /** @brief set_database_dir
   *
-  * @todo: document this function
+  * This method sets database directory
+  *
+  * @param string with full path to the directory where database is stored
+  * @return void
+  *
   */
 void DataBaseDriver::set_database_dir( const string& _database_dir ) noexcept
 {
@@ -70,11 +85,15 @@ void DataBaseDriver::set_database_dir( const string& _database_dir ) noexcept
     database_dir.append( _database_dir );
 }
 
-
-
-/** @brief get_daily_stats
+/** @brief get_stats
   *
-  * @todo: document this function
+  * The function returns stats for a given network interface and time period
+  *
+  * @param mac address
+  * @param table name (hourly, daily, monthly, yearly)
+  * @param start date
+  * @param end date
+  *
   */
 const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac, const string& _table, const struct date& _from, const struct date& _to )
 {
@@ -178,14 +197,15 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
 #endif // use_sqlite
 
-
     return results;
-
 }
 
 /** @brief callback
   *
-  * @todo: document this function
+  * This method is a callback function that is used by the underlying
+  * database driver (e.g. sqlite)
+  * The function is not directly used in other program files.
+  *
   */
 int DataBaseDriver::callback( void*, int argc, char** argv, char** azColName )
 {
@@ -209,6 +229,3 @@ int DataBaseDriver::callback( void*, int argc, char** argv, char** azColName )
         return 1;
     }
 }
-
-
-

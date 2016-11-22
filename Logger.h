@@ -20,17 +20,33 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file Logger.h
+ * @brief Class definition for the Logger
+ *
+ * This file contains the definition of the Logger class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef LOGGER_H
 #define LOGGER_H
+
 #include <string>
 
 using namespace std;
 
 class Logger
 {
+
 public:
+
 	static void LogDebug( const string& );
+
 	static void LogInfo( const string& );
+
 	static void LogError( const string& );
 };
 

@@ -20,10 +20,22 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file WindowsUtils.h
+ * @brief Class definition for the WindowsUtils
+ *
+ * This file contains the definition of the WindowsUtils class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef WINDOWSUTILS_H
 #define WINDOWSUTILS_H
 
 #ifdef __WIN32
+
 #include <map>
 #include <string>
 #include <windows.h>
@@ -32,6 +44,7 @@ If not, see http://www.gnu.org/licenses/.
 
 class WindowsUtils
 {
+
 public:
 
     static void MeterThread(void);
@@ -59,6 +72,7 @@ public:
     static int32_t make_path( const string& _s, mode_t mode );
 
 private:
+
     static LRESULT APIENTRY WndProc(HWND handle, UINT umsg, WPARAM wparam, LPARAM lparam);
 };
 

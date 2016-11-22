@@ -20,6 +20,17 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file DataBaseDriver.h
+ * @brief Class definition for the DatabaseDriver
+ *
+ * This file contains the definition of the DatabaseDriver class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef DATABASEDRIVER_H
 #define DATABASEDRIVER_H
 #include <map>

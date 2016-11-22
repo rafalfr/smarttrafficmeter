@@ -20,8 +20,20 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file Utils.h
+ * @brief Class definition for the Utils
+ *
+ * This file contains the definition of the Utils class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
+
 #include <map>
 #include <string>
 #include <vector>
@@ -39,6 +51,7 @@ private:
 	static int callback( void *, int argc, char **argv, char **azColName );
 
 public:
+
 	static map<string, InterfaceInfo> get_all_interfaces( void );
 
 	static void load_data_from_sqlite( void );

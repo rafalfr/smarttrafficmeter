@@ -13,6 +13,20 @@
 //http://stackoverflow.com/questions/1528298/get-path-of-executable
 //http://stackoverflow.com/questions/17642433/why-pthread-causes-a-memory-leak
 
+//http://www.opensource.apple.com/source/gdb/gdb-1515/src/binutils/addr2line.c
+//https://github.com/dinhviethoa/linux-sample/blob/master/etpan-symbols.c
+//https://gist.github.com/jvranish/4441299
+//http://stackoverflow.com/questions/8278691/how-to-fix-backtrace-line-number-error-in-c
+
+//http://opensource.apple.com/source/X11libs/X11libs-40.2/cairo/cairo-1.8.6/util/backtrace-symbols.c?txt
+
+//https://panthema.net/2008/0901-stacktrace-demangled/
+//http://webcache.googleusercontent.com/search?q=cache:rcg0-9FvfdIJ:https://en.wikibooks.org/wiki/Linux_Applications_Debugging_Techniques/The_call_stack+&cd=3&hl=pl&ct=clnk&gl=pl
+//https://github.com/adarqui/darqbot/blob/master/test/how-to-generate-a-stacktrace-when-my-gcc-c-app-crashes
+//http://spin.atomicobject.com/2013/01/13/exceptions-stack-traces-c/
+
+
+
 //https://community.smartthings.com/t/grovestreams-as-an-alternative-to-xively/6314
 
 //http://zetcode.com/db/mysqlc/
@@ -34,6 +48,9 @@
 //http://win32easy.blogspot.com/2011/03/exception-handling-inform-your-users.html
 // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365943(v=vs.85).aspx
 //https://github.com/eidheim/Simple-WebSocket-Server
+//http://www.tol.it/doc/MySQL/chapter4.html
+//http://dev.mysql.com/doc/refman/5.0/en/mysql-fetch-row.html
+//libmysqlclient-dev
 
 
 //http://stackoverflow.com/questions/10943907/linux-allocator-does-not-release-small-chunks-of-memory/10945602#10945602
@@ -75,6 +92,9 @@
 //http://www.jqplot.com/
 //https://www.amcharts.com/demos/
 //http://www.uibox.in/item/68
+
+https://wiki.archlinux.org/index.php/Creating_packages#Meta_packages_and_groups
+https://wiki.archlinux.org/index.php/PKGBUILD
 
 // for backtrace code to work compile with -g -rdynamic options
 

@@ -20,10 +20,22 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file WebSiteContent.h
+ * @brief Class definition for the WebSiteContent
+ *
+ * This file contains the definition of the WebSiteContent class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef WEBSITECONTENT_H
 #define WEBSITECONTENT_H
 
 #ifndef _NO_WEBSERVER
+
 #include <string>
 #include "server_http.hpp"
 
@@ -31,11 +43,14 @@ using namespace std;
 
 class WebSiteContent
 {
+
 private:
+
 	static string rgba_color(string& hex_color, float a);
 
 
 public:
+
 	static void set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& server );
 };
 

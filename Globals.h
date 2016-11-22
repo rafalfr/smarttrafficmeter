@@ -20,6 +20,17 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file Globals.h
+ * @brief Global variables
+ *
+ * This file contains the definition of the global variables.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 

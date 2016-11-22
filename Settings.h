@@ -20,8 +20,20 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+/**
+ * @file Settings.h
+ * @brief Class definition for the Settings
+ *
+ * This file contains the definition of the Settings class.
+ *
+ * @author Rafał Frączek
+ * @bug No known bugs
+ *
+ */
+
 #ifndef SETTINGS_H
 #define SETTINGS_H
+
 #include <map>
 #include <string>
 
@@ -29,8 +41,9 @@ using namespace std;
 
 class Settings
 {
+
 public:
-	//key, value
+
 	static map<string, string> settings;
 };
 
