@@ -22,30 +22,36 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "InterfaceInfo.h"
 
-/** \brief default InterfaceInfo constructor
+/** @brief InterfaceInfo
  *
- * \param None
- * \return None
+ * The default InterfaceInfo constructor
+ *
+ * @param void
+ * @return void
  *
  */
 InterfaceInfo::InterfaceInfo() : mac( "" ), name( "" ), desc( "" ), ip4( "" ), ip6( "" )
 {
 }
 
-/** \brief InterfaceInfo copy constructor
+/** @brief InterfaceInfo
  *
- * \param InterfaceInfo
- * \return None
+ * The copy constructor
+ *
+ * @param InterfaceInfo
+ * @return void
  *
  */
 InterfaceInfo::InterfaceInfo( const InterfaceInfo& info ) : mac( info.get_mac() ), name( info.get_name() ), desc( "" ), ip4( info.get_ip4() ), ip6( info.get_ip6() )
 {
 }
 
-/** \brief InterfaceInfo destructor
+/** @brief ~InterfaceInfo
  *
- * \param None
- * \return None
+ * destructor
+ *
+ * @param void
+ * @return void
  *
  */
 InterfaceInfo::~InterfaceInfo()
@@ -59,8 +65,11 @@ InterfaceInfo::~InterfaceInfo()
 
 /** @brief operator=
   *
+  * The assignment operator
+  *
   * @param InterfaceInfo
   * @return InterfaceInfo
+  *
   */
 InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
 {
@@ -85,8 +94,8 @@ InterfaceInfo& InterfaceInfo::operator=( const InterfaceInfo& right )
  *
  * The function returns the network interface MAC address
  *
- * \param void
- * \return string
+ * @param void
+ * @return network interface MAC
  *
  */
 string InterfaceInfo::get_mac( void ) const
@@ -94,12 +103,12 @@ string InterfaceInfo::get_mac( void ) const
     return mac;
 }
 
-/** \brief get_name
+/** @brief get_name
  *
  * The function returns the network interface name
  *
- * \param void
- * \return string
+ * @param void
+ * @return network interface name
  *
  */
 string InterfaceInfo::get_name( void ) const
@@ -112,7 +121,7 @@ string InterfaceInfo::get_name( void ) const
   * The function returns the network interface description
   *
   * @param void
-  * @return string
+  * @return network interface description
   *
   */
 string InterfaceInfo::get_desc( void ) const
@@ -120,12 +129,12 @@ string InterfaceInfo::get_desc( void ) const
     return desc;
 }
 
-/** \brief get_ip4
+/** @brief get_ip4
  *
  * The function returns the network interface IP4 address
  *
- * \param void
- * \return string
+ * @param void
+ * @return network interface IP4 address
  *
  */
 string InterfaceInfo::get_ip4( void ) const
@@ -133,12 +142,12 @@ string InterfaceInfo::get_ip4( void ) const
     return ip4;
 }
 
-/** \brief get_ip6
+/** @brief get_ip6
  *
  * The function returns the network interface IP6 address
  *
- * \param void
- * \return string
+ * @param void
+ * @return network interface IP6 address
  *
  */
 string InterfaceInfo::get_ip6( void ) const
@@ -146,12 +155,12 @@ string InterfaceInfo::get_ip6( void ) const
     return ip6;
 }
 
-/** \brief set_mac
+/** @brief set_mac
  *
  * The function sets the MAC address for the network interface
  *
- * \param MAC address as a string
- * \return void
+ * @param MAC address as a string
+ * @return void
  *
  */
 void InterfaceInfo::set_mac( const char* t_mac )
@@ -160,12 +169,12 @@ void InterfaceInfo::set_mac( const char* t_mac )
     mac.append( t_mac );
 }
 
-/** \brief set_name
+/** @brief set_name
  *
  * The function sets the MAC address for the network interface
  *
- * \param network interface name as a string
- * \return void
+ * @param network interface name
+ * @return void
  *
  */
 void InterfaceInfo::set_name( const char* t_name )
@@ -178,8 +187,9 @@ void InterfaceInfo::set_name( const char* t_name )
   *
   * The function sets the MAC address for the network interface
   *
-  * @param network interface description as a string
+  * @param network interface description
   * @return void
+  *
   */
 void InterfaceInfo::set_desc( const char* t_desc )
 {
@@ -187,12 +197,12 @@ void InterfaceInfo::set_desc( const char* t_desc )
     desc.append( t_desc );
 }
 
-/** \brief set_ip4
+/** @brief set_ip4
  *
  * The function sets the IP4 address for the network interface
  *
- * \param network interface IP4 address as a const char* buffer
- * \return void
+ * @param network interface IP4 address
+ * @return void
  *
  */
 void InterfaceInfo::set_ip4( const char* t_ip4 )
@@ -201,12 +211,12 @@ void InterfaceInfo::set_ip4( const char* t_ip4 )
     ip4.append( t_ip4 );
 }
 
-/** \brief set_ip6
+/** @brief set_ip6
  *
  * The function sets the IP6 address for the network interface
  *
- * \param network interface IP6 address as a const char* buffer
- * \return void
+ * @param network interface IP6 address
+ * @return void
  *
  */
 void InterfaceInfo::set_ip6( const char* t_ip6 )

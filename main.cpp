@@ -46,6 +46,7 @@ If not, see http://www.gnu.org/licenses/.
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+#include "GroveStreamsUploader.h"
 #include "tclap/CmdLine.h"
 
 #ifndef _NO_WEBSERVER
@@ -160,6 +161,7 @@ int main ( int argc, char *argv[] )
 	Settings::settings["stats save interval"] = "1800";	//seconds
 	Settings::settings["stats server port"] = "32000";
 	Settings::settings["html server port"] = "8080";
+	Settings::settings["grovestreams api key"] = "";
 
 	load_settings();
 
@@ -264,31 +266,6 @@ int main ( int argc, char *argv[] )
 
 	meter_thread.join();
 
-	stats_server_thread.interrupt();
-	web_server_thread.interrupt();
-
-	if ( Utils::contians ( storage, "mysql" ) )
-	{
-#ifdef use_mysql
-#endif // use_mysql
-	}
-
-	if ( Utils::contians ( storage, "sqlite" ) )
-	{
-#ifdef use_sqlite
-		Utils::save_stats_to_sqlite();
-#endif // use_sqlite
-	}
-
-	if ( Utils::contians ( storage, "files" ) )
-	{
-		Utils::save_stats_to_files();
-	}
-
-
-	Utils::remove_instance_object();
-
-
 	exit ( EXIT_SUCCESS );
 }
 
@@ -299,7 +276,7 @@ int main ( int argc, char *argv[] )
 void load_settings ( void )
 {
 	ifstream file;
-	file.open ( Globals::cwd + PATH_SEPARATOR + "smartrafficmeter.conf", std::ifstream::in );
+	file.open ( Globals::cwd + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ifstream::in );
 
 	if ( file.is_open() )
 	{
@@ -311,8 +288,10 @@ void load_settings ( void )
 				continue;
 			}
 
+			line=Utils::trim(line);
+
 			// check if line matches settings pattern
-			if ( regex_match ( line, regex ( "^[a-z\\s]+\\=[a-z\\s0-9\\/\\.]+$" ) ) )
+			if ( regex_match ( line, regex ( "^[a-z\\s]+\\=[\\x2F\\x5Ca-z\\s0-9\\.\\-]+$" ) ) )
 			{
 				const vector<string>& items = Utils::split ( line, "=" );
 				Settings::settings[items[0]] = items[1];

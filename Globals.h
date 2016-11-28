@@ -69,6 +69,8 @@ public:
 
     static map<string, InterfaceInfo> interfaces;
 
+    static vector<boost::thread*> upload_threads;
+
     static DataBaseDriver db_drv;
 
 };

@@ -67,6 +67,7 @@ If not, see http://www.gnu.org/licenses/.
 #include "Settings.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+#include "GroveStreamsUploader.h"
 
 #include "LinuxUtils.h"
 
@@ -301,6 +302,15 @@ void* LinuxUtils::MeterThread ( void )
 		{
 			const string& storage = Settings::settings["storage"];
 
+
+			for(const auto & th : Globals::upload_threads)
+			{
+				delete th;
+			}
+			Globals::upload_threads.clear();
+
+			Globals::upload_threads.push_back(new boost::thread(GroveStreamsUploader::run));
+
 			if ( Utils::contians ( storage, "mysql" ) )
 			{
 #ifdef use_mysql
@@ -426,6 +436,29 @@ void LinuxUtils::signal_handler ( int signal )
 		Logger::LogError ( backtrace );
 		Logger::LogInfo ( "Process exited as a result of SIGFPE" );
 	}
+
+	if ( Utils::contians ( storage, "mysql" ) )
+	{
+#ifdef use_mysql
+#endif // use_mysql
+	}
+
+	if ( Utils::contians ( storage, "sqlite" ) )
+	{
+#ifdef use_sqlite
+		Utils::save_stats_to_sqlite();
+#endif // use_sqlite
+	}
+
+	if ( Utils::contians ( storage, "files" ) )
+	{
+		Utils::save_stats_to_files();
+	}
+
+	Utils::remove_instance_object();
+
+	boost::thread* th=new boost::thread(GroveStreamsUploader::run);
+	th->timed_join(boost::posix_time::seconds(5));
 
 	Globals::terminate_program=true;
 }

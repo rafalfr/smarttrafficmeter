@@ -51,6 +51,7 @@
 					<Add library="boost_thread" />
 					<Add library="boost_context" />
 					<Add library="boost_filesystem" />
+					<Add library="curl" />
 				</Linker>
 			</Target>
 			<Target title="Linux Release">
@@ -87,6 +88,7 @@
 					<Add library="boost_thread" />
 					<Add library="boost_context" />
 					<Add library="boost_filesystem" />
+					<Add library="curl" />
 				</Linker>
 			</Target>
 			<Target title="pi">
@@ -98,8 +100,8 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
-					<Add option="-std=c++11" />
 					<Add option="-w" />
+					<Add option="-std=c++11" />
 					<Add option="-D__pi__" />
 				</Compiler>
 				<Linker>
@@ -113,6 +115,7 @@
 					<Add library="boost_regex" />
 					<Add library="boost_context" />
 					<Add library="boost_coroutine" />
+					<Add library="curl" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
@@ -193,6 +196,8 @@
 		<Unit filename="Debug.h" />
 		<Unit filename="Globals.cpp" />
 		<Unit filename="Globals.h" />
+		<Unit filename="GroveStreamsUploader.cpp" />
+		<Unit filename="GroveStreamsUploader.h" />
 		<Unit filename="InterfaceInfo.cpp" />
 		<Unit filename="InterfaceInfo.h" />
 		<Unit filename="InterfaceSpeedMeter.cpp" />

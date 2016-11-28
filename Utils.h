@@ -76,6 +76,8 @@ public:
 
 	static void get_time_from_milisec(time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
+	static time_t date_to_seconds(uint32_t y, uint32_t m, uint32_t d, uint32_t h=0, uint32_t minute=0, uint32_t sec=0);
+
 	static bool contians( const string& str, const string& key );
 
 	static bool starts_with( const string& str, const string& key );
@@ -94,6 +96,8 @@ public:
 
 	static int32_t stoi(const string& str);
 
+	static uint32_t stoui(const string& str);
+
 	static int32_t hstoi(const string& str);
 
 	static float stof(const string& str);
@@ -105,6 +109,8 @@ public:
 	static string trim( const std::string &s );
 
 	static string date_str(const string& type, uint32_t y,  uint32_t m, uint32_t d, uint32_t h );
+
+	static void str2date(const string& str, const string& type, uint32_t* y,  uint32_t* m, uint32_t* d, uint32_t* h );
 
 	static bool check_one_instance( void );
 

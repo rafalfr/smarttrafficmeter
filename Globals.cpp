@@ -73,8 +73,15 @@ MAC address, InterfaceSpeedMeter object
 map<string, InterfaceSpeedMeter> Globals::speed_stats;
 
 /**<
-The global map object that holds information for each interface.
+The global map object that stores information for each interface.
 The map structure is as follows:
 MAC address, InterfaceInfo object
 */
 map<string, InterfaceInfo> Globals::interfaces;
+
+/**<
+The global vector object that stores pointers to
+threads which upload statistics to web services
+like grovestreams and others.
+*/
+vector<boost::thread*> Globals::upload_threads;
