@@ -624,9 +624,9 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 				const InterfaceStats& stats = row_stats.second;
 				const string& row = row_stats.first;
 
-				if ( stats.recieved() != 0ULL || stats.transmited() != 0ULL )
+				if ( stats.received() != 0ULL || stats.transmitted() != 0ULL )
 				{
-					csv += row + "," + Utils::to_string ( stats.recieved() ) + "," + Utils::to_string ( stats.transmited() ) + "\r\n";
+					csv += row + "," + Utils::to_string ( stats.received() ) + "," + Utils::to_string ( stats.transmitted() ) + "\r\n";
 				}
 			}
 
@@ -965,18 +965,18 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			{
 				const InterfaceStats& stats = row_stats.second;
 
-				if ( stats.recieved() > max_value )
+				if ( stats.received() > max_value )
 				{
-					max_value = stats.recieved();
+					max_value = stats.received();
 				}
 
-				if ( stats.transmited() > max_value )
+				if ( stats.transmitted() > max_value )
 				{
-					max_value = stats.transmited();
+					max_value = stats.transmitted();
 				}
 
-				rx_in_period += stats.recieved();
-				tx_in_period += stats.transmited();
+				rx_in_period += stats.received();
+				tx_in_period += stats.transmitted();
 			}
 
 
@@ -1042,7 +1042,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			{
 				const InterfaceStats& stats = row_stats.second;
 
-				float value = ( ( float ) stats.recieved() ) / scale;
+				float value = ( ( float ) stats.received() ) / scale;
 
 				chart_data += Utils::float_to_string ( value );
 
@@ -1062,7 +1062,7 @@ void WebSiteContent::set_web_site_content ( SimpleWeb::Server<SimpleWeb::HTTP>& 
 			{
 				const InterfaceStats& stats = row_stats.second;
 
-				float value = ( ( float ) stats.transmited() ) / scale;
+				float value = ( ( float ) stats.transmitted() ) / scale;
 
 				chart_data += Utils::float_to_string ( value );
 

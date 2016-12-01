@@ -61,7 +61,7 @@ void GroveStreamsUploader::run( void )
 
         for ( auto const & mac_table : Globals::all_stats )
         {
-            const string& mac = mac_table.first;
+            const string mac = mac_table.first;
 
             string url;
             url += base_url;
@@ -85,13 +85,19 @@ void GroveStreamsUploader::run( void )
                 {
                     uint32_t y, m, d, h;
 
-                    const string& row = row_stats.first;
+                    const string row = row_stats.first;
                     const InterfaceStats& stats = row_stats.second;
                     Utils::str2date( row, table_name, &y, &m, &d, &h );
+
+                    if ( y == 0U && m == 0U && d == 0U && h == 0U )
+                    {
+                        continue;
+                    }
+
                     time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
 
-                    uint64_t rx = stats.recieved();
-                    uint64_t tx = stats.transmited();
+                    uint64_t rx = stats.received();
+                    uint64_t tx = stats.transmitted();
 
                     json += "{\n";
                     json += "\"compId\": \"" + mac + "\",\n";

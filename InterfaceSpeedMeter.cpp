@@ -22,7 +22,14 @@ If not, see http://www.gnu.org/licenses/.
 #include <sys/time.h>
 #include "InterfaceSpeedMeter.h"
 
-
+/** @brief InterfaceSpeedMeter
+ *
+ * The default constructor
+ *
+ * @param void
+ * @return void
+ *
+ */
 InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
 {
     map<string, uint64_t> item;
@@ -35,7 +42,14 @@ InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
     buf.push_front( item );
 }
 
-
+/** @brief InterfaceSpeedMeter
+ *
+ * The copy constructor
+ *
+ * @param InterfaceSpeedMeter
+ * @return void
+ *
+ */
 InterfaceSpeedMeter::InterfaceSpeedMeter( const InterfaceSpeedMeter& ism ) : max_buf_items( ism.max_buf_items ), buf()
 {
     //copy constructor with a buf deep copy
@@ -54,11 +68,26 @@ InterfaceSpeedMeter::InterfaceSpeedMeter( const InterfaceSpeedMeter& ism ) : max
     }
 }
 
+/** @brief ~InterfaceSpeedMeter
+ *
+ * The destructor
+ *
+ * @param void
+ * @return void
+ *
+ */
 InterfaceSpeedMeter::~InterfaceSpeedMeter()
 {
-
 }
 
+/** @brief get_rx_speed
+ *
+ * The method computes the current download speed
+ *
+ * @param void
+ * @return current data download speed
+ *
+ */
 uint64_t InterfaceSpeedMeter::get_rx_speed( void ) const
 {
     const map<string, uint64_t> & first = buf.front();
@@ -77,6 +106,14 @@ uint64_t InterfaceSpeedMeter::get_rx_speed( void ) const
     }
 }
 
+/** @brief get_tx_speed
+ *
+ * The method computes the current upload speed
+ *
+ * @param void
+ * @return current data upload speed
+ *
+ */
 uint64_t InterfaceSpeedMeter::get_tx_speed( void ) const
 {
     const map<string, uint64_t> & first = buf.front();
@@ -94,6 +131,14 @@ uint64_t InterfaceSpeedMeter::get_tx_speed( void ) const
     }
 }
 
+/** @brief get_time_milisecs
+ *
+ * The method return the current timestamp in miliseconds
+ *
+ * @param void
+ * @return the current current timestamp in miliseconds
+ *
+ */
 uint64_t InterfaceSpeedMeter::get_time_milisecs( void )
 {
     struct timeval  tv;
@@ -102,7 +147,15 @@ uint64_t InterfaceSpeedMeter::get_time_milisecs( void )
     return ( tv.tv_sec ) * 1000LL + ( tv.tv_usec ) / 1000ULL ;
 }
 
-
+/** @brief update
+ *
+ * The method updates the network current data speed
+ *
+ * @param current received data
+ * @param current transmitted data
+ * @return void
+ *
+ */
 void InterfaceSpeedMeter::update( uint64_t _rx, uint64_t _tx )
 {
     map<string, uint64_t> item;

@@ -602,32 +602,73 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
         ( *m ) = 1U;
         ( *d ) = 1U;
         ( *h ) = 0U;
+
+        if ( ( *y ) == 0U )
+        {
+            ( *y ) = 0U;
+            ( *m ) = 0U;
+            ( *d ) = 0U;
+            ( *h ) = 0U;
+        }
     }
     else if ( type.compare( "monthly" ) == 0 )
     {
         const vector<string>& items = Utils::split( str, "-" );
-        ( *y ) = Utils::stoui( items[0] );
-        ( *m ) = Utils::stoui( items[1] );
-        ( *d ) = 1U;
-        ( *h ) = 0U;
+
+        if ( items.size() == 2 )
+        {
+            ( *y ) = Utils::stoui( items[0] );
+            ( *m ) = Utils::stoui( items[1] );
+            ( *d ) = 1U;
+            ( *h ) = 0U;
+        }
+        else
+        {
+            ( *y ) = 0U;
+            ( *m ) = 0U;
+            ( *d ) = 0U;
+            ( *h ) = 0U;
+        }
     }
     else if ( type.compare( "daily" ) == 0 )
     {
         const vector<string>& items = Utils::split( str, "-" );
-        ( *y ) = Utils::stoui( items[0] );
-        ( *m ) = Utils::stoui( items[1] );
-        ( *d ) = Utils::stoui( items[2] );
-        ( *h ) = 0U;
+
+        if ( items.size() == 3 )
+        {
+            ( *y ) = Utils::stoui( items[0] );
+            ( *m ) = Utils::stoui( items[1] );
+            ( *d ) = Utils::stoui( items[2] );
+            ( *h ) = 0U;
+        }
+        else
+        {
+            ( *y ) = 0U;
+            ( *m ) = 0U;
+            ( *d ) = 0U;
+            ( *h ) = 0U;
+        }
     }
     else if ( type.compare( "hourly" ) == 0 )
     {
         const vector<string>& items1 = Utils::split( str, "_" );
         const vector<string>& items = Utils::split( items1[0], "-" );
-        ( *y ) = Utils::stoui( items[0] );
-        ( *m ) = Utils::stoui( items[1] );
-        ( *d ) = Utils::stoui( items[2] );
-        const vector<string>& items3 = Utils::split( items1[1], "-" );
-        ( *h ) = Utils::stoui( items3[0].substr( 0, 2 ) );
+
+        if ( items1.size() == 2 && items.size() == 3 )
+        {
+            ( *y ) = Utils::stoui( items[0] );
+            ( *m ) = Utils::stoui( items[1] );
+            ( *d ) = Utils::stoui( items[2] );
+            const vector<string>& items3 = Utils::split( items1[1], "-" );
+            ( *h ) = Utils::stoui( items3[0].substr( 0, 2 ) );
+        }
+        else
+        {
+            ( *y ) = 0U;
+            ( *m ) = 0U;
+            ( *d ) = 0U;
+            ( *h ) = 0U;
+        }
     }
 }
 
@@ -745,7 +786,7 @@ void Utils::load_data_from_sqlite( void )
         if ( rc != SQLITE_OK )
         {
             sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete from montlhy table rows with zero rx and tx values" );
+            Logger::LogError( "Can not delete from monthly table rows with zero rx and tx values" );
         }
 
         query.clear();
@@ -903,7 +944,7 @@ void Utils::load_data_from_sqlite( void )
             Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
         }
 
-        sqlite3_close( db );
+        sqlite3_close_v2( db );
     }
 
     Globals::data_load_save_mutex.unlock();
@@ -1044,8 +1085,8 @@ void Utils::save_stats_to_sqlite( void )
             {
                 const string& row = row_stats.first;
                 const InterfaceStats& stats = row_stats.second;
-                uint64_t rx = stats.recieved();
-                uint64_t tx = stats.transmited();
+                uint64_t rx = stats.received();
+                uint64_t tx = stats.transmitted();
 
                 query.clear();
                 query += "INSERT OR IGNORE INTO " + table_name + " (row,rx_bytes,tx_bytes) VALUES(";
@@ -1332,6 +1373,11 @@ uint32_t Utils::stoui( const string& str )
 
     for ( int32_t i = str.size() - 1; i >= 0; i-- )
     {
+        if ( str[i] < '0' || str[i] > '9' )
+        {
+            return 0U;
+        }
+
         result += ( str[i] - '0' ) * mul;
         mul *= 10U;
     }

@@ -23,19 +23,51 @@ If not, see http://www.gnu.org/licenses/.
 #include <limits>
 #include "InterfaceStats.h"
 
+/** @brief InterfaceStats
+ *
+ * The default constructor
+ *
+ * @param void
+ * @return void
+ *
+ */
 InterfaceStats::InterfaceStats() : first_update( true ), rx( 0ULL ), tx( 0ULL ), p_rx( 0ULL ), p_tx( 0ULL )
 {
 }
 
+/** @brief InterfaceStats
+ *
+ * The copy constructor
+ *
+ * @param InterfaceStats object
+ * @return void
+ *
+ */
 InterfaceStats::InterfaceStats( const InterfaceStats& stats ) : first_update( stats.first_update ), rx( stats.rx ), tx( stats.tx ), p_rx( stats.p_rx ), p_tx( stats.p_tx )
 {
 }
 
+/** @brief ~InterfaceStats
+ *
+ * The default destructor
+ *
+ * @param void
+ * @return void
+ *
+ */
 InterfaceStats::~InterfaceStats()
 {
-
 }
 
+/** @brief set_initial_stats
+ *
+ * The method sets the initial statistics
+ *
+ * @param transmitted bytes
+ * @param received bytes
+ * @return void
+ *
+ */
 void InterfaceStats::set_initial_stats( uint64_t _tx, uint64_t _rx )
 {
     rx = _rx;
@@ -44,9 +76,14 @@ void InterfaceStats::set_initial_stats( uint64_t _tx, uint64_t _rx )
 }
 
 /** @brief set_current_stats
-  *
-  * @todo: document this function
-  */
+ *
+ * The method sets the current statistics
+ *
+ * @param transmitted bytes
+ * @param received bytes
+ * @return void
+ *
+ */
 void InterfaceStats::set_current_stats( uint64_t _tx, uint64_t _rx )
 {
     rx = _rx;
@@ -54,6 +91,15 @@ void InterfaceStats::set_current_stats( uint64_t _tx, uint64_t _rx )
     first_update = false;
 }
 
+/** @brief update
+ *
+ * The method updates the current statistics
+ *
+ * @param transmitted bytes
+ * @param received bytes
+ * @return void
+ *
+ */
 void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
 {
     if ( first_update == true )
@@ -97,13 +143,28 @@ void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
     p_tx = _tx;
 }
 
-uint64_t InterfaceStats::recieved( void ) const
+/** @brief received
+ *
+ * The method returns the number of received bytes
+ *
+ * @param void
+ * @return the number of received bytes
+ *
+ */
+uint64_t InterfaceStats::received( void ) const
 {
     return rx;
 }
 
-uint64_t InterfaceStats::transmited( void ) const
+/** @brief transmitted
+ *
+ * The method returns the number of transmitted bytes
+ *
+ * @param void
+ * @return the number of transmitted bytes
+ *
+ */
+uint64_t InterfaceStats::transmitted( void ) const
 {
     return tx;
 }
-

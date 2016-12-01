@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Linux Debug">
 				<Option platforms="Unix;" />
-				<Option output="bin/Debug/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -56,7 +56,7 @@
 			</Target>
 			<Target title="Linux Release">
 				<Option platforms="Unix;" />
-				<Option output="bin/Release/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -93,7 +93,7 @@
 			</Target>
 			<Target title="pi">
 				<Option platforms="Unix;" />
-				<Option output="bin/pi/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/pi/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/pi/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -120,7 +120,7 @@
 			</Target>
 			<Target title="Windows Release">
 				<Option platforms="Windows;" />
-				<Option output="bin/Release/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="mingw64" />
@@ -154,7 +154,7 @@
 			</Target>
 			<Target title="Windows Debug">
 				<Option platforms="Windows;" />
-				<Option output="bin/Debug/SmartTrafficMeter" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="mingw64" />

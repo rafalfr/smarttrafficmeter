@@ -232,19 +232,6 @@ int main ( int argc, char *argv[] )
 #endif // use_mysql
 	}
 
-	if ( Utils::contians ( storage, "sqlite" ) )
-	{
-#ifdef use_sqlite
-		Utils::save_stats_to_sqlite();
-#endif // use_sqlite
-	}
-
-	if ( Utils::contians ( storage, "files" ) )
-	{
-		Utils::save_stats_to_files();
-	}
-
-
 	boost::thread stats_server_thread ( ServerThread::Thread );
 
 	boost::thread meter_thread ( Utils::MeterThread );
@@ -265,6 +252,13 @@ int main ( int argc, char *argv[] )
 #endif // _NO_WEBSERVER
 
 	meter_thread.join();
+
+//	boost::thread* th=new boost::thread(GroveStreamsUploader::run);
+//
+//	if(th->joinable()==true)
+//	{
+//		th->timed_join(boost::posix_time::seconds(15));
+//	}
 
 	exit ( EXIT_SUCCESS );
 }

@@ -65,9 +65,9 @@ public:
 
     void update( uint64_t _tx, uint64_t _rx );
 
-    uint64_t recieved( void ) const;
+    uint64_t received( void ) const;
 
-    uint64_t transmited( void ) const;
+    uint64_t transmitted( void ) const;
 
 };
 
