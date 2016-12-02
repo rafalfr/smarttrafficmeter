@@ -126,8 +126,8 @@ void ServerThread::UDPServer::do_send( std::size_t )
 
             if ( Globals::all_stats[mac]["hourly"].find( row ) != Globals::all_stats[mac]["hourly"].end() )
             {
-                root[mac]["hourly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].recieved() );
-                root[mac]["hourly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].transmited() );
+                root[mac]["hourly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].received() );
+                root[mac]["hourly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["hourly"][row].transmitted() );
             }
             else
             {
@@ -140,8 +140,8 @@ void ServerThread::UDPServer::do_send( std::size_t )
 
             if ( Globals::all_stats[mac]["daily"].find( row ) != Globals::all_stats[mac]["daily"].end() )
             {
-                root[mac]["daily"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].recieved() );
-                root[mac]["daily"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].transmited() );
+                root[mac]["daily"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].received() );
+                root[mac]["daily"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["daily"][row].transmitted() );
             }
             else
             {
@@ -154,8 +154,8 @@ void ServerThread::UDPServer::do_send( std::size_t )
 
             if ( Globals::all_stats[mac]["monthly"].find( row ) != Globals::all_stats[mac]["monthly"].end() )
             {
-                root[mac]["monthly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].recieved() );
-                root[mac]["monthly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].transmited() );
+                root[mac]["monthly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].received() );
+                root[mac]["monthly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["monthly"][row].transmitted() );
             }
             else
             {
@@ -168,8 +168,8 @@ void ServerThread::UDPServer::do_send( std::size_t )
 
             if ( Globals::all_stats[mac]["yearly"].find( row ) != Globals::all_stats[mac]["yearly"].end() )
             {
-                root[mac]["yearly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].recieved() );
-                root[mac]["yearly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].transmited() );
+                root[mac]["yearly"]["down"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].received() );
+                root[mac]["yearly"]["up"] = Json::Value::UInt64( Globals::all_stats[mac]["yearly"][row].transmitted() );
             }
             else
             {

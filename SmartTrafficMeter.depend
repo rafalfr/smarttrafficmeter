@@ -25860,7 +25860,7 @@
 1479818716 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
 	<string>
 
-1479818652 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+1480682097 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
@@ -25965,7 +25965,7 @@
 	<cstdint>
 	"mysql.h"
 
-1478887781 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1480682469 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -25994,7 +25994,7 @@
 	"InterfaceSpeedMeter.h"
 	"DataBaseDriver.h"
 
-1479818613 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
+1480599401 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
 	<stdint.h>
 
 1479817702 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
@@ -26083,11 +26083,11 @@
 1480346495 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
-1480436493 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1480599528 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
 	<limits>
 	"InterfaceStats.h"
 
-1480455965 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1480682276 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26135,7 +26135,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1480455524 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1480551440 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26169,7 +26169,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1480551761 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1480682642 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26335,7 +26335,7 @@
 	<boost/regex.hpp>
 	<regex>
 
-1480532057 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1480682097 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
 	<sstream>
 	<algorithm>
@@ -26408,7 +26408,7 @@
 1479330258 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BackgroundImage.cpp
 	"Resources.h"
 
-1480532106 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
+1480599401 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
 	<string>
 	"Utils.h"
 	"Logger.h"

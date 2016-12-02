@@ -1514,7 +1514,7 @@ string Utils::get_program_path( char** argv )
 #endif // _WIN32
 
 #ifdef __linux
-    return LinuxUtils::get_get_program_path( argv[0] );
+    return LinuxUtils::get_program_path( argv[0] );
 #endif // __linux
 }
 

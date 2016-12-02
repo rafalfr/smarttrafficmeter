@@ -1,6 +1,6 @@
 /*
 
-linuxutils.cpp
+LinuxUtils.cpp
 
 Copyright (C) 2016 Rafał Frączek
 
@@ -83,9 +83,13 @@ asection* LinuxUtils::text = nullptr;
 using namespace std;
 
 /** @brief MeterThread
-  *
-  * @todo: document this function
-  */
+ *
+ * The method which is run as a statistics monitoring thread
+ *
+ * @param void
+ * @return void
+ *
+ */
 void* LinuxUtils::MeterThread( void )
 {
     uint32_t y = 0;
@@ -400,9 +404,13 @@ void* LinuxUtils::MeterThread( void )
 }
 
 /** @brief signal_handler
-  *
-  * @todo: document this function
-  */
+ *
+ * The method is invoked when a system signal is received
+ *
+ * @param signal
+ * @return void
+ *
+ */
 void LinuxUtils::signal_handler( int signal )
 {
     if ( signal == SIGINT )
@@ -464,9 +472,13 @@ void LinuxUtils::signal_handler( int signal )
 }
 
 /** @brief BecomeDaemon
-  *
-  * @todo: document this function
-  */
+ *
+ * The method makes the program to run as a linux daemon
+ *
+ * @param flags
+ * @return daemon creation status
+ *
+ */
 int LinuxUtils::BecomeDaemon( int flags )
 {
     int maxfd, fd;
@@ -540,9 +552,13 @@ int LinuxUtils::BecomeDaemon( int flags )
 }
 
 /** @brief get_all_interfaces
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns all available network interfaces
+ *
+ * @param void
+ * @return all available network interfaces
+ *
+ */
 map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 {
     map<string, InterfaceInfo> interfaces;
@@ -642,9 +658,13 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
 
 /** @brief get_mac
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns the MAC address of a network interface
+ *
+ * @param network interface name
+ * @return MAC address
+ *
+ */
 string LinuxUtils::get_mac( char* name )
 {
     int s;
@@ -679,9 +699,13 @@ string LinuxUtils::get_mac( char* name )
 }
 
 /** @brief check_one_instance
-  *
-  * @todo: document this function
-  */
+ *
+ * The method checks whether another instance of the program is currently running
+ *
+ * @param void
+ * @return true if this instance is the only one currently running, otherwise false is returned
+ *
+ */
 bool LinuxUtils::check_one_instance( void )
 {
     try
@@ -698,20 +722,26 @@ bool LinuxUtils::check_one_instance( void )
 }
 
 /** @brief remove_instance_object
-  *
-  * @todo: document this function
-  */
+ *
+ * The method removes from the os a shared object which represents this program instance
+ *
+ * @param void
+ * @return void
+ *
+ */
 void LinuxUtils::remove_instance_object( void )
 {
     Globals::shared_mem.get()->remove( "SmartTrafficMeterSharedMemory" );
 }
 
-
-
 /** @brief resolve
-  *
-  * @todo: document this function
-  */
+ *
+ * The method resolves the execution address into program file, line and function
+ *
+ * @param execution address
+ * @return program file, line and function
+ *
+ */
 string LinuxUtils::resolve( const unsigned long address )
 {
     string out;
@@ -780,9 +810,13 @@ string LinuxUtils::resolve( const unsigned long address )
 }
 
 /** @brief set_signals_handler
-  *
-  * @todo: document this function
-  */
+ *
+ * The method sets the handler function for system signals
+ *
+ * @param void
+ * @return void
+ *
+ */
 void LinuxUtils::set_signals_handler( void )
 {
     signal( SIGINT, LinuxUtils::signal_handler );
@@ -793,12 +827,15 @@ void LinuxUtils::set_signals_handler( void )
     signal( SIGFPE, LinuxUtils::signal_handler );
 }
 
-
-/** @brief get_get_program_path
-  *
-  * @todo: document this function
-  */
-string LinuxUtils::get_get_program_path( const char* argv0 )
+/** @brief get_program_path
+ *
+ * The method returns the program path
+ *
+ * @param argv[0]
+ * @return full program path
+ *
+ */
+string LinuxUtils::get_program_path( const char* argv0 )
 {
     char buf[1024] = {0};
     ssize_t size = readlink( "/proc/self/exe", buf, sizeof( buf ) );
@@ -828,9 +865,14 @@ string LinuxUtils::get_get_program_path( const char* argv0 )
 }
 
 /** @brief get_user_host
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns the user name and host name
+ *
+ * @param[out] user name
+ * @param[out] host name
+ * @return void
+ *
+ */
 void LinuxUtils::get_user_host( string& user, string& host )
 {
     char hostname[HOST_NAME_MAX];
@@ -851,9 +893,13 @@ void LinuxUtils::get_user_host( string& user, string& host )
 
 
 /** @brief get_os_info
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns the operating system name
+ *
+ * @param[out] operating system name
+ * @return void
+ *
+ */
 void LinuxUtils::get_os_info( string& os_info )
 {
     struct utsname info;
@@ -871,7 +917,14 @@ void LinuxUtils::get_os_info( string& os_info )
     os_info.append( info.machine );
 }
 
-
+/** @brief dir_exists
+ *
+ * The method checks whether the given directory exists
+ *
+ * @param full directory path
+ * @return true if the directory exists, false otherwise
+ *
+ */
 bool LinuxUtils::dir_exists( const char* path )
 {
     struct stat info;
@@ -890,7 +943,15 @@ bool LinuxUtils::dir_exists( const char* path )
     }
 }
 
-
+/** @brief make_path
+ *
+ * The method creates the given path
+ *
+ * @param full directory path to create
+ * @param creation flags
+ * @return creation status
+ *
+ */
 int32_t LinuxUtils::make_path( const string& _s, mode_t mode )
 {
     size_t pre = 0, pos;
@@ -923,9 +984,13 @@ int32_t LinuxUtils::make_path( const string& _s, mode_t mode )
 }
 
 /** @brief save_pid_file
-  *
-  * @todo: document this function
-  */
+ *
+ * The method saves the program pid to the pid file
+ *
+ * @param full pid file path
+ * @return void
+ *
+ */
 void LinuxUtils::save_pid_file( const string& pid_file_path )
 {
     ofstream file;
