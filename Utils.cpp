@@ -276,6 +276,7 @@ string Utils::float_to_string( float value, int32_t precision )
 {
     std::ostringstream stm ;
     stm.precision( precision );
+    stm.setf( std::ios_base::fixed );
     stm << value ;
     return stm.str() ;
 }
@@ -288,6 +289,7 @@ string Utils::double_to_string( double value, int32_t precision )
 {
     std::ostringstream stm ;
     stm.precision( precision );
+    stm.setf( std::ios_base::fixed );
     stm << value ;
     return stm.str() ;
 }

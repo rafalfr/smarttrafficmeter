@@ -191,18 +191,27 @@ void* LinuxUtils::MeterThread( void )
 
                 if ( Globals::all_stats[mac]["hourly"].find( row ) == Globals::all_stats[mac]["hourly"].end() )
                 {
+                    uint32_t p_y, p_m, p_d, p_h;
+                    Utils::get_time_from_milisec( time( nullptr ) - 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
+                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 ) + "-" + Utils::to_string( p_d, 2 ) + "_" + Utils::to_string( p_h, 2 ) + ":00-" + Utils::to_string( p_h + 1, 2 ) + ":00";
+                    Globals::all_stats[mac]["hourly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
+
                     InterfaceStats hstats;
                     Globals::all_stats[mac]["hourly"][row] = hstats;
                 }
 
                 Globals::all_stats[mac]["hourly"][row].update( stats->tx_bytes, stats->rx_bytes );
 
-
                 row.clear();
                 row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
 
                 if ( Globals::all_stats[mac]["daily"].find( row ) == Globals::all_stats[mac]["daily"].end() )
                 {
+                    uint32_t p_y, p_m, p_d, p_h;
+                    Utils::get_time_from_milisec( time( nullptr ) - 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
+                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 ) + "-" + Utils::to_string( p_d, 2 );
+                    Globals::all_stats[mac]["daily"][p_row].update( stats->tx_bytes, stats->rx_bytes );
+
                     InterfaceStats dstats;
                     Globals::all_stats[mac]["daily"][row] = dstats;
                 }
@@ -214,6 +223,11 @@ void* LinuxUtils::MeterThread( void )
 
                 if ( Globals::all_stats[mac]["monthly"].find( row ) == Globals::all_stats[mac]["monthly"].end() )
                 {
+                    uint32_t p_y, p_m, p_d, p_h;
+                    Utils::get_time_from_milisec( time( nullptr ) - 31ULL * 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
+                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 );
+                    Globals::all_stats[mac]["monthly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
+
                     InterfaceStats mstats;
                     Globals::all_stats[mac]["monthly"][row] = mstats;
                 }
@@ -226,6 +240,11 @@ void* LinuxUtils::MeterThread( void )
 
                 if ( Globals::all_stats[mac]["yearly"].find( row ) == Globals::all_stats[mac]["yearly"].end() )
                 {
+                    uint32_t p_y, p_m, p_d, p_h;
+                    Utils::get_time_from_milisec( time( nullptr ) - 365ULL * 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
+                    string p_row = Utils::to_string( p_y );
+                    Globals::all_stats[mac]["yearly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
+
                     InterfaceStats ystats;
                     Globals::all_stats[mac]["yearly"][row] = ystats;
                 }
