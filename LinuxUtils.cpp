@@ -92,6 +92,7 @@ using namespace std;
  */
 void* LinuxUtils::MeterThread( void )
 {
+    bool first_iteration = true;
     uint32_t y = 0;
     uint32_t m = 0;
     uint32_t d = 0;
@@ -107,6 +108,18 @@ void* LinuxUtils::MeterThread( void )
     const string daily( "daily" );
     const string monthly( "monthly" );
     const string yearly( "yearly" );
+    string current_hourly_row;
+    string current_daily_row;
+    string current_monthly_row;
+    string current_yearly_row;
+    string p_hourly_row;
+    string p_daily_row;
+    string p_monthly_row;
+    string p_yearly_row;
+    bool hourly_row_changed = false;
+    bool daily_row_changed = false;
+    bool monthly_row_changed = false;
+    bool yearly_row_changed = false;
 
 
     try
@@ -133,6 +146,18 @@ void* LinuxUtils::MeterThread( void )
 
     while ( Globals::terminate_program == false )
     {
+        Utils::get_time( &y, &m, &d, &h );
+
+        if ( first_iteration == true )
+        {
+            p_hourly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+            p_daily_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+            p_monthly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+            p_yearly_row = Utils::to_string( y );
+            first_iteration = false;
+        }
+
+        hourly_row_changed = daily_row_changed = monthly_row_changed = yearly_row_changed = false;
 
         if ( getifaddrs( &ifaddr ) == -1 )
         {
@@ -173,9 +198,6 @@ void* LinuxUtils::MeterThread( void )
             {
                 struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
 
-
-                Utils::get_time( &y, &m, &d, &h );
-
                 //TODO remove possible memory leak
                 const string& mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
@@ -186,70 +208,60 @@ void* LinuxUtils::MeterThread( void )
                     Globals::speed_stats[mac] = ism;
                 }
 
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+                current_hourly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
 
-                if ( Globals::all_stats[mac]["hourly"].find( row ) == Globals::all_stats[mac]["hourly"].end() )
+                if ( Globals::all_stats[mac]["hourly"].find( current_hourly_row ) == Globals::all_stats[mac]["hourly"].end() )
                 {
-                    uint32_t p_y, p_m, p_d, p_h;
-                    Utils::get_time_from_milisec( time( nullptr ) - 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
-                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 ) + "-" + Utils::to_string( p_d, 2 ) + "_" + Utils::to_string( p_h, 2 ) + ":00-" + Utils::to_string( p_h + 1, 2 ) + ":00";
-                    Globals::all_stats[mac]["hourly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
-
                     InterfaceStats hstats;
-                    Globals::all_stats[mac]["hourly"][row] = hstats;
+                    Globals::all_stats[mac]["hourly"][current_hourly_row] = hstats;
+
+                    Globals::all_stats[mac]["hourly"][p_hourly_row].update( stats->tx_bytes, stats->rx_bytes );
+                    hourly_row_changed = true;
                 }
 
-                Globals::all_stats[mac]["hourly"][row].update( stats->tx_bytes, stats->rx_bytes );
+                Globals::all_stats[mac]["hourly"][current_hourly_row].update( stats->tx_bytes, stats->rx_bytes );
 
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
 
-                if ( Globals::all_stats[mac]["daily"].find( row ) == Globals::all_stats[mac]["daily"].end() )
+                current_daily_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+
+                if ( Globals::all_stats[mac]["daily"].find( current_daily_row ) == Globals::all_stats[mac]["daily"].end() )
                 {
-                    uint32_t p_y, p_m, p_d, p_h;
-                    Utils::get_time_from_milisec( time( nullptr ) - 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
-                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 ) + "-" + Utils::to_string( p_d, 2 );
-                    Globals::all_stats[mac]["daily"][p_row].update( stats->tx_bytes, stats->rx_bytes );
-
                     InterfaceStats dstats;
-                    Globals::all_stats[mac]["daily"][row] = dstats;
+                    Globals::all_stats[mac]["daily"][current_daily_row] = dstats;
+
+                    Globals::all_stats[mac]["daily"][p_daily_row].update( stats->tx_bytes, stats->rx_bytes );
+                    daily_row_changed = true;
                 }
 
-                Globals::all_stats[mac]["daily"][row].update( stats->tx_bytes, stats->rx_bytes );
+                Globals::all_stats[mac]["daily"][current_daily_row].update( stats->tx_bytes, stats->rx_bytes );
 
-                row.clear();
-                row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
 
-                if ( Globals::all_stats[mac]["monthly"].find( row ) == Globals::all_stats[mac]["monthly"].end() )
+                current_monthly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+
+                if ( Globals::all_stats[mac]["monthly"].find( current_monthly_row ) == Globals::all_stats[mac]["monthly"].end() )
                 {
-                    uint32_t p_y, p_m, p_d, p_h;
-                    Utils::get_time_from_milisec( time( nullptr ) - 31ULL * 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
-                    string p_row = Utils::to_string( p_y ) + "-" + Utils::to_string( p_m, 2 );
-                    Globals::all_stats[mac]["monthly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
-
                     InterfaceStats mstats;
-                    Globals::all_stats[mac]["monthly"][row] = mstats;
+                    Globals::all_stats[mac]["monthly"][current_monthly_row] = mstats;
+
+                    Globals::all_stats[mac]["monthly"][p_monthly_row].update( stats->tx_bytes, stats->rx_bytes );
+                    monthly_row_changed = true;
                 }
 
-                Globals::all_stats[mac]["monthly"][row].update( stats->tx_bytes, stats->rx_bytes );
+                Globals::all_stats[mac]["monthly"][current_monthly_row].update( stats->tx_bytes, stats->rx_bytes );
 
 
-                row.clear();
-                row += Utils::to_string( y );
+                current_yearly_row = Utils::to_string( y );
 
-                if ( Globals::all_stats[mac]["yearly"].find( row ) == Globals::all_stats[mac]["yearly"].end() )
+                if ( Globals::all_stats[mac]["yearly"].find( current_yearly_row ) == Globals::all_stats[mac]["yearly"].end() )
                 {
-                    uint32_t p_y, p_m, p_d, p_h;
-                    Utils::get_time_from_milisec( time( nullptr ) - 365ULL * 24ULL * 60ULL * 60ULL, &p_y, &p_m, &p_d, &p_h );
-                    string p_row = Utils::to_string( p_y );
-                    Globals::all_stats[mac]["yearly"][p_row].update( stats->tx_bytes, stats->rx_bytes );
-
                     InterfaceStats ystats;
-                    Globals::all_stats[mac]["yearly"][row] = ystats;
+                    Globals::all_stats[mac]["yearly"][current_yearly_row] = ystats;
+
+                    Globals::all_stats[mac]["yearly"][p_yearly_row].update( stats->tx_bytes, stats->rx_bytes );
+                    yearly_row_changed = true;
                 }
 
-                Globals::all_stats[mac]["yearly"][row].update( stats->tx_bytes, stats->rx_bytes );
+                Globals::all_stats[mac]["yearly"][current_yearly_row].update( stats->tx_bytes, stats->rx_bytes );
 
                 Globals::speed_stats[mac].update( stats->rx_bytes, stats->tx_bytes );
 
@@ -372,19 +384,19 @@ void* LinuxUtils::MeterThread( void )
 
                     if ( table_name.compare( "hourly" ) == 0 )
                     {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+                        current_row += current_hourly_row;
                     }
                     else if ( table_name.compare( "daily" ) == 0 )
                     {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+                        current_row += current_daily_row;
                     }
                     else if ( table_name.compare( "monthly" ) == 0 )
                     {
-                        current_row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+                        current_row += current_monthly_row;
                     }
                     else if ( table_name.compare( "yearly" ) == 0 )
                     {
-                        current_row += Utils::to_string( y );
+                        current_row += current_yearly_row;
                     }
 
                     const map<string, InterfaceStats> & crow = table_row.second;
@@ -414,6 +426,26 @@ void* LinuxUtils::MeterThread( void )
 
             p_time = c_time;
             ph = h;
+        }
+
+        if ( hourly_row_changed == true )
+        {
+            p_hourly_row = current_hourly_row;
+        }
+
+        if ( daily_row_changed == true )
+        {
+            p_daily_row = current_daily_row;
+        }
+
+        if ( monthly_row_changed == true )
+        {
+            p_monthly_row = current_monthly_row;
+        }
+
+        if ( yearly_row_changed == true )
+        {
+            p_yearly_row = current_yearly_row;
         }
 
         sleep( refresh_interval );
