@@ -58,7 +58,7 @@ private:
 
         void do_receive( void );
 
-        void do_send( std::size_t length );
+        void do_send( void );
 
     public:
 

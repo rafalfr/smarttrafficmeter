@@ -71,6 +71,16 @@ using namespace TCLAP;
 
 void load_settings ( void );
 
+
+/** @brief main
+  *
+  * The program main function
+  *
+  * @param input argument number
+  * @param array of input arguments
+  * @return exit code
+  *
+  */
 int main ( int argc, char *argv[] )
 {
 	uint32_t y;
@@ -265,7 +275,11 @@ int main ( int argc, char *argv[] )
 
 /** @brief load_settings
   *
-  * @todo: document this function
+  * The function loads the program settings
+  *
+  * @param void
+  * @return void
+  *
   */
 void load_settings ( void )
 {

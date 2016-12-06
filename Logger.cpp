@@ -32,7 +32,11 @@ using namespace std;
 
 /** @brief LogDebug
   *
-  * @todo: document this function
+  * The method logs debug information
+  *
+  * @param debug message
+  * @return void
+  *
   */
 void Logger::LogDebug( const string& message )
 {
@@ -62,7 +66,11 @@ void Logger::LogDebug( const string& message )
 
 /** @brief LogInfo
   *
-  * @todo: document this function
+  * The method logs standard information
+  *
+  * @param standard message
+  * @return void
+  *
   */
 void Logger::LogInfo( const string& message )
 {
@@ -93,7 +101,11 @@ void Logger::LogInfo( const string& message )
 
 /** @brief LogError
   *
-  * @todo: document this function
+  * The method error standard information
+  *
+  * @param error message
+  * @return void
+  *
   */
 void Logger::LogError( const string& message )
 {

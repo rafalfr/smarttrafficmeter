@@ -22,5 +22,9 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "Settings.h"
 
-// key, value
+/**<
+The global map object that stores the program settings
+The map structure is as follows:
+key, value
+*/
 map<string,string> Settings::settings;

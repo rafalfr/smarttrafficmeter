@@ -54,19 +54,19 @@ The global object that is used to prevent multiple instances of the program.
 boost::scoped_ptr<boost::interprocess::shared_memory_object> Globals::shared_mem;
 
 /**<
-The global object that holds the interface to the database operations.
+The global object that stores the interface to the database operations.
 */
 DataBaseDriver Globals::db_drv;
 
 /**<
-The global map object that holds current statistics for each available network interface.
+The global map object that stores current statistics for each available network interface.
 The map structure is as follows:
 MAC address,stats type, date, InterfaceStats object
 */
 map<string, map<string, map<string, InterfaceStats> > > Globals::all_stats;
 
 /**<
-The global map object that holds current data speed for each interface.
+The global map object that stores current data speed for each interface.
 The map structure is as follows:
 MAC address, InterfaceSpeedMeter object
 */

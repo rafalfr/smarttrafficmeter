@@ -38,6 +38,14 @@ If not, see http://www.gnu.org/licenses/.
 
 using namespace std;
 
+/** @brief Thread
+  *
+  * The main UDP server function which is run as a thread
+  *
+  * @param void
+  * @return void
+  *
+  */
 void* ServerThread::Thread( void )
 {
 
@@ -64,7 +72,11 @@ void* ServerThread::Thread( void )
 
 /** @brief do_receive
   *
-  * @todo: document this function
+  * The private method that receives data
+  *
+  * @param void
+  * @return void
+  *
   */
 void ServerThread::UDPServer::do_receive( void )
 {
@@ -82,7 +94,7 @@ void ServerThread::UDPServer::do_receive( void )
 
         if ( !ec && bytes_recvd > 0 )
         {
-            do_send( bytes_recvd );
+            do_send();
         }
         else
         {
@@ -94,9 +106,13 @@ void ServerThread::UDPServer::do_receive( void )
 
 /** @brief do_send
   *
-  * @todo: document this function
+  * The private method that sends data
+  *
+  * @param void
+  * @return void
+  *
   */
-void ServerThread::UDPServer::do_send( std::size_t )
+void ServerThread::UDPServer::do_send( void )
 {
     string command( msg );
     string response;
