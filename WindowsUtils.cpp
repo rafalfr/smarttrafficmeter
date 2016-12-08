@@ -326,21 +326,21 @@ void WindowsUtils::MeterThread ( void )
 		{
 			const string& storage = Settings::settings["storage"];
 
-			if ( Utils::contians ( storage, "mysql" ) )
+			if ( Utils::contains ( storage, "mysql" ) )
 			{
 #ifdef use_mysql
 				//save_stats_to_mysql();
 #endif // use_mysql
 			}
 
-			if ( Utils::contians ( storage, "sqlite" ) )
+			if ( Utils::contains ( storage, "sqlite" ) )
 			{
 #ifdef use_sqlite
 				Utils::save_stats_to_sqlite();
 #endif // use_sqlite
 			}
 
-			if ( Utils::contians ( storage, "files" ) )
+			if ( Utils::contains ( storage, "files" ) )
 			{
 				Utils::save_stats_to_files();
 			}
@@ -633,21 +633,21 @@ LONG WindowsUtils::signal_handler ( LPEXCEPTION_POINTERS exceptionInfo )
 	}
 
 
-	if ( Utils::contians ( storage, "mysql" ) )
+	if ( Utils::contains ( storage, "mysql" ) )
 	{
 #ifdef use_mysql
 		//save_stats_to_mysql();
 #endif // use_mysql
 	}
 
-	if ( Utils::contians ( storage, "sqlite" ) )
+	if ( Utils::contains ( storage, "sqlite" ) )
 	{
 #ifdef use_sqlite
 		Utils::save_stats_to_sqlite();
 #endif // use_sqlite
 	}
 
-	if ( Utils::contians ( storage, "files" ) )
+	if ( Utils::contains ( storage, "files" ) )
 	{
 		Utils::save_stats_to_files();
 	}

@@ -33,7 +33,8 @@ If not, see http://www.gnu.org/licenses/.
 
 /** @brief get_backtrace
   *
-  * The method return the backtrace as a string
+  * The method returns the backtrace as a string
+  *
   * @param void
   * @return string
   *

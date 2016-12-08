@@ -349,21 +349,21 @@ void* LinuxUtils::MeterThread( void )
 //
 //            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
 
-            if ( Utils::contians( storage, "mysql" ) )
+            if ( Utils::contains( storage, "mysql" ) )
             {
 #ifdef use_mysql
                 //save_stats_to_mysql();
 #endif // use_mysql
             }
 
-            if ( Utils::contians( storage, "sqlite" ) )
+            if ( Utils::contains( storage, "sqlite" ) )
             {
 #ifdef use_sqlite
                 Utils::save_stats_to_sqlite();
 #endif // use_sqlite
             }
 
-            if ( Utils::contians( storage, "files" ) )
+            if ( Utils::contains( storage, "files" ) )
             {
                 Utils::save_stats_to_files();
             }
@@ -499,20 +499,20 @@ void LinuxUtils::signal_handler( int signal )
 
     const string& storage = Settings::settings["storage"];
 
-    if ( Utils::contians( storage, "mysql" ) )
+    if ( Utils::contains( storage, "mysql" ) )
     {
 #ifdef use_mysql
 #endif // use_mysql
     }
 
-    if ( Utils::contians( storage, "sqlite" ) )
+    if ( Utils::contains( storage, "sqlite" ) )
     {
 #ifdef use_sqlite
         Utils::save_stats_to_sqlite();
 #endif // use_sqlite
     }
 
-    if ( Utils::contians( storage, "files" ) )
+    if ( Utils::contains( storage, "files" ) )
     {
         Utils::save_stats_to_files();
     }
@@ -706,7 +706,6 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
     return interfaces;
 }
-
 
 /** @brief get_mac
  *
@@ -941,7 +940,6 @@ void LinuxUtils::get_user_host( string& user, string& host )
     host.clear();
     host.append( hostname );
 }
-
 
 /** @brief get_os_info
  *

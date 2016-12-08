@@ -74,11 +74,11 @@ public:
 
 	static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
-	static void get_time_from_milisec(time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
+	static void seconds_to_date(time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
 	static time_t date_to_seconds(uint32_t y, uint32_t m, uint32_t d, uint32_t h=0, uint32_t minute=0, uint32_t sec=0);
 
-	static bool contians( const string& str, const string& key );
+	static bool contains( const string& str, const string& key );
 
 	static bool starts_with( const string& str, const string& key );
 

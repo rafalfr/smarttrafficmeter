@@ -67,10 +67,19 @@ If not, see http://www.gnu.org/licenses/.
 #include "Logger.h"
 #include "Globals.h"
 
-
+/**<
+The map object that stores results returned by sqlite engine
+ */
 map<string, string> Utils::table_columns;
 
-
+/** @brief get_all_interfaces
+ *
+ * The method returns all available network interfaces
+ *
+ * @param void
+ * @return all available network interfaces
+ *
+ */
 map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 {
 #ifdef _WIN32
@@ -82,6 +91,14 @@ map<string, InterfaceInfo> Utils::get_all_interfaces( void )
 #endif // __linux
 }
 
+/** @brief get_mac
+ *
+ * The method returns the MAC address of a network interface
+ *
+ * @param network interface name
+ * @return MAC address
+ *
+ */
 string Utils::get_mac( char* name )
 {
 #ifdef _WIN32
@@ -94,9 +111,14 @@ string Utils::get_mac( char* name )
 }
 
 /** @brief get_user_host
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns the user name and host name
+ *
+ * @param[out] user name
+ * @param[out] host name
+ * @return void
+ *
+ */
 void Utils::get_user_host( string& user, string& host )
 {
 #ifdef _WIN32
@@ -109,9 +131,13 @@ void Utils::get_user_host( string& user, string& host )
 }
 
 /** @brief get_os_info
-  *
-  * @todo: document this function
-  */
+ *
+ * The method returns the operating system name
+ *
+ * @param[out] operating system name
+ * @return void
+ *
+ */
 void Utils::get_os_info( string& os_info )
 {
 #ifdef _WIN32
@@ -123,7 +149,17 @@ void Utils::get_os_info( string& os_info )
 #endif // __linux
 }
 
-
+/** @brief get_time
+ *
+ * The method returns the current time
+ *
+ * @param[out] current year
+ * @param[out] current month
+ * @param[out] current day
+ * @param[out] current hour
+ * @return void
+ *
+ */
 void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
     time_t t = time( nullptr );
@@ -135,9 +171,18 @@ void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 }
 
 /** @brief date_to_seconds
-  *
-  * @todo: document this function
-  */
+ *
+ * The method converts the current time to number of seconds since the epoch
+ *
+ * @param year
+ * @param month
+ * @param day
+ * @param hour
+ * @param minute
+ * @param second
+ * @return number of seconds since the epoch (1970-01-01 00:00:00 +0000 (UTC))
+ *
+ */
 time_t Utils::date_to_seconds( uint32_t y, uint32_t m, uint32_t d, uint32_t h, uint32_t minute, uint32_t sec )
 {
     time_t t = time( nullptr );
@@ -155,11 +200,19 @@ time_t Utils::date_to_seconds( uint32_t y, uint32_t m, uint32_t d, uint32_t h, u
 }
 
 
-/** @brief get_time_from_milisec
-  *
-  * @todo: document this function
-  */
-void Utils::get_time_from_milisec( time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
+/** @brief seconds_to_date
+ *
+ * The method converts the time in seconds since the epoch to the date.
+ *
+ * @param number of seconds since the epoch (1970-01-01 00:00:00 +0000 (UTC))
+ * @param[out] year
+ * @param[out] month
+ * @param[out] day
+ * @param[out] hour
+ * @return void
+ *
+ */
+void Utils::seconds_to_date( time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
     struct tm* tm = localtime( &t );
     ( *y ) = tm->tm_year + 1900;
@@ -168,13 +221,16 @@ void Utils::get_time_from_milisec( time_t t, uint32_t* y, uint32_t* m, uint32_t*
     ( *h ) = tm->tm_hour;
 }
 
-
-/** @brief contians
+/** @brief contains
   *
-  * the function returns true if key is found in the str
+  * The function returns true if key is found in the str, otherwise false is returned.
+  *
+  * @param string in which search will be performed
+  * @param key string which will be searched
+  * @param True if str contains key
   *
   */
-bool Utils::contians( const string& str, const string& key )
+bool Utils::contains( const string& str, const string& key )
 {
     if ( str.find( key ) != string::npos )
     {

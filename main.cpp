@@ -235,7 +235,7 @@ int main ( int argc, char *argv[] )
 		Utils::load_data_from_files();
 	}
 
-	if ( Utils::contians ( storage, "mysql" ) )
+	if ( Utils::contains ( storage, "mysql" ) )
 	{
 #ifdef use_mysql
 		//save_stats_to_mysql();

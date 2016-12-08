@@ -41,6 +41,9 @@ using namespace std;
 class Logger
 {
 
+private:
+	static constexpr uint64_t max_log_length=1ULL*1024ULL*1024ULL;
+
 public:
 
 	static void LogDebug( const string& );

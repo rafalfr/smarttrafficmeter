@@ -78,14 +78,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         Utils::get_os_info( os_info );
 
         time_t t = time( nullptr );
-        Utils::get_time_from_milisec( t, &end_year, &end_month, &end_day, &end_hour );
+        Utils::seconds_to_date( t, &end_year, &end_month, &end_day, &end_hour );
 
         string end_year_str = Utils::to_string( end_year );
         string end_month_str = Utils::to_string( end_month );
         string end_day_str = Utils::to_string( end_day );
         string end_hour_str = Utils::to_string( end_hour );
 
-        Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL, &start_year, &start_month, &start_day, &start_hour );
+        Utils::seconds_to_date( t - 24ULL * 60ULL * 60ULL, &start_year, &start_month, &start_day, &start_hour );
         string start_year_str = Utils::to_string( start_year );
         string start_month_str = Utils::to_string( start_month );
         string start_day_str = Utils::to_string( start_day );
@@ -93,7 +93,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         string hourly_past_day = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past day</a>";
 
-        Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 7ULL, &start_year, &start_month, &start_day, &start_hour );
+        Utils::seconds_to_date( t - 24ULL * 60ULL * 60ULL * 7ULL, &start_year, &start_month, &start_day, &start_hour );
         start_year_str = Utils::to_string( start_year );
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
@@ -101,7 +101,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string hourly_past_week = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past week</a>";
         string daily_past_week = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past week</a>";
 
-        Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 30ULL, &start_year, &start_month, &start_day, &start_hour );
+        Utils::seconds_to_date( t - 24ULL * 60ULL * 60ULL * 30ULL, &start_year, &start_month, &start_day, &start_hour );
         start_year_str = Utils::to_string( start_year );
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
@@ -109,7 +109,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string hourly_past_month = "<a href=\"hourly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "-" + start_hour_str + "\">past month</a>";
         string daily_past_month = "<a href=\"daily/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past month</a>";
 
-        Utils::get_time_from_milisec( t - 24ULL * 60ULL * 60ULL * 365ULL, &start_year, &start_month, &start_day, &start_hour );
+        Utils::seconds_to_date( t - 24ULL * 60ULL * 60ULL * 365ULL, &start_year, &start_month, &start_day, &start_hour );
         start_year_str = Utils::to_string( start_year );
         start_month_str = Utils::to_string( start_month );
         start_day_str = Utils::to_string( start_day );
@@ -1303,21 +1303,21 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         const string& storage = Settings::settings["storage"];
 
-        if ( Utils::contians( storage, "mysql" ) )
+        if ( Utils::contains( storage, "mysql" ) )
         {
 #ifdef use_mysql
             //save_stats_to_mysql();
 #endif // use_mysql
         }
 
-        if ( Utils::contians( storage, "sqlite" ) )
+        if ( Utils::contains( storage, "sqlite" ) )
         {
 #ifdef use_sqlite
             Utils::save_stats_to_sqlite();
 #endif // use_sqlite
         }
 
-        if ( Utils::contians( storage, "files" ) )
+        if ( Utils::contains( storage, "files" ) )
         {
             Utils::save_stats_to_files();
         }

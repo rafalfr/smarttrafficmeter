@@ -40,6 +40,30 @@ using namespace std;
   */
 void Logger::LogDebug( const string& message )
 {
+    bool remove_log_file = false;
+
+    ifstream in;
+
+    in.open( "stm_log.txt", std::ifstream::binary );
+
+    if ( in.good() )
+    {
+        in.seekg( 0, in.end );
+        streampos length = in.tellg();
+        in.seekg( 0, in.beg );
+        in.close();
+
+        if ( static_cast<uint64_t>( length ) >= max_log_length )
+        {
+            remove_log_file = true;
+        }
+    }
+
+    if ( remove_log_file == true )
+    {
+        remove( "stm_log.txt" );
+    }
+
     ofstream f;
 
     f.open( "stm_log.txt", std::ios::app );
@@ -74,6 +98,30 @@ void Logger::LogDebug( const string& message )
   */
 void Logger::LogInfo( const string& message )
 {
+    bool remove_log_file = false;
+
+    ifstream in;
+
+    in.open( "stm_log.txt", std::ifstream::binary );
+
+    if ( in.good() )
+    {
+        in.seekg( 0, in.end );
+        streampos length = in.tellg();
+        in.seekg( 0, in.beg );
+        in.close();
+
+        if ( static_cast<uint64_t>( length ) >= max_log_length )
+        {
+            remove_log_file = true;
+        }
+    }
+
+    if ( remove_log_file == true )
+    {
+        remove( "stm_log.txt" );
+    }
+
     ofstream f;
 
     f.open( "stm_log.txt", std::ios::app );
@@ -109,6 +157,30 @@ void Logger::LogInfo( const string& message )
   */
 void Logger::LogError( const string& message )
 {
+    bool remove_log_file = false;
+
+    ifstream in;
+
+    in.open( "stm_log.txt", std::ifstream::binary );
+
+    if ( in.good() )
+    {
+        in.seekg( 0, in.end );
+        streampos length = in.tellg();
+        in.seekg( 0, in.beg );
+        in.close();
+
+        if ( static_cast<uint64_t>( length ) >= max_log_length )
+        {
+            remove_log_file = true;
+        }
+    }
+
+    if ( remove_log_file == true )
+    {
+        remove( "stm_log.txt" );
+    }
+
     ofstream f;
 
     f.open( "stm_log.txt", std::ios::app );
