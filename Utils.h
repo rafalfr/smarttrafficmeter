@@ -90,9 +90,9 @@ public:
 
 	static string double_to_string(double value, int32_t precision=3);
 
-	static string to_string( uint64_t value, uint32_t min_string_lenght=0 );
+	static string to_string( uint64_t value, uint32_t min_string_length=0 );
 
-	static string to_string( uint32_t value, uint32_t min_string_lenght=0 );
+	static string to_string( uint32_t value, uint32_t min_string_length=0 );
 
 	static int32_t stoi(const string& str);
 

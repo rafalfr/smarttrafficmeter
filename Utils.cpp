@@ -227,7 +227,7 @@ void Utils::seconds_to_date( time_t t, uint32_t* y, uint32_t* m, uint32_t* d, ui
   *
   * @param string in which search will be performed
   * @param key string which will be searched
-  * @param True if str contains key
+  * @return True if str contains key
   *
   */
 bool Utils::contains( const string& str, const string& key )
@@ -244,7 +244,11 @@ bool Utils::contains( const string& str, const string& key )
 
 /** @brief starts_with
   *
-  *function returns true if str starts with key
+  * The function returns true if str starts with key
+  *
+  * @param string in which search will be performed
+  * @param key string which will be searched
+  * @return True if str starts with key
   *
   */
 bool Utils::starts_with( const string& str, const string& key )
@@ -261,7 +265,12 @@ bool Utils::starts_with( const string& str, const string& key )
 
 /** @brief split
   *
-  * @todo: document this function
+  * The function splits the input string using the given delimiter
+  *
+  * @param string which will be split
+  * @param delimiter
+  * @return vector of obtained parts of the input string
+  *
   */
 vector<string> Utils::split( const string& str, const string& delim )
 {
@@ -293,7 +302,13 @@ vector<string> Utils::split( const string& str, const string& delim )
 
 /** @brief replace
   *
-  * @todo: document this function
+  * The function replaces the pattern with a new content in the given string
+  *
+  * @param pattern
+  * @param content that will replace the pattern
+  * @param input string
+  * @return new string with pattern replaced with the content
+  *
   */
 string Utils::replace( const string& pattern, const string& with, const string& in ) noexcept
 {
@@ -324,9 +339,14 @@ string Utils::replace( const string& pattern, const string& with, const string& 
     return out;
 }
 
-/** @brief to_string
+/** @brief float_to_string
   *
-  * @todo: document this function
+  * The function converts float value to string
+  *
+  * @param value
+  * @param string precision
+  * @return string representation of the float value
+  *
   */
 string Utils::float_to_string( float value, int32_t precision )
 {
@@ -337,9 +357,14 @@ string Utils::float_to_string( float value, int32_t precision )
     return stm.str() ;
 }
 
-/** @brief to_string
+/** @brief double_to_string
   *
-  * @todo: document this function
+  * The function converts double value to string
+  *
+  * @param value
+  * @param string precision
+  * @return string representation of the double value
+  *
   */
 string Utils::double_to_string( double value, int32_t precision )
 {
@@ -352,9 +377,16 @@ string Utils::double_to_string( double value, int32_t precision )
 
 /** @brief to_string
   *
-  * @todo: document this function
+  * The function converts uint64_t value to string
+  * If the string representation is shorter than min_string_length
+  * the string is prepended with the appropriate number of zeros.
+  *
+  * @param uint64_t value
+  * @param minimum string length
+  * @return string representation of the uint64_t value
+  *
   */
-string Utils::to_string( uint64_t value, uint32_t min_string_lenght )
+string Utils::to_string( uint64_t value, uint32_t min_string_length )
 {
 
     string out;
@@ -419,7 +451,7 @@ string Utils::to_string( uint64_t value, uint32_t min_string_lenght )
         }
     }
 
-    for ( int32_t i = 0; i < ( ( int32_t ) min_string_lenght - ( int32_t ) out.size() ); i++ )
+    for ( int32_t i = 0; i < ( ( int32_t ) min_string_length - ( int32_t ) out.size() ); i++ )
     {
         out.insert( 0, "0" );
     }
@@ -430,9 +462,16 @@ string Utils::to_string( uint64_t value, uint32_t min_string_lenght )
 
 /** @brief to_string
   *
-  * @todo: document this function
+  * The function converts uint32_t value to string
+  * If the string representation is shorter than min_string_length
+  * the string is prepended with the appropriate number of zeros.
+  *
+  * @param uint64_t value
+  * @param minimum string length
+  * @return string representation of the uint32_t value
+  *
   */
-string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
+string Utils::to_string( uint32_t value, uint32_t min_string_length )
 {
 
     string out;
@@ -497,7 +536,7 @@ string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
         }
     }
 
-    for ( int32_t i = 0; i < ( ( int32_t ) min_string_lenght - ( int32_t ) out.size() ); i++ )
+    for ( int32_t i = 0; i < ( ( int32_t ) min_string_length - ( int32_t ) out.size() ); i++ )
     {
         out.insert( 0, "0" );
     }
@@ -507,7 +546,11 @@ string Utils::to_string( uint32_t value, uint32_t min_string_lenght )
 
 /** @brief stof
   *
-  * @todo: document this function
+  * The function converts string to float value
+  *
+  * @param string
+  * @return float value
+  *
   */
 float Utils::stof( const string& str )
 {
@@ -528,7 +571,12 @@ float Utils::stof( const string& str )
 
 /** @brief hexcolor_to_strings
   *
-  * @todo: document this function
+  * The function converts the color representation as hex string
+  * to a vector of three strings each representing R, G, B channels respectively
+  *
+  * @param string
+  * @return vector of strings
+  *
   */
 vector<string> Utils::hexcolor_to_strings( string& hex_color )
 {
@@ -572,12 +620,13 @@ vector<string> Utils::hexcolor_to_strings( string& hex_color )
 }
 
 /** @brief check_one_instance
-  *
-  * The function returns true if the current instance is the only one
-  * instance running. Otherwise, the function returns false.
-  * @return bool
-  *
-  */
+ *
+ * The method checks whether another instance of the program is currently running
+ *
+ * @param void
+ * @return true if this instance is the only one currently running, otherwise false is returned
+ *
+ */
 bool Utils::check_one_instance( void )
 {
 #ifdef _WIN32
@@ -591,9 +640,13 @@ bool Utils::check_one_instance( void )
 
 
 /** @brief remove_instance_object
-  *
-  * @todo: document this function
-  */
+ *
+ * The method removes from the os a shared object which represents this program instance
+ *
+ * @param void
+ * @return void
+ *
+ */
 void Utils::remove_instance_object( void )
 {
 #ifdef __linux
@@ -603,9 +656,13 @@ void Utils::remove_instance_object( void )
 
 
 /** @brief trim
-  *
-  * @todo: document this function
-  */
+ *
+ * The method trims the given string
+ *
+ * @param string
+ * @return trimmed string
+ *
+ */
 string Utils::trim( const std::string& s )
 {
     auto wsfront = std::find_if_not( s.begin(), s.end(), []( int c )
@@ -623,9 +680,17 @@ string Utils::trim( const std::string& s )
 
 
 /** @brief date_str
-  *
-  * @todo: document this function
-  */
+ *
+ * The method converts the date to a string representation which is used in the database
+ *
+ * @param data type (e.g. yearly, monthly, daily, hourly)
+ * @param year
+ * @param month
+ * @param day
+ * @param hour
+ * @return date string representation
+ *
+ */
 string Utils::date_str( const string& type, uint32_t y, uint32_t m, uint32_t d, uint32_t h )
 {
     if ( type.compare( "yearly" ) == 0 )
@@ -649,9 +714,19 @@ string Utils::date_str( const string& type, uint32_t y, uint32_t m, uint32_t d, 
 }
 
 /** @brief str2date
-  *
-  * @todo: document this function
-  */
+ *
+ * The method converts the given string to date
+ * The method performs the inverse conversion to the date_str method
+ *
+ * @param date string representation
+ * @param data type (e.g. yearly, monthly, daily, hourly)
+ * @param[out] year
+ * @param[out] month
+ * @param[out] day
+ * @param[out] hour
+ * @return void
+ *
+ */
 void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
 {
     if ( type.compare( "yearly" ) == 0 )
@@ -732,7 +807,13 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
 
 /** @brief load_data_from_sqlite
   *
-  * @todo: document this function
+  * The method loads data from the sqlite database
+  * The database file is determined based on
+  * the current working directory and network interface MAC address.
+  *
+  * @param void
+  * @return void
+  *
   */
 void Utils::load_data_from_sqlite( void )
 {
@@ -1010,10 +1091,15 @@ void Utils::load_data_from_sqlite( void )
 #endif // use_sqlite
 }
 
-
 /** @brief load_data_from_files
   *
-  * @todo: document this function
+  * The method loads data from the files database
+  * The database file is determined based on
+  * the current working directory and network interface MAC address.
+  *
+  * @param void
+  * @return void
+  *
   */
 void Utils::load_data_from_files( void )
 {
@@ -1094,7 +1180,13 @@ void Utils::load_data_from_files( void )
 
 /** @brief save_stats_to_sqlite
   *
-  * @todo: document this function
+  * The method saves the statistics to the sqlite database
+  * The database file is determined based on
+  * the current working directory and network interface MAC address.
+  *
+  * @param void
+  * @return void
+  *
   */
 void Utils::save_stats_to_sqlite( void )
 {
@@ -1195,7 +1287,13 @@ void Utils::save_stats_to_sqlite( void )
 
 /** @brief save_stats_to_files
   *
-  * @todo: document this function
+  * The method saves the statistics to the files database
+  * The database file is determined based on
+  * the current working directory and network interface MAC address.
+  *
+  * @param void
+  * @return void
+  *
   */
 void Utils::save_stats_to_files( void )
 {
@@ -1241,6 +1339,16 @@ void Utils::save_stats_to_files( void )
 //  Globals::data_load_save_mutex.unlock();
 }
 
+/** @brief save_stats_to_mysql
+  *
+  * The method saves the statistics to the mysql database
+  * The database file is determined based on
+  * the current working directory and network interface MAC address.
+  *
+  * @param void
+  * @return void
+  *
+  */
 void Utils::save_stats_to_mysql( void )
 {
 #ifdef use_mysql

@@ -1207,6 +1207,25 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
+    server.resource["\\/speed.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+		ifstream file;
+        file.open( "../../webpage/speed.html", std::ifstream::in | std::ifstream::binary );
+
+        if ( file.is_open() )
+        {
+            stringstream input_file_stream;
+            input_file_stream << file.rdbuf();
+            file.close();
+
+            input_file_stream.seekp( 0, ios::end );
+            *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
+            *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+            *response << "Cache-Control: no-store";
+            *response << "\r\n\r\n" << input_file_stream.rdbuf();
+        }
+    };
+
     server.resource["\\/stats.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         string row;
@@ -1293,7 +1312,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
-        *response << "Cache-Control: no-cache, public";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
