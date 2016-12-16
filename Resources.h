@@ -48,6 +48,10 @@ public:
 	static uint32_t background_image_length;
 
 	static uint8_t background_image[];
+
+	static uint32_t speed_update_js_length;
+
+	static uint8_t speed_update_js[];
 };
 
 #endif // RESOURCES_H

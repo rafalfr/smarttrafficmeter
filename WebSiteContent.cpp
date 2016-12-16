@@ -123,6 +123,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<head>\n";
         page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
         page += "<title>Smart Traffic Meter</title>\n";
+        page += "<script src=\"/speed_update.js\"></script>\n";
         page += "<style type=\"text/css\">\n";
         page += "h1 {\n";
         page += "font-size: xx-large;\n";
@@ -204,7 +205,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 page += interface_description + ",\t";
             }
 
-            page += interface_name + ",\t" + interface_mac + ",\t" + ip4 + ",\t" + ip6;
+            page += interface_name + ",\t" + interface_mac + ",\t" + ip4 + ",\t";// + ip6;
+            page += "<span style=\"color:green; width: 300px; margin: auto\">";
+            page += " &#11015;";
+            page += "<span id=\"" + interface_mac + "_down\"></span>\n";
+            page += "</span>";
+            page += "<span style=\"color:red; width: 300px; margin: auto\">";
+            page += " &#11014;";
+            page += "<span id=\"" + interface_mac + "_up\"></span>\n";
+            page += "</span>";
             page += "</p>\n";
             page += "</li>\n";
         }
@@ -1207,9 +1216,26 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
+    server.resource["\\/speed_update.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Length: " << Resources::speed_update_js_length << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::chart_js_length; i++ )
+        {
+            *response << Resources::speed_update_js[i];
+        }
+    };
+
+
+    // usunąć po testach
     server.resource["\\/speed.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
-		ifstream file;
+        ifstream file;
         file.open( "../../webpage/speed.html", std::ifstream::in | std::ifstream::binary );
 
         if ( file.is_open() )

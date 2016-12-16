@@ -4,56 +4,93 @@
         <title>current stats</title>
     </head>
     <body>
-<p><b>00-30-4f-27-b5-c3 Up:</b> <span id="00-30-4f-27-b5-c3_up"></span></p>
-<p><b>00-30-4f-27-b5-c3 Down:</b> <span id="00-30-4f-27-b5-c3_down"></span></p>
+<p><b>00-30-4f-27-b5-c3 Up:</b> &#11014;<span id="00-30-4f-27-b5-c3_up" style="color:red;"></span></p>
+<p><b>00-30-4f-27-b5-c3 Down:</b>&#11015; <span id="00-30-4f-27-b5-c3_down" style="color:blue;"></span></p>
 
 <p><b>4c-cc-6a-4f-ef-67 Up:</b> <span id="4c-cc-6a-4f-ef-67_up"></span></p>
 <p><b>4c-cc-6a-4f-ef-67 Down:</b> <span id="4c-cc-6a-4f-ef-67_down"></span></p>
 
+<script>
+	var xhttp = new XMLHttpRequest();
 
-    <script>
-        
-        var xhttp = new XMLHttpRequest();       
-        
-        
-xhttp.onreadystatechange = function()
-{
-    if (this.readyState == 4 && this.status == 200)
-    {
-        var json_obj = JSON.parse(this.responseText);
-        for (var mac in json_obj)
-        {
-            if (json_obj.hasOwnProperty(mac))
-            {
-                var up_id=mac+"_up";
-                var down_id=mac+"_down";
-                
-                var down_speed=json_obj[mac].speed["down"];
-                var up_speed=json_obj[mac].speed["up"];
-                document.getElementById(up_id).innerHTML = int2str(up_speed);
-                document.getElementById(down_id).innerHTML = int2str(down_speed);
-            }
-}
+	var timer = setInterval(LoadData, 1000);
 
-    }
-};
 
-var timer = setInterval(LoadData, 1000);
+	xhttp.onreadystatechange = function ()
+	{
+		if (this.readyState == 4 && this.status == 200)
+		{
+			var json_obj = JSON.parse(this.responseText);
+			for (var mac in json_obj)
+			{
+				if (json_obj.hasOwnProperty(mac))
+				{
+					var up_id = mac + "_up";
+					var down_id = mac + "_down";
 
-function int2str(value)
-{
-    return value.toString(10);
-}
+					var down_speed = json_obj[mac].speed["down"];
+					var up_speed = json_obj[mac].speed["up"];
+					
+					document.getElementById(up_id).innerHTML = value2str(up_speed);
+					document.getElementById(down_id).innerHTML = value2str(down_speed);
+				}
+			}
 
-function LoadData() {
-xhttp.open("GET", "http://127.0.0.1:8080/stats.json", true);
-xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-xhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-xhttp.setRequestHeader("contentType", "application/json; charset=utf-8");
-xhttp.overrideMimeType("application/json");
-xhttp.send();
-}
-    </script>
+		}
+	};
+
+	function value2str(value)
+	{
+		unit = "";
+
+		if (value >= 1024 * 1024 * 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			unit = "Pb/s";
+		}
+		else if (value >= 1024 * 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			unit = "Tb/s";
+		}
+		else if (value >= 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0;
+			unit = "Gb/s";
+		}
+		else if (value >= 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0;
+			unit = "Mb/s";
+		}
+		else if (value >= 1024)
+		{
+			scale = 1024.0;
+			unit = "Kb/s";
+		}
+		else
+		{
+			scale = 1.0;
+			unit = "b/s";
+		}
+
+		value /= scale;
+
+		return value.toFixed(2).replace(/\.?0*$/, '') + " " + unit;
+	}
+
+	function LoadData()
+	{
+		xhttp.open("GET", "/stats.json", true);
+		xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+		xhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		xhttp.setRequestHeader("contentType", "application/json; charset=utf-8");
+		xhttp.overrideMimeType("application/json");
+		xhttp.send();
+	}
+</script>
+
+
     </body>
 </html>
 
