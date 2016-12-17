@@ -517,8 +517,6 @@ void LinuxUtils::signal_handler( int signal )
         Utils::save_stats_to_files();
     }
 
-    Utils::remove_instance_object();
-
     Globals::terminate_program = true;
 }
 
@@ -935,7 +933,15 @@ void LinuxUtils::get_user_host( string& user, string& host )
     getlogin_r( username, LOGIN_NAME_MAX );
 
     user.clear();
-    user.append( username );
+
+    if ( getuid() != 0 )
+    {
+        user.append( username );
+    }
+    else
+    {
+        user.append( "root" );
+    }
 
     host.clear();
     host.append( hostname );

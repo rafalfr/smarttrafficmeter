@@ -185,7 +185,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<br>\n";
         page += "<br>\n";
         page += "<h2>available network interfaces</h2>\n";
-        page += "<ol>\n";
+        page += "<table style=\"margin-left: auto; margin-right: auto;\" cellspacing=\"1\" cellpadding=\"1\">\n";
+        page += "<tbody>\n";
 
         for ( auto const & mac_info : Globals::interfaces )
         {
@@ -195,30 +196,31 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             const string& interface_name = interface_info.get_name();
             const string& interface_description = interface_info.get_desc();
             const string& ip4 = interface_info.get_ip4();
-            const string& ip6 = interface_info.get_ip6();
 
-            page += "<li>\n";
-            page += "<p>";
+            page += "<tr>\n";
 
-            if ( interface_description.empty() == false )
-            {
-                page += interface_description + ",\t";
-            }
+            page += "<td>\n";
+            page += "<p>&#8226; " + interface_name + ",\t" + interface_mac + ",\t" + ip4; // + ",\t";// + ip6;
+            page += "</p></td>\n";
 
-            page += interface_name + ",\t" + interface_mac + ",\t" + ip4 + ",\t";// + ip6;
-            page += "<span style=\"color:green; width: 300px; margin: auto\">";
-            page += " &#11015;";
+            page += "<td><div style='width: 130px;'>\n";
+            page += "<p><span style=\"color:green; margin: left\">";
+            page += "&#11015;";
             page += "<span id=\"" + interface_mac + "_down\"></span>\n";
-            page += "</span>";
-            page += "<span style=\"color:red; width: 300px; margin: auto\">";
-            page += " &#11014;";
+            page += "</span></p>";
+            page += "</div></td>\n";
+
+            page += "<td><div style='width: 130px;'>\n";
+            page += "<p><span style=\"color:red; margin: left\">";
+            page += "&#11014;";
             page += "<span id=\"" + interface_mac + "_up\"></span>\n";
-            page += "</span>";
-            page += "</p>\n";
-            page += "</li>\n";
+            page += "</span></p>";
+            page += "</div></td>\n";
+            page += "</tr>\n";
         }
 
-        page += "</ol>\n</td>\n";
+        page += "</tbody></table>\n";
+        page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td>\n";
@@ -1329,6 +1331,40 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 root[mac]["yearly"]["down"] = Json::Value::UInt64 ( 0ULL );
                 root[mac]["yearly"]["up"] = Json::Value::UInt64 ( 0ULL );
             }
+        }
+
+        string str_response = writer.write( root );
+
+        content_stream << str_response;
+
+        content_stream.seekp( 0, ios::end );
+        *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
+    server.resource["\\/speed.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string row;
+        stringstream content_stream;
+
+        Json::Value root;
+        Json::StyledWriter writer;
+        uint32_t y;
+        uint32_t m;
+        uint32_t d;
+        uint32_t h;
+        Utils::get_time( &y, &m, &d, &h );
+
+        for ( auto const & mac_speedinfo : Globals::speed_stats )
+        {
+            const string& mac = mac_speedinfo.first;
+            const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+
+            // speed is in bits/s
+            root[mac]["speed"]["down"] = Json::Value::UInt64 ( ism.get_rx_speed() );
+            root[mac]["speed"]["up"] = Json::Value::UInt64 ( ism.get_tx_speed() );
         }
 
         string str_response = writer.write( root );

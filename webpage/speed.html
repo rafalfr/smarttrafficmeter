@@ -2,15 +2,51 @@
 <html>
     <head>
         <title>current stats</title>
+
+
+<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+       
     </head>
     <body>
-<p><b>00-30-4f-27-b5-c3 Up:</b> &#11014;<span id="00-30-4f-27-b5-c3_up" style="color:red;"></span></p>
-<p><b>00-30-4f-27-b5-c3 Down:</b>&#11015; <span id="00-30-4f-27-b5-c3_down" style="color:blue;"></span></p>
+    
+<table style="margin-left: auto; margin-right: auto;" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td><div style='width: 150px;'>00-30-4f-27-b5-c3</div></td>
+<td><div style='width: 150px;'>&#11014;<span id="00-30-4f-27-b5-c3_up" style="color:red;"></span></div></td>
+<td><div style='width: 150px;'>&#11015; <span id="00-30-4f-27-b5-c3_down" style="color:blue;"></span></div></td>
+</tr>
+</tbody>
+</table>
+   
+
 
 <p><b>4c-cc-6a-4f-ef-67 Up:</b> <span id="4c-cc-6a-4f-ef-67_up"></span></p>
 <p><b>4c-cc-6a-4f-ef-67 Down:</b> <span id="4c-cc-6a-4f-ef-67_down"></span></p>
 
+
+<div id="chart"></div>
 <script>
+  var pubnub = new PubNub({
+    publishKey:   'demo', // replace with your own pub-key
+    subscribeKey: 'demo' // replace with your own sub-key
+  });
+
+  eon.chart({
+    pubnub: pubnub,
+    channels: ["c3-spline"],
+    generate: {
+      bindto: '#chart',
+      data: {
+        labels: true
+      }
+    }
+  });
+</script>
+
+
+<script>
+
 	var xhttp = new XMLHttpRequest();
 
 	var timer = setInterval(LoadData, 1000);
@@ -33,6 +69,17 @@
 					
 					document.getElementById(up_id).innerHTML = value2str(up_speed);
 					document.getElementById(down_id).innerHTML = value2str(down_speed);
+					
+pubnub.publish({
+    channel: 'c3-spline',
+    message: {
+      eon: {
+        up_id: up_speed,
+        down_id: down_speed
+      }
+    }
+  });					
+					
 				}
 			}
 
@@ -81,7 +128,7 @@
 
 	function LoadData()
 	{
-		xhttp.open("GET", "/stats.json", true);
+		xhttp.open("GET", "/speed.json", true);
 		xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 		xhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		xhttp.setRequestHeader("contentType", "application/json; charset=utf-8");

@@ -270,6 +270,8 @@ int main ( int argc, char *argv[] )
 //		th->timed_join(boost::posix_time::seconds(15));
 //	}
 
+	Utils::remove_instance_object();
+
 	exit ( EXIT_SUCCESS );
 }
 

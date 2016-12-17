@@ -68,7 +68,7 @@ function value2str(value)
 
 function LoadData()
 {
-	xhttp.open("GET", "/stats.json", true);
+	xhttp.open("GET", "/speed.json", true);
 	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 	xhttp.setRequestHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	xhttp.setRequestHeader("contentType", "application/json; charset=utf-8");
