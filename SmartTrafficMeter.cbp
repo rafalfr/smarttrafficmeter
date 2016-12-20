@@ -254,6 +254,7 @@
 			<Option target="Windows Release" />
 			<Option target="Windows Debug" />
 		</Unit>
+		<Unit filename="smoothiejs.cpp" />
 		<Unit filename="speed_update.cpp" />
 		<Unit filename="sqlite/sqlite3.h" />
 		<Unit filename="sqlite/sqlite3ext.h" />

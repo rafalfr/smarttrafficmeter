@@ -4,7 +4,7 @@
         <title>current stats</title>
 
 
-<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+<script type="text/javascript" src="/smoothie.js"></script>
        
     </head>
     <body>
@@ -24,26 +24,27 @@
 <p><b>4c-cc-6a-4f-ef-67 Up:</b> <span id="4c-cc-6a-4f-ef-67_up"></span></p>
 <p><b>4c-cc-6a-4f-ef-67 Down:</b> <span id="4c-cc-6a-4f-ef-67_down"></span></p>
 
+<canvas id="00-30-4f-27-b5-c3_canvas" width="821" height="173">
 
-<div id="chart"></div>
 <script>
-  var pubnub = new PubNub({
-    publishKey:   'demo', // replace with your own pub-key
-    subscribeKey: 'demo' // replace with your own sub-key
-  });
+var down_series={};
+var up_series={};
 
-  eon.chart({
-    pubnub: pubnub,
-    channels: ["c3-spline"],
-    generate: {
-      bindto: '#chart',
-      data: {
-        labels: true
-      }
-    }
-  });
+
+var chart = new SmoothieChart({millisPerPixel:50,maxValueScale:1.10,scaleSmoothing:0.954,minValue:0,grid:{fillStyle:'#ffffff',strokeStyle:'rgba(119,119,119,0.30)',sharpLines:true,millisPerLine:10000,borderVisible:true}});
+    
+    down_series['00-30-4f-27-b5-c3'] = new TimeSeries();
+    down_series['4c-cc-6a-4f-ef-67'] = new TimeSeries();
+    
+    up_series['00-30-4f-27-b5-c3'] = new TimeSeries();
+    up_series['4c-cc-6a-4f-ef-67'] = new TimeSeries();
+    
+chart.addTimeSeries(down_series['00-30-4f-27-b5-c3'], {lineWidth:2.1,strokeStyle:'#00ff00',fillStyle:'rgba(0,255,0,0.17)'});
+
+chart.addTimeSeries(up_series['00-30-4f-27-b5-c3'], {lineWidth:2.1,strokeStyle:'#ff0000',fillStyle:'rgba(255,0,0,0.17)'});
+
+chart.streamTo(document.getElementById("00-30-4f-27-b5-c3_canvas"), 1000);
 </script>
-
 
 <script>
 
@@ -70,16 +71,8 @@
 					document.getElementById(up_id).innerHTML = value2str(up_speed);
 					document.getElementById(down_id).innerHTML = value2str(down_speed);
 					
-pubnub.publish({
-    channel: 'c3-spline',
-    message: {
-      eon: {
-        up_id: up_speed,
-        down_id: down_speed
-      }
-    }
-  });					
-					
+					down_series[mac].append(new Date().getTime(), down_speed);
+					up_series[mac].append(new Date().getTime(), up_speed);					
 				}
 			}
 
