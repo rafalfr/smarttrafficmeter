@@ -220,6 +220,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
 
         page += "</tbody></table>\n";
+        page += "<p style=\"text-align: center;\">";
+        page += "<a href=\"/history/\">network history</a></p>\n";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
@@ -417,6 +419,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"left\" valign=\"middle\"><p>TCLAP</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://tclap.sourceforge.net/\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://opensource.org/licenses/mit-license.php\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>Smoothie Charts</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://smoothiecharts.org\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://smoothiecharts.org/LICENSE.txt\">license</a></p></td>\n";
         page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
@@ -622,13 +629,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             //get stats for the current interface
             map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, stats_type, start_date, end_date );
 
-            if ( interface_description.empty() == false )
-            {
-                csv += interface_description + ", ";
-            }
-
-            csv += interface_name + ", " + mac + ", " + ip4 + ", " + ip6 + "\r\n";
-            csv += "date, recieved, transitted\r\n";
+            csv += mac + "\r\n";
+            csv += "date, download, upload\r\n";
 
             for ( auto & row_stats : results )
             {
@@ -1168,7 +1170,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "</tbody>\n";
         web_page += "</table>\n";
         web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
-        web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&end=" + end_date_str + "\">download this stats</a>\n</p>\n";
+        web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&amp;end=" + end_date_str + "\">download this stats</a>\n</p>\n";
         web_page += "<p>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a>\n";
         web_page += "</p>\n</div>\n";
         web_page += "</body>\n";
@@ -1183,8 +1185,182 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: public, max-age=1800";
         *response << "\r\n\r\n" << out_stream.rdbuf();
-
     };
+
+    server.resource["^\\/history\\/?(.*)?\\/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string row;
+        ifstream file;
+        stringstream content_stream;
+
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter Speed Charts</title>\n";
+        page += "<script src=\"/smoothie.js\"></script>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<table style=\"margin-left: auto; margin-right: auto; width: 830px;\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<br>\n";
+        page += "<br>\n";
+        page += "<h2>network history</h2>\n<br>\n";
+
+        for ( auto const & mac_info : Globals::interfaces )
+        {
+            const InterfaceInfo& interface_info = mac_info.second;
+
+            const string& interface_mac = interface_info.get_mac();
+            const string& interface_name = interface_info.get_name();
+            const string& interface_description = interface_info.get_desc();
+            const string& ip4 = interface_info.get_ip4();
+
+            page += "<p style='text-align: center;'>" + interface_name + ",\t" + interface_mac + ",\t" + ip4; // + ",\t";// + ip6;
+            page += "</p>\n";
+
+            string mac = Utils::replace( "-", "_", interface_info.get_mac() );
+
+            page += "<div style='text-align: center;'><p>upload</p></div>\n";
+            page += "<canvas id=\"" + mac + "_up_canvas\" width=\"830\" height=\"180\"></canvas>\n";
+            page += "<br><br>\n";
+            page += "<div style='text-align: center;'><p>download</p></div>\n";
+            page += "<canvas id=\"" + mac + "_down_canvas\" width=\"830\" height=\"180\"></canvas>\n";
+            page += "<br><br><hr><br>";
+        }
+
+        page += "<script>\n";
+        page += "var down_series={};\n";
+        page += "var up_series={};\n";
+
+        for ( auto const & mac_info : Globals::interfaces )
+        {
+            const InterfaceInfo& interface_info = mac_info.second;
+            const string& mac = Utils::replace( "-", "_", interface_info.get_mac() );
+
+            string var_up_chart = "chart_up_" + mac;
+            string var_down_chart = "chart_down_" + mac;
+
+            page += var_up_chart;
+            page += "= new SmoothieChart({millisPerPixel:50,maxValueScale:1.10,scaleSmoothing:0.954,minValue:0,grid:{fillStyle:'#ffffff',strokeStyle:'rgba(119,119,119,0.30)',sharpLines:true,millisPerLine:10000,borderVisible:true},labels:{fillStyle:'#000000',precision:0}});\n";
+
+            page += var_down_chart;
+            page += "= new SmoothieChart({millisPerPixel:50,maxValueScale:1.10,scaleSmoothing:0.954,minValue:0,grid:{fillStyle:'#ffffff',strokeStyle:'rgba(119,119,119,0.30)',sharpLines:true,millisPerLine:10000,borderVisible:true},labels:{fillStyle:'#000000',precision:0}});\n";
+
+            page += "up_series['" + interface_info.get_mac() + "'] = new TimeSeries();\n";
+            page += "down_series['" + interface_info.get_mac() + "'] = new TimeSeries();\n";
+
+            page += var_up_chart;
+            page += ".addTimeSeries(up_series['" + interface_info.get_mac() + "'], {lineWidth:2.1,strokeStyle:'#ff0000',fillStyle:'rgba(255,0,0,0.17)'});\n";
+
+            page += var_down_chart;
+            page += ".addTimeSeries(down_series['" + interface_info.get_mac() + "'], {lineWidth:2.1,strokeStyle:'#00ff00',fillStyle:'rgba(0,255,0,0.17)'});\n";
+
+            page += var_up_chart;
+            page += ".streamTo(document.getElementById('" + mac + "_up_canvas" + "'), 1000);\n";
+
+            page += var_down_chart;
+            page += ".streamTo(document.getElementById('" + mac + "_down_canvas" + "'), 1000);\n";
+        }
+
+        page += "</script>\n";
+
+        page += "<script>\n";
+        page += "var xhttp = new XMLHttpRequest();\n";
+        page += "var timer = setInterval(LoadData, 1000);\n";
+
+        page += "xhttp.onreadystatechange = function ()\n";
+        page += "{\n";
+        page += "if (this.readyState == 4 && this.status == 200)\n";
+        page += "{\n";
+        page += "var json_obj = JSON.parse(this.responseText);\n";
+        page += "for (var mac in json_obj)\n";
+        page += "{\n";
+        page += "if (json_obj.hasOwnProperty(mac));\n";
+        page += "{\n";
+        page += "var up_id = mac + \"_up\";\n";
+        page += "var down_id = mac + \"_down\";\n";
+        page += "var down_speed = json_obj[mac].speed[\"down\"];\n";
+        page += "var up_speed = json_obj[mac].speed[\"up\"];\n";
+
+        page += "down_series[mac].append(new Date().getTime(), down_speed);\n";
+        page += "up_series[mac].append(new Date().getTime(), up_speed);\n";
+        page += "}\n";
+        page += "}\n";
+        page += "}\n";
+        page += "};\n";
+
+        page += "function LoadData()\n";
+        page += "{\n";
+        page += "xhttp.open(\"GET\", \"/speed.json\", true);\n";
+        page += "xhttp.setRequestHeader(\"Access-Control-Allow-Origin\", \"*\");\n";
+        page += "xhttp.setRequestHeader(\"Access-Control-Allow-Headers\", \"Origin, X-Requested-With, Content-Type, Accept\");\n";
+        page += "xhttp.setRequestHeader(\"contentType\", \"application/json; charset=utf-8\");\n";
+        page += "xhttp.overrideMimeType(\"application/json\");\n";
+        page += "xhttp.send();\n";
+        page += "}\n";
+        page += "</script>\n";
+
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
+        page += "<br>\n";
+        page += "<p style='text-align: center;'>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a></p>\n";
+        page += "</body>\n";
+        page += "</html>\n";
+
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+
+        *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
 
     server.resource["\\/background.png$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
@@ -1251,10 +1427,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
 
     // usunąć po testach
-    server.resource["\\/speed.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         ifstream file;
-        file.open( "../../webpage/speed.html", std::ifstream::in | std::ifstream::binary );
+        file.open( "../../webpage/test.html", std::ifstream::in | std::ifstream::binary );
 
         if ( file.is_open() )
         {

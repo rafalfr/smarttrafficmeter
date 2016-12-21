@@ -30,7 +30,7 @@ If not, see http://www.gnu.org/licenses/.
  * @return void
  *
  */
-InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 5 ), buf()
+InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 2 ), buf()
 {
     map<string, uint64_t> item;
 
@@ -168,7 +168,7 @@ void InterfaceSpeedMeter::update( uint64_t _rx, uint64_t _tx )
 
     buf.push_front( item );
 
-    while ( buf.size() >= max_buf_items )
+    while ( buf.size() > max_buf_items )
     {
         buf.pop_back();
     }
