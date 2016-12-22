@@ -1788,3 +1788,20 @@ void Utils::save_pid_file( const string& pid_file_path )
     LinuxUtils::save_pid_file( pid_file_path );
 #endif // __linux
 }
+
+/** @brief rfc1123_datetime
+  *
+  * @todo: document this function
+  */
+string Utils::rfc1123_datetime(time_t time)
+{
+	struct tm * timeinfo;
+    char buffer [80];
+
+    timeinfo = gmtime ( &time );
+    strftime (buffer,80,"%a, %d %b %Y %H:%M:%S GMT",timeinfo);
+
+    return string(buffer);
+}
+
+

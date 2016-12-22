@@ -301,7 +301,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         content_stream.seekp( 0, ios::end );
 
-        *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
+        *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
@@ -651,6 +653,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         out_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: text/csv; charset=utf-8" << "\r\n";
         *response << "Cache-Control: public, max-age=0" << "\r\n";
         *response << "Content-Disposition: attachment; filename=\"" + stats_type + "_" + start_date_str + "_to_" + end_date_str + ".csv\"";
@@ -1182,6 +1185,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         out_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: public, max-age=1800";
         *response << "\r\n\r\n" << out_stream.rdbuf();
@@ -1357,6 +1361,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         content_stream.seekp( 0, ios::end );
 
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
@@ -1531,6 +1536,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
@@ -1565,6 +1571,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: application/json; charset=UTF-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();

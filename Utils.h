@@ -138,6 +138,8 @@ public:
 
 	static int32_t make_path( const string& _s, mode_t mode );
 
+	static string  rfc1123_datetime( time_t time );
+
 };
 
 #endif // UTILS_H
