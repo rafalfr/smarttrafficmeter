@@ -1695,8 +1695,205 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
 
         Globals::terminate_program = true;
-
     };
+
+    server.resource["^/settings/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\">\n";
+
+        page += "<h1>Settings</h1>\n";
+        page += "<br><br>\n";
+
+        page += "<form action=\"submitsettings\" method=\"post\">\n";
+        page += "<table border=\"0\" cellspacing=\"30\" cellpadding=\"10\" align=\"center\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>storage</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"storage\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>database directory</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"database_directory\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>stats refresh interval</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_refresh_interval\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>stats save interval</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_save_interval\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>web server port</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"web_server_port\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>grovestreams api key</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"grovestreams_api_key\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+
+        page += "</tbody>\n";
+        page += "</table>\n";
+        page += "<input type=\"submit\" value=\"Submit\">\n";
+        page += "</form>\n";
+
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
+
+    server.resource["^/submitsettings/?$"]["POST"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\">\n";
+
+        page += "<h1>Settings</h1>\n";
+        page += "<br><br>\n";
+
+        auto content = request->content.string();
+
+        //parse parameters string
+        vector<string> content_items = Utils::split( content, "&" );
+
+        for ( auto const & content_item : content_items )
+        {
+            vector<string> content_value = Utils::split( content_item, "=" );
+
+            if ( content_value[0].size() > 0 && content_value[1].size() > 0 )
+            {
+                //page+=content_value[0]+" is "+content_value[1]+"<br>\n";
+                const string& key = content_value[0];
+                const string& value = content_value[1];
+                Settings::settings[key] = value;
+            }
+        }
+
+        page += "settings submited\n";
+
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
+
 
 }
 /** @brief rgba_color
