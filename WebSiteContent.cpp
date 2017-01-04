@@ -30,6 +30,7 @@ If not, see http://www.gnu.org/licenses/.
 #include "WebSiteContent.h"
 #include "json/json.h"
 #include "defines.h"
+#include "Url.h"
 #include "Utils.h"
 #include "Logger.h"
 #include "Globals.h"
@@ -379,7 +380,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<br><br>\n";
         page += "<div align=\"center\">\n";
         page += "<p>\n";
-        page += "Copyright &copy; 2016 Rafał Frączek\n";
+        page += "Copyright &copy; 2017 Rafał Frączek\n";
         page += "</p>\n";
         page += "<p>\n";
         page += "Smart Traffic Meter is released under the <a href=\"https://opensource.org/licenses/GPL-3.0\">GNU General Public License, version 3 (GPL-3.0)</a> license.\n";
@@ -426,6 +427,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"left\" valign=\"middle\"><p>Smoothie Charts</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://smoothiecharts.org\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://smoothiecharts.org/LICENSE.txt\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>urlcpp</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/larroy/urlcpp\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/larroy/urlcpp/blob/master/LICENSE.txt\">license</a></p></td>\n";
         page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
@@ -1756,39 +1762,39 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<tbody>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>storage</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"storage\" value=\"" + Settings::settings["storage"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"storage\" value=\"" + Settings::settings["storage"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>database directory</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"database_directory\" value=\"" + Settings::settings["database directory"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"database_directory\" value=\"" + Settings::settings["database directory"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>stats refresh interval</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_refresh_interval\" value=\"" + Settings::settings["stats refresh interval"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"stats_refresh_interval\" value=\"" + Settings::settings["stats refresh interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>stats save interval</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_save_interval\" value=\"" + Settings::settings["stats save interval"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"stats_save_interval\" value=\"" + Settings::settings["stats save interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>web server port</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"web_server_port\" value=\"" + Settings::settings["web server port"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"web_server_port\" value=\"" + Settings::settings["web server port"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>grovestreams api key</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"grovestreams_api_key\" value=\"" + Settings::settings["grovestreams api key"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"grovestreams_api_key\" value=\"" + Settings::settings["grovestreams api key"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
 
         page += "</tbody>\n";
         page += "</table>\n";
         page += "<div style=\"text-align:center\" align=\"center\">\n";
-        page += "<input type=\"submit\" value=\"Submit\">\n";
+        page += "<input type=\"submit\" style=\"font-size: 12pt\" value=\"Submit\">\n";
         page += "</div>\n";
         page += "</form>\n";
 
@@ -1877,10 +1883,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 string& value = content_value[1];
 
                 key=Utils::replace("_"," ",key);
-                if (key.compare("database directory")==0)
-				{
-					value=Utils::replace("%2F",PATH_SEPARATOR,value);
-				}
+				value=url::Url::unescape(value);
                 Settings::settings[key] = value;
             }
         }
@@ -1899,7 +1902,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
 
         page += "<br><br>\n";
-		page += "<p>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a></p>\n";
+		page += "<p>\n<a href=\"/\">Home</a></p>\n";
         page += "</div>\n";
 
         page += "</body>\n";

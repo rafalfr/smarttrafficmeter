@@ -183,6 +183,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-DGLIBCXX_FORCE_NEW" />
+			<Add directory="url" />
 			<Add directory="sqlite" />
 			<Add directory="serverhttp" />
 			<Add directory="/usr/include/mysql/" />
@@ -219,12 +220,14 @@
 		<Unit filename="Logger.h" />
 		<Unit filename="MySQLInterface.cpp" />
 		<Unit filename="MySQLInterface.h" />
+		<Unit filename="Path.cpp" />
 		<Unit filename="Resources.cpp" />
 		<Unit filename="Resources.h" />
 		<Unit filename="ServerThread.cpp" />
 		<Unit filename="ServerThread.h" />
 		<Unit filename="Settings.cpp" />
 		<Unit filename="Settings.h" />
+		<Unit filename="Url.cpp" />
 		<Unit filename="Utils.cpp" />
 		<Unit filename="Utils.h" />
 		<Unit filename="WebSiteContent.cpp" />
@@ -285,6 +288,8 @@
 		<Unit filename="tclap/Visitor.h" />
 		<Unit filename="tclap/XorHandler.h" />
 		<Unit filename="tclap/ZshCompletionOutput.h" />
+		<Unit filename="url/Path.h" />
+		<Unit filename="url/Url.h" />
 		<Unit filename="version.h" />
 		<Extensions>
 			<envvars />
