@@ -12,8 +12,8 @@ xhttp.onreadystatechange = function()
 		{
 			if (json_obj.hasOwnProperty(mac))
 			{
-				var up_id = mac + "_up";
-				var down_id = mac + "_down";
+				var up_id = "mac_" + mac + "_up";
+				var down_id = "mac_" + mac + "_down";
 
 				var down_speed = json_obj[mac].speed["down"];
 				var up_speed = json_obj[mac].speed["up"];

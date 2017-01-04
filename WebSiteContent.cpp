@@ -206,14 +206,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             page += "<td><div style='width: 130px;'>\n";
             page += "<p><span style=\"color:green; margin: left\">";
             page += "&#11015;";
-            page += "<span id=\"" + interface_mac + "_down\"></span>\n";
+            page += "<span id=\"mac_" + interface_mac + "_down\"></span>\n";
             page += "</span></p>";
             page += "</div></td>\n";
 
             page += "<td><div style='width: 130px;'>\n";
             page += "<p><span style=\"color:red; margin: left\">";
             page += "&#11014;";
-            page += "<span id=\"" + interface_mac + "_up\"></span>\n";
+            page += "<span id=\"mac_" + interface_mac + "_up\"></span>\n";
             page += "</span></p>";
             page += "</div></td>\n";
             page += "</tr>\n";
@@ -1268,10 +1268,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             string mac = Utils::replace( "-", "_", interface_info.get_mac() );
 
             page += "<div style='text-align: center;'><p>upload</p></div>\n";
-            page += "<canvas id=\"" + mac + "_up_canvas\" width=\"830\" height=\"180\"></canvas>\n";
+            page += "<canvas id=\"mac_" + mac + "_up_canvas\" width=\"830\" height=\"180\"></canvas>\n";
             page += "<br><br>\n";
             page += "<div style='text-align: center;'><p>download</p></div>\n";
-            page += "<canvas id=\"" + mac + "_down_canvas\" width=\"830\" height=\"180\"></canvas>\n";
+            page += "<canvas id=\"mac_" + mac + "_down_canvas\" width=\"830\" height=\"180\"></canvas>\n";
             page += "<br><br><hr><br>";
         }
 
@@ -1303,10 +1303,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             page += ".addTimeSeries(down_series['" + interface_info.get_mac() + "'], {lineWidth:2.1,strokeStyle:'#00ff00',fillStyle:'rgba(0,255,0,0.17)'});\n";
 
             page += var_up_chart;
-            page += ".streamTo(document.getElementById('" + mac + "_up_canvas" + "'), 1000);\n";
+            page += ".streamTo(document.getElementById('mac_" + mac + "_up_canvas" + "'), 1000);\n";
 
             page += var_down_chart;
-            page += ".streamTo(document.getElementById('" + mac + "_down_canvas" + "'), 1000);\n";
+            page += ".streamTo(document.getElementById('mac_" + mac + "_down_canvas" + "'), 1000);\n";
         }
 
         page += "</script>\n";
@@ -1424,7 +1424,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Cache-Control: public, max-age=1800";
         *response << "\r\n\r\n";
 
-        for ( uint32_t i = 0; i < Resources::chart_js_length; i++ )
+        for ( uint32_t i = 0; i < Resources::speed_update_js_length; i++ )
         {
             *response << Resources::speed_update_js[i];
         }
@@ -1756,38 +1756,40 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<tbody>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>storage</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"storage\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"storage\" value=\"" + Settings::settings["storage"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>database directory</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"database_directory\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"database_directory\" value=\"" + Settings::settings["database directory"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>stats refresh interval</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_refresh_interval\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_refresh_interval\" value=\"" + Settings::settings["stats refresh interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>stats save interval</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_save_interval\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"stats_save_interval\" value=\"" + Settings::settings["stats save interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>web server port</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"web_server_port\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"web_server_port\" value=\"" + Settings::settings["web server port"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>grovestreams api key</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"grovestreams_api_key\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" name=\"grovestreams_api_key\" value=\"" + Settings::settings["grovestreams api key"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
 
         page += "</tbody>\n";
         page += "</table>\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
         page += "<input type=\"submit\" value=\"Submit\">\n";
+        page += "</div>\n";
         page += "</form>\n";
 
         page += "</body>\n";
@@ -1871,13 +1873,34 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             if ( content_value[0].size() > 0 && content_value[1].size() > 0 )
             {
                 //page+=content_value[0]+" is "+content_value[1]+"<br>\n";
-                const string& key = content_value[0];
-                const string& value = content_value[1];
+                string& key = content_value[0];
+                string& value = content_value[1];
+
+                key=Utils::replace("_"," ",key);
+                if (key.compare("database directory")==0)
+				{
+					value=Utils::replace("%2F",PATH_SEPARATOR,value);
+				}
                 Settings::settings[key] = value;
             }
         }
 
-        page += "settings submited\n";
+        bool result = Utils::save_settings();
+
+		page += "<div style=\"text-align:center\" align=\"center\">\n";
+        if ( result == true )
+        {
+            page += "<p>All settings saved successfully.</p>\n";
+            page += "<p>The application must be restarted for the changes to take effect.</p>\n";
+        }
+        else
+        {
+            page += "<p>Error while saving settings!</p><br>\n";
+        }
+
+        page += "<br><br>\n";
+		page += "<p>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a></p>\n";
+        page += "</div>\n";
 
         page += "</body>\n";
         page += "</html>\n";

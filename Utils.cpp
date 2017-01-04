@@ -51,6 +51,7 @@ If not, see http://www.gnu.org/licenses/.
 #include <sys/file.h>
 #include <errno.h>
 #include "LinuxUtils.h"
+#include "Settings.h"
 #endif // __linux
 
 
@@ -1793,15 +1794,43 @@ void Utils::save_pid_file( const string& pid_file_path )
   *
   * @todo: document this function
   */
-string Utils::rfc1123_datetime(time_t time)
+string Utils::rfc1123_datetime( time_t time )
 {
-	struct tm * timeinfo;
+    struct tm * timeinfo;
     char buffer [80];
 
-    timeinfo = gmtime ( &time );
-    strftime (buffer,80,"%a, %d %b %Y %H:%M:%S GMT",timeinfo);
+    timeinfo = gmtime( &time );
+    strftime( buffer, 80, "%a, %d %b %Y %H:%M:%S GMT", timeinfo );
 
-    return string(buffer);
+    return string( buffer );
 }
 
+/** @brief save_settings
+  *
+  * @todo: document this function
+  */
+bool Utils::save_settings( void )
+{
+    ofstream file;
+    file.open( Globals::cwd + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ofstream::out );
+
+    if ( file.is_open() )
+    {
+        for ( auto const & settings_item : Settings::settings )
+        {
+            const string& key = settings_item.first;
+            const string& value = settings_item.second;
+
+            file << key << "=" << value << endl;
+        }
+
+        file.close();
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
 

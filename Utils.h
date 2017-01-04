@@ -140,6 +140,8 @@ public:
 
 	static string  rfc1123_datetime( time_t time );
 
+	static bool save_settings(void);
+
 };
 
 #endif // UTILS_H

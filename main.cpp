@@ -169,8 +169,8 @@ int main ( int argc, char *argv[] )
 	Settings::settings["database directory"] = Globals::cwd;
 	Settings::settings["stats refresh interval"] = "1";	//seconds
 	Settings::settings["stats save interval"] = "1800";	//seconds
-	Settings::settings["stats server port"] = "32000";
-	Settings::settings["html server port"] = "8080";
+	//Settings::settings["stats server port"] = "32000";
+	Settings::settings["web server port"] = "8080";
 	Settings::settings["grovestreams api key"] = "";
 
 	load_settings();
@@ -242,7 +242,7 @@ int main ( int argc, char *argv[] )
 #endif // use_mysql
 	}
 
-	boost::thread stats_server_thread ( ServerThread::Thread );
+	//boost::thread stats_server_thread ( ServerThread::Thread );
 
 	boost::thread meter_thread ( Utils::MeterThread );
 
@@ -252,7 +252,7 @@ int main ( int argc, char *argv[] )
 	}
 
 #ifndef _NO_WEBSERVER
-	SimpleWeb::Server<SimpleWeb::HTTP> http_server ( Utils::stoi ( Settings::settings["html server port"] ), 2 );
+	SimpleWeb::Server<SimpleWeb::HTTP> http_server ( Utils::stoi ( Settings::settings["web server port"] ), 2 );
 	WebSiteContent::set_web_site_content ( http_server );
 
 	boost::thread web_server_thread ( [&http_server]()
