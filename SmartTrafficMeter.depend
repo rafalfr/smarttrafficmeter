@@ -26169,7 +26169,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1483537693 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1483651775 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26423,7 +26423,7 @@
 1483531636 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"
 
-1482342866 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
+1483650199 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
 	"Resources.h"
 
 1383939612 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Path.cpp

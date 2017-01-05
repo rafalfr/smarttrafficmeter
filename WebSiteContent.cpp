@@ -147,7 +147,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "font-family: Arial,Helvetica,sans-serif;\n";
         page += "text-transform: none;\n";
         page += "font-size: large;\n";
-        page += "text-align: justify;\n";
+        //page += "text-align: justify;\n";
         page += "font-weight: normal;\n";
         page += "color: black;\n";
         page += "}\n";
@@ -291,9 +291,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<a href=\"/stop/\">stop Smart Traffic Meter</a>\n";
         page += "</p>";
         page += "<br><br>\n";
-        page += "<p style=\"text-align: center;\">";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<p>\n";
+        page += "<a href=\"/settings/\">settings</a>\n";
+        page += "&emsp;";
         page += "<a href=\"/legalinfo/\">legal info</a>\n";
-        page += "</p>";
+        page += "</p>\n";
+        page += "</div>\n";
 
         page += "</body>\n";
         page += "</html>\n";
@@ -376,7 +380,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</head>\n";
         page += "<body background=\"../background.png\">\n";
 
-        page += "<h1>legal inforamtion</h1>\n";
+        page += "<h1>legal information</h1>\n";
         page += "<br><br>\n";
         page += "<div align=\"center\">\n";
         page += "<p>\n";
@@ -435,6 +439,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
+        page += "<br>\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</div>\n";
 
         page += "</body>\n";
         page += "</html>\n";
@@ -1180,7 +1188,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         web_page += "</table>\n";
         web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
         web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&amp;end=" + end_date_str + "\">download this stats</a>\n</p>\n";
-        web_page += "<p>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a>\n";
+        web_page += "<p>\n<a href=\"/\">Home</a></p>\n";
         web_page += "</p>\n</div>\n";
         web_page += "</body>\n";
         web_page += "</html>";
@@ -1358,7 +1366,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tbody>\n";
         page += "</table>\n";
         page += "<br>\n";
-        page += "<p style='text-align: center;'>\n<a href=\"#\" onclick=\"history.go(-1)\">Go Back</a></p>\n";
+        page += "<p style='text-align: center;'>\n<a href=\"/\">Home</a></p>\n";
         page += "</body>\n";
         page += "</html>\n";
 
@@ -1771,12 +1779,12 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
-        page += "<td align=\"left\" valign=\"middle\"><p>stats refresh interval</p></td>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>stats refresh interval in seconds</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"stats_refresh_interval\" value=\"" + Settings::settings["stats refresh interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
-        page += "<td align=\"left\" valign=\"middle\"><p>stats save interval</p></td>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>stats save interval in seconds</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"stats_save_interval\" value=\"" + Settings::settings["stats save interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
@@ -1797,6 +1805,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<input type=\"submit\" style=\"font-size: 12pt\" value=\"Submit\">\n";
         page += "</div>\n";
         page += "</form>\n";
+        page += "<br>\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</div>\n";
 
         page += "</body>\n";
         page += "</html>\n";
@@ -1882,15 +1894,16 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
                 string& key = content_value[0];
                 string& value = content_value[1];
 
-                key=Utils::replace("_"," ",key);
-				value=url::Url::unescape(value);
+                key = Utils::replace( "_", " ", key );
+                value = url::Url::unescape( value );
                 Settings::settings[key] = value;
             }
         }
 
         bool result = Utils::save_settings();
 
-		page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+
         if ( result == true )
         {
             page += "<p>All settings saved successfully.</p>\n";
@@ -1902,7 +1915,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
 
         page += "<br><br>\n";
-		page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
         page += "</div>\n";
 
         page += "</body>\n";
