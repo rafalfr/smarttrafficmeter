@@ -18,8 +18,17 @@ xhttp.onreadystatechange = function()
 				var down_speed = json_obj[mac].speed["down"];
 				var up_speed = json_obj[mac].speed["up"];
 
-				document.getElementById(up_id).innerHTML = value2str(up_speed);
-				document.getElementById(down_id).innerHTML = value2str(down_speed);
+				var element=document.getElementById(up_id);
+                if (element)
+                {
+                    element.innerHTML = value2str(up_speed);
+                }
+                
+				element=document.getElementById(down_id);
+                if (element)
+                {
+                    element.innerHTML = value2str(down_speed);
+                }
 			}
 		}
 
@@ -53,7 +62,7 @@ function value2str(value)
 	else if (value >= 1024)
 	{
 		scale = 1024.0;
-		unit = "Kb/s";
+		unit = "kb/s";
 	}
 	else
 	{
@@ -62,8 +71,15 @@ function value2str(value)
 	}
 
 	value /= scale;
-
-	return value.toFixed(2).replace(/\.?0*$/, '') + " " + unit;
+    
+    if (unit == "b/s")
+    {
+        return value.toFixed(0) + " " + unit;
+    }
+    else
+    {
+        return value.toFixed(1).replace(/\.?0*$/, '') + " " + unit;
+    }
 }
 
 function LoadData()

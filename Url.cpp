@@ -153,9 +153,9 @@ void Url::assign(const string& s)
         } else {
             throw UrlParseError("Url doesn't match primary url regex");
         }
-    } catch(regex_error re) {
+    } catch(boost::regex_error re) {
         string s("Url::assign() boost::regex_error: ");
-        s+=re.what();
+        //s+=re.what();
         throw UrlParseError(s);
     }
 }

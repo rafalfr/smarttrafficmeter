@@ -21,6 +21,7 @@ If not, see http://www.gnu.org/licenses/.
 */
 
 #include "config.h"
+#include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <cstring>
@@ -806,6 +807,35 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
     }
 }
 
+
+/** @brief load_stats
+  *
+  * @todo: document this function
+  */
+void Utils::load_stats(void)
+{
+	const string& storage = Settings::settings["storage"];
+
+	if ( Utils::starts_with ( storage, "mysql" ) )
+	{
+#ifdef use_mysql
+#endif // use_mysql
+	}
+
+	if ( Utils::starts_with ( storage, "sqlite" ) )
+	{
+#ifdef use_sqlite
+		Utils::load_data_from_sqlite();
+#endif // use_sqlite
+	}
+
+	if ( Utils::starts_with ( storage, "files" ) )
+	{
+		Utils::load_data_from_files();
+	}
+}
+
+
 /** @brief load_data_from_sqlite
   *
   * The method loads data from the sqlite database
@@ -1178,6 +1208,36 @@ void Utils::load_data_from_files( void )
 //    }
 //  Globals::data_load_save_mutex.unlock();
 }
+
+
+/** @brief save_stats
+  *
+  * @todo: document this function
+  */
+void Utils::save_stats( void )
+{
+    const string& storage = Settings::settings["storage"];
+
+    if ( Utils::contains( storage, "mysql" ) )
+    {
+#ifdef use_mysql
+        //save_stats_to_mysql();
+#endif // use_mysql
+    }
+
+    if ( Utils::contains( storage, "sqlite" ) )
+    {
+#ifdef use_sqlite
+        Utils::save_stats_to_sqlite();
+#endif // use_sqlite
+    }
+
+    if ( Utils::contains( storage, "files" ) )
+    {
+        Utils::save_stats_to_files();
+    }
+}
+
 
 /** @brief save_stats_to_sqlite
   *

@@ -98,6 +98,8 @@ void* LinuxUtils::MeterThread( void )
     uint32_t d = 0;
     uint32_t h = 0;
     uint32_t ph = 0;
+    uint32_t num_running_interfaces = 0;
+    uint32_t pnum_running_interfaces = 0;
     static uint64_t p_time = 0;
     struct ifaddrs *ifaddr, *ipa = nullptr;
     int family, s;
@@ -167,46 +169,68 @@ void* LinuxUtils::MeterThread( void )
 
         ipa = ifaddr;
 
+        for ( num_running_interfaces = 0 ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
+        {
+
+            if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 || strcmp( ifaddr->ifa_name, "" ) == 0 || strlen( ifaddr->ifa_name ) == 0 )
+            {
+                continue;
+            }
+
+            bool interface_running = ( ifaddr->ifa_flags & IFF_RUNNING ) && ( ifaddr->ifa_flags & IFF_UP );
+
+            if ( interface_running == true )
+            {
+                num_running_interfaces++;
+            }
+        }
+
+        if ( num_running_interfaces > pnum_running_interfaces )
+        {
+            Globals::interfaces.clear();
+            Globals::interfaces = Utils::get_all_interfaces();
+        }
+
+        if ( num_running_interfaces < pnum_running_interfaces )
+        {
+            Utils::save_stats();
+            Globals::interfaces.clear();
+            Globals::interfaces = Utils::get_all_interfaces();
+        }
+
+        ifaddr = ipa;
+
         for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
         {
 
-            if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 )
+            if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 || strcmp( ifaddr->ifa_name, "" ) == 0 || strlen( ifaddr->ifa_name ) == 0 )
+            {
+                continue;
+            }
+
+            bool interface_running = ( ifaddr->ifa_flags & IFF_RUNNING ) && ( ifaddr->ifa_flags & IFF_UP );
+
+            if ( interface_running == false )
             {
                 continue;
             }
 
             family = ifaddr->ifa_addr->sa_family;
 
-
-            /* For an AF_INET* interface address, display the address */
-
-            if ( family == AF_INET || family == AF_INET6 )
+            if ( family == AF_PACKET && ifaddr->ifa_data != NULL )
             {
-                s = getnameinfo( ifaddr->ifa_addr,
-                                 ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
-                                 sizeof( struct sockaddr_in6 ),
-                                 host, NI_MAXHOST,
-                                 nullptr, 0, NI_NUMERICHOST );
-
-                if ( s != 0 )
-                {
-                    continue;
-                }
-
-            }
-            else if ( family == AF_PACKET && ifaddr->ifa_data != NULL )
-            {
-                struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
-
-                //TODO remove possible memory leak
                 const string& mac = Utils::get_mac( ifaddr->ifa_name ).c_str();
 
-                if ( Globals::speed_stats.find( mac ) == Globals::speed_stats.end() )
+                if ( num_running_interfaces > pnum_running_interfaces )
                 {
-                    ///TODO load data from database
-                    InterfaceSpeedMeter ism;
-                    Globals::speed_stats[mac] = ism;
+                    if ( Globals::speed_stats.find( mac ) == Globals::speed_stats.end() )
+                    {
+                        InterfaceSpeedMeter ism;
+                        Globals::speed_stats[mac] = ism;
+                    }
                 }
+
+                struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
 
                 current_hourly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
 
@@ -335,7 +359,6 @@ void* LinuxUtils::MeterThread( void )
 
         if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) )
         {
-            const string& storage = Settings::settings["storage"];
 
 //            if ( Globals::upload_threads.size() > 0 )
 //            {
@@ -349,24 +372,7 @@ void* LinuxUtils::MeterThread( void )
 //
 //            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
 
-            if ( Utils::contains( storage, "mysql" ) )
-            {
-#ifdef use_mysql
-                //save_stats_to_mysql();
-#endif // use_mysql
-            }
-
-            if ( Utils::contains( storage, "sqlite" ) )
-            {
-#ifdef use_sqlite
-                Utils::save_stats_to_sqlite();
-#endif // use_sqlite
-            }
-
-            if ( Utils::contains( storage, "files" ) )
-            {
-                Utils::save_stats_to_files();
-            }
+            Utils::save_stats();
 
             /* remove unused rows from the all_stats container */
 
@@ -448,6 +454,8 @@ void* LinuxUtils::MeterThread( void )
             p_yearly_row = current_yearly_row;
         }
 
+        pnum_running_interfaces = num_running_interfaces;
+
         sleep( refresh_interval );
     }
 
@@ -497,25 +505,7 @@ void LinuxUtils::signal_handler( int signal )
         Logger::LogInfo( "Process exited as a result of SIGFPE" );
     }
 
-    const string& storage = Settings::settings["storage"];
-
-    if ( Utils::contains( storage, "mysql" ) )
-    {
-#ifdef use_mysql
-#endif // use_mysql
-    }
-
-    if ( Utils::contains( storage, "sqlite" ) )
-    {
-#ifdef use_sqlite
-        Utils::save_stats_to_sqlite();
-#endif // use_sqlite
-    }
-
-    if ( Utils::contains( storage, "files" ) )
-    {
-        Utils::save_stats_to_files();
-    }
+    Utils::save_stats();
 
     Globals::terminate_program = true;
 }
@@ -626,7 +616,12 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
     for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
     {
-        if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 )
+        if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 || strcmp( ifaddr->ifa_name, "" ) == 0 || strlen( ifaddr->ifa_name ) == 0 )
+        {
+            continue;
+        }
+
+        if ( !( ifaddr->ifa_flags & IFF_RUNNING ) )
         {
             continue;
         }
@@ -638,6 +633,11 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
         if ( family == AF_INET )
         {
+            for ( uint32_t i = 0; host[i] != '\0' && i < NI_MAXHOST; i++ )
+            {
+                host[i] = '\0';
+            }
+
             s = getnameinfo( ifaddr->ifa_addr,
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
@@ -645,6 +645,11 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
                              nullptr, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
+            {
+                continue;
+            }
+
+            if ( strlen( host ) == 0 )
             {
                 continue;
             }
@@ -668,6 +673,8 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
         }
         else if ( family == AF_INET6 )
         {
+            memset( host, '\0', NI_MAXHOST * sizeof( char ) );
+
             s = getnameinfo( ifaddr->ifa_addr,
                              ( family == AF_INET ) ? sizeof( struct sockaddr_in ) :
                              sizeof( struct sockaddr_in6 ),
@@ -675,6 +682,11 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
                              nullptr, 0U, NI_NUMERICHOST );
 
             if ( s != 0 )
+            {
+                continue;
+            }
+
+            if ( strlen( host ) == 0 )
             {
                 continue;
             }

@@ -875,28 +875,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t chart_id = 0;
 
         // create chart for each network interface
-        for ( auto const & mac_table : Globals::all_stats )
+        for ( auto const & mac_info : Globals::interfaces )
         {
-            const string& mac = mac_table.first;
+            const InterfaceInfo& interface_info = mac_info.second;
 
-            string interface_name = "n/a";
-            string interface_description = "n/a";
-            string ip4 = "n/a";
-            string ip6 = "n/a";
-
-            // get interface information
-            for ( auto const & mac_info : Globals::interfaces )
-            {
-                const InterfaceInfo& interface_info = mac_info.second;
-
-                if ( interface_info.get_mac().compare( mac ) == 0 )
-                {
-                    interface_name = interface_info.get_name();
-                    interface_description = interface_info.get_desc();
-                    ip4 = interface_info.get_ip4();
-                    ip6 = interface_info.get_ip6();
-                }
-            }
+            const string& mac = interface_info.get_mac();
+            const string& interface_name = interface_info.get_name();
+			const string& interface_description = interface_info.get_desc();
+			const string& ip4 = interface_info.get_ip4();
+			const string& ip6 = interface_info.get_ip6();
 
             string canvas_id = "canvas";
             canvas_id += Utils::to_string( chart_id );
@@ -1478,10 +1465,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t h;
         Utils::get_time( &y, &m, &d, &h );
 
-        for ( auto const & mac_speedinfo : Globals::speed_stats )
+        for ( auto const & mac_info : Globals::interfaces )
         {
-            const string& mac = mac_speedinfo.first;
-            const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+            const string& mac = mac_info.first;
+            const InterfaceSpeedMeter& ism = Globals::speed_stats[mac];
 
             // speed is in bits/s
             root[mac]["speed"]["down"] = Json::Value::UInt64 ( ism.get_rx_speed() );
@@ -1569,10 +1556,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t h;
         Utils::get_time( &y, &m, &d, &h );
 
-        for ( auto const & mac_speedinfo : Globals::speed_stats )
+        for ( auto const & mac_info : Globals::interfaces )
         {
-            const string& mac = mac_speedinfo.first;
-            const InterfaceSpeedMeter& ism = mac_speedinfo.second;
+            const string& mac = mac_info.first;
+            const InterfaceSpeedMeter& ism = Globals::speed_stats[mac];
 
             // speed is in bits/s
             root[mac]["speed"]["down"] = Json::Value::UInt64 ( ism.get_rx_speed() );

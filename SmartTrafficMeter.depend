@@ -25848,7 +25848,7 @@
 1479818189 /home/rafal/Programowanie/C++/smarttrafficmeter/Debug.h
 	<iostream>
 
-1483532766 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
+1484051260 /home/rafal/Programowanie/C++/smarttrafficmeter/Utils.h
 	<map>
 	<string>
 	<vector>
@@ -26087,7 +26087,7 @@
 	<limits>
 	"InterfaceStats.h"
 
-1481994394 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1484086979 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26135,7 +26135,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1483532063 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1484051359 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26169,7 +26169,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1483651775 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1484142628 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26335,8 +26335,9 @@
 	<boost/regex.hpp>
 	<regex>
 
-1483533168 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1484051341 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
+	<fstream>
 	<sstream>
 	<algorithm>
 	<cstring>
@@ -26378,7 +26379,7 @@
 	<windows.h>
 	"InterfaceInfo.h"
 
-1482345654 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1484137369 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	"config.h"
 	<fstream>
 	<memory>
@@ -26387,6 +26388,7 @@
 	"WebSiteContent.h"
 	"json/json.h"
 	"defines.h"
+	"Url.h"
 	"Utils.h"
 	"Logger.h"
 	"Globals.h"
@@ -26420,7 +26422,7 @@
 
 1480080115 /home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.h
 
-1483531636 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
+1484140461 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"
 
 1483650199 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
@@ -26436,7 +26438,7 @@
 	<string>
 	<bitset>
 
-1383939612 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Url.cpp
+1484142625 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Url.cpp
 	"Url.h"
 	<boost/algorithm/string.hpp>
 	<sstream>

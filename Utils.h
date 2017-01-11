@@ -54,9 +54,13 @@ public:
 
 	static map<string, InterfaceInfo> get_all_interfaces( void );
 
+	static void load_stats(void);
+
 	static void load_data_from_sqlite( void );
 
 	static void load_data_from_files( void );
+
+	static void save_stats(void);
 
 	static void save_stats_to_sqlite( void );
 

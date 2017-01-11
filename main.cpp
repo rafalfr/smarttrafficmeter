@@ -215,32 +215,7 @@ int main ( int argc, char *argv[] )
 		}
 	}
 
-	const string& storage = Settings::settings["storage"];
-
-	if ( Utils::starts_with ( storage, "mysql" ) )
-	{
-#ifdef use_mysql
-#endif // use_mysql
-	}
-
-	if ( Utils::starts_with ( storage, "sqlite" ) )
-	{
-#ifdef use_sqlite
-		Utils::load_data_from_sqlite();
-#endif // use_sqlite
-	}
-
-	if ( Utils::starts_with ( storage, "files" ) )
-	{
-		Utils::load_data_from_files();
-	}
-
-	if ( Utils::contains ( storage, "mysql" ) )
-	{
-#ifdef use_mysql
-		//save_stats_to_mysql();
-#endif // use_mysql
-	}
+	Utils::load_stats();
 
 	//boost::thread stats_server_thread ( ServerThread::Thread );
 
