@@ -185,7 +185,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td>\n";
         page += "<br>\n";
         page += "<br>\n";
-        page += "<h2>available network interfaces</h2>\n";
+        page += "<h2>running network interfaces</h2>\n";
         page += "<table style=\"margin-left: auto; margin-right: auto;\" cellspacing=\"1\" cellpadding=\"1\">\n";
         page += "<tbody>\n";
 
@@ -881,9 +881,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             const string& mac = interface_info.get_mac();
             const string& interface_name = interface_info.get_name();
-			const string& interface_description = interface_info.get_desc();
-			const string& ip4 = interface_info.get_ip4();
-			const string& ip6 = interface_info.get_ip6();
+            const string& interface_description = interface_info.get_desc();
+            const string& ip4 = interface_info.get_ip4();
+            const string& ip6 = interface_info.get_ip6();
 
             string canvas_id = "canvas";
             canvas_id += Utils::to_string( chart_id );
