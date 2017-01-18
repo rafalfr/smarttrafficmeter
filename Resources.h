@@ -56,6 +56,10 @@ public:
 	static uint32_t smoothie_js_length;
 
     static uint8_t smoothie_js[];
+
+	static uint32_t jquery_js_length;
+
+    static uint8_t jquery_js[];
 };
 
 #endif // RESOURCES_H

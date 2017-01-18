@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+    <head>
+        <title>current stats</title>
+  <style type="text/css">        
+select {
+  float: left;
+  margin-right: 1px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+    <body>
+
+<script>
+var $month = $('.month');
+var $day = $('.day');
+var $year = $('.year');
+
+$day.prop('disabled', true);
+$year.prop('disabled', true);
+
+$month.change(function(e) {
+  var $this = $(this);
+  // Enable the day selector as long as month is not the placeholder option.
+  if ($this.val() > 0)
+    $day.prop('disabled', false);
+  // Set the number of days for Jan - Jul
+  if ($this.val() < 7) {
+    if ($this.val() == 2) // Feb.
+      setDays(28)
+    else if ($this.val() % 2 == 0) // Apr, Jun
+      setDays(30)
+    else // Jan, Mar, May, Jul
+      setDays(31)
+      // Set the number of days for Aug - Dec
+  } else {
+    if ($this.val() % 2 == 0) // Aug, Oct, Dec
+      setDays(31)
+    else // Sep, Nov
+      setDays(30)
+  }
+});
+
+$day.change(function(e) {
+  // Enable the year selector as long as day is not the placeholder option.
+  if ($(this).val() > 0)
+    $year.prop('disabled', false);
+});
+
+$year.change(function(e) {
+  if ($(this).val() > 0) {
+    var dob = $year.val() + "-" + $month.val() + "-" + $day.val();
+    $('.course-dob-input').val(dob);
+  }
+});
+
+function setDays(num) {
+  $day.empty();
+  for (var i = 1; i <= num; i++) {
+    if (i < 10) // Put 0 in front of the single digits
+      $day.append("<option value='0" + i + "'>0" + i + "</option>")
+    else
+      $day.append("<option value='" + i + "'>" + i + "</option>")
+  }
+}
+
+</script>
+       
+    <div>
+  <select class="month">
+    <option selected="selected" value="Month">Month</option>
+    <option value="01">January(1)</option>
+    <option value="02">February(2)</option>
+    <option value="03">March(3)</option>
+    <option value="04">April(4)</option>
+    <option value="05">May(5)</option>
+    <option value="06">June(6)</option>
+    <option value="07">July(7)</option>
+    <option value="08">August(8)</option>
+    <option value="09">September(9)</option>
+    <option value="10">October(10)</option>
+    <option value="11">November(11)</option>
+    <option value="12">December(12)</option>
+  </select>
+</div>
+<div>
+  <select class="day">
+    <option selected="selected" value="Day">Day</option>
+    <option value="01">1</option>
+    <option value="02">2</option>
+    <option value="03">3</option>
+    <option value="04">4</option>
+    <option value="05">5</option>
+    <option value="06">6</option>
+    <option value="07">7</option>
+    <option value="08">8</option>
+    <option value="09">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+    <option value="24">24</option>
+    <option value="25">25</option>
+    <option value="26">26</option>
+    <option value="27">27</option>
+    <option value="28">28</option>
+    <option value="29">29</option>
+    <option value="30">30</option>
+    <option value="31">31</option>
+  </select>
+</div>
+<div>
+  <select class="year">
+    <option selected="selected" value="Year">Year</option>
+    <option value="2000">2000</option>
+    <option value="2001">2001</option>
+    <option value="2002">2002</option>
+    <option value="2003">2003</option>
+    <option value="2004">2004</option>
+    <option value="2005">2005</option>
+    <option value="2006">2006</option>
+    <option value="2007">2007</option>
+    <option value="2008">2008</option>
+    <option value="2009">2009</option>
+    <option value="2010">2010</option>
+    <option value="2011">2011</option>
+    <option value="2012">2012</option>
+    <option value="2013">2013</option>
+    <option value="2014">2014</option>
+    <option value="2015">2015</option>
+    <option value="2016">2016</option>
+  </select>
+</div>
+
+
+    </body>
+</html>
+
+ 

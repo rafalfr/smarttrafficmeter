@@ -26169,7 +26169,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1484142628 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1484745562 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26402,7 +26402,7 @@
 1479330307 source:/home/rafal/Programowanie/C++/smarttrafficmeter/chartjs.cpp
 	"Resources.h"
 
-1482259298 /home/rafal/Programowanie/C++/smarttrafficmeter/Resources.h
+1484745028 /home/rafal/Programowanie/C++/smarttrafficmeter/Resources.h
 	<cstdint>
 
 1478887672 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Resources.cpp
@@ -26422,7 +26422,7 @@
 
 1480080115 /home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.h
 
-1484140461 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
+1484147094 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"
 
 1483650199 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
@@ -26448,4 +26448,7 @@
 	<stdexcept>
 	<boost/regex.hpp>
 	"Path.h"
+
+1484744903 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jquery.cpp
+	"Resources.h"
 

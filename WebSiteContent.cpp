@@ -310,11 +310,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
     server.resource["^/customrange/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
+        // https://jsfiddle.net/nulref/v29okbqr/
         string page;
 
         stringstream content_stream;
@@ -325,6 +327,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response <<  "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -1188,7 +1191,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: public, max-age=1800";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << out_stream.rdbuf();
     };
 
@@ -1364,6 +1367,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -1447,7 +1451,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             input_file_stream.seekp( 0, ios::end );
             *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
             *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-            *response << "Cache-Control: no-store";
+            *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
             *response << "\r\n\r\n" << input_file_stream.rdbuf();
         }
     };
@@ -1624,7 +1628,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, public";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -1692,7 +1696,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: public, max-age=0";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
 
         Globals::terminate_program = true;
@@ -1807,7 +1811,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: public, max-age=1800";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -1915,7 +1919,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: public, max-age=1800";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
