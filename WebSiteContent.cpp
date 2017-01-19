@@ -1419,6 +1419,20 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
+    server.resource["\\/jquery.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Length: " << Resources::jquery_js_length << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::jquery_js_length; i++ )
+        {
+            *response << Resources::jquery_js[i];
+        }
+    };
 
     server.resource["\\/speed_update.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {

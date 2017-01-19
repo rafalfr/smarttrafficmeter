@@ -55,7 +55,6 @@
 					<Add option="-std=c++14" />
 					<Add option="-m64" />
 					<Add option="-rdynamic" />
-					<Add option="-march=native" />
 					<Add option="-D__linux" />
 					<Add option="-Duse_sqlite" />
 				</Compiler>
@@ -168,6 +167,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-fexceptions" />
+			<Add option="-march=native" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add directory="url" />
 			<Add directory="sqlite" />
@@ -229,6 +229,7 @@
 		<Unit filename="chartjs.cpp" />
 		<Unit filename="config.h" />
 		<Unit filename="defines.h" />
+		<Unit filename="jquery.cpp" />
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
 		<Unit filename="main.cpp" />
