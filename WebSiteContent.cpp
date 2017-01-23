@@ -440,6 +440,16 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/larroy/urlcpp\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/larroy/urlcpp/blob/master/LICENSE.txt\">license</a></p></td>\n";
         page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>jquery</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://jquery.com\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/jquery/jquery/blob/master/LICENSE.txt\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>jscolor</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://jscolor.com\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://www.gnu.org/licenses/gpl-3.0.txt\">license</a></p></td>\n";
+        page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
         page += "<br>\n";
@@ -1431,6 +1441,21 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         for ( uint32_t i = 0; i < Resources::jquery_js_length; i++ )
         {
             *response << Resources::jquery_js[i];
+        }
+    };
+
+    server.resource["\\/jscolor.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Length: " << Resources::jscolor_js_length << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::jscolor_js_length; i++ )
+        {
+            *response << Resources::jscolor_js[i];
         }
     };
 

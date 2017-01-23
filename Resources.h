@@ -60,6 +60,10 @@ public:
 	static uint32_t jquery_js_length;
 
     static uint8_t jquery_js[];
+
+	static uint32_t jscolor_js_length;
+
+    static uint8_t jscolor_js[];
 };
 
 #endif // RESOURCES_H
