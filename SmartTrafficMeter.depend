@@ -25983,7 +25983,7 @@
 1481029734 /home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.h
 	<boost/asio.hpp>
 
-1479940214 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
+1485380208 /home/rafal/Programowanie/C++/smarttrafficmeter/Globals.h
 	<map>
 	<string>
 	<boost/thread.hpp>
@@ -25994,7 +25994,7 @@
 	"InterfaceSpeedMeter.h"
 	"DataBaseDriver.h"
 
-1480599401 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
+1485379154 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.h
 	<stdint.h>
 
 1479817702 /home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.h
@@ -26080,14 +26080,14 @@
 1461005789 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
 
-1481029908 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+1485380239 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
-1480599528 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1485379184 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
 	<limits>
 	"InterfaceStats.h"
 
-1484086979 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1485380056 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26135,7 +26135,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1484051359 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1485380302 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26169,7 +26169,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1485196048 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1485380457 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1302372335 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26379,7 +26379,7 @@
 	<windows.h>
 	"InterfaceInfo.h"
 
-1484137369 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1485196039 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	"config.h"
 	<fstream>
 	<memory>

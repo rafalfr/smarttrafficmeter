@@ -59,6 +59,8 @@ public:
 
     ~InterfaceStats();
 
+    void set_first_update(bool _first_update);
+
     void set_initial_stats( uint64_t _tx, uint64_t _rx );
 
     void set_current_stats( uint64_t _tx, uint64_t _rx );

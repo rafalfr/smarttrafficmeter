@@ -120,6 +120,7 @@ int main ( int argc, char *argv[] )
 		cout << "Smart Traffic Meter version " << version << endl;
 	}
 
+	Utils::get_user_host(Globals::user_name,Globals::host_name);
 	Globals::program_path = Utils::get_program_path ( argv );
 	Globals::cwd = Utils::get_path ( Globals::program_path );
 

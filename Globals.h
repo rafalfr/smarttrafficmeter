@@ -59,6 +59,10 @@ public:
 
     static string program_path;
 
+    static string host_name;
+
+    static string user_name;
+
     static boost::mutex data_load_save_mutex;
 
     static boost::scoped_ptr<boost::interprocess::shared_memory_object> shared_mem;

@@ -196,6 +196,24 @@ void* LinuxUtils::MeterThread( void )
             Utils::save_stats();
             Globals::interfaces.clear();
             Globals::interfaces = Utils::get_all_interfaces();
+
+            for(auto & mac_table : Globals::all_stats)
+			{
+				const string& mac=mac_table.first;
+				if (Globals::interfaces.find(mac)==Globals::interfaces.end())
+				{
+					map<string, map<string, InterfaceStats> > & table = mac_table.second;
+					for(auto & table_row : table)
+					{
+						map<string, InterfaceStats> & row = table_row.second;
+						for ( auto & row_stats : row )
+						{
+							InterfaceStats& stats = row_stats.second;
+							stats.set_first_update(true);
+						}
+					}
+				}
+			}
         }
 
         ifaddr = ipa;

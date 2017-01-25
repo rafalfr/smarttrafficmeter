@@ -230,6 +230,7 @@
 		<Unit filename="config.h" />
 		<Unit filename="defines.h" />
 		<Unit filename="jquery.cpp" />
+		<Unit filename="jscolor.cpp" />
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
 		<Unit filename="main.cpp" />

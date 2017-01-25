@@ -59,6 +59,17 @@ InterfaceStats::~InterfaceStats()
 {
 }
 
+
+/** @brief set_first_update
+  *
+  * @todo: document this function
+  */
+void InterfaceStats::set_first_update(bool _first_update)
+{
+	first_update=_first_update;
+}
+
+
 /** @brief set_initial_stats
  *
  * The method sets the initial statistics

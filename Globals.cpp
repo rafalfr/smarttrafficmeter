@@ -44,6 +44,18 @@ The variable is set during the program start-up.
 string Globals::program_path;
 
 /**<
+the name of the host computer
+The variable is set during the program start-up.
+*/
+string Globals::host_name;
+
+/**<
+the name of the user that launched the program
+The variable is set during the program start-up.
+*/
+string Globals::user_name;
+
+/**<
 the global mutex that is used to protect save operations (e.g database files)
 */
 boost::mutex Globals::data_load_save_mutex;

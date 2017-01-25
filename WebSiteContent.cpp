@@ -70,11 +70,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t end_day;
         uint32_t end_hour;
 
-        string user_name;
-        string host_name;
         string os_info;
-
-        Utils::get_user_host( user_name, host_name );
 
         Utils::get_os_info( os_info );
 
@@ -176,7 +172,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td style=\"font-family: Verdana,Arial,Helvetica,sans-serif; font-size: x-large; font-style: normal; line-height: normal; color: #000000; vertical-align: middle; text-align: center; position: relative; visibility: visible;\">\n";
-        page += "<pre>" + user_name + " @ " + host_name + "</pre>\n";
+        page += "<pre>" + Globals::user_name + " @ " + Globals::host_name + "</pre>\n";
         page += "<pre>" + os_info + "</pre>\n";
         page += "<pre> pid: " + Utils::to_string( static_cast<uint64_t>( getpid() ), 1 ) + "</pre>\n";
         page += "</td>\n";
