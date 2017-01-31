@@ -812,27 +812,27 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
   *
   * @todo: document this function
   */
-void Utils::load_stats(void)
+void Utils::load_stats( const string& a_mac )
 {
-	const string& storage = Settings::settings["storage"];
+    const string& storage = Settings::settings["storage"];
 
-	if ( Utils::starts_with ( storage, "mysql" ) )
-	{
+    if ( Utils::starts_with( storage, "mysql" ) )
+    {
 #ifdef use_mysql
 #endif // use_mysql
-	}
+    }
 
-	if ( Utils::starts_with ( storage, "sqlite" ) )
-	{
+    if ( Utils::starts_with( storage, "sqlite" ) )
+    {
 #ifdef use_sqlite
-		Utils::load_data_from_sqlite();
+        Utils::load_data_from_sqlite( a_mac );
 #endif // use_sqlite
-	}
+    }
 
-	if ( Utils::starts_with ( storage, "files" ) )
-	{
-		Utils::load_data_from_files();
-	}
+    if ( Utils::starts_with( storage, "files" ) )
+    {
+        Utils::load_data_from_files( a_mac );
+    }
 }
 
 
@@ -846,7 +846,7 @@ void Utils::load_stats(void)
   * @return void
   *
   */
-void Utils::load_data_from_sqlite( void )
+void Utils::load_data_from_sqlite( const string& a_mac )
 {
 #ifdef use_sqlite
 
@@ -861,19 +861,32 @@ void Utils::load_data_from_sqlite( void )
     uint32_t h;
     uint64_t rx_bytes;
     uint64_t tx_bytes;
+    vector<string> macs;
 
     Utils::get_time( &y, &m, &d, &h );
 
-    const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+    macs.clear();
+    if ( a_mac.compare( "" ) == 0 )
+    {
+        const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+        for ( auto const & kv : interfaces )
+        {
+            const InterfaceInfo& in = kv.second;
+            const string& mac = in.get_mac();
+            macs.push_back(mac);
+        }
+    }
+    else
+	{
+		macs.push_back(a_mac);
+	}
 
     string row;
     string query;
 
-    for ( auto const & kv : interfaces )
+    for ( string const & mac : macs )
     {
-        const InterfaceInfo& in = kv.second;
-        const string& mac = in.get_mac();
-
         rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
 
         if ( rc != SQLITE_OK )
@@ -1132,7 +1145,7 @@ void Utils::load_data_from_sqlite( void )
   * @return void
   *
   */
-void Utils::load_data_from_files( void )
+void Utils::load_data_from_files( const string& a_mac )
 {
 //    uint32_t y;
 //    uint32_t m;
@@ -1214,27 +1227,27 @@ void Utils::load_data_from_files( void )
   *
   * @todo: document this function
   */
-void Utils::save_stats( void )
+void Utils::save_stats( const string& a_mac )
 {
     const string& storage = Settings::settings["storage"];
 
     if ( Utils::contains( storage, "mysql" ) )
     {
 #ifdef use_mysql
-        //save_stats_to_mysql();
+        //save_stats_to_mysql(a_mac);
 #endif // use_mysql
     }
 
     if ( Utils::contains( storage, "sqlite" ) )
     {
 #ifdef use_sqlite
-        Utils::save_stats_to_sqlite();
+        Utils::save_stats_to_sqlite(a_mac);
 #endif // use_sqlite
     }
 
     if ( Utils::contains( storage, "files" ) )
     {
-        Utils::save_stats_to_files();
+        Utils::save_stats_to_files(a_mac);
     }
 }
 
@@ -1249,23 +1262,39 @@ void Utils::save_stats( void )
   * @return void
   *
   */
-void Utils::save_stats_to_sqlite( void )
+void Utils::save_stats_to_sqlite(const string& a_mac )
 {
 
 #ifdef use_sqlite
 
     Globals::data_load_save_mutex.lock();
 
+    vector<string> macs;
+
+    macs.clear();
+    if ( a_mac.compare( "" ) == 0 )
+    {
+        for ( auto const & mac_table : Globals::all_stats )
+        {
+			const string& mac=mac_table.first;
+            macs.push_back(mac);
+        }
+    }
+    else
+	{
+		macs.push_back(a_mac);
+	}
+
+
     string query;
 
-    for ( auto const & mac_table : Globals::all_stats )
+    for ( auto const & mac : macs )
     {
         sqlite3 *db;
         char *zErrMsg = nullptr;
         int rc;
 
-        const string& mac = mac_table.first;
-        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+        const map<string, map<string, InterfaceStats> > & table = Globals::all_stats[mac];
 
         rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
 
@@ -1356,7 +1385,7 @@ void Utils::save_stats_to_sqlite( void )
   * @return void
   *
   */
-void Utils::save_stats_to_files( void )
+void Utils::save_stats_to_files( const string& a_mac )
 {
 //  Globals::data_load_save_mutex.lock();
 //    for ( auto const & mac_table : Globals::all_stats )
@@ -1410,7 +1439,7 @@ void Utils::save_stats_to_files( void )
   * @return void
   *
   */
-void Utils::save_stats_to_mysql( void )
+void Utils::save_stats_to_mysql( const string& a_mac )
 {
 #ifdef use_mysql
 

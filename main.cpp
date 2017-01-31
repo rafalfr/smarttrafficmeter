@@ -216,7 +216,7 @@ int main ( int argc, char *argv[] )
 		}
 	}
 
-	Utils::load_stats();
+	Utils::load_stats("");
 
 	//boost::thread stats_server_thread ( ServerThread::Thread );
 

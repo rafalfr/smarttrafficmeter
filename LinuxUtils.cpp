@@ -189,31 +189,67 @@ void* LinuxUtils::MeterThread( void )
         {
             Globals::interfaces.clear();
             Globals::interfaces = Utils::get_all_interfaces();
+
+            for ( auto & mac_interface : Globals::interfaces )
+            {
+                const string& mac = mac_interface.first;
+
+                if ( Globals::all_stats.find( mac ) == Globals::all_stats.end() )
+                {
+                	string row;
+                    Utils::get_time( &y, &m, &d, &h );
+
+                    InterfaceStats hstats;
+                    row.clear();
+                    row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
+                    Globals::all_stats[mac]["hourly"][row] = hstats;
+
+                    InterfaceStats dstats;
+                    row.clear();
+                    row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
+                    Globals::all_stats[mac]["daily"][row] = dstats;
+
+                    InterfaceStats mstats;
+                    row.clear();
+                    row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
+                    Globals::all_stats[mac]["monthly"][row] = mstats;
+
+                    InterfaceStats ystats;
+                    row.clear();
+                    row += Utils::to_string( y );
+                    Globals::all_stats[mac]["yearly"][row] = ystats;
+
+                    Utils::load_stats( mac );
+                }
+            }
         }
 
         if ( num_running_interfaces < pnum_running_interfaces )
         {
-            Utils::save_stats();
             Globals::interfaces.clear();
             Globals::interfaces = Utils::get_all_interfaces();
 
-            for(auto & mac_table : Globals::all_stats)
-			{
-				const string& mac=mac_table.first;
-				if (Globals::interfaces.find(mac)==Globals::interfaces.end())
-				{
-					map<string, map<string, InterfaceStats> > & table = mac_table.second;
-					for(auto & table_row : table)
-					{
-						map<string, InterfaceStats> & row = table_row.second;
-						for ( auto & row_stats : row )
-						{
-							InterfaceStats& stats = row_stats.second;
-							stats.set_first_update(true);
-						}
-					}
-				}
-			}
+            for ( auto & mac_table : Globals::all_stats )
+            {
+                const string& mac = mac_table.first;
+
+                if ( Globals::interfaces.find( mac ) == Globals::interfaces.end() )
+                {
+                    Utils::save_stats( mac );
+                    map<string, map<string, InterfaceStats> > & table = mac_table.second;
+
+                    for ( auto & table_row : table )
+                    {
+                        map<string, InterfaceStats> & row = table_row.second;
+
+                        for ( auto & row_stats : row )
+                        {
+                            InterfaceStats& stats = row_stats.second;
+                            stats.set_first_update( true );
+                        }
+                    }
+                }
+            }
         }
 
         ifaddr = ipa;
@@ -390,7 +426,7 @@ void* LinuxUtils::MeterThread( void )
 //
 //            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
 
-            Utils::save_stats();
+            Utils::save_stats( "" );
 
             /* remove unused rows from the all_stats container */
 
@@ -523,7 +559,7 @@ void LinuxUtils::signal_handler( int signal )
         Logger::LogInfo( "Process exited as a result of SIGFPE" );
     }
 
-    Utils::save_stats();
+    Utils::save_stats( "" );
 
     Globals::terminate_program = true;
 }

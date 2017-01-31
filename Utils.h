@@ -54,19 +54,19 @@ public:
 
 	static map<string, InterfaceInfo> get_all_interfaces( void );
 
-	static void load_stats(void);
+	static void load_stats(const string& a_mac);
 
-	static void load_data_from_sqlite( void );
+	static void load_data_from_sqlite(const string& a_mac );
 
-	static void load_data_from_files( void );
+	static void load_data_from_files(const string& a_mac );
 
-	static void save_stats(void);
+	static void save_stats(const string& a_mac);
 
-	static void save_stats_to_sqlite( void );
+	static void save_stats_to_sqlite( const string& a_mac );
 
-	static void save_stats_to_files( void );
+	static void save_stats_to_files( const string& a_mac );
 
-	static void save_stats_to_mysql( void );
+	static void save_stats_to_mysql( const string& a_mac );
 
 	static void save_pid_file(const string& pid_file_path);
 

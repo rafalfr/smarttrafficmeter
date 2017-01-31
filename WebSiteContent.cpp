@@ -1633,13 +1633,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         if ( Utils::contains( storage, "sqlite" ) )
         {
 #ifdef use_sqlite
-            Utils::save_stats_to_sqlite();
+            Utils::save_stats_to_sqlite("");
 #endif // use_sqlite
         }
 
         if ( Utils::contains( storage, "files" ) )
         {
-            Utils::save_stats_to_files();
+            Utils::save_stats_to_files("");
         }
 
         string web_page;
