@@ -173,6 +173,9 @@ int main ( int argc, char *argv[] )
 	//Settings::settings["stats server port"] = "32000";
 	Settings::settings["web server port"] = "8080";
 	Settings::settings["grovestreams api key"] = "";
+	Settings::settings["smtp server"] = "";
+	Settings::settings["mailbox login"] = "";
+	Settings::settings["mailbox password"] = "";
 
 	load_settings();
 

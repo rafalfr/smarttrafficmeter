@@ -70,6 +70,8 @@ public:
 
 	static void save_pid_file(const string& pid_file_path);
 
+	static bool check_databse_integrity(void);
+
 	static string get_mac( char* name );
 
 	static void get_user_host(string& user, string& host);

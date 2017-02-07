@@ -866,6 +866,7 @@ void Utils::load_data_from_sqlite( const string& a_mac )
     Utils::get_time( &y, &m, &d, &h );
 
     macs.clear();
+
     if ( a_mac.compare( "" ) == 0 )
     {
         const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
@@ -874,13 +875,13 @@ void Utils::load_data_from_sqlite( const string& a_mac )
         {
             const InterfaceInfo& in = kv.second;
             const string& mac = in.get_mac();
-            macs.push_back(mac);
+            macs.push_back( mac );
         }
     }
     else
-	{
-		macs.push_back(a_mac);
-	}
+    {
+        macs.push_back( a_mac );
+    }
 
     string row;
     string query;
@@ -1241,13 +1242,13 @@ void Utils::save_stats( const string& a_mac )
     if ( Utils::contains( storage, "sqlite" ) )
     {
 #ifdef use_sqlite
-        Utils::save_stats_to_sqlite(a_mac);
+        Utils::save_stats_to_sqlite( a_mac );
 #endif // use_sqlite
     }
 
     if ( Utils::contains( storage, "files" ) )
     {
-        Utils::save_stats_to_files(a_mac);
+        Utils::save_stats_to_files( a_mac );
     }
 }
 
@@ -1262,7 +1263,7 @@ void Utils::save_stats( const string& a_mac )
   * @return void
   *
   */
-void Utils::save_stats_to_sqlite(const string& a_mac )
+void Utils::save_stats_to_sqlite( const string& a_mac )
 {
 
 #ifdef use_sqlite
@@ -1272,18 +1273,19 @@ void Utils::save_stats_to_sqlite(const string& a_mac )
     vector<string> macs;
 
     macs.clear();
+
     if ( a_mac.compare( "" ) == 0 )
     {
         for ( auto const & mac_table : Globals::all_stats )
         {
-			const string& mac=mac_table.first;
-            macs.push_back(mac);
+            const string& mac = mac_table.first;
+            macs.push_back( mac );
         }
     }
     else
-	{
-		macs.push_back(a_mac);
-	}
+    {
+        macs.push_back( a_mac );
+    }
 
 
     string query;
@@ -1542,6 +1544,85 @@ void Utils::save_stats_to_mysql( const string& a_mac )
     }
 
 #endif // use_mysql
+}
+
+/** @brief check_databse_integrity
+  *
+  * This function returns true if the databse integrity is maintained
+  * and returns false if databse integrity is lost
+  *
+  * @param void
+  * @return bool
+  */
+bool Utils::check_databse_integrity( void )
+{
+    uint32_t y;
+    uint32_t m;
+    uint32_t d;
+    uint32_t h;
+
+    Utils::get_time( &y, &m, &d, &h );
+
+    struct date start_date;
+    struct date end_date;
+
+    for ( auto const & mac_info : Globals::interfaces )
+    {
+        const string& mac = mac_info.first;
+
+        start_date.year = 1900;
+        start_date.month = 1;
+        start_date.day = 1;
+        start_date.hour = 0;
+
+        end_date.year = y;
+        end_date.month = m;
+        end_date.day = d;
+        end_date.hour = h;
+
+        map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "hourly", start_date, end_date );
+
+        uint64_t hourly_rx = 0ULL;
+        uint64_t hourly_tx = 0ULL;
+
+        for ( auto & row_stats : results )
+        {
+            const InterfaceStats& stats = row_stats.second;
+
+            hourly_rx += stats.received();
+            hourly_tx += stats.transmitted();
+        }
+
+        start_date.year = 1900;
+        start_date.month = 0;
+        start_date.day = 0;
+        start_date.hour = 0;
+
+        end_date.year = y;
+        end_date.month = 0;
+        end_date.day = 0;
+        end_date.hour = 0;
+
+        results = Globals::db_drv.get_stats( mac, "yearly", start_date, end_date );
+
+        uint64_t yearly_rx = 0ULL;
+        uint64_t yearly_tx = 0ULL;
+
+        for ( auto & row_stats : results )
+        {
+            const InterfaceStats& stats = row_stats.second;
+
+            yearly_rx += stats.received();
+            yearly_tx += stats.transmitted();
+        }
+
+        if ( hourly_rx != yearly_rx || hourly_tx != yearly_tx )
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 
