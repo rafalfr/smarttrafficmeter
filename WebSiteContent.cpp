@@ -1475,7 +1475,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         ifstream file;
-        file.open( "../../webpage/test2.html", std::ifstream::in | std::ifstream::binary );
+        file.open( "../../webpage/test3.html", std::ifstream::in | std::ifstream::binary );
 
         if ( file.is_open() )
         {
