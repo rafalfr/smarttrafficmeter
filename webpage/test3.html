@@ -11,6 +11,47 @@
 <p><b>4c-cc-6a-4f-ef-67</b> <span id="4c-cc-6a-4f-ef-67"></span></p>
 <p><b>00-30-4f-27-b5-c3</b> <span id="00-30-4f-27-b5-c3"></span></p>
 
+<table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
+<tbody>
+<tr>
+<td>
+<p>&#8226; enp4s1,	00-30-4f-27-b5-c3,	192.168.1.103</p></td>
+<td><div style='width: 130px;'>
+<p><span style="color:green; margin: left">&#11015;<span id="mac_00-30-4f-27-b5-c3_down"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:red; margin: left">&#11014;<span id="mac_00-30-4f-27-b5-c3_up"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:blue; margin: left">&#11015;&#11014;<span id="mac_00-30-4f-27-b5-c3_total"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:green; margin: left">&#11015;&#11014;<span id="mac_00-30-4f-27-b5-c3_down_speed"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:red; margin: left">&#11015;&#11014;<span id="mac_00-30-4f-27-b5-c3_up_speed"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:blue; margin: left">&#11015;&#11014;<span id="mac_00-30-4f-27-b5-c3_total_speed"></span>
+</span></p></div></td>
+</tr>
+<tr>
+<td>
+<p>&#8226; enp5s0,	4c-cc-6a-4f-ef-67,	192.168.1.108</p></td>
+<td><div style='width: 130px;'>
+<p><span style="color:green; margin: left">&#11015;<span id="mac_4c-cc-6a-4f-ef-67_down"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:red; margin: left">&#11014;<span id="mac_4c-cc-6a-4f-ef-67_up"></span>
+</span></p></div></td>
+<td><div style='width: 130px;'>
+<p><span style="color:blue; margin: left">&#11014;<span id="mac_4c-cc-6a-4f-ef-67_total"></span>
+</span></p></div></td>
+</tr>
+</tbody></table>
+
+
+
 <br>
 <CENTER>
 <FORM NAME="stpw">
@@ -21,59 +62,98 @@
 </CENTER>
 
 <script>
-	var stats = {};
-	stats["00-30-4f-27-b5-c3"]={};
-	stats["4c-cc-6a-4f-ef-67"]={};
+    var first_update=true;
+    
+	var start_data = {};
+	start_data["00-30-4f-27-b5-c3"]={};
+	start_data["4c-cc-6a-4f-ef-67"]={};
 
-    stats["00-30-4f-27-b5-c3"]["down"]=0;
-    stats["00-30-4f-27-b5-c3"]["up"]=0;
-	stats["4c-cc-6a-4f-ef-67"]["down"]=0;
-	stats["4c-cc-6a-4f-ef-67"]["up"]=0;
+    start_data["00-30-4f-27-b5-c3"]["down"]=0;
+    start_data["00-30-4f-27-b5-c3"]["up"]=0;
+	start_data["4c-cc-6a-4f-ef-67"]["down"]=0;
+	start_data["4c-cc-6a-4f-ef-67"]["up"]=0;
 	
 	function resetstats()
 	{
-    stats["00-30-4f-27-b5-c3"]["down"]=0;
-    stats["00-30-4f-27-b5-c3"]["up"]=0;
-	stats["4c-cc-6a-4f-ef-67"]["down"]=0;
-	stats["4c-cc-6a-4f-ef-67"]["up"]=0;	
+	first_update=true;
+    start_data["00-30-4f-27-b5-c3"]["down"]=0;
+    start_data["00-30-4f-27-b5-c3"]["up"]=0;
+	start_data["4c-cc-6a-4f-ef-67"]["down"]=0;
+	start_data["4c-cc-6a-4f-ef-67"]["up"]=0;	
 	}	
 	
 
 </script>
 
 
-<script>
+<script>    
+    
+    var start_time=0;
+    var end_time=0;
 
 	var xhttp = new XMLHttpRequest();
-
-	//var timer = setInterval(LoadData, 1000);
 
 	xhttp.onreadystatechange = function ()
 	{
 		if (this.readyState == 4 && this.status == 200)
 		{
+            var d = new Date();
+            if (first_update==true)
+            {
+                start_time=d.getTime();       
+            }
+            else
+            {
+                end_time=d.getTime();            
+            }
+		
 			var json_obj = JSON.parse(this.responseText);
 			for (var mac in json_obj)
 			{
 				if (json_obj.hasOwnProperty(mac))
 				{                  
-
-					var down = json_obj[mac].yearly["down"];
-					var up = json_obj[mac].yearly["up"];
+           
+					var total_down = json_obj[mac].yearly["down"];
+					var total_up = json_obj[mac].yearly["up"];
 					
-					stats[mac]["down"]+=down;
-					stats[mac]["down"]+=up;
+                    if (first_update==true)
+                    {
+                    start_data[mac]["down"]=total_down;
+                    start_data[mac]["up"]=total_up;
+                    continue;              
+                    }					
 					
-					document.getElementById(mac).innerHTML = value2str(stats[mac]["down"]);
-		
+					var current_down=total_down-start_data[mac]["down"];
+					var current_up=total_up-start_data[mac]["up"];
+					
+					var down_id="mac_"+mac+"_down";
+					var up_id="mac_"+mac+"_up";
+					var total_id="mac_"+mac+"_total";
+					var down_speed_id="mac_"+mac+"_down_speed";
+					var up_speed_id="mac_"+mac+"_up_speed";
+					var total_speed_id="mac_"+mac+"_total_speed";					
+					
+					document.getElementById(down_id).innerHTML = transfer2str(current_down);
+					document.getElementById(up_id).innerHTML = transfer2str(current_up);
+					document.getElementById(total_id).innerHTML = transfer2str(current_down+current_up);
+					
+					document.getElementById(down_speed_id).innerHTML = speed2str(1000.0*current_down/(end_time-start_time));
+					document.getElementById(up_speed_id).innerHTML = speed2str(100.0*current_up/(end_time-start_time));
+					document.getElementById(total_speed_id).innerHTML = speed2str(1000.0*(current_down+current_up)/(end_time-start_time));		
 				
 				}
+			}
+			
+			
+			if (first_update==true)
+			{
+                first_update=false;
 			}
 
 		}
 	};
 
-	function value2str(value)
+	function transfer2str(value)
 	{
 		unit = "";
 
@@ -112,6 +192,46 @@
 
 		return value.toFixed(2).replace(/\.?0*$/, '') + " " + unit;
 	}
+	
+	function speed2str(value)
+	{
+		unit = "";
+
+		if (value >= 1024 * 1024 * 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			unit = "Pb/s";
+		}
+		else if (value >= 1024 * 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			unit = "Tb/s";
+		}
+		else if (value >= 1024 * 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0 * 1024.0;
+			unit = "Gb/s";
+		}
+		else if (value >= 1024 * 1024)
+		{
+			scale = 1024.0 * 1024.0;
+			unit = "Mb/s";
+		}
+		else if (value >= 1024)
+		{
+			scale = 1024.0;
+			unit = "Kb/s";
+		}
+		else
+		{
+			scale = 1.0;
+			unit = "b/s";
+		}
+
+		value /= scale;
+
+		return value.toFixed(2).replace(/\.?0*$/, '') + " " + unit;
+	}	
 
 	function LoadData()
 	{
