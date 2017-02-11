@@ -69,6 +69,8 @@ public:
 
     static map<string, map<string, map<string, InterfaceStats> > > all_stats;
 
+    static map<string, InterfaceStats> session_stats;
+
     static map<string, InterfaceSpeedMeter> speed_stats;
 
     static map<string, InterfaceInfo> interfaces;

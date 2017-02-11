@@ -78,6 +78,14 @@ MAC address,stats type, date, InterfaceStats object
 map<string, map<string, map<string, InterfaceStats> > > Globals::all_stats;
 
 /**<
+The global map object that stores session statistics for each available network interface.
+Session stats are statistics from the program start until the end of execution.
+The map structure is as follows:
+MAC address, InterfaceStats object
+*/
+map<string, InterfaceStats> Globals::session_stats;
+
+/**<
 The global map object that stores current data speed for each interface.
 The map structure is as follows:
 MAC address, InterfaceSpeedMeter object

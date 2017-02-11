@@ -218,6 +218,12 @@ int main( int argc, char *argv[] )
             row += Utils::to_string( y );
             Globals::all_stats[mac]["yearly"][row] = ystats;
         }
+
+        if ( Globals::session_stats.find( mac ) == Globals::session_stats.end() )
+		{
+			InterfaceStats stats;
+			Globals::session_stats[mac]=stats;
+		}
     }
 
     Utils::load_stats( "" );

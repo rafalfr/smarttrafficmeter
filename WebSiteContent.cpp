@@ -1513,6 +1513,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             root[mac]["speed"]["down"] = Json::Value::UInt64 ( ism.get_rx_speed() );
             root[mac]["speed"]["up"] = Json::Value::UInt64 ( ism.get_tx_speed() );
 
+            root[mac]["session"]["down"]=Json::Value::UInt64(Globals::session_stats[mac].received());
+            root[mac]["session"]["up"]=Json::Value::UInt64(Globals::session_stats[mac].transmitted());
+
             row.clear();
             row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
 

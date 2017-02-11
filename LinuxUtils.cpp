@@ -196,7 +196,7 @@ void* LinuxUtils::MeterThread( void )
 
                 if ( Globals::all_stats.find( mac ) == Globals::all_stats.end() )
                 {
-                	string row;
+                    string row;
                     Utils::get_time( &y, &m, &d, &h );
 
                     InterfaceStats hstats;
@@ -220,6 +220,12 @@ void* LinuxUtils::MeterThread( void )
                     Globals::all_stats[mac]["yearly"][row] = ystats;
 
                     Utils::load_stats( mac );
+                }
+
+                if ( Globals::session_stats.find( mac ) == Globals::session_stats.end() )
+                {
+                    InterfaceStats stats;
+                    Globals::session_stats[mac] = stats;
                 }
             }
         }
@@ -285,6 +291,8 @@ void* LinuxUtils::MeterThread( void )
                 }
 
                 struct rtnl_link_stats *stats = ( rtnl_link_stats * ) ifaddr->ifa_data;
+
+                Globals::session_stats[mac].update( stats->tx_bytes, stats->rx_bytes );
 
                 current_hourly_row = Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
 
