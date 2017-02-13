@@ -64,6 +64,10 @@ public:
 	static uint32_t jscolor_js_length;
 
     static uint8_t jscolor_js[];
+
+    static uint32_t stopwatch_js_length;
+
+    static uint8_t stopwatch_js[];
 };
 
 #endif // RESOURCES_H

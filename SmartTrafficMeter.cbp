@@ -264,6 +264,7 @@
 		<Unit filename="sqlite3.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="stopwatch.cpp" />
 		<Unit filename="tclap/Arg.h" />
 		<Unit filename="tclap/ArgException.h" />
 		<Unit filename="tclap/ArgTraits.h" />

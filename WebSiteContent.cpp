@@ -218,7 +218,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
         page += "</tbody></table>\n";
         page += "<p style=\"text-align: center;\">";
-        page += "<a href=\"/history/\">network history</a></p>\n";
+        page += "<a style=\"padding-left:1em; padding-right:1em\" href=\"/history/\">network history</a>";
+        page += "<a style=\"padding-left:1em; padding-right:1em\" href=\"/stopwatch/\">stopwatch</a>";
+        page += "</p>\n";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
@@ -327,6 +329,117 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
+
+    server.resource["^/stopwatch/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter Stopwatch</title>\n";
+        page += "<script src=\"/stopwatch.js\"></script>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\" onload=\"init()\">\n";
+
+        page += "<h1>Stopwatch</h1>\n<br>\n";
+
+        page += "<table style=\"margin-left: auto; margin-right: auto;\" cellspacing=\"1\" cellpadding=\"1\">\n";
+        page += "<tbody>\n";
+
+        for ( auto const & mac_info : Globals::interfaces )
+        {
+            const InterfaceInfo& interface_info = mac_info.second;
+
+            const string& interface_mac = interface_info.get_mac();
+            const string& interface_name = interface_info.get_name();
+            const string& interface_description = interface_info.get_desc();
+            const string& ip4 = interface_info.get_ip4();
+
+            page += "<tr>\n";
+            page += "<td><p style='text-align: center;'>" + interface_name + ",\t" + interface_mac + ",\t" + ip4; // + ",\t";// + ip6;
+            page += "</p></td>\n";
+
+            page += "<td><div style='width: 130px;'>\n";
+            page += "<p><span style=\"color:green; margin: left\">&#11015;<span id=\"mac_" + interface_mac + "_down\"></span>\n";
+            page += "</span></p></div></td>\n";
+            page += "<td><div style='width: 130px;'>\n";
+            page += "<p><span style=\"color:red; margin: left\">&#11014;<span id=\"mac_" + interface_mac + "_up\"></span>\n";
+            page += "</span></p></div></td>\n";
+            page += "<td><div style='width: 130px;'>\n";
+            page += "<p><span style=\"color:blue; margin: left\"><span style=\"color:green\">&#11015;</span><span style=\"color:red\">&#11014;</span><span id=\"mac_" + interface_mac + "_total\"></span>\n";
+            page += "</span></p></div></td>\n";
+            page += "</tr>\n";
+        }
+
+        page += "<tr><td  colspan=\"4\"><p style='text-align: center;'><span id=\"time\">00:00:00</span></p></td></tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
+
+        page += "<br>\n";
+        page += "<center>\n";
+        page += "<form name=\"stpw\">\n";
+        page += "<input type=\"button\" name=\"startbutton\" value=\"Start\" id=\"start_button\" onclick=\"starttimer()\">\n";
+        page += "<input type=\"button\" name=\"pausebutton\" value=\"Pause\" id=\"pause_button\" onclick=\"pausetimer()\">\n";
+        page += "<input type=\"button\" name=\"reset\" value=\"Reset\" id=\"reset_button\" onclick=\"resetstats()\">\n";
+        page += "</form>\n";
+        page += "</center>\n";
+        page += "<br>\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</div>\n";
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream << page;
+        content_stream.seekp( 0, ios::end );
+        *response <<  "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
 
     server.resource["^/legalinfo/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
@@ -1470,6 +1583,20 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
+    server.resource["\\/stopwatch.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Length: " << Resources::stopwatch_js_length << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::stopwatch_js_length; i++ )
+        {
+            *response << Resources::stopwatch_js[i];
+        }
+    };
 
     // usunąć po testach
     server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
@@ -1513,8 +1640,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             root[mac]["speed"]["down"] = Json::Value::UInt64 ( ism.get_rx_speed() );
             root[mac]["speed"]["up"] = Json::Value::UInt64 ( ism.get_tx_speed() );
 
-            root[mac]["session"]["down"]=Json::Value::UInt64(Globals::session_stats[mac].received());
-            root[mac]["session"]["up"]=Json::Value::UInt64(Globals::session_stats[mac].transmitted());
+            root[mac]["session"]["down"] = Json::Value::UInt64( Globals::session_stats[mac].received() );
+            root[mac]["session"]["up"] = Json::Value::UInt64( Globals::session_stats[mac].transmitted() );
 
             row.clear();
             row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
@@ -1636,13 +1763,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         if ( Utils::contains( storage, "sqlite" ) )
         {
 #ifdef use_sqlite
-            Utils::save_stats_to_sqlite("");
+            Utils::save_stats_to_sqlite( "" );
 #endif // use_sqlite
         }
 
         if ( Utils::contains( storage, "files" ) )
         {
-            Utils::save_stats_to_files("");
+            Utils::save_stats_to_files( "" );
         }
 
         string web_page;
