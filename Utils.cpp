@@ -807,6 +807,39 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
     }
 }
 
+/** @brief days_in_month
+  *
+  * @todo: document this function
+  */
+uint32_t Utils::days_in_month( uint32_t month, uint32_t year )
+{
+    if ( month == 0U || month == 1UL || month == 3UL || month == 5UL || month == 7UL || month == 8UL || month == 10UL || month == 12UL )
+    {
+        return 31UL;
+    }
+    else if ( month == 4UL || month == 6UL || month == 9UL || month == 11UL )
+    {
+        return 30UL;
+    }
+    else if ( month == 2UL )
+    {
+        bool leap_year = ( year % 400 ) ? ( ( year % 100 ) ? ( ( year % 4 ) ? false : true ) : false ) : true;
+
+        if ( leap_year )
+        {
+            return 29UL;
+        }
+        else
+        {
+            return 28UL;
+        }
+    }
+    else
+    {
+        return 0UL;
+    }
+}
+
 
 /** @brief load_stats
   *
@@ -1625,6 +1658,250 @@ bool Utils::check_databse_integrity( void )
     return true;
 }
 
+/** @brief repair_broken_databse
+  *
+  * @todo: document this function
+  */
+bool Utils::repair_broken_databse( void )
+{
+#ifdef use_sqlite
+    uint32_t y;
+    uint32_t m;
+    uint32_t d;
+    uint32_t h;
+    sqlite3 *db;
+    char *zErrMsg = nullptr;
+    int rc;
+
+    Utils::get_time( &y, &m, &d, &h );
+
+    struct date start_date;
+    struct date end_date;
+
+    for ( auto const & mac_info : Globals::interfaces )
+    {
+        const string& mac = mac_info.first;
+
+        // fix yearly stats
+        start_date.year = 1900;
+        start_date.month = 1;
+        start_date.day = 1;
+        start_date.hour = 0;
+
+        end_date.year = y;
+        end_date.month = m;
+        end_date.day = d;
+        end_date.hour = h;
+
+        map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "yearly", start_date, end_date );
+
+        for ( auto & row_stats : results )
+        {
+            const string& row = row_stats.first;
+
+            struct date hourly_start_date;
+            struct date hourly_end_date;
+
+            hourly_start_date.year = Utils::stoi( row );
+            hourly_start_date.month = 1;
+            hourly_start_date.day = 1;
+            hourly_start_date.hour = 0;
+
+            hourly_end_date.year = Utils::stoi( row );
+            hourly_end_date.month = 12;
+            hourly_end_date.day = 31;
+            hourly_end_date.hour = 23;
+
+            map<string, InterfaceStats> hourly_results = Globals::db_drv.get_stats( mac, "hourly", hourly_start_date, hourly_end_date );
+
+            uint64_t total_received = 0ULL;
+            uint64_t total_transmitted = 0ULL;
+
+            for ( auto & hourly_row_stats : hourly_results )
+            {
+                const InterfaceStats& hourly_stats = hourly_row_stats.second;
+                total_received += hourly_stats.received();
+                total_transmitted += hourly_stats.transmitted();
+            }
+
+            Globals::data_load_save_mutex.lock();
+
+            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+
+            if ( rc != SQLITE_OK )
+            {
+                continue;
+            }
+
+            string query;
+            query.clear();
+            query += "UPDATE OR IGNORE yearly SET ";
+            query += "rx_bytes=";
+            query += Utils::to_string( total_received );
+            query += ", ";
+            query += "tx_bytes=";
+            query += Utils::to_string( total_transmitted );
+            query += " WHERE row='" + row + "'";
+            query += ";";
+            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
+
+            if ( rc != SQLITE_OK )
+            {
+                sqlite3_free( zErrMsg );
+                Logger::LogError( "Can not fix yearly table at row: " + row );
+                continue;
+            }
+
+            sqlite3_close_v2( db );
+
+            Globals::data_load_save_mutex.unlock();
+        }
+
+        // fix monthly stats
+        results = Globals::db_drv.get_stats( mac, "monthly", start_date, end_date );
+
+        for ( auto & row_stats : results )
+        {
+            const string& row = row_stats.first;
+
+            uint32_t current_year, current_month, current_day, current_hour;
+
+            str2date( row, "monthly", &current_year, &current_month, &current_day, &current_hour );
+
+            struct date hourly_start_date;
+            struct date hourly_end_date;
+
+            hourly_start_date.year = current_year;
+            hourly_start_date.month = current_month;
+            hourly_start_date.day = 1;
+            hourly_start_date.hour = 0;
+
+            hourly_end_date.year = current_year;
+            hourly_end_date.month = current_month;
+            hourly_end_date.day = Utils::days_in_month( current_month, current_year );
+            hourly_end_date.hour = 23;
+
+            map<string, InterfaceStats> hourly_results = Globals::db_drv.get_stats( mac, "hourly", hourly_start_date, hourly_end_date );
+
+            uint64_t total_received = 0ULL;
+            uint64_t total_transmitted = 0ULL;
+
+            for ( auto & hourly_row_stats : hourly_results )
+            {
+                const InterfaceStats& hourly_stats = hourly_row_stats.second;
+                total_received += hourly_stats.received();
+                total_transmitted += hourly_stats.transmitted();
+            }
+
+            Globals::data_load_save_mutex.lock();
+
+            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+
+            if ( rc != SQLITE_OK )
+            {
+                continue;
+            }
+
+            string query;
+            query.clear();
+            query += "UPDATE OR IGNORE monthly SET ";
+            query += "rx_bytes=";
+            query += Utils::to_string( total_received );
+            query += ", ";
+            query += "tx_bytes=";
+            query += Utils::to_string( total_transmitted );
+            query += " WHERE row='" + row + "'";
+            query += ";";
+            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
+
+            if ( rc != SQLITE_OK )
+            {
+                sqlite3_free( zErrMsg );
+                Logger::LogError( "Can not fix monthly table at row: " + row );
+                continue;
+            }
+
+            sqlite3_close_v2( db );
+
+            Globals::data_load_save_mutex.unlock();
+        }
+
+        // fix daily stats
+        results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
+
+        for ( auto & row_stats : results )
+        {
+            const string& row = row_stats.first;
+
+            uint32_t current_year, current_month, current_day, current_hour;
+
+            str2date( row, "daily", &current_year, &current_month, &current_day, &current_hour );
+
+            struct date hourly_start_date;
+            struct date hourly_end_date;
+
+            hourly_start_date.year = current_year;
+            hourly_start_date.month = current_month;
+            hourly_start_date.day = current_day;
+            hourly_start_date.hour = 0;
+
+            hourly_end_date.year = current_year;
+            hourly_end_date.month = current_month;
+            hourly_end_date.day = current_day;
+            hourly_end_date.hour = 23;
+
+            map<string, InterfaceStats> hourly_results = Globals::db_drv.get_stats( mac, "hourly", hourly_start_date, hourly_end_date );
+
+            uint64_t total_received = 0ULL;
+            uint64_t total_transmitted = 0ULL;
+
+            for ( auto & hourly_row_stats : hourly_results )
+            {
+                const InterfaceStats& hourly_stats = hourly_row_stats.second;
+                total_received += hourly_stats.received();
+                total_transmitted += hourly_stats.transmitted();
+            }
+
+            Globals::data_load_save_mutex.lock();
+
+            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+
+            if ( rc != SQLITE_OK )
+            {
+                continue;
+            }
+
+            string query;
+            query.clear();
+            query += "UPDATE OR IGNORE daily SET ";
+            query += "rx_bytes=";
+            query += Utils::to_string( total_received );
+            query += ", ";
+            query += "tx_bytes=";
+            query += Utils::to_string( total_transmitted );
+            query += " WHERE row='" + row + "'";
+            query += ";";
+            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
+
+            if ( rc != SQLITE_OK )
+            {
+                sqlite3_free( zErrMsg );
+                Logger::LogError( "Can not fix daily table at row: " + row );
+                continue;
+            }
+
+            sqlite3_close_v2( db );
+
+            Globals::data_load_save_mutex.unlock();
+        }
+    }
+
+    return true;
+
+#endif // use_sqlite
+}
+
+
 
 /** @brief callback
   *
@@ -1656,7 +1933,7 @@ int Utils::callback( void*, int argc, char** argv, char** azColName )
   *
   * @todo: document this function
   */
-int32_t Utils::stoi( const string& str )
+int32_t Utils::stoi( const string & str )
 {
     if ( str.size() == 0 )
     {
@@ -1698,7 +1975,7 @@ int32_t Utils::stoi( const string& str )
   *
   * @todo: document this function
   */
-uint32_t Utils::stoui( const string& str )
+uint32_t Utils::stoui( const string & str )
 {
     if ( str.size() == 0 )
     {
@@ -1728,7 +2005,7 @@ uint32_t Utils::stoui( const string& str )
   *
   * @todo: document this function
   */
-uint64_t Utils::stoull( const string& str )
+uint64_t Utils::stoull( const string & str )
 {
     if ( str.size() == 0 )
     {
@@ -1770,7 +2047,7 @@ uint64_t Utils::stoull( const string& str )
   *
   * @todo: document this function
   */
-int32_t Utils::hstoi( const string& str )
+int32_t Utils::hstoi( const string & str )
 {
     int32_t x;
     stringstream ss;
@@ -1860,7 +2137,7 @@ string Utils::get_program_path( char** argv )
   *
   * @todo: document this function
   */
-string Utils::get_path( const string& full_file_path )
+string Utils::get_path( const string & full_file_path )
 {
     string path = boost::filesystem::path( full_file_path ).parent_path().generic_string();
 
@@ -1938,7 +2215,7 @@ bool Utils::dir_exists( const char* path )
 }
 
 
-int32_t Utils::make_path( const string& _s, mode_t mode )
+int32_t Utils::make_path( const string & _s, mode_t mode )
 {
 #ifdef _WIN32
     return WindowsUtils::make_path( path );
@@ -1953,7 +2230,7 @@ int32_t Utils::make_path( const string& _s, mode_t mode )
   *
   * @todo: document this function
   */
-void Utils::save_pid_file( const string& pid_file_path )
+void Utils::save_pid_file( const string & pid_file_path )
 {
 #ifdef __linux
     LinuxUtils::save_pid_file( pid_file_path );

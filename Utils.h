@@ -46,107 +46,111 @@ class Utils
 
 private:
 
-	static map<string, string> table_columns;
+    static map<string, string> table_columns;
 
-	static int callback( void *, int argc, char **argv, char **azColName );
+    static int callback( void *, int argc, char **argv, char **azColName );
 
 public:
 
-	static map<string, InterfaceInfo> get_all_interfaces( void );
+    static map<string, InterfaceInfo> get_all_interfaces( void );
 
-	static void load_stats(const string& a_mac);
+    static void load_stats( const string& a_mac );
 
-	static void load_data_from_sqlite(const string& a_mac );
+    static void load_data_from_sqlite( const string& a_mac );
 
-	static void load_data_from_files(const string& a_mac );
+    static void load_data_from_files( const string& a_mac );
 
-	static void save_stats(const string& a_mac);
+    static void save_stats( const string& a_mac );
 
-	static void save_stats_to_sqlite( const string& a_mac );
+    static void save_stats_to_sqlite( const string& a_mac );
 
-	static void save_stats_to_files( const string& a_mac );
+    static void save_stats_to_files( const string& a_mac );
 
-	static void save_stats_to_mysql( const string& a_mac );
+    static void save_stats_to_mysql( const string& a_mac );
 
-	static void save_pid_file(const string& pid_file_path);
+    static void save_pid_file( const string& pid_file_path );
 
-	static bool check_databse_integrity(void);
+    static bool check_databse_integrity( void );
 
-	static string get_mac( char* name );
+    static bool repair_broken_databse( void );
 
-	static void get_user_host(string& user, string& host);
+    static string get_mac( char* name );
 
-	static void get_os_info(string& os_info);
+    static void get_user_host( string& user, string& host );
 
-	static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
+    static void get_os_info( string& os_info );
 
-	static void seconds_to_date(time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
+    static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
-	static time_t date_to_seconds(uint32_t y, uint32_t m, uint32_t d, uint32_t h=0, uint32_t minute=0, uint32_t sec=0);
+    static void seconds_to_date( time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
-	static bool contains( const string& str, const string& key );
+    static time_t date_to_seconds( uint32_t y, uint32_t m, uint32_t d, uint32_t h = 0, uint32_t minute = 0, uint32_t sec = 0 );
 
-	static bool starts_with( const string& str, const string& key );
+    static bool contains( const string& str, const string& key );
 
-	static string replace(const string& pattern, const string& with, const string& in) noexcept;
+    static bool starts_with( const string& str, const string& key );
 
-	static vector<string> split( const string& str, const string& delim );
+    static string replace( const string& pattern, const string& with, const string& in ) noexcept;
 
-	static string float_to_string(float value, int32_t precision=3);
+    static vector<string> split( const string& str, const string& delim );
 
-	static string double_to_string(double value, int32_t precision=3);
+    static string float_to_string( float value, int32_t precision = 3 );
 
-	static string to_string( uint64_t value, uint32_t min_string_length=0 );
+    static string double_to_string( double value, int32_t precision = 3 );
 
-	static string to_string( uint32_t value, uint32_t min_string_length=0 );
+    static string to_string( uint64_t value, uint32_t min_string_length = 0 );
 
-	static int32_t stoi(const string& str);
+    static string to_string( uint32_t value, uint32_t min_string_length = 0 );
 
-	static uint32_t stoui(const string& str);
+    static int32_t stoi( const string& str );
 
-	static int32_t hstoi(const string& str);
+    static uint32_t stoui( const string& str );
 
-	static float stof(const string& str);
+    static int32_t hstoi( const string& str );
 
-	static uint64_t stoull(const string& str);
+    static float stof( const string& str );
 
-	static vector<string> hexcolor_to_strings(string& hex_color);
+    static uint64_t stoull( const string& str );
 
-	static string trim( const std::string &s );
+    static vector<string> hexcolor_to_strings( string& hex_color );
 
-	static string date_str(const string& type, uint32_t y,  uint32_t m, uint32_t d, uint32_t h );
+    static string trim( const std::string &s );
 
-	static void str2date(const string& str, const string& type, uint32_t* y,  uint32_t* m, uint32_t* d, uint32_t* h );
+    static string date_str( const string& type, uint32_t y,  uint32_t m, uint32_t d, uint32_t h );
 
-	static bool check_one_instance( void );
+    static void str2date( const string& str, const string& type, uint32_t* y,  uint32_t* m, uint32_t* d, uint32_t* h );
 
-	static void remove_instance_object(void);
+    static uint32_t days_in_month( uint32_t month, uint32_t year );
 
-	static void set_signals_handler(void);
+    static bool check_one_instance( void );
 
-	static int32_t BecomeDaemon(void);
+    static void remove_instance_object( void );
 
-	static void MeterThread(void);
+    static void set_signals_handler( void );
 
-	static void make_program_run_at_startup(void);
+    static int32_t BecomeDaemon( void );
 
-	static string get_program_path(char** argv);
+    static void MeterThread( void );
 
-	static string get_path(const string& full_file_path);
+    static void make_program_run_at_startup( void );
 
-	static void sleep_seconds(uint32_t seconds);
+    static string get_program_path( char** argv );
 
-	static string to_narrow(const wchar_t * src);
+    static string get_path( const string& full_file_path );
 
-	static void set_endsession_handler(void);
+    static void sleep_seconds( uint32_t seconds );
 
-	static bool dir_exists( const char *path );
+    static string to_narrow( const wchar_t * src );
 
-	static int32_t make_path( const string& _s, mode_t mode );
+    static void set_endsession_handler( void );
 
-	static string  rfc1123_datetime( time_t time );
+    static bool dir_exists( const char *path );
 
-	static bool save_settings(void);
+    static int32_t make_path( const string& _s, mode_t mode );
+
+    static string  rfc1123_datetime( time_t time );
+
+    static bool save_settings( void );
 
 };
 
