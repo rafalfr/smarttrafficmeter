@@ -262,6 +262,11 @@ int main( int argc, char *argv[] )
         {
             Logger::LogError( "Error: " + e.GetErrorText() );
         }
+
+        Utils::repair_broken_databse();
+
+        Utils::sleep_seconds(5);
+        Utils::load_stats( "" );
     }
 
     //boost::thread stats_server_thread ( ServerThread::Thread );

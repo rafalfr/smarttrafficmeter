@@ -1860,6 +1860,14 @@ bool Utils::repair_broken_databse( void )
                 const InterfaceStats& hourly_stats = hourly_row_stats.second;
                 total_received += hourly_stats.received();
                 total_transmitted += hourly_stats.transmitted();
+//                string msg="";
+//                msg+=hourly_row_stats.first;
+//                msg+="\t";
+//                msg+=Utils::to_string(hourly_stats.received());
+//                msg+="\t";
+//                msg+=Utils::to_string(hourly_stats.transmitted());
+//                msg+="\n";
+//                Logger::LogInfo(msg);
             }
 
             Globals::data_load_save_mutex.lock();
@@ -1881,6 +1889,7 @@ bool Utils::repair_broken_databse( void )
             query += Utils::to_string( total_transmitted );
             query += " WHERE row='" + row + "'";
             query += ";";
+            //Logger::LogInfo(query);
             rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
             if ( rc != SQLITE_OK )
