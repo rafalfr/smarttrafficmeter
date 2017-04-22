@@ -1673,6 +1673,8 @@ bool Utils::repair_broken_databse( void )
     char *zErrMsg = nullptr;
     int rc;
 
+    vector<string> queries;
+
     Utils::get_time( &y, &m, &d, &h );
 
     struct date start_date;
@@ -1680,6 +1682,8 @@ bool Utils::repair_broken_databse( void )
 
     for ( auto const & mac_info : Globals::interfaces )
     {
+        queries.clear();
+
         const string& mac = mac_info.first;
 
         // fix yearly stats
@@ -1724,15 +1728,6 @@ bool Utils::repair_broken_databse( void )
                 total_transmitted += hourly_stats.transmitted();
             }
 
-            Globals::data_load_save_mutex.lock();
-
-            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
-
-            if ( rc != SQLITE_OK )
-            {
-                continue;
-            }
-
             string query;
             query.clear();
             query += "UPDATE OR IGNORE yearly SET ";
@@ -1743,18 +1738,7 @@ bool Utils::repair_broken_databse( void )
             query += Utils::to_string( total_transmitted );
             query += " WHERE row='" + row + "'";
             query += ";";
-            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-            if ( rc != SQLITE_OK )
-            {
-                sqlite3_free( zErrMsg );
-                Logger::LogError( "Can not fix yearly table at row: " + row );
-                continue;
-            }
-
-            sqlite3_close_v2( db );
-
-            Globals::data_load_save_mutex.unlock();
+            queries.push_back( query );
         }
 
         // fix monthly stats
@@ -1793,15 +1777,6 @@ bool Utils::repair_broken_databse( void )
                 total_transmitted += hourly_stats.transmitted();
             }
 
-            Globals::data_load_save_mutex.lock();
-
-            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
-
-            if ( rc != SQLITE_OK )
-            {
-                continue;
-            }
-
             string query;
             query.clear();
             query += "UPDATE OR IGNORE monthly SET ";
@@ -1812,18 +1787,7 @@ bool Utils::repair_broken_databse( void )
             query += Utils::to_string( total_transmitted );
             query += " WHERE row='" + row + "'";
             query += ";";
-            rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-            if ( rc != SQLITE_OK )
-            {
-                sqlite3_free( zErrMsg );
-                Logger::LogError( "Can not fix monthly table at row: " + row );
-                continue;
-            }
-
-            sqlite3_close_v2( db );
-
-            Globals::data_load_save_mutex.unlock();
+            queries.push_back( query );
         }
 
         // fix daily stats
@@ -1860,23 +1824,6 @@ bool Utils::repair_broken_databse( void )
                 const InterfaceStats& hourly_stats = hourly_row_stats.second;
                 total_received += hourly_stats.received();
                 total_transmitted += hourly_stats.transmitted();
-//                string msg="";
-//                msg+=hourly_row_stats.first;
-//                msg+="\t";
-//                msg+=Utils::to_string(hourly_stats.received());
-//                msg+="\t";
-//                msg+=Utils::to_string(hourly_stats.transmitted());
-//                msg+="\n";
-//                Logger::LogInfo(msg);
-            }
-
-            Globals::data_load_save_mutex.lock();
-
-            rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
-
-            if ( rc != SQLITE_OK )
-            {
-                continue;
             }
 
             string query;
@@ -1889,20 +1836,33 @@ bool Utils::repair_broken_databse( void )
             query += Utils::to_string( total_transmitted );
             query += " WHERE row='" + row + "'";
             query += ";";
-            //Logger::LogInfo(query);
+            queries.push_back( query );
+        }
+
+        Globals::data_load_save_mutex.lock();
+
+        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+
+        if ( rc != SQLITE_OK )
+        {
+        	Globals::data_load_save_mutex.unlock();
+            continue;
+        }
+
+        for ( const string& query : queries )
+        {
+
             rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
             if ( rc != SQLITE_OK )
             {
-                sqlite3_free( zErrMsg );
-                Logger::LogError( "Can not fix daily table at row: " + row );
-                continue;
+                Logger::LogError( "Can not fix table with query: " + query );
             }
-
-            sqlite3_close_v2( db );
-
-            Globals::data_load_save_mutex.unlock();
         }
+
+        sqlite3_close_v2( db );
+
+        Globals::data_load_save_mutex.unlock();
     }
 
     return true;

@@ -220,21 +220,24 @@ int main( int argc, char *argv[] )
         }
 
         if ( Globals::session_stats.find( mac ) == Globals::session_stats.end() )
-		{
-			InterfaceStats stats;
-			Globals::session_stats[mac]=stats;
-		}
+        {
+            InterfaceStats stats;
+            Globals::session_stats[mac] = stats;
+        }
     }
 
     Utils::load_stats( "" );
 
     if ( Utils::check_databse_integrity() == false )
     {
-    	const char* smtp_server=Settings::settings["smtp server"].c_str();
-    	const char* mailbox_login=Settings::settings["mailbox login"].c_str();
-    	const char* mailbox_password=Settings::settings["mailbox password"].c_str();
-		string os_info;
-		Utils::get_os_info(os_info);
+        const char* smtp_server = Settings::settings["smtp server"].c_str();
+        const char* mailbox_login = Settings::settings["mailbox login"].c_str();
+        const char* mailbox_password = Settings::settings["mailbox password"].c_str();
+        string os_info;
+        Utils::get_os_info( os_info );
+        string user;
+        string host;
+        Utils::get_user_host( user, host );
 
         try
         {
@@ -253,9 +256,11 @@ int main( int argc, char *argv[] )
             mail.SetXMailer( "Microsoft Office Outlook 12.0" );
             mail.AddMsgLine( "Hello," );
             mail.AddMsgLine( "" );
-            mail.AddMsgLine( "Data base integrity has been lost." );
+            mail.AddMsgLine( "Data base integrity has been restored at " );
             mail.AddMsgLine( "" );
-            mail.AddMsgLine( os_info.c_str());
+            mail.AddMsgLine( os_info.c_str() );
+            mail.AddMsgLine( "" );
+            mail.AddMsgLine( ( "with " + user + "@" + host ).c_str() );
             mail.Send();
         }
         catch ( ECSmtp e )
@@ -265,7 +270,7 @@ int main( int argc, char *argv[] )
 
         Utils::repair_broken_databse();
 
-        Utils::sleep_seconds(5);
+        Utils::sleep_seconds( 5 );
         Utils::load_stats( "" );
     }
 
