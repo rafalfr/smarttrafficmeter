@@ -1212,7 +1212,7 @@ bool CSmtp::ConnectRemoteServer( const char* szServer, const unsigned short nPor
                 delete[] a2;
 
                 //send the response
-                if ( strstr( RecvBuf, "charset" ) >= 0 ) snprintf( SendBuf, BUFFER_SIZE, "charset=utf-8,username=\"%s\"", m_sLogin.c_str() );
+                if ( strstr( RecvBuf, "charset" ) >= (char*)0 ) snprintf( SendBuf, BUFFER_SIZE, "charset=utf-8,username=\"%s\"", m_sLogin.c_str() );
                 else snprintf( SendBuf, BUFFER_SIZE, "username=\"%s\"", m_sLogin.c_str() );
 
                 if ( !realm.empty() )

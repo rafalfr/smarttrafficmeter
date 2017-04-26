@@ -54,7 +54,7 @@
 					<Add option="-O3" />
 					<Add option="-Weffc++" />
 					<Add option="-Wall" />
-					<Add option="-std=c++14" />
+					<Add option="-std=c++11" />
 					<Add option="-m64" />
 					<Add option="-rdynamic" />
 					<Add option="-D__linux" />
@@ -87,10 +87,10 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
-					<Add option="-fexpensive-optimizations" />
 					<Add option="-O3" />
 					<Add option="-w" />
 					<Add option="-std=c++11" />
+					<Add option="-fexpensive-optimizations" />
 					<Add option="-D__pi__" />
 				</Compiler>
 				<Linker>
@@ -114,7 +114,7 @@
 				<Option output="bin/Release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="mingw64" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-w" />
 					<Add option="-fexceptions" />
@@ -148,7 +148,7 @@
 				<Option output="bin/Debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="mingw64" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-w" />
@@ -198,7 +198,6 @@
 		<Unit filename="InterfaceSpeedMeter.h" />
 		<Unit filename="InterfaceStats.cpp" />
 		<Unit filename="InterfaceStats.h" />
-		<Unit filename="Jsoncpp.cpp" />
 		<Unit filename="LinuxUtils.cpp">
 			<Option target="Linux Debug" />
 			<Option target="Linux Release" />
@@ -246,6 +245,7 @@
 		<Unit filename="jscolor.cpp" />
 		<Unit filename="json/json-forwards.h" />
 		<Unit filename="json/json.h" />
+		<Unit filename="jsoncpp.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="resource/win.rc">
 			<Option compilerVar="WINDRES" />

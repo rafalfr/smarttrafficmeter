@@ -20,7 +20,6 @@ using namespace std;
 void GroveStreamsUploader::run( void )
 {
     CURL *curl;
-    CURLcode res;
 
     string api_key = Settings::settings["grovestreams api key"];
 
@@ -124,7 +123,7 @@ void GroveStreamsUploader::run( void )
 
             curl_easy_setopt( curl, CURLOPT_POSTFIELDS, json.c_str() );
 
-            res = curl_easy_perform( curl );
+            curl_easy_perform( curl );
 
         }
 

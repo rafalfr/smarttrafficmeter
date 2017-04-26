@@ -191,7 +191,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             const string& interface_mac = interface_info.get_mac();
             const string& interface_name = interface_info.get_name();
-            const string& interface_description = interface_info.get_desc();
             const string& ip4 = interface_info.get_ip4();
 
             page += "<tr>\n";
@@ -393,7 +392,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             const string& interface_mac = interface_info.get_mac();
             const string& interface_name = interface_info.get_name();
-            const string& interface_description = interface_info.get_desc();
             const string& ip4 = interface_info.get_ip4();
 
             page += "<tr>\n";
@@ -1003,7 +1001,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             const string& mac = interface_info.get_mac();
             const string& interface_name = interface_info.get_name();
-            const string& interface_description = interface_info.get_desc();
             const string& ip4 = interface_info.get_ip4();
             const string& ip6 = interface_info.get_ip6();
 
@@ -1382,7 +1379,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             const string& interface_mac = interface_info.get_mac();
             const string& interface_name = interface_info.get_name();
-            const string& interface_description = interface_info.get_desc();
             const string& ip4 = interface_info.get_ip4();
 
             page += "<p style='text-align: center;'>" + interface_name + ",\t" + interface_mac + ",\t" + ip4; // + ",\t";// + ip6;
