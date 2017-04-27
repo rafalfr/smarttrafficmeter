@@ -30,7 +30,7 @@ DEP_LINUX_DEBUG =
 OUT_LINUX_DEBUG = bin/Debug/smarttrafficmeter
 
 INC_LINUX_RELEASE = $(INC)
-CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -Weffc++ -Wall -std=c++14 -m64 -rdynamic -D__linux -Duse_sqlite
+CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -Weffc++ -Wall -std=c++11 -m64 -rdynamic -D__linux -Duse_sqlite
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)
@@ -41,7 +41,7 @@ DEP_LINUX_RELEASE =
 OUT_LINUX_RELEASE = bin/Release/smarttrafficmeter
 
 INC_PI = $(INC)
-CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
+CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -O3 -w -std=c++11 -fexpensive-optimizations -D__pi__
 RESINC_PI = $(RESINC)
 RCFLAGS_PI = $(RCFLAGS)
 LIBDIR_PI = $(LIBDIR)
@@ -51,11 +51,11 @@ OBJDIR_PI = obj/pi
 DEP_PI = 
 OUT_PI = bin/pi/smarttrafficmeter
 
-OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/speed_update.o $(OBJDIR_LINUX_DEBUG)/stopwatch.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/smoothiejs.o $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/jscolor.o $(OBJDIR_LINUX_DEBUG)/jquery.o $(OBJDIR_LINUX_DEBUG)/csmtp/md5.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/Jsoncpp.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/GroveStreamsUploader.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/csmtp/base64.o $(OBJDIR_LINUX_DEBUG)/csmtp/CSmtp.o $(OBJDIR_LINUX_DEBUG)/chartjs.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/Url.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/ServerThread.o $(OBJDIR_LINUX_DEBUG)/Resources.o $(OBJDIR_LINUX_DEBUG)/Path.o
+OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/speed_update.o $(OBJDIR_LINUX_DEBUG)/stopwatch.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/smoothiejs.o $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/jsoncpp.o $(OBJDIR_LINUX_DEBUG)/jscolor.o $(OBJDIR_LINUX_DEBUG)/jquery.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/Path.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/GroveStreamsUploader.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o $(OBJDIR_LINUX_DEBUG)/csmtp/md5.o $(OBJDIR_LINUX_DEBUG)/csmtp/base64.o $(OBJDIR_LINUX_DEBUG)/csmtp/CSmtp.o $(OBJDIR_LINUX_DEBUG)/chartjs.o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/Url.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/ServerThread.o $(OBJDIR_LINUX_DEBUG)/Resources.o
 
-OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/speed_update.o $(OBJDIR_LINUX_RELEASE)/stopwatch.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/smoothiejs.o $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/jscolor.o $(OBJDIR_LINUX_RELEASE)/jquery.o $(OBJDIR_LINUX_RELEASE)/csmtp/md5.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/Jsoncpp.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/GroveStreamsUploader.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/csmtp/base64.o $(OBJDIR_LINUX_RELEASE)/csmtp/CSmtp.o $(OBJDIR_LINUX_RELEASE)/chartjs.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/Url.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/ServerThread.o $(OBJDIR_LINUX_RELEASE)/Resources.o $(OBJDIR_LINUX_RELEASE)/Path.o
+OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/speed_update.o $(OBJDIR_LINUX_RELEASE)/stopwatch.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/smoothiejs.o $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/jsoncpp.o $(OBJDIR_LINUX_RELEASE)/jscolor.o $(OBJDIR_LINUX_RELEASE)/jquery.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/Path.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/GroveStreamsUploader.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o $(OBJDIR_LINUX_RELEASE)/csmtp/md5.o $(OBJDIR_LINUX_RELEASE)/csmtp/base64.o $(OBJDIR_LINUX_RELEASE)/csmtp/CSmtp.o $(OBJDIR_LINUX_RELEASE)/chartjs.o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/Url.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/ServerThread.o $(OBJDIR_LINUX_RELEASE)/Resources.o
 
-OBJ_PI = $(OBJDIR_PI)/speed_update.o $(OBJDIR_PI)/stopwatch.o $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/smoothiejs.o $(OBJDIR_PI)/main.o $(OBJDIR_PI)/jscolor.o $(OBJDIR_PI)/jquery.o $(OBJDIR_PI)/csmtp/md5.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/LinuxUtils.o $(OBJDIR_PI)/Jsoncpp.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/GroveStreamsUploader.o $(OBJDIR_PI)/Globals.o $(OBJDIR_PI)/Debug.o $(OBJDIR_PI)/DataBaseDriver.o $(OBJDIR_PI)/csmtp/base64.o $(OBJDIR_PI)/csmtp/CSmtp.o $(OBJDIR_PI)/chartjs.o $(OBJDIR_PI)/WebSiteContent.o $(OBJDIR_PI)/BackgroundImage.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/Url.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/ServerThread.o $(OBJDIR_PI)/Resources.o $(OBJDIR_PI)/Path.o
+OBJ_PI = $(OBJDIR_PI)/speed_update.o $(OBJDIR_PI)/stopwatch.o $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/smoothiejs.o $(OBJDIR_PI)/main.o $(OBJDIR_PI)/jsoncpp.o $(OBJDIR_PI)/jscolor.o $(OBJDIR_PI)/jquery.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/LinuxUtils.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/Path.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/GroveStreamsUploader.o $(OBJDIR_PI)/Globals.o $(OBJDIR_PI)/Debug.o $(OBJDIR_PI)/DataBaseDriver.o $(OBJDIR_PI)/WebSiteContent.o $(OBJDIR_PI)/csmtp/md5.o $(OBJDIR_PI)/csmtp/base64.o $(OBJDIR_PI)/csmtp/CSmtp.o $(OBJDIR_PI)/chartjs.o $(OBJDIR_PI)/BackgroundImage.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/Url.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/ServerThread.o $(OBJDIR_PI)/Resources.o
 
 all: linux_debug linux_release pi
 
@@ -88,14 +88,14 @@ $(OBJDIR_LINUX_DEBUG)/smoothiejs.o: smoothiejs.cpp
 $(OBJDIR_LINUX_DEBUG)/main.o: main.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c main.cpp -o $(OBJDIR_LINUX_DEBUG)/main.o
 
+$(OBJDIR_LINUX_DEBUG)/jsoncpp.o: jsoncpp.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c jsoncpp.cpp -o $(OBJDIR_LINUX_DEBUG)/jsoncpp.o
+
 $(OBJDIR_LINUX_DEBUG)/jscolor.o: jscolor.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c jscolor.cpp -o $(OBJDIR_LINUX_DEBUG)/jscolor.o
 
 $(OBJDIR_LINUX_DEBUG)/jquery.o: jquery.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c jquery.cpp -o $(OBJDIR_LINUX_DEBUG)/jquery.o
-
-$(OBJDIR_LINUX_DEBUG)/csmtp/md5.o: csmtp/md5.cpp
-	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c csmtp/md5.cpp -o $(OBJDIR_LINUX_DEBUG)/csmtp/md5.o
 
 $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o: MySQLInterface.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c MySQLInterface.cpp -o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o
@@ -106,14 +106,14 @@ $(OBJDIR_LINUX_DEBUG)/Logger.o: Logger.cpp
 $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o: LinuxUtils.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c LinuxUtils.cpp -o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o
 
-$(OBJDIR_LINUX_DEBUG)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Jsoncpp.cpp -o $(OBJDIR_LINUX_DEBUG)/Jsoncpp.o
-
 $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o: InterfaceStats.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceStats.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o
 
 $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o
+
+$(OBJDIR_LINUX_DEBUG)/Path.o: Path.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Path.cpp -o $(OBJDIR_LINUX_DEBUG)/Path.o
 
 $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c InterfaceInfo.cpp -o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o
@@ -130,6 +130,12 @@ $(OBJDIR_LINUX_DEBUG)/Debug.o: Debug.cpp
 $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o: DataBaseDriver.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c DataBaseDriver.cpp -o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o
 
+$(OBJDIR_LINUX_DEBUG)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o
+
+$(OBJDIR_LINUX_DEBUG)/csmtp/md5.o: csmtp/md5.cpp
+	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c csmtp/md5.cpp -o $(OBJDIR_LINUX_DEBUG)/csmtp/md5.o
+
 $(OBJDIR_LINUX_DEBUG)/csmtp/base64.o: csmtp/base64.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c csmtp/base64.cpp -o $(OBJDIR_LINUX_DEBUG)/csmtp/base64.o
 
@@ -138,9 +144,6 @@ $(OBJDIR_LINUX_DEBUG)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
 
 $(OBJDIR_LINUX_DEBUG)/chartjs.o: chartjs.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c chartjs.cpp -o $(OBJDIR_LINUX_DEBUG)/chartjs.o
-
-$(OBJDIR_LINUX_DEBUG)/WebSiteContent.o: WebSiteContent.cpp
-	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o
 
 $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o: BackgroundImage.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c BackgroundImage.cpp -o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o
@@ -159,9 +162,6 @@ $(OBJDIR_LINUX_DEBUG)/ServerThread.o: ServerThread.cpp
 
 $(OBJDIR_LINUX_DEBUG)/Resources.o: Resources.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Resources.cpp -o $(OBJDIR_LINUX_DEBUG)/Resources.o
-
-$(OBJDIR_LINUX_DEBUG)/Path.o: Path.cpp
-	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Path.cpp -o $(OBJDIR_LINUX_DEBUG)/Path.o
 
 clean_linux_debug: 
 	rm -f $(OBJ_LINUX_DEBUG) $(OUT_LINUX_DEBUG)
@@ -196,14 +196,14 @@ $(OBJDIR_LINUX_RELEASE)/smoothiejs.o: smoothiejs.cpp
 $(OBJDIR_LINUX_RELEASE)/main.o: main.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c main.cpp -o $(OBJDIR_LINUX_RELEASE)/main.o
 
+$(OBJDIR_LINUX_RELEASE)/jsoncpp.o: jsoncpp.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c jsoncpp.cpp -o $(OBJDIR_LINUX_RELEASE)/jsoncpp.o
+
 $(OBJDIR_LINUX_RELEASE)/jscolor.o: jscolor.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c jscolor.cpp -o $(OBJDIR_LINUX_RELEASE)/jscolor.o
 
 $(OBJDIR_LINUX_RELEASE)/jquery.o: jquery.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c jquery.cpp -o $(OBJDIR_LINUX_RELEASE)/jquery.o
-
-$(OBJDIR_LINUX_RELEASE)/csmtp/md5.o: csmtp/md5.cpp
-	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c csmtp/md5.cpp -o $(OBJDIR_LINUX_RELEASE)/csmtp/md5.o
 
 $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o: MySQLInterface.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c MySQLInterface.cpp -o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o
@@ -214,14 +214,14 @@ $(OBJDIR_LINUX_RELEASE)/Logger.o: Logger.cpp
 $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o: LinuxUtils.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c LinuxUtils.cpp -o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o
 
-$(OBJDIR_LINUX_RELEASE)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Jsoncpp.cpp -o $(OBJDIR_LINUX_RELEASE)/Jsoncpp.o
-
 $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o: InterfaceStats.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceStats.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o
 
 $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o
+
+$(OBJDIR_LINUX_RELEASE)/Path.o: Path.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Path.cpp -o $(OBJDIR_LINUX_RELEASE)/Path.o
 
 $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c InterfaceInfo.cpp -o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o
@@ -238,6 +238,12 @@ $(OBJDIR_LINUX_RELEASE)/Debug.o: Debug.cpp
 $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o: DataBaseDriver.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c DataBaseDriver.cpp -o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o
 
+$(OBJDIR_LINUX_RELEASE)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o
+
+$(OBJDIR_LINUX_RELEASE)/csmtp/md5.o: csmtp/md5.cpp
+	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c csmtp/md5.cpp -o $(OBJDIR_LINUX_RELEASE)/csmtp/md5.o
+
 $(OBJDIR_LINUX_RELEASE)/csmtp/base64.o: csmtp/base64.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c csmtp/base64.cpp -o $(OBJDIR_LINUX_RELEASE)/csmtp/base64.o
 
@@ -246,9 +252,6 @@ $(OBJDIR_LINUX_RELEASE)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
 
 $(OBJDIR_LINUX_RELEASE)/chartjs.o: chartjs.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c chartjs.cpp -o $(OBJDIR_LINUX_RELEASE)/chartjs.o
-
-$(OBJDIR_LINUX_RELEASE)/WebSiteContent.o: WebSiteContent.cpp
-	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c WebSiteContent.cpp -o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o
 
 $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o: BackgroundImage.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c BackgroundImage.cpp -o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o
@@ -267,9 +270,6 @@ $(OBJDIR_LINUX_RELEASE)/ServerThread.o: ServerThread.cpp
 
 $(OBJDIR_LINUX_RELEASE)/Resources.o: Resources.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Resources.cpp -o $(OBJDIR_LINUX_RELEASE)/Resources.o
-
-$(OBJDIR_LINUX_RELEASE)/Path.o: Path.cpp
-	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Path.cpp -o $(OBJDIR_LINUX_RELEASE)/Path.o
 
 clean_linux_release: 
 	rm -f $(OBJ_LINUX_RELEASE) $(OUT_LINUX_RELEASE)
@@ -304,14 +304,14 @@ $(OBJDIR_PI)/smoothiejs.o: smoothiejs.cpp
 $(OBJDIR_PI)/main.o: main.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c main.cpp -o $(OBJDIR_PI)/main.o
 
+$(OBJDIR_PI)/jsoncpp.o: jsoncpp.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jsoncpp.cpp -o $(OBJDIR_PI)/jsoncpp.o
+
 $(OBJDIR_PI)/jscolor.o: jscolor.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jscolor.cpp -o $(OBJDIR_PI)/jscolor.o
 
 $(OBJDIR_PI)/jquery.o: jquery.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jquery.cpp -o $(OBJDIR_PI)/jquery.o
-
-$(OBJDIR_PI)/csmtp/md5.o: csmtp/md5.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/md5.cpp -o $(OBJDIR_PI)/csmtp/md5.o
 
 $(OBJDIR_PI)/MySQLInterface.o: MySQLInterface.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c MySQLInterface.cpp -o $(OBJDIR_PI)/MySQLInterface.o
@@ -322,14 +322,14 @@ $(OBJDIR_PI)/Logger.o: Logger.cpp
 $(OBJDIR_PI)/LinuxUtils.o: LinuxUtils.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c LinuxUtils.cpp -o $(OBJDIR_PI)/LinuxUtils.o
 
-$(OBJDIR_PI)/Jsoncpp.o: Jsoncpp.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Jsoncpp.cpp -o $(OBJDIR_PI)/Jsoncpp.o
-
 $(OBJDIR_PI)/InterfaceStats.o: InterfaceStats.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceStats.cpp -o $(OBJDIR_PI)/InterfaceStats.o
 
 $(OBJDIR_PI)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_PI)/InterfaceSpeedMeter.o
+
+$(OBJDIR_PI)/Path.o: Path.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Path.cpp -o $(OBJDIR_PI)/Path.o
 
 $(OBJDIR_PI)/InterfaceInfo.o: InterfaceInfo.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceInfo.cpp -o $(OBJDIR_PI)/InterfaceInfo.o
@@ -346,6 +346,12 @@ $(OBJDIR_PI)/Debug.o: Debug.cpp
 $(OBJDIR_PI)/DataBaseDriver.o: DataBaseDriver.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c DataBaseDriver.cpp -o $(OBJDIR_PI)/DataBaseDriver.o
 
+$(OBJDIR_PI)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c WebSiteContent.cpp -o $(OBJDIR_PI)/WebSiteContent.o
+
+$(OBJDIR_PI)/csmtp/md5.o: csmtp/md5.cpp
+	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/md5.cpp -o $(OBJDIR_PI)/csmtp/md5.o
+
 $(OBJDIR_PI)/csmtp/base64.o: csmtp/base64.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/base64.cpp -o $(OBJDIR_PI)/csmtp/base64.o
 
@@ -354,9 +360,6 @@ $(OBJDIR_PI)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
 
 $(OBJDIR_PI)/chartjs.o: chartjs.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c chartjs.cpp -o $(OBJDIR_PI)/chartjs.o
-
-$(OBJDIR_PI)/WebSiteContent.o: WebSiteContent.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c WebSiteContent.cpp -o $(OBJDIR_PI)/WebSiteContent.o
 
 $(OBJDIR_PI)/BackgroundImage.o: BackgroundImage.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c BackgroundImage.cpp -o $(OBJDIR_PI)/BackgroundImage.o
@@ -375,9 +378,6 @@ $(OBJDIR_PI)/ServerThread.o: ServerThread.cpp
 
 $(OBJDIR_PI)/Resources.o: Resources.cpp
 	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Resources.cpp -o $(OBJDIR_PI)/Resources.o
-
-$(OBJDIR_PI)/Path.o: Path.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Path.cpp -o $(OBJDIR_PI)/Path.o
 
 clean_pi: 
 	rm -f $(OBJ_PI) $(OUT_PI)
