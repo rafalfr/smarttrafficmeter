@@ -35,6 +35,28 @@ $end_year.prop('disabled', true);
 $end_month.prop('disabled', true);
 $end_day.prop('disabled', true);
 $end_hour.prop('disabled', true);
+var $stats_type=$('.statstype');
+
+$stats_type.change(function(e){
+var $type=$('[name="statstype"]:checked').val();
+if ($type=='hourly')
+{
+alert('hourly')
+}
+else if ($type=='daily')
+{
+alert('daily')
+}
+else if ($type=='monthly')
+{
+alert('monthly')
+}
+else if ($type=='yearly')
+{
+alert('yearly')
+}
+
+});
 
 $start_month.change(function(e) {
 var $this = $(this);
@@ -135,6 +157,14 @@ for (var i = 1; i <= num; i++) {
 function is_leap (yr) { return (yr%400)?((yr%100)?((yr%4)?false:true):false):true; }
 }
 </script>
+
+<form class="statstype">
+<input type="radio" name="statstype" value="hourly" checked> hourly stats
+<input type="radio" name="statstype" value="daily"> daily stats
+<input type="radio" name="statstype" value="monthly"> monthly stats
+<input type="radio" name="statstype" value="yearly"> yearly stats
+</form> 
+
 
 start date
 <div>
