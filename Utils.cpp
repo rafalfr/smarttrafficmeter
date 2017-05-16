@@ -172,6 +172,29 @@ void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
     ( *h ) = tm->tm_hour;
 }
 
+/** @brief get_time
+ *
+ * The method returns the current time
+ *
+ * @param[out] current year
+ * @param[out] current month
+ * @param[out] current day
+ * @param[out] current hour
+ * @param[out] current minute
+ * @return void
+ *
+ */
+void Utils::get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h, uint32_t* minute )
+{
+    time_t t = time( nullptr );
+    struct tm* tm = localtime( &t );
+    ( *y ) = tm->tm_year + 1900;
+    ( *m ) = tm->tm_mon + 1;
+    ( *d ) = tm->tm_mday;
+    ( *h ) = tm->tm_hour;
+    ( *minute ) = tm->tm_min;
+}
+
 /** @brief date_to_seconds
  *
  * The method converts the current time to number of seconds since the epoch
@@ -1845,7 +1868,7 @@ bool Utils::repair_broken_databse( void )
 
         if ( rc != SQLITE_OK )
         {
-        	Globals::data_load_save_mutex.unlock();
+            Globals::data_load_save_mutex.unlock();
             continue;
         }
 

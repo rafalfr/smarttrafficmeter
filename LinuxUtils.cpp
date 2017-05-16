@@ -93,16 +93,17 @@ using namespace std;
 void* LinuxUtils::MeterThread( void )
 {
     bool first_iteration = true;
-    uint32_t y = 0;
-    uint32_t m = 0;
-    uint32_t d = 0;
-    uint32_t h = 0;
-    uint32_t ph = 0;
-    uint32_t num_running_interfaces = 0;
-    uint32_t pnum_running_interfaces = 0;
-    static uint64_t p_time = 0;
+    uint32_t y = 0U;
+    uint32_t m = 0U;
+    uint32_t d = 0U;
+    uint32_t h = 0U;
+    uint32_t minute=0U;
+    uint32_t ph = 0U;
+    uint32_t num_running_interfaces = 0U;
+    uint32_t pnum_running_interfaces = 0U;
+    static uint64_t p_time = 0U;
     struct ifaddrs *ifaddr, *ipa = nullptr;
-    int family, s;
+    int32_t family, s;
     char host[NI_MAXHOST];
     uint32_t refresh_interval;	//statistics refresh interval in seconds
     uint32_t save_interval; 	//save interval in seconds
@@ -148,7 +149,7 @@ void* LinuxUtils::MeterThread( void )
 
     while ( Globals::terminate_program == false )
     {
-        Utils::get_time( &y, &m, &d, &h );
+        Utils::get_time( &y, &m, &d, &h, &minute );
 
         if ( first_iteration == true )
         {
@@ -419,7 +420,7 @@ void* LinuxUtils::MeterThread( void )
         gettimeofday( &te, nullptr );
         uint64_t c_time = te.tv_sec * 1000ULL + te.tv_usec / 1000ULL;
 
-        if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph ) )
+        if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph && minute==1U) )
         {
 
 //            if ( Globals::upload_threads.size() > 0 )

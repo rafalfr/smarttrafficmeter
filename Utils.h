@@ -82,6 +82,8 @@ public:
 
     static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
+    static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h, uint32_t* minute );
+
     static void seconds_to_date( time_t t, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
     static time_t date_to_seconds( uint32_t y, uint32_t m, uint32_t d, uint32_t h = 0, uint32_t minute = 0, uint32_t sec = 0 );
