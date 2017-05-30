@@ -30,6 +30,7 @@ var $end_hour = $('.end_hour');
 var $stats_type=$('.statstype');
 
 var $submit_button=$('.submit_button');
+document.getElementById("submit_button").onclick = show_stats;
 
 $stats_type.change(function(e){
 var $type=$('[name="statstype"]:checked').val();
@@ -163,58 +164,58 @@ if ($this.val() > 0)
 
 if ($this.val()==1)
 {
-    set_$end_days(31);
+    set_end_days(31);
     }
     else if ($this.val()==2)
     {
         if ($leap)
         {
-        set_$end_days(29);
+        set_end_days(29);
         }
         else
         {
-        set_$end_days(28);
+        set_end_days(28);
         }
     }
     else if ($this.val()==3)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }
     else if ($this.val()==4)
     {
-        set_$end_days(30);
+        set_end_days(30);
     }
     else if ($this.val()==5)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }
     else if ($this.val()==6)
     {
-        set_$end_days(30);
+        set_end_days(30);
     }
     else if ($this.val()==7)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }
     else if ($this.val()==8)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }
     else if ($this.val()==9)
     {
-        set_$end_days(30);
+        set_end_days(30);
     }
     else if ($this.val()==10)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }
     else if ($this.val()==11)
     {
-        set_$end_days(30);
+        set_end_days(30);
     }
     else if ($this.val()==12)
     {
-        set_$end_days(31);
+        set_end_days(31);
     }    
 
 });
@@ -246,13 +247,13 @@ for (var i = 1; i <= num; i++) {
     if (i < 10)
     $end_day.append("<option value='0" + i + "'>0" + i + "</option>")
     else
-    $end.append("<option value='" + i + "'>" + i + "</option>")
+    $end_day.append("<option value='" + i + "'>" + i + "</option>")
 }
 }
 
-$submit_button.change(function(e) {
+function show_stats() {
 alert("ssa");
-});
+};
 
 function is_leap (yr) { return (yr%400)?((yr%100)?((yr%4)?false:true):false):true; }
 }
@@ -471,8 +472,7 @@ download color <input id="up_color" value="00ff00" class="jscolor {width:243, he
 <input type="radio" name="charttype" value="bar" checked> bar chart<br>
 <input type="radio" name="charttype" value="line"> line chart<br>
 </form> 
-
-<button class="submit_button">Show stats</button> 
+<input id="submit_button" type="button" value="Show stats" />
     </body>
 </html>
 
