@@ -154,7 +154,7 @@ if ($(this).val() > 0)
 
 // end date functions
 
-$start_month.change(function(e) {
+$end_month.change(function(e) {
 var $this = $(this);
 
 if ($this.val() > 0)
@@ -242,7 +242,7 @@ for (var i = 1; i <= num; i++) {
 }
 
 function set_end_days(num) {
-$start_day.empty();
+$end_day.empty();
 for (var i = 1; i <= num; i++) {
     if (i < 10)
     $end_day.append("<option value='0" + i + "'>0" + i + "</option>")
@@ -252,7 +252,25 @@ for (var i = 1; i <= num; i++) {
 }
 
 function show_stats() {
-alert("ssa");
+str="/hourly/";
+str+="start=";
+str+=$start_year.val();
+str+="-";
+str+=$start_month.val();
+str+="-";
+str+=$start_day.val();
+str+="-";
+str+=$start_hour.val();
+str+="&end=";
+str+=$end_year.val();
+str+="-";
+str+=$end_month.val();
+str+="-";
+str+=$end_day.val();
+str+="-";
+str+=$end_hour.val();
+//alert(str);
+window.location.href=str;
 };
 
 function is_leap (yr) { return (yr%400)?((yr%100)?((yr%4)?false:true):false):true; }
@@ -278,6 +296,7 @@ start date
     <option value="2014">2014</option>
     <option value="2015">2015</option>
     <option value="2016">2016</option>
+    <option value="2017">2017</option>
 </select>
 </div>
     <div>
@@ -375,6 +394,7 @@ end date
     <option value="2014">2014</option>
     <option value="2015">2015</option>
     <option value="2016">2016</option>
+    <option value="2017">2017</option>
 </select>
 </div>
     <div>
