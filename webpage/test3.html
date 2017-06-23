@@ -252,27 +252,46 @@ for (var i = 1; i <= num; i++) {
 }
 
 function show_stats() {
+statstype=$('[name="statstype"]:checked').val();
 str="/";
 str+=$('[name="statstype"]:checked').val();
 str+="/";
 str+="start=";
 str+=$start_year.val();
+if (statstype=='monthly' || statstype=='daily' || statstype=='hourly')
+{
 str+="-";
 str+=$start_month.val();
+if (statstype=='daily' || statstype=='hourly')
+{
 str+="-";
 str+=$start_day.val();
+if (statstype=='hourly')
+{
 str+="-";
 str+=$start_hour.val();
+}}}
 str+="&end=";
 str+=$end_year.val();
+if (statstype=='monthly' || statstype=='daily' || statstype=='hourly')
+{
 str+="-";
 str+=$end_month.val();
+if (statstype=='daily' || statstype=='hourly')
+{
 str+="-";
 str+=$end_day.val();
+if (statstype=='hourly')
+{
 str+="-";
 str+=$end_hour.val();
+}}}
 str+="&charttype=";
 str+=$('[name="charttype"]:checked').val();
+str+="&upcolor="
+str+=$('[name="up_color"]').val();
+str+="&downcolor="
+str+=$('[name="down_color"]').val();
 //alert(str);
 window.location.href=str;
 };
@@ -485,10 +504,10 @@ end date
 </div>
 
 <br><br>
-upload color <input id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
+upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
     borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
 <br>
-download color <input id="up_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
+download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
     borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
     
 <br><br>
