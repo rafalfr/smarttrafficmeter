@@ -2,7 +2,44 @@
 <html>
     <head>
         <title>current stats</title>
-<style type="text/css">        
+<style type="text/css">
+h1 {
+font-size: xx-large;
+font-style: normal;
+text-align: center;
+font-family: Arial,Helvetica,sans-serif;
+font-weight: bold;
+text-transform: none;
+}
+h2 {
+font-size: large;
+font-style: normal;
+text-align: center;
+font-family: Arial,Helvetica,sans-serif;
+font-weight: bold;
+text-transform: none;
+}
+p {
+font-style: normal;
+font-family: Arial,Helvetica,sans-serif;
+text-transform: none;
+font-size: large;
+font-weight: normal;
+color: black;
+}
+li {
+font-style: normal;
+font-family: Arial,Helvetica,sans-serif;
+text-transform: none;
+font-size: large;
+text-align: left;
+font-weight: normal;
+color: black;
+}
+tab1 {
+padding-left: 1em;
+padding-right: 1em;
+}
 select {
 float: left;
 margin-right: 5px;
@@ -11,8 +48,9 @@ margin-right: 5px;
 <script src="/jquery.js" type="text/javascript"></script>
 <script src="/jscolor.js" type="text/javascript"></script>
 </head>
-    <body onload="Settings()">
 
+<body background="../background.png" onload="Settings()">
+<h1>custom chart options</h1>
 <script type="application/javascript">
 
 function Settings(){
@@ -300,14 +338,23 @@ function is_leap (yr) { return (yr%400)?((yr%100)?((yr%4)?false:true):false):tru
 }
 </script>
 
+<table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
+<tbody>
+<tr>
+<td><li>select stats type</li>
+<br>
 <form class="statstype">
 <input type="radio" name="statstype" value="hourly" checked> hourly stats
 <input type="radio" name="statstype" value="daily"> daily stats
 <input type="radio" name="statstype" value="monthly"> monthly stats
 <input type="radio" name="statstype" value="yearly"> yearly stats
-</form> 
-
-
+</form>
+<br><br>
+</td>
+</tr>
+<tr>
+<td><li>select time span</li>
+<br>
 start date
 <div>
 <select class="start_year">
@@ -404,7 +451,6 @@ start date
     <option value="23">23</option>
     </select>
 </div>
-
 <br><br>
 end date
 <div>
@@ -502,20 +548,37 @@ end date
     <option value="23">23</option>
     </select>
 </div>
-
 <br><br>
+</td>
+</tr>
+<tr>
+<td><li>pick chart colours</li>
+<br>
 upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
     borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
 <br>
 download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
     borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
-    
 <br><br>
+</td>
+</tr>
+<tr>
+<td><li>select chart type</li>
+<br>
 <form id="charttype">
 <input  type="radio" name="charttype" value="bar" checked> bar chart<br>
 <input  type="radio" name="charttype" value="line"> line chart<br>
-</form> 
+</form>
+<br><br>
+</td>
+</tr>
+<tr>
+<td style='text-align: center;'>
 <input id="submit_button" type="button" value="Show stats" />
+</td>
+</tr>
+</tbody>
+</table>
     </body>
 </html>
 
