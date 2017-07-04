@@ -1,363 +1,313 @@
 <!doctype html>
 <html>
-    <head>
-        <title>current stats</title>
-<style type="text/css">
+
+<head>
+    <title>current stats</title>
+    <style type="text/css">
 h1 {
-font-size: xx-large;
-font-style: normal;
-text-align: center;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-text-transform: none;
+    font-size: xx-large;
+    font-style: normal;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-transform: none;
 }
+
 h2 {
-font-size: large;
-font-style: normal;
-text-align: center;
-font-family: Arial,Helvetica,sans-serif;
-font-weight: bold;
-text-transform: none;
+    font-size: large;
+    font-style: normal;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-transform: none;
 }
+
 p {
-font-style: normal;
-font-family: Arial,Helvetica,sans-serif;
-text-transform: none;
-font-size: large;
-font-weight: normal;
-color: black;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: none;
+    font-size: large;
+    font-weight: normal;
+    color: black;
 }
+
 li {
-font-style: normal;
-font-family: Arial,Helvetica,sans-serif;
-text-transform: none;
-font-size: large;
-text-align: left;
-font-weight: normal;
-color: black;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: none;
+    font-size: large;
+    text-align: left;
+    font-weight: normal;
+    color: black;
 }
+
 tab1 {
-padding-left: 1em;
-padding-right: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
 }
+
 select {
-float: left;
-margin-right: 5px;
+    float: left;
+    margin-right: 5px;
 }
-</style>
-<script src="/jquery.js" type="text/javascript"></script>
-<script src="/jscolor.js" type="text/javascript"></script>
+    </style>
+    <script src="/jquery.js" type="text/javascript"></script>
+    <script src="/jscolor.js" type="text/javascript"></script>
 </head>
 
 <body background="../background.png" onload="Settings()">
-<h1>custom chart options</h1>
-<script type="application/javascript">
+    <h1>custom chart options</h1>
+    <script type="application/javascript">
+function Settings() {
+    var $leap = false;
+    var $start_year = $('.start_year');
+    var $start_month = $('.start_month');
+    var $start_day = $('.start_day');
+    var $start_hour = $('.start_hour');
 
-function Settings(){
-var $leap=false;
-var $start_year = $('.start_year');
-var $start_month = $('.start_month');
-var $start_day = $('.start_day');
-var $start_hour = $('.start_hour');
+    var $end_year = $('.end_year');
+    var $end_month = $('.end_month');
+    var $end_day = $('.end_day');
+    var $end_hour = $('.end_hour');
 
-var $end_year = $('.end_year');
-var $end_month = $('.end_month');
-var $end_day = $('.end_day');
-var $end_hour = $('.end_hour');
+    var $stats_type = $('.statstype');
 
-var $stats_type=$('.statstype');
+    var $submit_button = $('.submit_button');
+    document.getElementById("submit_button")
+        .onclick = show_stats;
 
-var $submit_button=$('.submit_button');
-document.getElementById("submit_button").onclick = show_stats;
-
-$stats_type.change(function(e){
-var $type=$('[name="statstype"]:checked').val();
-if ($type=='hourly')
-{
-$start_month.prop('disabled', false);
-$start_day.prop('disabled', false);
-$start_hour.prop('disabled', false);
-$end_month.prop('disabled', false);
-$end_day.prop('disabled', false);
-$end_hour.prop('disabled', false);
-}
-else if ($type=='daily')
-{
-$start_month.prop('disabled', false);
-$start_day.prop('disabled', false);
-$start_hour.prop('disabled', true);
-$end_month.prop('disabled', false);
-$end_day.prop('disabled', false);
-$end_hour.prop('disabled', true);
-}
-else if ($type=='monthly')
-{
-$start_month.prop('disabled', false);
-$start_day.prop('disabled', true);
-$start_hour.prop('disabled', true);
-$end_month.prop('disabled', false);
-$end_day.prop('disabled', true);
-$end_hour.prop('disabled', true);
-}
-else if ($type=='yearly')
-{
-$start_month.prop('disabled', true);
-$start_day.prop('disabled', true);
-$start_hour.prop('disabled', true);
-$end_month.prop('disabled', true);
-$end_day.prop('disabled', true);
-$end_hour.prop('disabled', true);
-}
-
-});
-
-
-// start date functions
-
-$start_month.change(function(e) {
-var $this = $(this);
-
-if ($this.val() > 0)
-{
-    $start_day.val(-1);
-    }
-
-if ($this.val()==1)
-{
-    set_start_days(31);
-    }
-    else if ($this.val()==2)
-    {
-        if ($leap)
-        {
-        set_start_days(29);
+    $stats_type.change(function(e) {
+        var $type = $('[name="statstype"]:checked')
+            .val();
+        if ($type == 'hourly') {
+            $start_month.prop('disabled', false);
+            $start_day.prop('disabled', false);
+            $start_hour.prop('disabled', false);
+            $end_month.prop('disabled', false);
+            $end_day.prop('disabled', false);
+            $end_hour.prop('disabled', false);
+        } else if ($type == 'daily') {
+            $start_month.prop('disabled', false);
+            $start_day.prop('disabled', false);
+            $start_hour.prop('disabled', true);
+            $end_month.prop('disabled', false);
+            $end_day.prop('disabled', false);
+            $end_hour.prop('disabled', true);
+        } else if ($type == 'monthly') {
+            $start_month.prop('disabled', false);
+            $start_day.prop('disabled', true);
+            $start_hour.prop('disabled', true);
+            $end_month.prop('disabled', false);
+            $end_day.prop('disabled', true);
+            $end_hour.prop('disabled', true);
+        } else if ($type == 'yearly') {
+            $start_month.prop('disabled', true);
+            $start_day.prop('disabled', true);
+            $start_hour.prop('disabled', true);
+            $end_month.prop('disabled', true);
+            $end_day.prop('disabled', true);
+            $end_hour.prop('disabled', true);
         }
-        else
-        {
-        set_start_days(28);
+
+    });
+
+
+    // start date functions
+
+    $start_month.change(function(e) {
+        var $this = $(this);
+
+        if ($this.val() > 0) {
+            $start_day.val(-1);
+        }
+
+        if ($this.val() == 1) {
+            set_start_days(31);
+        } else if ($this.val() == 2) {
+            if ($leap) {
+                set_start_days(29);
+            } else {
+                set_start_days(28);
+            }
+        } else if ($this.val() == 3) {
+            set_start_days(31);
+        } else if ($this.val() == 4) {
+            set_start_days(30);
+        } else if ($this.val() == 5) {
+            set_start_days(31);
+        } else if ($this.val() == 6) {
+            set_start_days(30);
+        } else if ($this.val() == 7) {
+            set_start_days(31);
+        } else if ($this.val() == 8) {
+            set_start_days(31);
+        } else if ($this.val() == 9) {
+            set_start_days(30);
+        } else if ($this.val() == 10) {
+            set_start_days(31);
+        } else if ($this.val() == 11) {
+            set_start_days(30);
+        } else if ($this.val() == 12) {
+            set_start_days(31);
+        }
+
+    });
+
+    $start_year.change(function(e) {
+        if ($(this)
+            .val() > 0) {
+            $leap = is_leap($start_year.val());
+            $start_month.val(-1);
+            $start_day.val(-1);
+        }
+    });
+
+    // end date functions
+
+    $end_month.change(function(e) {
+        var $this = $(this);
+
+        if ($this.val() > 0) {
+            $end_day.val(-1);
+        }
+
+        if ($this.val() == 1) {
+            set_end_days(31);
+        } else if ($this.val() == 2) {
+            if ($leap) {
+                set_end_days(29);
+            } else {
+                set_end_days(28);
+            }
+        } else if ($this.val() == 3) {
+            set_end_days(31);
+        } else if ($this.val() == 4) {
+            set_end_days(30);
+        } else if ($this.val() == 5) {
+            set_end_days(31);
+        } else if ($this.val() == 6) {
+            set_end_days(30);
+        } else if ($this.val() == 7) {
+            set_end_days(31);
+        } else if ($this.val() == 8) {
+            set_end_days(31);
+        } else if ($this.val() == 9) {
+            set_end_days(30);
+        } else if ($this.val() == 10) {
+            set_end_days(31);
+        } else if ($this.val() == 11) {
+            set_end_days(30);
+        } else if ($this.val() == 12) {
+            set_end_days(31);
+        }
+
+    });
+
+    $end_year.change(function(e) {
+        if ($(this)
+            .val() > 0) {
+            $leap = is_leap($end_year.val());
+            $end_month.val(-1);
+            $end_day.val(-1);
+        }
+    });
+
+
+    function set_start_days(num) {
+        $start_day.empty();
+        for (var i = 1; i <= num; i++) {
+            if (i < 10) // Put 0 in front of the single digits
+                $start_day.append("<option value='0" + i + "'>0" + i + "</option>")
+            else
+                $start_day.append("<option value='" + i + "'>" + i + "</option>")
         }
     }
-    else if ($this.val()==3)
-    {
-        set_start_days(31);
-    }
-    else if ($this.val()==4)
-    {
-        set_start_days(30);
-    }
-    else if ($this.val()==5)
-    {
-        set_start_days(31);
-    }
-    else if ($this.val()==6)
-    {
-        set_start_days(30);
-    }
-    else if ($this.val()==7)
-    {
-        set_start_days(31);
-    }
-    else if ($this.val()==8)
-    {
-        set_start_days(31);
-    }
-    else if ($this.val()==9)
-    {
-        set_start_days(30);
-    }
-    else if ($this.val()==10)
-    {
-        set_start_days(31);
-    }
-    else if ($this.val()==11)
-    {
-        set_start_days(30);
-    }
-    else if ($this.val()==12)
-    {
-        set_start_days(31);
-    }    
 
-});
-
-$start_year.change(function(e)
-{
-if ($(this).val() > 0)
-{
-    $leap = is_leap($start_year.val());
-    $start_month.val(-1);
-    $start_day.val(-1);
-}
-});
-
-// end date functions
-
-$end_month.change(function(e) {
-var $this = $(this);
-
-if ($this.val() > 0)
-{
-    $end_day.val(-1);
-    }
-
-if ($this.val()==1)
-{
-    set_end_days(31);
-    }
-    else if ($this.val()==2)
-    {
-        if ($leap)
-        {
-        set_end_days(29);
-        }
-        else
-        {
-        set_end_days(28);
+    function set_end_days(num) {
+        $end_day.empty();
+        for (var i = 1; i <= num; i++) {
+            if (i < 10)
+                $end_day.append("<option value='0" + i + "'>0" + i + "</option>")
+            else
+                $end_day.append("<option value='" + i + "'>" + i + "</option>")
         }
     }
-    else if ($this.val()==3)
-    {
-        set_end_days(31);
-    }
-    else if ($this.val()==4)
-    {
-        set_end_days(30);
-    }
-    else if ($this.val()==5)
-    {
-        set_end_days(31);
-    }
-    else if ($this.val()==6)
-    {
-        set_end_days(30);
-    }
-    else if ($this.val()==7)
-    {
-        set_end_days(31);
-    }
-    else if ($this.val()==8)
-    {
-        set_end_days(31);
-    }
-    else if ($this.val()==9)
-    {
-        set_end_days(30);
-    }
-    else if ($this.val()==10)
-    {
-        set_end_days(31);
-    }
-    else if ($this.val()==11)
-    {
-        set_end_days(30);
-    }
-    else if ($this.val()==12)
-    {
-        set_end_days(31);
-    }    
 
-});
+    function show_stats() {
+        statstype = $('[name="statstype"]:checked')
+            .val();
+        str = "/";
+        str += $('[name="statstype"]:checked')
+            .val();
+        str += "/";
+        str += "start=";
+        str += $start_year.val();
+        if (statstype == 'monthly' || statstype == 'daily' || statstype == 'hourly') {
+            str += "-";
+            str += $start_month.val();
+            if (statstype == 'daily' || statstype == 'hourly') {
+                str += "-";
+                str += $start_day.val();
+                if (statstype == 'hourly') {
+                    str += "-";
+                    str += $start_hour.val();
+                }
+            }
+        }
+        str += "&end=";
+        str += $end_year.val();
+        if (statstype == 'monthly' || statstype == 'daily' || statstype == 'hourly') {
+            str += "-";
+            str += $end_month.val();
+            if (statstype == 'daily' || statstype == 'hourly') {
+                str += "-";
+                str += $end_day.val();
+                if (statstype == 'hourly') {
+                    str += "-";
+                    str += $end_hour.val();
+                }
+            }
+        }
+        str += "&charttype=";
+        str += $('[name="charttype"]:checked')
+            .val();
+        str += "&upcolor="
+        str += $('[name="up_color"]')
+            .val();
+        str += "&downcolor="
+        str += $('[name="down_color"]')
+            .val();
+        var win = window.open(str, '_blank');
+        win.focus();
+    };
 
-$end_year.change(function(e)
-{
-if ($(this).val() > 0)
-{
-    $leap = is_leap($end_year.val());
-    $end_month.val(-1);
-    $end_day.val(-1);
+    function is_leap(yr) {
+        return (yr % 400) ? ((yr % 100) ? ((yr % 4) ? false : true) : false) : true;
+    }
 }
-});
+    </script>
 
-
-function set_start_days(num) {
-$start_day.empty();
-for (var i = 1; i <= num; i++) {
-    if (i < 10) // Put 0 in front of the single digits
-    $start_day.append("<option value='0" + i + "'>0" + i + "</option>")
-    else
-    $start_day.append("<option value='" + i + "'>" + i + "</option>")
-}
-}
-
-function set_end_days(num) {
-$end_day.empty();
-for (var i = 1; i <= num; i++) {
-    if (i < 10)
-    $end_day.append("<option value='0" + i + "'>0" + i + "</option>")
-    else
-    $end_day.append("<option value='" + i + "'>" + i + "</option>")
-}
-}
-
-function show_stats() {
-statstype=$('[name="statstype"]:checked').val();
-str="/";
-str+=$('[name="statstype"]:checked').val();
-str+="/";
-str+="start=";
-str+=$start_year.val();
-if (statstype=='monthly' || statstype=='daily' || statstype=='hourly')
-{
-str+="-";
-str+=$start_month.val();
-if (statstype=='daily' || statstype=='hourly')
-{
-str+="-";
-str+=$start_day.val();
-if (statstype=='hourly')
-{
-str+="-";
-str+=$start_hour.val();
-}}}
-str+="&end=";
-str+=$end_year.val();
-if (statstype=='monthly' || statstype=='daily' || statstype=='hourly')
-{
-str+="-";
-str+=$end_month.val();
-if (statstype=='daily' || statstype=='hourly')
-{
-str+="-";
-str+=$end_day.val();
-if (statstype=='hourly')
-{
-str+="-";
-str+=$end_hour.val();
-}}}
-str+="&charttype=";
-str+=$('[name="charttype"]:checked').val();
-str+="&upcolor="
-str+=$('[name="up_color"]').val();
-str+="&downcolor="
-str+=$('[name="down_color"]').val();
-//alert(str);
-window.location.href=str;
-};
-
-function is_leap (yr) { return (yr%400)?((yr%100)?((yr%4)?false:true):false):true; }
-}
-</script>
-
-<table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
-<tbody>
-<tr>
-<td><li>select stats type</li>
-<br>
-<form class="statstype">
-<input type="radio" name="statstype" value="hourly" checked> hourly stats
-<input type="radio" name="statstype" value="daily"> daily stats
-<input type="radio" name="statstype" value="monthly"> monthly stats
-<input type="radio" name="statstype" value="yearly"> yearly stats
-</form>
-<br><br>
-</td>
-</tr>
-<tr>
-<td><li>select time span</li>
-<br>
-start date
-<div>
-<select class="start_year">
+    <table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
+        <tbody>
+            <tr>
+                <td>
+                    <li>select stats type</li>
+                    <br>
+                    <form class="statstype">
+                        <input type="radio" name="statstype" value="hourly" checked> hourly stats
+                        <input type="radio" name="statstype" value="daily"> daily stats
+                        <input type="radio" name="statstype" value="monthly"> monthly stats
+                        <input type="radio" name="statstype" value="yearly"> yearly stats
+                    </form>
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <li>select time span</li>
+                    <br> start date
+                    <div>
+                        <select class="start_year">
     <option selected="selected" value="start_year">Year</option>
     <option value="2010">2010</option>
     <option value="2011">2011</option>
@@ -368,9 +318,9 @@ start date
     <option value="2016">2016</option>
     <option value="2017">2017</option>
 </select>
-</div>
-    <div>
-<select class="start_month">
+                    </div>
+                    <div>
+                        <select class="start_month">
     <option selected="selected" value="start_month">Month</option>
     <option value="01">January(1)</option>
     <option value="02">February(2)</option>
@@ -385,9 +335,9 @@ start date
     <option value="11">November(11)</option>
     <option value="12">December(12)</option>
 </select>
-</div>
-<div>
-<select class="start_day">
+                    </div>
+                    <div>
+                        <select class="start_day">
     <option selected="selected" value="start_day">Day</option>
     <option value="01">1</option>
     <option value="02">2</option>
@@ -421,9 +371,9 @@ start date
     <option value="30">30</option>
     <option value="31">31</option>
 </select>
-</div>
-<div>
-<select class="start_hour">
+                    </div>
+                    <div>
+                        <select class="start_hour">
     <option selected="selected" value="start_hour">Hour</option>
     <option value="0">0</option>
     <option value="01">1</option>
@@ -450,11 +400,10 @@ start date
     <option value="22">22</option>
     <option value="23">23</option>
     </select>
-</div>
-<br><br>
-end date
-<div>
-<select class="end_year">
+                    </div>
+                    <br><br> end date
+                    <div>
+                        <select class="end_year">
     <option selected="selected" value="end_year">Year</option>
     <option value="2010">2010</option>
     <option value="2011">2011</option>
@@ -465,9 +414,9 @@ end date
     <option value="2016">2016</option>
     <option value="2017">2017</option>
 </select>
-</div>
-    <div>
-<select class="end_month">
+                    </div>
+                    <div>
+                        <select class="end_month">
     <option selected="selected" value="end_month">Month</option>
     <option value="01">January(1)</option>
     <option value="02">February(2)</option>
@@ -482,9 +431,9 @@ end date
     <option value="11">November(11)</option>
     <option value="12">December(12)</option>
 </select>
-</div>
-<div>
-<select class="end_day">
+                    </div>
+                    <div>
+                        <select class="end_day">
     <option selected="selected" value="end_day">Day</option>
     <option value="01">1</option>
     <option value="02">2</option>
@@ -518,9 +467,9 @@ end date
     <option value="30">30</option>
     <option value="31">31</option>
 </select>
-</div>
-<div>
-<select class="end_hour">
+                    </div>
+                    <div>
+                        <select class="end_hour">
     <option selected="selected" value="end_hour">Hour</option>
     <option value="0">0</option>
     <option value="01">1</option>
@@ -547,39 +496,42 @@ end date
     <option value="22">22</option>
     <option value="23">23</option>
     </select>
+                    </div>
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <li>pick chart colours</li>
+                    <br> upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
+    borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
+                    <br> download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
+    borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <li>select chart type</li>
+                    <br>
+                    <form id="charttype">
+                        <input type="radio" name="charttype" value="bar" checked> bar chart<br>
+                        <input type="radio" name="charttype" value="line"> line chart<br>
+                    </form>
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td style='text-align: center;'>
+                    <input id="submit_button" type="button" value="Show stats" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align:center" align="center">
+<p>
+<a href="/">Home</a></p>
 </div>
-<br><br>
-</td>
-</tr>
-<tr>
-<td><li>pick chart colours</li>
-<br>
-upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
-    borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
-<br>
-download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
-    borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
-<br><br>
-</td>
-</tr>
-<tr>
-<td><li>select chart type</li>
-<br>
-<form id="charttype">
-<input  type="radio" name="charttype" value="bar" checked> bar chart<br>
-<input  type="radio" name="charttype" value="line"> line chart<br>
-</form>
-<br><br>
-</td>
-</tr>
-<tr>
-<td style='text-align: center;'>
-<input id="submit_button" type="button" value="Show stats" />
-</td>
-</tr>
-</tbody>
-</table>
-    </body>
+</body>
+
 </html>
-
-
