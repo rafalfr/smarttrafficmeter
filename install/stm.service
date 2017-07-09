@@ -1,4 +1,5 @@
-#https://wiki.archlinux.org/index.php/systemd
+# https://wiki.archlinux.org/index.php/systemd
+# sudo systemctl enable stm
 
 [Unit]
 Description=Smart Traffic Meter Daemon
