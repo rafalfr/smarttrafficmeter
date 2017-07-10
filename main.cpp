@@ -230,43 +230,43 @@ int main( int argc, char *argv[] )
 
     if ( Utils::check_databse_integrity() == false )
     {
-        const char* smtp_server = Settings::settings["smtp server"].c_str();
-        const char* mailbox_login = Settings::settings["mailbox login"].c_str();
-        const char* mailbox_password = Settings::settings["mailbox password"].c_str();
-        string os_info;
-        Utils::get_os_info( os_info );
-        string user;
-        string host;
-        Utils::get_user_host( user, host );
-
-        try
-        {
-            CSmtp mail;
-            mail.SetSMTPServer( smtp_server, 465, true );
-            mail.SetSecurityType( USE_SSL );
-            mail.SetLogin( mailbox_login );
-            mail.SetPassword( mailbox_password );
-
-            mail.SetSenderName( "Smart Traffic Meter" );
-            mail.SetSenderMail( mailbox_login );
-            mail.SetReplyTo( "rafalfr@agh.edu.pl" );
-            mail.SetSubject( "Database integrity check" );
-            mail.AddRecipient( "rafalfr@gmail.com" );
-            mail.SetXPriority( XPRIORITY_NORMAL );
-            mail.SetXMailer( "Microsoft Office Outlook 12.0" );
-            mail.AddMsgLine( "Hello," );
-            mail.AddMsgLine( "" );
-            mail.AddMsgLine( "Data base integrity has been restored at " );
-            mail.AddMsgLine( "" );
-            mail.AddMsgLine( os_info.c_str() );
-            mail.AddMsgLine( "" );
-            mail.AddMsgLine( ( "with " + user + "@" + host ).c_str() );
-            mail.Send();
-        }
-        catch ( ECSmtp e )
-        {
-            Logger::LogError( "Error: " + e.GetErrorText() );
-        }
+//        const char* smtp_server = Settings::settings["smtp server"].c_str();
+//        const char* mailbox_login = Settings::settings["mailbox login"].c_str();
+//        const char* mailbox_password = Settings::settings["mailbox password"].c_str();
+//        string os_info;
+//        Utils::get_os_info( os_info );
+//        string user;
+//        string host;
+//        Utils::get_user_host( user, host );
+//
+//        try
+//        {
+//            CSmtp mail;
+//            mail.SetSMTPServer( smtp_server, 465, true );
+//            mail.SetSecurityType( USE_SSL );
+//            mail.SetLogin( mailbox_login );
+//            mail.SetPassword( mailbox_password );
+//
+//            mail.SetSenderName( "Smart Traffic Meter" );
+//            mail.SetSenderMail( mailbox_login );
+//            mail.SetReplyTo( "rafalfr@agh.edu.pl" );
+//            mail.SetSubject( "Database integrity check" );
+//            mail.AddRecipient( "rafalfr@gmail.com" );
+//            mail.SetXPriority( XPRIORITY_NORMAL );
+//            mail.SetXMailer( "Microsoft Office Outlook 12.0" );
+//            mail.AddMsgLine( "Hello," );
+//            mail.AddMsgLine( "" );
+//            mail.AddMsgLine( "Data base integrity has been restored at " );
+//            mail.AddMsgLine( "" );
+//            mail.AddMsgLine( os_info.c_str() );
+//            mail.AddMsgLine( "" );
+//            mail.AddMsgLine( ( "with " + user + "@" + host ).c_str() );
+//            mail.Send();
+//        }
+//        catch ( ECSmtp e )
+//        {
+//            Logger::LogError( "Error: " + e.GetErrorText() );
+//        }
 
         Utils::repair_broken_databse();
 
