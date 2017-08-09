@@ -1,3 +1,4 @@
+// http://llvm.org/docs/CodingStandards.html
 //http://www.man7.org/tlpi/code/online/all_files_alpha.html
 //http://man7.org/linux/man-pages/man3/getifaddrs.3.html
 //http://stackoverflow.com/questions/1519585/how-to-get-mac-address-for-an-interface-in-linux-using-a-c-program

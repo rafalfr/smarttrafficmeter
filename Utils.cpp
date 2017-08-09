@@ -1610,22 +1610,39 @@ void Utils::save_stats_to_mysql( const string& a_mac )
   * @param void
   * @return bool
   */
-bool Utils::check_databse_integrity( void )
+bool Utils::check_databse_integrity( const string& a_mac )
 {
     uint32_t y;
     uint32_t m;
     uint32_t d;
     uint32_t h;
+    vector<string> macs;
 
     Utils::get_time( &y, &m, &d, &h );
 
     struct date start_date;
     struct date end_date;
 
-    for ( auto const & mac_info : Globals::interfaces )
-    {
-        const string& mac = mac_info.first;
+    macs.clear();
 
+    if ( a_mac.compare( "" ) == 0 )
+    {
+        const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+        for ( auto const & kv : interfaces )
+        {
+            const InterfaceInfo& in = kv.second;
+            const string& mac = in.get_mac();
+            macs.push_back( mac );
+        }
+    }
+    else
+    {
+        macs.push_back( a_mac );
+    }
+
+    for ( string const & mac : macs )
+    {
         start_date.year = 1900;
         start_date.month = 1;
         start_date.day = 1;
@@ -1685,7 +1702,7 @@ bool Utils::check_databse_integrity( void )
   *
   * @todo: document this function
   */
-bool Utils::repair_broken_databse( void )
+bool Utils::repair_broken_databse( const string& a_mac )
 {
 #ifdef use_sqlite
     uint32_t y;
@@ -1695,6 +1712,7 @@ bool Utils::repair_broken_databse( void )
     sqlite3 *db;
     char *zErrMsg = nullptr;
     int rc;
+    vector<string> macs;
 
     vector<string> queries;
 
@@ -1703,11 +1721,27 @@ bool Utils::repair_broken_databse( void )
     struct date start_date;
     struct date end_date;
 
-    for ( auto const & mac_info : Globals::interfaces )
+    macs.clear();
+
+    if ( a_mac.compare( "" ) == 0 )
+    {
+        const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+        for ( auto const & kv : interfaces )
+        {
+            const InterfaceInfo& in = kv.second;
+            const string& mac = in.get_mac();
+            macs.push_back( mac );
+        }
+    }
+    else
+    {
+        macs.push_back( a_mac );
+    }
+
+    for ( string const & mac : macs )
     {
         queries.clear();
-
-        const string& mac = mac_info.first;
 
         // fix yearly stats
         start_date.year = 1900;
@@ -1874,13 +1908,13 @@ bool Utils::repair_broken_databse( void )
 
         for ( const string& query : queries )
         {
-
             rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
 
             if ( rc != SQLITE_OK )
             {
                 Logger::LogError( "Can not fix table with query: " + query );
             }
+            sqlite3_db_cacheflush(db);
         }
 
         sqlite3_close_v2( db );

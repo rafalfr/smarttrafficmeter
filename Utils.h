@@ -70,9 +70,9 @@ public:
 
     static void save_pid_file( const string& pid_file_path );
 
-    static bool check_databse_integrity( void );
+    static bool check_databse_integrity( const string& a_mac );
 
-    static bool repair_broken_databse( void );
+    static bool repair_broken_databse( const string& a_mac );
 
     static string get_mac( char* name );
 

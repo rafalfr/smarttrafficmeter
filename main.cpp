@@ -228,7 +228,7 @@ int main( int argc, char *argv[] )
 
     Utils::load_stats( "" );
 
-    if ( Utils::check_databse_integrity() == false )
+    if ( Utils::check_databse_integrity("") == false )
     {
 //        const char* smtp_server = Settings::settings["smtp server"].c_str();
 //        const char* mailbox_login = Settings::settings["mailbox login"].c_str();
@@ -268,7 +268,7 @@ int main( int argc, char *argv[] )
 //            Logger::LogError( "Error: " + e.GetErrorText() );
 //        }
 
-        Utils::repair_broken_databse();
+        Utils::repair_broken_databse("");
 
         Utils::sleep_seconds( 5 );
         Utils::load_stats( "" );
