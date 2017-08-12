@@ -191,6 +191,8 @@ int main( int argc, char *argv[] )
     {
         const string& mac = mac_info.second.get_mac();
 
+        Logger::LogInfo(mac);
+
         InterfaceSpeedMeter ism;
         Globals::speed_stats[mac] = ism;
 
