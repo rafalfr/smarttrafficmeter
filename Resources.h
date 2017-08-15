@@ -68,6 +68,14 @@ public:
     static uint32_t stopwatch_js_length;
 
     static uint8_t stopwatch_js[];
+
+    static uint32_t zoom_js_length;
+
+    static uint8_t zoom_js[];
+
+    static uint32_t hammer_js_length;
+
+    static uint8_t hammer_js[];
 };
 
 #endif // RESOURCES_H

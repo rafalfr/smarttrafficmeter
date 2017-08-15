@@ -241,6 +241,7 @@
 		<Unit filename="csmtp/md5.cpp" />
 		<Unit filename="csmtp/md5.h" />
 		<Unit filename="defines.h" />
+		<Unit filename="hammer.cpp" />
 		<Unit filename="jquery.cpp" />
 		<Unit filename="jscolor.cpp" />
 		<Unit filename="json/json-forwards.h" />
@@ -293,6 +294,7 @@
 		<Unit filename="url/Path.h" />
 		<Unit filename="url/Url.h" />
 		<Unit filename="version.h" />
+		<Unit filename="zoom.cpp" />
 		<Extensions>
 			<envvars />
 			<code_completion />
