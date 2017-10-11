@@ -240,6 +240,7 @@
 		<Unit filename="csmtp/base64.h" />
 		<Unit filename="csmtp/md5.cpp" />
 		<Unit filename="csmtp/md5.h" />
+		<Unit filename="custom_time_span.cpp" />
 		<Unit filename="defines.h" />
 		<Unit filename="hammer.cpp" />
 		<Unit filename="jquery.cpp" />

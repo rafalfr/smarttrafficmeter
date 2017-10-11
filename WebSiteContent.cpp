@@ -2115,6 +2115,329 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
+	server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+		page+="<title>Select time span</title>";
+		page+="<style type="text/css">
+		page+="h1 {
+		page+="font-size: xx-large;
+		page+="font-style: normal;
+		page+="text-align: center;
+		page+="font-family: Arial, Helvetica, sans-serif;
+		page+="font-weight: bold;
+		page+="text-transform: none;
+		page+="}
+		page+="h2 {
+		page+="font-size: large;
+		page+="font-style: normal;
+		page+="text-align: center;
+		page+="font-family: Arial, Helvetica, sans-serif;
+		page+="font-weight: bold;
+		page+="text-transform: none;
+		page+="}
+		page+="p {
+		page+="font-style: normal;
+		page+="font-family: Arial, Helvetica, sans-serif;
+		page+="text-transform: none;
+		page+="font-size: large;
+		page+="font-weight: normal;
+		page+="color: black;
+		page+="}
+		page+="li {
+		page+="font-style: normal;
+		page+="font-family: Arial, Helvetica, sans-serif;
+		page+="text-transform: none;
+		page+="font-size: large;
+		page+="text-align: left;
+		page+="font-weight: normal;
+		page+="color: black;
+		page+="}
+		page+="tab1 {
+		page+="padding-left: 1em;
+		page+="padding-right: 1em;
+		page+="}
+		page+="select {
+		page+="float: left;
+		page+="margin-right: 5px;
+		page+="}
+		page+="</style>
+		page+="<script src="/jquery.js" type="text/javascript"></script>
+		page+="<script src="/jscolor.js" type="text/javascript"></script>
+		page+="<script src="/custom_time_span.js" type="text/javascript"></script>
+		page+="</head>
+		page+="<body background="../background.png" onload="Settings()">
+      page+="<h1>custom chart options</h1>
+    page+="<script type="application/javascript">
+    page+="</script>
+
+page+="<table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
+   page+="<tbody>
+      page+="<tr>
+         page+="<td>
+            page+="<li>select stats type</li>
+            page+="<br>
+            page+="<form class="statstype">
+               page+="<input type="radio" name="statstype" value="hourly" checked> hourly stats
+               page+="<input type="radio" name="statstype" value="daily"> daily stats
+               page+="<input type="radio" name="statstype" value="monthly"> monthly stats
+               page+="<input type="radio" name="statstype" value="yearly"> yearly stats
+            page+="</form>
+            page+="<br><br>
+         page+="</td>
+      page+="</tr>
+      page+="<tr>
+         page+="<td>
+            page+="<li>select time span</li>
+            page+="<br> start date
+            page+="<div>
+               page+="<select class="start_year">
+                  page+="<option selected="selected" value="start_year">Year</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="start_month">
+                  page+="<option selected="selected" value="start_month">Month</option>
+                  page+="<option value="01">January(1)</option>
+                  page+="<option value="02">February(2)</option>
+                  page+="<option value="03">March(3)</option>
+                  page+="<option value="04">April(4)</option>
+                  page+="<option value="05">May(5)</option>
+                  page+="<option value="06">June(6)</option>
+                  page+="<option value="07">July(7)</option>
+                  page+="<option value="08">August(8)</option>
+                  page+="<option value="09">September(9)</option>
+                  page+="<option value="10">October(10)</option>
+                  page+="<option value="11">November(11)</option>
+                  page+="<option value="12">December(12)</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="start_day">
+                  page+="<option selected="selected" value="start_day">Day</option>
+                  page+="<option value="01">1</option>
+                  page+="<option value="02">2</option>
+                  page+="<option value="03">3</option>
+                  page+="<option value="04">4</option>
+                  page+="<option value="05">5</option>
+                  page+="<option value="06">6</option>
+                  page+="<option value="07">7</option>
+                  page+="<option value="08">8</option>
+                  page+="<option value="09">9</option>
+                  page+="<option value="10">10</option>
+                  page+="<option value="11">11</option>
+                  page+="<option value="12">12</option>
+                  page+="<option value="13">13</option>
+                  page+="<option value="14">14</option>
+                  page+="<option value="15">15</option>
+                  page+="<option value="16">16</option>
+                  page+="<option value="17">17</option>
+                  page+="<option value="18">18</option>
+                  page+="<option value="19">19</option>
+                  page+="<option value="20">20</option>
+                  page+="<option value="21">21</option>
+                  page+="<option value="22">22</option>
+                  page+="<option value="23">23</option>
+                  page+="<option value="24">24</option>
+                  page+="<option value="25">25</option>
+                  page+="<option value="26">26</option>
+                  page+="<option value="27">27</option>
+                  page+="<option value="28">28</option>
+                  page+="<option value="29">29</option>
+                  page+="<option value="30">30</option>
+                  page+="<option value="31">31</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="start_hour">
+                  page+="<option selected="selected" value="start_hour">Hour</option>
+                  page+="<option value="0">0</option>
+                  page+="<option value="01">1</option>
+                  page+="<option value="02">2</option>
+                  page+="<option value="03">3</option>
+                  page+="<option value="04">4</option>
+                  page+="<option value="05">5</option>
+                  page+="<option value="06">6</option>
+                  page+="<option value="07">7</option>
+                  page+="<option value="08">8</option>
+                  page+="<option value="09">9</option>
+                  page+="<option value="10">10</option>
+                  page+="<option value="11">11</option>
+                  page+="<option value="12">12</option>
+                  page+="<option value="13">13</option>
+                  page+="<option value="14">14</option>
+                  page+="<option value="15">15</option>
+                  page+="<option value="16">16</option>
+                  page+="<option value="17">17</option>
+                  page+="<option value="18">18</option>
+                  page+="<option value="19">19</option>
+                  page+="<option value="20">20</option>
+                  page+="<option value="21">21</option>
+                  page+="<option value="22">22</option>
+                  page+="<option value="23">23</option>
+               page+="</select>
+            page+="</div>
+            page+="<br><br> end date
+            page+="<div>
+               page+="<select class="end_year">
+                  page+="<option selected="selected" value="end_year">Year</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="end_month">
+                  page+="<option selected="selected" value="end_month">Month</option>
+                  page+="<option value="01">January(1)</option>
+                  page+="<option value="02">February(2)</option>
+                  page+="<option value="03">March(3)</option>
+                  page+="<option value="04">April(4)</option>
+                  page+="<option value="05">May(5)</option>
+                  page+="<option value="06">June(6)</option>
+                  page+="<option value="07">July(7)</option>
+                  page+="<option value="08">August(8)</option>
+                  page+="<option value="09">September(9)</option>
+                  page+="<option value="10">October(10)</option>
+                  page+="<option value="11">November(11)</option>
+                  page+="<option value="12">December(12)</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="end_day">
+                  page+="<option selected="selected" value="end_day">Day</option>
+                  page+="<option value="01">1</option>
+                  page+="<option value="02">2</option>
+                  page+="<option value="03">3</option>
+                  page+="<option value="04">4</option>
+                  page+="<option value="05">5</option>
+                  page+="<option value="06">6</option>
+                  page+="<option value="07">7</option>
+                  page+="<option value="08">8</option>
+                  page+="<option value="09">9</option>
+                  page+="<option value="10">10</option>
+                  page+="<option value="11">11</option>
+                  page+="<option value="12">12</option>
+                  page+="<option value="13">13</option>
+                  page+="<option value="14">14</option>
+                  page+="<option value="15">15</option>
+                  page+="<option value="16">16</option>
+                  page+="<option value="17">17</option>
+                  page+="<option value="18">18</option>
+                  page+="<option value="19">19</option>
+                  page+="<option value="20">20</option>
+                  page+="<option value="21">21</option>
+                  page+="<option value="22">22</option>
+                  page+="<option value="23">23</option>
+                  page+="<option value="24">24</option>
+                  page+="<option value="25">25</option>
+                  page+="<option value="26">26</option>
+                  page+="<option value="27">27</option>
+                  page+="<option value="28">28</option>
+                  page+="<option value="29">29</option>
+                  page+="<option value="30">30</option>
+                  page+="<option value="31">31</option>
+               page+="</select>
+            page+="</div>
+            page+="<div>
+               page+="<select class="end_hour">
+                  page+="<option selected="selected" value="end_hour">Hour</option>
+                  page+="<option value="0">0</option>
+                  page+="<option value="01">1</option>
+                  page+="<option value="02">2</option>
+                  page+="<option value="03">3</option>
+                  page+="<option value="04">4</option>
+                  page+="<option value="05">5</option>
+                  page+="<option value="06">6</option>
+                  page+="<option value="07">7</option>
+                  page+="<option value="08">8</option>
+                  page+="<option value="09">9</option>
+                  page+="<option value="10">10</option>
+                  page+="<option value="11">11</option>
+                  page+="<option value="12">12</option>
+                  page+="<option value="13">13</option>
+                  page+="<option value="14">14</option>
+                  page+="<option value="15">15</option>
+                  page+="<option value="16">16</option>
+                  page+="<option value="17">17</option>
+                  page+="<option value="18">18</option>
+                  page+="<option value="19">19</option>
+                  page+="<option value="20">20</option>
+                  page+="<option value="21">21</option>
+                  page+="<option value="22">22</option>
+                  page+="<option value="23">23</option>
+               page+="</select>
+            page+="</div>
+            page+="<br><br>
+         page+="</td>
+      page+="</tr>
+      page+="<tr>
+         page+="<td>
+            page+="<li>pick chart colours</li>
+            page+="<br> upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
+               page+="borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
+            page+="<br> download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
+               page+="borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
+            page+="<br><br>
+         page+="</td>
+      page+="</tr>
+      page+="<tr>
+         page+="<td>
+            page+="<li>select chart type</li>
+            page+="<br>
+            page+="<form id="charttype">
+               page+="<input type="radio" name="charttype" value="bar" checked> bar chart<br>
+               page+="<input type="radio" name="charttype" value="line"> line chart<br>
+            page+="</form>
+            page+="<br><br>
+         page+="</td>
+      page+="</tr>
+      page+="<tr>
+         page+="<td style='text-align: center;'>
+            page+="<input id="submit_button" type="button" value="Show stats" />
+         page+="</td>
+      page+="</tr>
+   page+="</tbody>
+page+="</table>
+page+="<div style="text-align:center" align="center">
+   page+="<p>
+      page+="<a href="/">Home</a>
+   page+="</p>
+page+="</div>
+page+="</body>
+page+="</html>
+
+        stringstream content_stream;
+        content_stream << page;
+
+        content_stream.seekp( 0, ios::end );
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+
+    }
+
+
 
 }
 /** @brief rgba_color

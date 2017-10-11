@@ -76,6 +76,10 @@ public:
     static uint32_t hammer_js_length;
 
     static uint8_t hammer_js[];
+
+    static uint32_t custom_time_span_js_length;
+
+    static uint8_t custom_time_span_js[];
 };
 
 #endif // RESOURCES_H
