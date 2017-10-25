@@ -39,46 +39,44 @@ If not, see http://www.gnu.org/licenses/.
 #include <vector>
 #include "InterfaceInfo.h"
 
-using namespace std;
-
 class Utils
 {
 
 private:
 
-    static map<string, string> table_columns;
+    static std::map<std::string, std::string> table_columns;
 
     static int callback( void *, int argc, char **argv, char **azColName );
 
 public:
 
-    static map<string, InterfaceInfo> get_all_interfaces( void );
+    static std::map<std::string, InterfaceInfo> get_all_interfaces( void );
 
-    static void load_stats( const string& a_mac );
+    static void load_stats( const std::string& a_mac );
 
-    static void load_data_from_sqlite( const string& a_mac );
+    static void load_data_from_sqlite( const std::string& a_mac );
 
-    static void load_data_from_files( const string& a_mac );
+    static void load_data_from_files( const std::string& a_mac );
 
-    static void save_stats( const string& a_mac );
+    static void save_stats( const std::string& a_mac );
 
-    static void save_stats_to_sqlite( const string& a_mac );
+    static void save_stats_to_sqlite( const std::string& a_mac );
 
-    static void save_stats_to_files( const string& a_mac );
+    static void save_stats_to_files( const std::string& a_mac );
 
-    static void save_stats_to_mysql( const string& a_mac );
+    static void save_stats_to_mysql( const std::string& a_mac );
 
-    static void save_pid_file( const string& pid_file_path );
+    static void save_pid_file( const std::string& pid_file_path );
 
-    static bool check_databse_integrity( const string& a_mac );
+    static bool check_databse_integrity( const std::string& a_mac );
 
-    static bool repair_broken_databse( const string& a_mac );
+    static bool repair_broken_databse( const std::string& a_mac );
 
-    static string get_mac( char* name );
+    static std::string get_mac( char* name );
 
-    static void get_user_host( string& user, string& host );
+    static void get_user_host( std::string& user, std::string& host );
 
-    static void get_os_info( string& os_info );
+    static void get_os_info( std::string& os_info );
 
     static void get_time( uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h );
 
@@ -88,39 +86,39 @@ public:
 
     static time_t date_to_seconds( uint32_t y, uint32_t m, uint32_t d, uint32_t h = 0, uint32_t minute = 0, uint32_t sec = 0 );
 
-    static bool contains( const string& str, const string& key );
+    static bool contains( const std::string& str, const std::string& key );
 
-    static bool starts_with( const string& str, const string& key );
+    static bool starts_with( const std::string& str, const std::string& key );
 
-    static string replace( const string& pattern, const string& with, const string& in ) noexcept;
+    static std::string replace( const std::string& pattern, const std::string& with, const std::string& in ) noexcept;
 
-    static vector<string> split( const string& str, const string& delim );
+    static std::vector<std::string> split( const std::string& str, const std::string& delim );
 
-    static string float_to_string( float value, int32_t precision = 3 );
+    static std::string float_to_string( float value, int32_t precision = 3 );
 
-    static string double_to_string( double value, int32_t precision = 3 );
+    static std::string double_to_string( double value, int32_t precision = 3 );
 
-    static string to_string( uint64_t value, uint32_t min_string_length = 0 );
+    static std::string to_string( uint64_t value, uint32_t min_string_length = 0 );
 
-    static string to_string( uint32_t value, uint32_t min_string_length = 0 );
+    static std::string to_string( uint32_t value, uint32_t min_string_length = 0 );
 
-    static int32_t stoi( const string& str );
+    static int32_t stoi( const std::string& str );
 
-    static uint32_t stoui( const string& str );
+    static uint32_t stoui( const std::string& str );
 
     static int32_t hstoi( const string& str );
 
-    static float stof( const string& str );
+    static float stof( const std::string& str );
 
-    static uint64_t stoull( const string& str );
+    static uint64_t stoull( const std::string& str );
 
-    static vector<string> hexcolor_to_strings( string& hex_color );
+    static std::vector<std::string> hexcolor_to_strings( std::string& hex_color );
 
-    static string trim( const std::string &s );
+    static std::string trim( const std::string &s );
 
-    static string date_str( const string& type, uint32_t y,  uint32_t m, uint32_t d, uint32_t h );
+    static std::string date_str( const std::string& type, uint32_t y,  uint32_t m, uint32_t d, uint32_t h );
 
-    static void str2date( const string& str, const string& type, uint32_t* y,  uint32_t* m, uint32_t* d, uint32_t* h );
+    static void str2date( const std::string& str, const std::string& type, uint32_t* y,  uint32_t* m, uint32_t* d, uint32_t* h );
 
     static uint32_t days_in_month( uint32_t month, uint32_t year );
 
@@ -136,23 +134,27 @@ public:
 
     static void make_program_run_at_startup( void );
 
-    static string get_program_path( char** argv );
+    static std::string get_program_path( char** argv );
 
-    static string get_path( const string& full_file_path );
+    static std::string get_path( const std::string& full_file_path );
 
     static void sleep_seconds( uint32_t seconds );
 
-    static string to_narrow( const wchar_t * src );
+    static std::string to_narrow( const wchar_t * src );
 
     static void set_endsession_handler( void );
 
     static bool dir_exists( const char *path );
 
-    static int32_t make_path( const string& _s, mode_t mode );
+    static int32_t make_path( const std::string& _s, mode_t mode );
 
-    static string  rfc1123_datetime( time_t time );
+    static std::string  rfc1123_datetime( time_t time );
 
     static bool save_settings( void );
+
+    static std::stringstream gz_compress(const std::string& data);
+
+    static std::string gz_decompress(const std::string& data);
 
 };
 

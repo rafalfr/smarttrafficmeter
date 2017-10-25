@@ -224,6 +224,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td>\n";
+        page += "<p style=\"text-align: center;\">";
+        page += "<a style=\"padding-left:1em; padding-right:1em\" href=\"/customtimespan/\">custom time span</a>";
+        page += "</p>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
         page += "<br>\n";
         page += "<h2>hourly stats</h2>\n";
         page += "<p style=\"text-align: center;\">";
@@ -297,7 +304,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</div>\n";
 
         page += "</body>\n";
-        page += "</html>\n";
+        page += "</html>\n\n";
 
         content_stream << page;
 
@@ -306,6 +313,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        //*response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
@@ -1624,6 +1632,21 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
+    server.resource["\\/custom_time_span.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        *response << "HTTP/1.1 200 OK\r\n";
+        *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Length: " << Resources::custom_time_span_js_length << "\r\n";
+        *response << "Cache-Control: public, max-age=1800";
+        *response << "\r\n\r\n";
+
+        for ( uint32_t i = 0; i < Resources::custom_time_span_js_length; i++ )
+        {
+            *response << Resources::custom_time_span_js[i];
+        }
+    };
+
     // usunąć po testach
     server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
@@ -2115,315 +2138,317 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-	server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
+        uint32_t y;
+        uint32_t m;
+        uint32_t d;
+        uint32_t h;
         string page;
+
+        Utils::get_time( &y, &m, &d, &h );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
         page += "<head>\n";
         page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
-		page+="<title>Select time span</title>";
-		page+="<style type="text/css">
-		page+="h1 {
-		page+="font-size: xx-large;
-		page+="font-style: normal;
-		page+="text-align: center;
-		page+="font-family: Arial, Helvetica, sans-serif;
-		page+="font-weight: bold;
-		page+="text-transform: none;
-		page+="}
-		page+="h2 {
-		page+="font-size: large;
-		page+="font-style: normal;
-		page+="text-align: center;
-		page+="font-family: Arial, Helvetica, sans-serif;
-		page+="font-weight: bold;
-		page+="text-transform: none;
-		page+="}
-		page+="p {
-		page+="font-style: normal;
-		page+="font-family: Arial, Helvetica, sans-serif;
-		page+="text-transform: none;
-		page+="font-size: large;
-		page+="font-weight: normal;
-		page+="color: black;
-		page+="}
-		page+="li {
-		page+="font-style: normal;
-		page+="font-family: Arial, Helvetica, sans-serif;
-		page+="text-transform: none;
-		page+="font-size: large;
-		page+="text-align: left;
-		page+="font-weight: normal;
-		page+="color: black;
-		page+="}
-		page+="tab1 {
-		page+="padding-left: 1em;
-		page+="padding-right: 1em;
-		page+="}
-		page+="select {
-		page+="float: left;
-		page+="margin-right: 5px;
-		page+="}
-		page+="</style>
-		page+="<script src="/jquery.js" type="text/javascript"></script>
-		page+="<script src="/jscolor.js" type="text/javascript"></script>
-		page+="<script src="/custom_time_span.js" type="text/javascript"></script>
-		page+="</head>
-		page+="<body background="../background.png" onload="Settings()">
-      page+="<h1>custom chart options</h1>
-    page+="<script type="application/javascript">
-    page+="</script>
+        page += "<title>Select time span</title>";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial, Helvetica, sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial, Helvetica, sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial, Helvetica, sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial, Helvetica, sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "select {\n";
+        page += "float: left;\n";
+        page += "margin-right: 5px;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "<script src=\"/jquery.js\" type=\"text/javascript\"></script>\n";
+        page += "<script src=\"/jscolor.js\" type=\"text/javascript\"></script>\n";
+        page += "<script src=\"/custom_time_span.js\" type=\"text/javascript\"></script>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\" onload=\"Settings()\">\n";
+        page += "<h1>custom chart options</h1>\n";
+        page += "<script type=\"application/javascript\">\n";
+        page += "</script>\n";
 
-page+="<table style="margin-left: auto; margin-right: auto;" cellspacing="1" cellpadding="1">
-   page+="<tbody>
-      page+="<tr>
-         page+="<td>
-            page+="<li>select stats type</li>
-            page+="<br>
-            page+="<form class="statstype">
-               page+="<input type="radio" name="statstype" value="hourly" checked> hourly stats
-               page+="<input type="radio" name="statstype" value="daily"> daily stats
-               page+="<input type="radio" name="statstype" value="monthly"> monthly stats
-               page+="<input type="radio" name="statstype" value="yearly"> yearly stats
-            page+="</form>
-            page+="<br><br>
-         page+="</td>
-      page+="</tr>
-      page+="<tr>
-         page+="<td>
-            page+="<li>select time span</li>
-            page+="<br> start date
-            page+="<div>
-               page+="<select class="start_year">
-                  page+="<option selected="selected" value="start_year">Year</option>
-                  <option value="2010">2010</option>
-                  <option value="2011">2011</option>
-                  <option value="2012">2012</option>
-                  <option value="2013">2013</option>
-                  <option value="2014">2014</option>
-                  <option value="2015">2015</option>
-                  <option value="2016">2016</option>
-                  <option value="2017">2017</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="start_month">
-                  page+="<option selected="selected" value="start_month">Month</option>
-                  page+="<option value="01">January(1)</option>
-                  page+="<option value="02">February(2)</option>
-                  page+="<option value="03">March(3)</option>
-                  page+="<option value="04">April(4)</option>
-                  page+="<option value="05">May(5)</option>
-                  page+="<option value="06">June(6)</option>
-                  page+="<option value="07">July(7)</option>
-                  page+="<option value="08">August(8)</option>
-                  page+="<option value="09">September(9)</option>
-                  page+="<option value="10">October(10)</option>
-                  page+="<option value="11">November(11)</option>
-                  page+="<option value="12">December(12)</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="start_day">
-                  page+="<option selected="selected" value="start_day">Day</option>
-                  page+="<option value="01">1</option>
-                  page+="<option value="02">2</option>
-                  page+="<option value="03">3</option>
-                  page+="<option value="04">4</option>
-                  page+="<option value="05">5</option>
-                  page+="<option value="06">6</option>
-                  page+="<option value="07">7</option>
-                  page+="<option value="08">8</option>
-                  page+="<option value="09">9</option>
-                  page+="<option value="10">10</option>
-                  page+="<option value="11">11</option>
-                  page+="<option value="12">12</option>
-                  page+="<option value="13">13</option>
-                  page+="<option value="14">14</option>
-                  page+="<option value="15">15</option>
-                  page+="<option value="16">16</option>
-                  page+="<option value="17">17</option>
-                  page+="<option value="18">18</option>
-                  page+="<option value="19">19</option>
-                  page+="<option value="20">20</option>
-                  page+="<option value="21">21</option>
-                  page+="<option value="22">22</option>
-                  page+="<option value="23">23</option>
-                  page+="<option value="24">24</option>
-                  page+="<option value="25">25</option>
-                  page+="<option value="26">26</option>
-                  page+="<option value="27">27</option>
-                  page+="<option value="28">28</option>
-                  page+="<option value="29">29</option>
-                  page+="<option value="30">30</option>
-                  page+="<option value="31">31</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="start_hour">
-                  page+="<option selected="selected" value="start_hour">Hour</option>
-                  page+="<option value="0">0</option>
-                  page+="<option value="01">1</option>
-                  page+="<option value="02">2</option>
-                  page+="<option value="03">3</option>
-                  page+="<option value="04">4</option>
-                  page+="<option value="05">5</option>
-                  page+="<option value="06">6</option>
-                  page+="<option value="07">7</option>
-                  page+="<option value="08">8</option>
-                  page+="<option value="09">9</option>
-                  page+="<option value="10">10</option>
-                  page+="<option value="11">11</option>
-                  page+="<option value="12">12</option>
-                  page+="<option value="13">13</option>
-                  page+="<option value="14">14</option>
-                  page+="<option value="15">15</option>
-                  page+="<option value="16">16</option>
-                  page+="<option value="17">17</option>
-                  page+="<option value="18">18</option>
-                  page+="<option value="19">19</option>
-                  page+="<option value="20">20</option>
-                  page+="<option value="21">21</option>
-                  page+="<option value="22">22</option>
-                  page+="<option value="23">23</option>
-               page+="</select>
-            page+="</div>
-            page+="<br><br> end date
-            page+="<div>
-               page+="<select class="end_year">
-                  page+="<option selected="selected" value="end_year">Year</option>
-                  <option value="2010">2010</option>
-                  <option value="2011">2011</option>
-                  <option value="2012">2012</option>
-                  <option value="2013">2013</option>
-                  <option value="2014">2014</option>
-                  <option value="2015">2015</option>
-                  <option value="2016">2016</option>
-                  <option value="2017">2017</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="end_month">
-                  page+="<option selected="selected" value="end_month">Month</option>
-                  page+="<option value="01">January(1)</option>
-                  page+="<option value="02">February(2)</option>
-                  page+="<option value="03">March(3)</option>
-                  page+="<option value="04">April(4)</option>
-                  page+="<option value="05">May(5)</option>
-                  page+="<option value="06">June(6)</option>
-                  page+="<option value="07">July(7)</option>
-                  page+="<option value="08">August(8)</option>
-                  page+="<option value="09">September(9)</option>
-                  page+="<option value="10">October(10)</option>
-                  page+="<option value="11">November(11)</option>
-                  page+="<option value="12">December(12)</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="end_day">
-                  page+="<option selected="selected" value="end_day">Day</option>
-                  page+="<option value="01">1</option>
-                  page+="<option value="02">2</option>
-                  page+="<option value="03">3</option>
-                  page+="<option value="04">4</option>
-                  page+="<option value="05">5</option>
-                  page+="<option value="06">6</option>
-                  page+="<option value="07">7</option>
-                  page+="<option value="08">8</option>
-                  page+="<option value="09">9</option>
-                  page+="<option value="10">10</option>
-                  page+="<option value="11">11</option>
-                  page+="<option value="12">12</option>
-                  page+="<option value="13">13</option>
-                  page+="<option value="14">14</option>
-                  page+="<option value="15">15</option>
-                  page+="<option value="16">16</option>
-                  page+="<option value="17">17</option>
-                  page+="<option value="18">18</option>
-                  page+="<option value="19">19</option>
-                  page+="<option value="20">20</option>
-                  page+="<option value="21">21</option>
-                  page+="<option value="22">22</option>
-                  page+="<option value="23">23</option>
-                  page+="<option value="24">24</option>
-                  page+="<option value="25">25</option>
-                  page+="<option value="26">26</option>
-                  page+="<option value="27">27</option>
-                  page+="<option value="28">28</option>
-                  page+="<option value="29">29</option>
-                  page+="<option value="30">30</option>
-                  page+="<option value="31">31</option>
-               page+="</select>
-            page+="</div>
-            page+="<div>
-               page+="<select class="end_hour">
-                  page+="<option selected="selected" value="end_hour">Hour</option>
-                  page+="<option value="0">0</option>
-                  page+="<option value="01">1</option>
-                  page+="<option value="02">2</option>
-                  page+="<option value="03">3</option>
-                  page+="<option value="04">4</option>
-                  page+="<option value="05">5</option>
-                  page+="<option value="06">6</option>
-                  page+="<option value="07">7</option>
-                  page+="<option value="08">8</option>
-                  page+="<option value="09">9</option>
-                  page+="<option value="10">10</option>
-                  page+="<option value="11">11</option>
-                  page+="<option value="12">12</option>
-                  page+="<option value="13">13</option>
-                  page+="<option value="14">14</option>
-                  page+="<option value="15">15</option>
-                  page+="<option value="16">16</option>
-                  page+="<option value="17">17</option>
-                  page+="<option value="18">18</option>
-                  page+="<option value="19">19</option>
-                  page+="<option value="20">20</option>
-                  page+="<option value="21">21</option>
-                  page+="<option value="22">22</option>
-                  page+="<option value="23">23</option>
-               page+="</select>
-            page+="</div>
-            page+="<br><br>
-         page+="</td>
-      page+="</tr>
-      page+="<tr>
-         page+="<td>
-            page+="<li>pick chart colours</li>
-            page+="<br> upload color <input name="up_color" id="up_color" value="ff0000" class="jscolor {width:243, height:200, position:'right',
-               page+="borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
-            page+="<br> download color <input name="down_color" id="down_color" value="00ff00" class="jscolor {width:243, height:200, position:'right',
-               page+="borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}">
-            page+="<br><br>
-         page+="</td>
-      page+="</tr>
-      page+="<tr>
-         page+="<td>
-            page+="<li>select chart type</li>
-            page+="<br>
-            page+="<form id="charttype">
-               page+="<input type="radio" name="charttype" value="bar" checked> bar chart<br>
-               page+="<input type="radio" name="charttype" value="line"> line chart<br>
-            page+="</form>
-            page+="<br><br>
-         page+="</td>
-      page+="</tr>
-      page+="<tr>
-         page+="<td style='text-align: center;'>
-            page+="<input id="submit_button" type="button" value="Show stats" />
-         page+="</td>
-      page+="</tr>
-   page+="</tbody>
-page+="</table>
-page+="<div style="text-align:center" align="center">
-   page+="<p>
-      page+="<a href="/">Home</a>
-   page+="</p>
-page+="</div>
-page+="</body>
-page+="</html>
+        page += "<table style=\"margin-left: auto; margin-right: auto;\" cellspacing=\"1\" cellpadding=\"1\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<li>select stats type</li>\n";
+        page += "<br>\n";
+        page += "<form class=\"statstype\">\n";
+        page += "<input type=\"radio\" name=\"statstype\" value=\"hourly\" checked> hourly stats\n";
+        page += "<input type=\"radio\" name=\"statstype\" value=\"daily\"> daily stats\n";
+        page += "<input type=\"radio\" name=\"statstype\" value=\"monthly\"> monthly stats\n";
+        page += "<input type=\"radio\" name=\"statstype\" value=\"yearly\"> yearly stats\n";
+        page += "</form>\n";
+        page += "<br><br>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<li>select time span</li>\n";
+        page += "<br> start date\n";
+        page += "<div>\n";
+        page += "<select class=\"start_year\">\n";
+        page += "<option selected=\"selected\" value=\"start_year\">Year</option>\n";
+
+        for ( uint32_t i = y; i > ( y - 6 ); i-- )
+        {
+            page += "<option value=\"" + Utils::to_string( i ) + "\">" + Utils::to_string( i ) + "</option>\n";
+        }
+
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"start_month\">\n";
+        page += "<option selected=\"selected\" value=\"start_month\">Month</option>\n";
+        page += "<option value=\"01\">January</option>\n";
+        page += "<option value=\"02\">February</option>\n";
+        page += "<option value=\"03\">March</option>\n";
+        page += "<option value=\"04\">April</option>\n";
+        page += "<option value=\"05\">May</option>\n";
+        page += "<option value=\"06\">June</option>\n";
+        page += "<option value=\"07\">July</option>\n";
+        page += "<option value=\"08\">August</option>\n";
+        page += "<option value=\"09\">September</option>\n";
+        page += "<option value=\"10\">October</option>\n";
+        page += "<option value=\"11\">November</option>\n";
+        page += "<option value=\"12\">December</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"start_day\">\n";
+        page += "<option selected=\"selected\" value=\"start_day\">Day</option>\n";
+        page += "<option value=\"01\">1</option>\n";
+        page += "<option value=\"02\">2</option>\n";
+        page += "<option value=\"03\">3</option>\n";
+        page += "<option value=\"04\">4</option>\n";
+        page += "<option value=\"05\">5</option>\n";
+        page += "<option value=\"06\">6</option>\n";
+        page += "<option value=\"07\">7</option>\n";
+        page += "<option value=\"08\">8</option>\n";
+        page += "<option value=\"09\">9</option>\n";
+        page += "<option value=\"10\">10</option>\n";
+        page += "<option value=\"11\">11</option>\n";
+        page += "<option value=\"12\">12</option>\n";
+        page += "<option value=\"13\">13</option>\n";
+        page += "<option value=\"14\">14</option>\n";
+        page += "<option value=\"15\">15</option>\n";
+        page += "<option value=\"16\">16</option>\n";
+        page += "<option value=\"17\">17</option>\n";
+        page += "<option value=\"18\">18</option>\n";
+        page += "<option value=\"19\">19</option>\n";
+        page += "<option value=\"20\">20</option>\n";
+        page += "<option value=\"21\">21</option>\n";
+        page += "<option value=\"22\">22</option>\n";
+        page += "<option value=\"23\">23</option>\n";
+        page += "<option value=\"24\">24</option>\n";
+        page += "<option value=\"25\">25</option>\n";
+        page += "<option value=\"26\">26</option>\n";
+        page += "<option value=\"27\">27</option>\n";
+        page += "<option value=\"28\">28</option>\n";
+        page += "<option value=\"29\">29</option>\n";
+        page += "<option value=\"30\">30</option>\n";
+        page += "<option value=\"31\">31</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"start_hour\">\n";
+        page += "<option selected=\"selected\" value=\"start_hour\">Hour</option>\n";
+        page += "<option value=\"0\">0</option>\n";
+        page += "<option value=\"01\">1</option>\n";
+        page += "<option value=\"02\">2</option>\n";
+        page += "<option value=\"03\">3</option>\n";
+        page += "<option value=\"04\">4</option>\n";
+        page += "<option value=\"05\">5</option>\n";
+        page += "<option value=\"06\">6</option>\n";
+        page += "<option value=\"07\">7</option>\n";
+        page += "<option value=\"08\">8</option>\n";
+        page += "<option value=\"09\">9</option>\n";
+        page += "<option value=\"10\">10</option>\n";
+        page += "<option value=\"11\">11</option>\n";
+        page += "<option value=\"12\">12</option>\n";
+        page += "<option value=\"13\">13</option>\n";
+        page += "<option value=\"14\">14</option>\n";
+        page += "<option value=\"15\">15</option>\n";
+        page += "<option value=\"16\">16</option>\n";
+        page += "<option value=\"17\">17</option>\n";
+        page += "<option value=\"18\">18</option>\n";
+        page += "<option value=\"19\">19</option>\n";
+        page += "<option value=\"20\">20</option>\n";
+        page += "<option value=\"21\">21</option>\n";
+        page += "<option value=\"22\">22</option>\n";
+        page += "<option value=\"23\">23</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<br><br> end date\n";
+        page += "<div>\n";
+        page += "<select class=\"end_year\">\n";
+        page += "<option selected=\"selected\" value=\"end_year\">Year</option>\n";
+
+        for ( uint32_t i = y; i > ( y - 6 ); i-- )
+        {
+            page += "<option value=\"" + Utils::to_string( i ) + "\">" + Utils::to_string( i ) + "</option>\n";
+        }
+
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"end_month\">\n";
+        page += "<option selected=\"selected\" value=\"end_month\">Month</option>\n";
+        page += "<option value=\"01\">January</option>\n";
+        page += "<option value=\"02\">February</option>\n";
+        page += "<option value=\"03\">March</option>\n";
+        page += "<option value=\"04\">April</option>\n";
+        page += "<option value=\"05\">May</option>\n";
+        page += "<option value=\"06\">June</option>\n";
+        page += "<option value=\"07\">July</option>\n";
+        page += "<option value=\"08\">August</option>\n";
+        page += "<option value=\"09\">September</option>\n";
+        page += "<option value=\"10\">October</option>\n";
+        page += "<option value=\"11\">November</option>\n";
+        page += "<option value=\"12\">December</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"end_day\">\n";
+        page += "<option selected=\"selected\" value=\"end_day\">Day</option>\n";
+        page += "<option value=\"01\">1</option>\n";
+        page += "<option value=\"02\">2</option>\n";
+        page += "<option value=\"03\">3</option>\n";
+        page += "<option value=\"04\">4</option>\n";
+        page += "<option value=\"05\">5</option>\n";
+        page += "<option value=\"06\">6</option>\n";
+        page += "<option value=\"07\">7</option>\n";
+        page += "<option value=\"08\">8</option>\n";
+        page += "<option value=\"09\">9</option>\n";
+        page += "<option value=\"10\">10</option>\n";
+        page += "<option value=\"11\">11</option>\n";
+        page += "<option value=\"12\">12</option>\n";
+        page += "<option value=\"13\">13</option>\n";
+        page += "<option value=\"14\">14</option>\n";
+        page += "<option value=\"15\">15</option>\n";
+        page += "<option value=\"16\">16</option>\n";
+        page += "<option value=\"17\">17</option>\n";
+        page += "<option value=\"18\">18</option>\n";
+        page += "<option value=\"19\">19</option>\n";
+        page += "<option value=\"20\">20</option>\n";
+        page += "<option value=\"21\">21</option>\n";
+        page += "<option value=\"22\">22</option>\n";
+        page += "<option value=\"23\">23</option>\n";
+        page += "<option value=\"24\">24</option>\n";
+        page += "<option value=\"25\">25</option>\n";
+        page += "<option value=\"26\">26</option>\n";
+        page += "<option value=\"27\">27</option>\n";
+        page += "<option value=\"28\">28</option>\n";
+        page += "<option value=\"29\">29</option>\n";
+        page += "<option value=\"30\">30</option>\n";
+        page += "<option value=\"31\">31</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<div>\n";
+        page += "<select class=\"end_hour\">\n";
+        page += "<option selected=\"selected\" value=\"end_hour\">Hour</option>\n";
+        page += "<option value=\"0\">0</option>\n";
+        page += "<option value=\"01\">1</option>\n";
+        page += "<option value=\"02\">2</option>\n";
+        page += "<option value=\"03\">3</option>\n";
+        page += "<option value=\"04\">4</option>\n";
+        page += "<option value=\"05\">5</option>\n";
+        page += "<option value=\"06\">6</option>\n";
+        page += "<option value=\"07\">7</option>\n";
+        page += "<option value=\"08\">8</option>\n";
+        page += "<option value=\"09\">9</option>\n";
+        page += "<option value=\"10\">10</option>\n";
+        page += "<option value=\"11\">11</option>\n";
+        page += "<option value=\"12\">12</option>\n";
+        page += "<option value=\"13\">13</option>\n";
+        page += "<option value=\"14\">14</option>\n";
+        page += "<option value=\"15\">15</option>\n";
+        page += "<option value=\"16\">16</option>\n";
+        page += "<option value=\"17\">17</option>\n";
+        page += "<option value=\"18\">18</option>\n";
+        page += "<option value=\"19\">19</option>\n";
+        page += "<option value=\"20\">20</option>\n";
+        page += "<option value=\"21\">21</option>\n";
+        page += "<option value=\"22\">22</option>\n";
+        page += "<option value=\"23\">23</option>\n";
+        page += "</select>\n";
+        page += "</div>\n";
+        page += "<br><br>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<li>pick chart colours</li>\n";
+        page += "<br> upload color <input name=\"up_color\" id=\"up_color\" value=\"ff0000\" class=\"jscolor {width:243, height:200, position:'right',\n";
+        page += "borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}\">\n";
+        page += "<br> download color <input name=\"down_color\" id=\"down_color\" value=\"00ff00\" class=\"jscolor {width:243, height:200, position:'right',\n";
+        page += "borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}\">\n";
+        page += "<br><br>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td>\n";
+        page += "<li>select chart type</li>\n";
+        page += "<br>\n";
+        page += "<form id=\"charttype\">\n";
+        page += "<input type=\"radio\" name=\"charttype\" value=\"bar\" checked> bar chart<br>\n";
+        page += "<input type=\"radio\" name=\"charttype\" value=\"line\"> line chart<br>\n";
+        page += "</form>\n";
+        page += "<br><br>\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td style='text-align: center;'>\n";
+        page += "<input id=\"submit_button\" type=\"button\" value=\"Show stats\" />\n";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
+        page += "<div style=\"text-align:center\" align=\"center\">\n";
+        page += "<p>\n";
+        page += "<a href=\"/\">Home</a>\n";
+        page += "</p>\n";
+        page += "</div>\n";
+        page += "</body>\n";
+        page += "</html>\n\n";
 
         stringstream content_stream;
         content_stream << page;
@@ -2435,7 +2460,7 @@ page+="</html>
         *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
         *response << "\r\n\r\n" << content_stream.rdbuf();
 
-    }
+    };
 
 
 

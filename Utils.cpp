@@ -29,6 +29,10 @@ If not, see http://www.gnu.org/licenses/.
 #include <cstdlib>
 #include <ctime>
 #include <boost/filesystem.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
+#include <boost/iostreams/filtering_streambuf.hpp>
 
 #ifdef __linux
 #include <arpa/inet.h>
@@ -68,6 +72,8 @@ If not, see http://www.gnu.org/licenses/.
 #include "Utils.h"
 #include "Logger.h"
 #include "Globals.h"
+
+using namespace std;
 
 /**<
 The map object that stores results returned by sqlite engine
@@ -1914,7 +1920,8 @@ bool Utils::repair_broken_databse( const string& a_mac )
             {
                 Logger::LogError( "Can not fix table with query: " + query );
             }
-            sqlite3_db_cacheflush(db);
+
+            sqlite3_db_cacheflush( db );
         }
 
         sqlite3_close_v2( db );
@@ -2307,3 +2314,40 @@ bool Utils::save_settings( void )
     return true;
 }
 
+/** @brief gz_compress
+  *
+  * @todo: document this function
+  */
+stringstream Utils::gz_compress(const std::string& data )
+{
+    namespace bio = boost::iostreams;
+
+    std::stringstream compressed;
+    std::stringstream origin( data );
+
+    bio::filtering_streambuf<bio::input> out;
+    out.push( bio::zlib_compressor( bio::zlib_params( bio::zlib::best_compression ) ) );
+    out.push( origin );
+    bio::copy( out, compressed );
+
+    return compressed;
+}
+
+/** @brief gz_decompress
+  *
+  * @todo: document this function
+  */
+string Utils::gz_decompress(const std::string& data )
+{
+    namespace bio = boost::iostreams;
+
+    std::stringstream compressed( data );
+    std::stringstream decompressed;
+
+    bio::filtering_streambuf<bio::input> out;
+    out.push( bio::gzip_decompressor() );
+    out.push( compressed );
+    bio::copy( out, decompressed );
+
+    return decompressed.str();
+}
