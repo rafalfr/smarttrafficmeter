@@ -2,7 +2,7 @@
 
 Utils.cpp
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2017 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -31,7 +31,6 @@ If not, see http://www.gnu.org/licenses/.
 #include <boost/filesystem.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
 
 #ifdef __linux
@@ -1613,7 +1612,7 @@ void Utils::save_stats_to_mysql( const string& a_mac )
   * This function returns true if the databse integrity is maintained
   * and returns false if databse integrity is lost
   *
-  * @param void
+  * @param mac
   * @return bool
   */
 bool Utils::check_databse_integrity( const string& a_mac )
@@ -1706,7 +1705,11 @@ bool Utils::check_databse_integrity( const string& a_mac )
 
 /** @brief repair_broken_databse
   *
-  * @todo: document this function
+  * This function repairs the broken database
+  * and returns true if everything went ok.
+  *
+  * @param mac address of network interface
+  * @return bool
   */
 bool Utils::repair_broken_databse( const string& a_mac )
 {
@@ -2323,10 +2326,10 @@ stringstream Utils::gz_compress(const std::string& data )
     namespace bio = boost::iostreams;
 
     std::stringstream compressed;
-    std::stringstream origin( data );
+    std::stringstream origin(data);
 
     bio::filtering_streambuf<bio::input> out;
-    out.push( bio::zlib_compressor( bio::zlib_params( bio::zlib::best_compression ) ) );
+    out.push( bio::gzip_compressor( bio::gzip_params( bio::gzip::best_compression ) ) );
     out.push( origin );
     bio::copy( out, compressed );
 

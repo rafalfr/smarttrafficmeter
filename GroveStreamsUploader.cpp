@@ -1,9 +1,14 @@
+#include "config.h"
 #include <string>
 #include "Utils.h"
 #include "Logger.h"
 #include "Globals.h"
 #include "Settings.h"
 #include "GroveStreamsUploader.h"
+
+#ifdef use_sqlite
+#include "sqlite3.h"
+#endif // use_sqlite
 
 #include <curl/curl.h>
 
@@ -58,11 +63,17 @@ void GroveStreamsUploader::run( void )
 
         string base_url = "http://grovestreams.com:80/api/feed?";
 
-        for ( auto const & mac_table : Globals::all_stats )
+        const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+        for ( auto const & kv : interfaces )
         {
-            const string mac = mac_table.first;
+            const string mac = kv.first;
+
+            Logger::LogInfo(mac);
+            Logger::LogInfo(api_key);
 
             string url;
+            url.clear();
             url += base_url;
             url += "compId=";
             url += mac;
@@ -70,47 +81,164 @@ void GroveStreamsUploader::run( void )
             url += api_key;
 
             string json;
+            json.clear();
             json += "[\n";
 
-            const map<string, map<string, InterfaceStats> > & table = mac_table.second;
+            uint32_t y;
+            uint32_t m;
+            uint32_t d;
+            uint32_t h;
 
-            for ( auto const & table_row : table )
+            Utils::get_time( &y, &m, &d, &h );
+
+            struct date start_date;
+            struct date end_date;
+
+            start_date.year = 1900;
+            start_date.month = 1;
+            start_date.day = 1;
+            start_date.hour = 0;
+
+            end_date.year = y;
+            end_date.month = m;
+            end_date.day = d;
+            end_date.hour = h;
+
+			// upload yearly stats
+            map<string, InterfaceStats> results = Globals::db_drv.get_stats( mac, "yearly", start_date, end_date );
+
+            for ( auto const & row_stats : results )
             {
-                const string& table_name = table_row.first;
+                uint32_t y, m, d, h;
 
-                const map<string, InterfaceStats> & row = table_row.second;
+                const string row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                Utils::str2date( row, "yearly", &y, &m, &d, &h );
 
-                for ( auto const & row_stats : row )
+                if ( y == 0U && m == 0U && d == 0U && h == 0U )
                 {
-                    uint32_t y, m, d, h;
-
-                    const string row = row_stats.first;
-                    const InterfaceStats& stats = row_stats.second;
-                    Utils::str2date( row, table_name, &y, &m, &d, &h );
-
-                    if ( y == 0U && m == 0U && d == 0U && h == 0U )
-                    {
-                        continue;
-                    }
-
-                    time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
-
-                    uint64_t rx = stats.received();
-                    uint64_t tx = stats.transmitted();
-
-                    json += "{\n";
-                    json += "\"compId\": \"" + mac + "\",\n";
-                    json += "\"streamId\": \"" + table_name + " down\",\n";
-                    json += "\"data\": " + Utils::to_string( rx ) + ",\n";
-                    json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
-                    json += "},\n";
-                    json += "{\n";
-                    json += "\"compId\": \"" + mac + "\",\n";
-                    json += "\"streamId\": \"" + table_name + " up\",\n";
-                    json += "\"data\": " + Utils::to_string( tx ) + ",\n";
-                    json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
-                    json += "},\n";
+                    continue;
                 }
+
+                time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
+
+                uint64_t rx = stats.received();
+                uint64_t tx = stats.transmitted();
+
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"yearly down\",\n";
+                json += "\"data\": " + Utils::to_string( rx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"yearly up\",\n";
+                json += "\"data\": " + Utils::to_string( tx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+            }
+
+			// upload monthly stats
+			results = Globals::db_drv.get_stats( mac, "monthly", start_date, end_date );
+            for ( auto const & row_stats : results )
+            {
+                uint32_t y, m, d, h;
+
+                const string row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                Utils::str2date( row, "monthly", &y, &m, &d, &h );
+
+                if ( y == 0U && m == 0U && d == 0U && h == 0U )
+                {
+                    continue;
+                }
+
+                time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
+
+                uint64_t rx = stats.received();
+                uint64_t tx = stats.transmitted();
+
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"monthly down\",\n";
+                json += "\"data\": " + Utils::to_string( rx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"monthly up\",\n";
+                json += "\"data\": " + Utils::to_string( tx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+            }
+
+			// upload daily stats
+			results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
+            for ( auto const & row_stats : results )
+            {
+                uint32_t y, m, d, h;
+
+                const string row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                Utils::str2date( row, "daily", &y, &m, &d, &h );
+
+                if ( y == 0U && m == 0U && d == 0U && h == 0U )
+                {
+                    continue;
+                }
+
+                time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
+
+                uint64_t rx = stats.received();
+                uint64_t tx = stats.transmitted();
+
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"daily down\",\n";
+                json += "\"data\": " + Utils::to_string( rx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"daily up\",\n";
+                json += "\"data\": " + Utils::to_string( tx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+            }
+
+			// upload hourly stats
+			results = Globals::db_drv.get_stats( mac, "hourly", start_date, end_date );
+            for ( auto const & row_stats : results )
+            {
+                uint32_t y, m, d, h;
+
+                const string row = row_stats.first;
+                const InterfaceStats& stats = row_stats.second;
+                Utils::str2date( row, "hourly", &y, &m, &d, &h );
+
+                if ( y == 0U && m == 0U && d == 0U && h == 0U )
+                {
+                    continue;
+                }
+
+                time_t time_stamp = Utils::date_to_seconds( y, m, d, h );
+
+                uint64_t rx = stats.received();
+                uint64_t tx = stats.transmitted();
+
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"hourly down\",\n";
+                json += "\"data\": " + Utils::to_string( rx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
+                json += "{\n";
+                json += "\"compId\": \"" + mac + "\",\n";
+                json += "\"streamId\": \"hourly up\",\n";
+                json += "\"data\": " + Utils::to_string( tx ) + ",\n";
+                json += "\"time\": " + Utils::to_string( static_cast<uint64_t>( time_stamp * 1000ULL ) ) + "\n";
+                json += "},\n";
             }
 
             json.pop_back();
@@ -139,7 +267,7 @@ void GroveStreamsUploader::run( void )
   * The method is not used outside the scope of the GroveStreamsUploader class.
   *
   */
-size_t GroveStreamsUploader::download_handler( void*, size_t size, size_t nmemb, void* interface )
+size_t GroveStreamsUploader::download_handler( void*, size_t size, size_t nmemb, void*)
 {
     return size * nmemb;
 }

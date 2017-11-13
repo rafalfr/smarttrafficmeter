@@ -2,7 +2,7 @@
 
 LinuxUtils.cpp
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2017 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -140,7 +140,7 @@ void* LinuxUtils::MeterThread ( void )
 	}
 	catch ( ... )
 	{
-		save_interval = 30 * 60;	// save interval time in seconds
+		save_interval = 30 * 60;	// default save interval time in seconds
 	}
 
 	string row;
@@ -428,20 +428,20 @@ void* LinuxUtils::MeterThread ( void )
 
 		if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph && minute == 1U ) )
 		{
-
-//            if ( Globals::upload_threads.size() > 0 )
-//            {
-//                for ( const auto & th : Globals::upload_threads )
-//                {
-//                    delete th;
-//                }
-//
-//                Globals::upload_threads.clear();
-//            }
-//
-//            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
-
 			Utils::save_stats ( "" );
+
+            if ( Globals::upload_threads.size() > 0 )
+            {
+                for ( const auto & th : Globals::upload_threads )
+                {
+                    delete th;
+                }
+
+                Globals::upload_threads.clear();
+            }
+
+            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
+
 
 			/* remove unused rows from the all_stats container */
 
@@ -625,7 +625,7 @@ int LinuxUtils::BecomeDaemon ( int flags )
 	{
 		if ( chdir ( "/" ) != 0 )
 		{
-			cout << "can't change working directory" << endl;
+			Logger::LogError("can't change working directory");
 		}
 	}
 
@@ -639,22 +639,6 @@ int LinuxUtils::BecomeDaemon ( int flags )
 		for ( fd = 0; fd < maxfd; fd++ )
 			close ( fd );
 	}
-
-//	if ( ! ( flags & BD_NO_REOPEN_STD_FDS ) )
-//	{
-//		close ( STDIN_FILENO );         /* Reopen standard fd's to /dev/null */
-//
-//		fd = open ( "/dev/null", O_RDWR );
-//
-//		if ( fd != STDIN_FILENO )       /* 'fd' should be 0 */
-//			return -1;
-//
-//		if ( dup2 ( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
-//			return -1;
-//
-//		if ( dup2 ( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
-//			return -1;
-//	}
 
 	return 0;
 }

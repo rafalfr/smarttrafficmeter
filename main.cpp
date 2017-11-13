@@ -295,9 +295,12 @@ int main( int argc, char *argv[] )
     } );
 #endif // _NO_WEBSERVER
 
+
     meter_thread.join();
 
-//	boost::thread* th=new boost::thread(GroveStreamsUploader::run);
+    //boost::thread* th=new boost::thread(GroveStreamsUploader::run);
+
+
 //
 //	if(th->joinable()==true)
 //	{

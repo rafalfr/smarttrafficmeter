@@ -2,7 +2,7 @@
 
 InterfaceSpeedMeter.cpp
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2017 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -52,7 +52,6 @@ InterfaceSpeedMeter::InterfaceSpeedMeter() : max_buf_items( 2 ), buf()
  */
 InterfaceSpeedMeter::InterfaceSpeedMeter( const InterfaceSpeedMeter& ism ) : max_buf_items( ism.max_buf_items ), buf()
 {
-    //copy constructor with a buf deep copy
     for ( auto const & stats : ism.buf )
     {
         uint64_t rx = stats.at( "rx" );

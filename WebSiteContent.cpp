@@ -306,17 +306,18 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</body>\n";
         page += "</html>\n\n";
 
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
 
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
-        //*response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
-        *response << "\r\n\r\n" << content_stream.rdbuf();
+        *response << "Cache-Control: no-cache, no-store, public";
+        *response << "\r\n\r\n";
+        *response << content_stream.rdbuf();
     };
 
     server.resource["^/customrange/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
@@ -333,6 +334,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        content_stream.seekp( 0, ios::beg );
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -438,12 +440,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
+
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -565,6 +569,16 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://jscolor.com\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://www.gnu.org/licenses/gpl-3.0.txt\">license</a></p></td>\n";
         page += "</tr>\n";
+		page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>hammer.js</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://hammerjs.github.io\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/hammerjs/hammer.js/blob/master/LICENSE.md\">license</a></p></td>\n";
+        page += "</tr>\n";
+		page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>chartjs-plugin-zoom</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/chartjs/chartjs-plugin-zoom\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://opensource.org/licenses/MIT\">license</a></p></td>\n";
+        page += "</tr>\n";
         page += "</tbody>\n";
         page += "</table>\n";
         page += "<br>\n";
@@ -576,10 +590,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: public, max-age=1800";
         *response << "\r\n\r\n" << content_stream.rdbuf();
@@ -815,7 +830,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string unit;
         float scale;
 
-        string web_page;
+        string page;
 
         //option: name, value
         map<string, string> options;
@@ -980,24 +995,26 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string up_highlightstroke_color = rgba_color( up_color_str, 1.0f );
 
         // start generating web page
-        web_page += "<!doctype html>\n";
-        web_page += "<html>\n";
-        web_page += "<head>\n";
-        web_page += "<title>statistics</title>";
-        web_page += "<script src=\"/Chart.js\"></script>\n";
+        page += "<!doctype html>\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<title>statistics</title>";
+        page += "<script src=\"/Chart.js\"></script>\n";
+        page += "<script src=\"/zoom.js\"></script>\n";
+        page += "<script src=\"/hammer.js\"></script>\n";
 
-        web_page += "<style>\n";
-        web_page += "p {color:black; font-family: arial}\n";
-        web_page += "</style>\n";
+        page += "<style>\n";
+        page += "p {color:black; font-family: arial}\n";
+        page += "</style>\n";
 
-        web_page += "</head>\n";
-        web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
-        web_page += "<p><a href=\"/savedata\">save all data</a></p>\n";
-        web_page += "</div>";
-        web_page += "<table style=\"text-align: center; width: " + chartwidth_str + "px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-        web_page += "<tbody>\n";
-        web_page += "<tr>\n";
-        web_page += "<td style=\"vertical-align: top; text-align: center; width: " + chartwidth_str + "px;\">\n";
+        page += "</head>\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+        page += "<p><a href=\"/savedata\">save all data</a></p>\n";
+        page += "</div>";
+        page += "<table style=\"text-align: center; width: " + chartwidth_str + "px; margin-left: auto; margin-right: auto;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+        page += "<tbody>\n";
+        page += "<tr>\n";
+        page += "<td style=\"vertical-align: top; text-align: center; width: " + chartwidth_str + "px;\">\n";
 
 
         uint32_t chart_id = 0;
@@ -1015,21 +1032,21 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             string canvas_id = "canvas";
             canvas_id += Utils::to_string( chart_id );
 
-            web_page += "<div title=\"interface name, mac, IP4, IP6\" style=\"width: 100%\" align=\"center\">\n";
+            page += "<div title=\"interface name, mac, IP4, IP6\" style=\"width: 100%\" align=\"center\">\n";
 
 #ifdef _WIN32
-            web_page += "<p>" + interface_description + ", " + mac + ", " + ip4;
+            page += "<p>" + interface_description + ", " + mac + ", " + ip4;
 #endif // _WIN32
 
 #ifdef __linux
-            web_page += "<p>" + interface_name + ", " + mac + ", " + ip4 + ", " + ip6;
+            page += "<p>" + interface_name + ", " + mac + ", " + ip4 + ", " + ip6;
 #endif // __linux
 
-            web_page += "</p></div>";
+            page += "</p></div>";
 
-            web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
-            web_page += "<canvas id=\"" + canvas_id + "\" height=\"" + chartheight_str + "\" width=\"" + chartwidth_str + "\"></canvas>\n";
-            web_page += "</div>\n";
+            page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+            page += "<canvas id=\"" + canvas_id + "\" height=\"" + chartheight_str + "\" width=\"" + chartwidth_str + "\"></canvas>\n";
+            page += "</div>\n";
 
             const vector<string>& start_date_items = Utils::split( start_date_str, "-" );
             const vector<string>& end_date_items = Utils::split( end_date_str, "-" );
@@ -1232,38 +1249,65 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             chart_options += "}\n";
             chart_options += "}]\n";
             chart_options += "},\n";
+            chart_options += "pan: {\n";
+            chart_options += "enabled: true,\n";
+            chart_options += "mode: 'xy',\n";
+            chart_options += "speed: 2,\n";
+            chart_options += "threshold: 2\n";
+            //chart_options += "rangeMin: {\n";
+            //chart_options += "x: null,\n";
+            //chart_options += "y: null\n";
+            //chart_options += "},\n";
+            //chart_options += "rangeMax: {\n";
+            //chart_options += "x: null,\n";
+            //chart_options += "y: null\n";
+            //chart_options += "}\n";
+            chart_options += "},\n";
+            chart_options += "zoom: {\n";
+            chart_options += "enabled: true,\n";
+            //chart_options += "drag: true,\n";
+            chart_options += "mode: 'y'\n";
+            //chart_options += "rangeMin: {\n";
+            //chart_options += "x: null,\n";
+            //chart_options += "y: null\n";
+            //chart_options += "},\n";
+            //chart_options += "rangeMax: {\n";
+            //chart_options += "x: null,\n";
+            //chart_options += "y: null\n";
+            //chart_options += "}\n";
+            chart_options += "},\n";
             chart_options += "responsive : true\n";
             chart_options += "};";
 
-            web_page += "<script>\n";
-            web_page += chart_data;
-            web_page += "\n";
-            web_page += chart_options;
+            page += "<script>\n";
+            page += chart_data;
+            page += "\n";
+            page += chart_options;
 
             string var_chart = "ctx";
             var_chart += Utils::to_string( chart_id );
 
-            web_page += "</script>\n";
-            web_page += "<br>\n";
+            page += "</script>\n";
+            page += "<br>\n";
 
             chart_id++;
 
-            web_page += "<div style=\"width: 100%\" align=\"center\">\n";
+            page += "<div style=\"width: 100%\" align=\"center\">\n";
             float value = ( ( float ) rx_in_period ) / scale;
-            web_page += "<p>";
-            web_page += "total download: " + Utils::float_to_string( value, 2 ) + " " + unit;
-            web_page += ",  ";
+            page += "<p>";
+            page += "total download: " + Utils::float_to_string( value, 2 ) + " " + unit;
+            page += ",  ";
             value = ( ( float ) tx_in_period ) / scale;
-            web_page += "total upload: " + Utils::float_to_string( value, 2 ) + " " + unit;
-            web_page += "</p>";
-            web_page += "</div>";
-            web_page += "<br>";
-            web_page += "<hr>";
+            page += "total upload: " + Utils::float_to_string( value, 2 ) + " " + unit;
+            page += "</p>";
+            page += "</div>";
+            page += "<br>";
+            page += "<hr>";
         }
 
         chart_id = 0;
-        web_page += "<script>\n";
-        web_page += "window.onload = function(){\n";
+        page += "<script>\n";
+        page += "window.onload = function(){\n";
 
         //generate chart objects
         for ( auto it = Globals::all_stats.begin(); it != Globals::all_stats.end(); it++ )
@@ -1283,37 +1327,36 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             string window_chart = "chart";
             window_chart += Utils::to_string( chart_id );
 
-            web_page += "var " + var_context + " = document.getElementById(\"" + canvas_id + "\").getContext(\"2d\");\n";
-            web_page += "var " + window_chart + " = new Chart(" + var_context + ",{\n";
-            web_page += "type: '" + chart_type_str + "',\n";
-            web_page += "data: " + var_chart_data + ",\n";
-            web_page += "options: " + var_options + "\n";
-            web_page += "});\n";
+            page += "var " + var_context + " = document.getElementById(\"" + canvas_id + "\").getContext(\"2d\");\n";
+            page += "var " + window_chart + " = new Chart(" + var_context + ",{\n";
+            page += "type: '" + chart_type_str + "',\n";
+            page += "data: " + var_chart_data + ",\n";
+            page += "options: " + var_options + "\n";
+            page += "});\n";
             chart_id++;
         }
 
-        //finish generating html
-        web_page += "}\n";
-        web_page += "</script>\n";
+        page += "}\n";
+        page += "</script>\n";
 
-        web_page += "</td>\n";
-        web_page += "</tr>\n";
-        web_page += "</tbody>\n";
-        web_page += "</table>\n";
-        web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
-        web_page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&amp;end=" + end_date_str + "\">download this stats</a>\n</p>\n";
-        web_page += "<p>\n<a href=\"/\">Home</a></p>\n";
-        web_page += "</p>\n</div>\n";
-        web_page += "</body>\n";
-        web_page += "</html>";
+        page += "</td>\n";
+        page += "</tr>\n";
+        page += "</tbody>\n";
+        page += "</table>\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n<p>\n";
+        page += "<a href=\"/download/" + stats_type + "/start=" + start_date_str + "&amp;end=" + end_date_str + "\">download this stats</a>\n</p>\n";
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</p>\n</div>\n";
+        page += "</body>\n";
+        page += "</html>";
 
-        //send html to the user
         stringstream out_stream;
-        out_stream << web_page;
+        out_stream = Utils::gz_compress(page);
 
         out_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << out_stream.rdbuf();
@@ -1483,12 +1526,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</body>\n";
         page += "</html>\n";
 
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
 
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
         *response << "Last-Modified: " << Utils::rfc1123_datetime( time( NULL ) ) << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
@@ -1647,26 +1691,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    // usunąć po testach
-    server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
-    {
-        ifstream file;
-        file.open( "../../webpage/test3.html", std::ifstream::in | std::ifstream::binary );
-
-        if ( file.is_open() )
-        {
-            stringstream input_file_stream;
-            input_file_stream << file.rdbuf();
-            file.close();
-
-            input_file_stream.seekp( 0, ios::end );
-            *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
-            *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-            *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
-            *response << "\r\n\r\n" << input_file_stream.rdbuf();
-        }
-    };
-
     server.resource["\\/stats.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         string row;
@@ -1821,28 +1845,29 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             Utils::save_stats_to_files( "" );
         }
 
-        string web_page;
-        web_page += "<!doctype html>\n";
-        web_page += "<html>\n";
-        web_page += "<head>\n";
-        web_page += "<title>data save</title>";
-        web_page += "<style>\n";
-        web_page += "p {color:black; font-family: arial}\n";
-        web_page += "</style>\n";
-        web_page += "</head>\n";
-        web_page += "<body background=\"../background.png\">\n";
-        web_page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
-        web_page += "<p>all data saved</p>\n";
-        web_page += "</div>";
-        web_page += "</body>\n";
-        web_page += "</html>";
+        string page;
+        page += "<!doctype html>\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<title>data save</title>";
+        page += "<style>\n";
+        page += "p {color:black; font-family: arial}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\">\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+        page += "<p>all data saved</p>\n";
+        page += "</div>";
+        page += "</body>\n";
+        page += "</html>";
 
-        content_stream << web_page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -1905,12 +1930,13 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
 
         Globals::terminate_program = true;
@@ -2019,13 +2045,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -2127,13 +2154,14 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
@@ -2451,20 +2479,37 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n\n";
 
         stringstream content_stream;
-        content_stream << page;
+        content_stream = Utils::gz_compress(page);
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
         *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-        *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
-
     };
 
-
-
+//    server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+//    {
+//        ifstream file;
+//        file.open( "../../webpage/test3.html", std::ifstream::in | std::ifstream::binary );
+//
+//        if ( file.is_open() )
+//        {
+//            stringstream input_file_stream;
+//            input_file_stream << file.rdbuf();
+//            file.close();
+//
+//            input_file_stream.seekp( 0, ios::end );
+//            *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
+//            *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+//            *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
+//            *response << "\r\n\r\n" << input_file_stream.rdbuf();
+//        }
+//    };
 }
+
 /** @brief rgba_color
   *
   * @todo: document this function

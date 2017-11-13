@@ -25837,7 +25837,7 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+1510164753 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
@@ -25867,10 +25867,10 @@
 	"config.h"
 	<bfd.h>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
+1510164918 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1510164986 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
 	<sys/time.h>
 	"InterfaceSpeedMeter.h"
 
@@ -25953,7 +25953,7 @@
 1505854603 /home/rafal/Programowanie/C++/smarttrafficmeter/config.h
 	"version.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
+1510165561 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Logger.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -25961,7 +25961,7 @@
 	<time.h>
 	"Logger.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
+1510165634 source:/home/rafal/Programowanie/C++/smarttrafficmeter/MySQLInterface.cpp
 	"MySQLInterface.h"
 	<iostream>
 
@@ -25970,7 +25970,7 @@
 	<cstdint>
 	"mysql.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
+1510166059 source:/home/rafal/Programowanie/C++/smarttrafficmeter/ServerThread.cpp
 	"ServerThread.h"
 	<map>
 	<string>
@@ -26015,7 +26015,7 @@
 	<map>
 	<string>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
+1510166165 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
 	"Settings.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
@@ -26076,7 +26076,7 @@
 	<ctype.h>
 	<math.h>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
+1510164711 source:/home/rafal/Programowanie/C++/smarttrafficmeter/DataBaseDriver.cpp
 	"config.h"
 	"DataBaseDriver.h"
 	"Logger.h"
@@ -26086,14 +26086,14 @@
 1505854603 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
+1510164807 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
 	"Globals.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
+1510165001 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceStats.cpp
 	<limits>
 	"InterfaceStats.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1510607870 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26141,7 +26141,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1510607821 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26176,7 +26176,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1508943077 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1510608477 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1505854603 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26342,7 +26342,7 @@
 	<boost/regex.hpp>
 	<regex>
 
-1508942642 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
+1510166622 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Utils.cpp
 	"config.h"
 	<fstream>
 	<sstream>
@@ -26354,7 +26354,6 @@
 	<boost/filesystem.hpp>
 	<boost/iostreams/copy.hpp>
 	<boost/iostreams/filter/gzip.hpp>
-	<boost/iostreams/filter/zlib.hpp>
 	<boost/iostreams/filtering_streambuf.hpp>
 	<arpa/inet.h>
 	<sys/socket.h>
@@ -26390,7 +26389,7 @@
 	<windows.h>
 	"InterfaceInfo.h"
 
-1508939869 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
+1510148331 source:/home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.cpp
 	"config.h"
 	<fstream>
 	<memory>
@@ -26416,27 +26415,29 @@
 1507722813 /home/rafal/Programowanie/C++/smarttrafficmeter/Resources.h
 	<cstdint>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Resources.cpp
+1510166019 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Resources.cpp
 	"Resources.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BackgroundImage.cpp
 	"Resources.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
+1510607433 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
+	"config.h"
 	<string>
 	"Utils.h"
 	"Logger.h"
 	"Globals.h"
 	"Settings.h"
 	"GroveStreamsUploader.h"
+	"sqlite3.h"
 	<curl/curl.h>
 
 1505854603 /home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.h
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
+1510166274 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
+1510166206 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
 	"Resources.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Path.cpp
@@ -26460,10 +26461,10 @@
 	<boost/regex.hpp>
 	"Path.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jquery.cpp
+1510165121 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jquery.cpp
 	"Resources.h"
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jscolor.cpp
+1510165163 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jscolor.cpp
 	"Resources.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/csmtp/base64.cpp
@@ -26510,7 +26511,7 @@
 	<string.h>
 	<iostream>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/stopwatch.cpp
+1510166310 source:/home/rafal/Programowanie/C++/smarttrafficmeter/stopwatch.cpp
 	"Resources.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/jsoncpp.cpp
@@ -26558,12 +26559,12 @@
 	<cmath>
 	<float.h>
 
-1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/hammer.cpp
+1510164882 source:/home/rafal/Programowanie/C++/smarttrafficmeter/hammer.cpp
 	"Resources.h"
 
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/zoom.cpp
 	"Resources.h"
 
-1507722604 source:/home/rafal/Programowanie/C++/smarttrafficmeter/custom_time_span.cpp
+1510164910 source:/home/rafal/Programowanie/C++/smarttrafficmeter/custom_time_span.cpp
 	"Resources.h"
 

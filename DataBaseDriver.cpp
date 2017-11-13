@@ -2,7 +2,7 @@
 
 DataBaseDriver.cpp
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2017 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -17,7 +17,6 @@ See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with Smart Traffic Meter.
 If not, see http://www.gnu.org/licenses/.
-
 */
 
 #include "config.h"

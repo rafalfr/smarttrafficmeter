@@ -78,7 +78,7 @@ function value2str(value)
     }
     else
     {
-        return value.toFixed(1).replace(/\.?0*$/, '') + " " + unit;
+        return value.toFixed(1).replace(/^\.?0*/, '') + " " + unit;
     }
 }
 
