@@ -13,7 +13,7 @@ public:
     GroveStreamsUploader();
     ~GroveStreamsUploader();
 
-    static void run( void );
+    static void upload_all( void );
 };
 
 #endif // GROVESTREAMSUPLOADER_H

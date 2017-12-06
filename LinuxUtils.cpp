@@ -101,7 +101,8 @@ void* LinuxUtils::MeterThread ( void )
 	uint32_t ph = 0U;
 	uint32_t num_running_interfaces = 0U;
 	uint32_t pnum_running_interfaces = 0U;
-	static uint64_t p_time = 0U;
+	static uint64_t save_p_time = 0U;
+	static uint64_t grovestreams_p_time = 0U;
 	struct ifaddrs *ifaddr, *ipa = nullptr;
 	int32_t family, s;
 	char host[NI_MAXHOST];
@@ -426,22 +427,9 @@ void* LinuxUtils::MeterThread ( void )
 		gettimeofday ( &te, nullptr );
 		uint64_t c_time = te.tv_sec * 1000ULL + te.tv_usec / 1000ULL;
 
-		if ( c_time >= p_time + ( 1000ULL * save_interval ) || ( h != ph && minute == 1U ) )
+		if ( c_time >= save_p_time + ( 1000ULL * save_interval ) || ( h != ph && minute == 1U ) )
 		{
 			Utils::save_stats ( "" );
-
-            if ( Globals::upload_threads.size() > 0 )
-            {
-                for ( const auto & th : Globals::upload_threads )
-                {
-                    delete th;
-                }
-
-                Globals::upload_threads.clear();
-            }
-
-            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
-
 
 			/* remove unused rows from the all_stats container */
 
@@ -499,9 +487,28 @@ void* LinuxUtils::MeterThread ( void )
 				}
 			}
 
-			p_time = c_time;
+			save_p_time = c_time;
 			ph = h;
 		}
+
+
+		if ( c_time >= grovestreams_p_time + ( 1000ULL * save_interval ) )
+		{
+//            if ( Globals::upload_threads.size() > 0 )
+//            {
+//                for ( const auto & th : Globals::upload_threads )
+//                {
+//                    delete th;
+//                }
+//
+//                Globals::upload_threads.clear();
+//            }
+//
+//            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
+
+            grovestreams_p_time=c_time;
+		}
+
 
 		if ( hourly_row_changed == true )
 		{

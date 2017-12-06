@@ -174,6 +174,7 @@ int main( int argc, char *argv[] )
     //Settings::settings["stats server port"] = "32000";
     Settings::settings["web server port"] = "8080";
     Settings::settings["grovestreams api key"] = "";
+    Settings::settings["grovestreams update interval"] = "1800";
     Settings::settings["smtp server"] = "";
     Settings::settings["mailbox login"] = "";
     Settings::settings["mailbox password"] = "";
@@ -297,15 +298,6 @@ int main( int argc, char *argv[] )
 
 
     meter_thread.join();
-
-    //boost::thread* th=new boost::thread(GroveStreamsUploader::run);
-
-
-//
-//	if(th->joinable()==true)
-//	{
-//		th->timed_join(boost::posix_time::seconds(15));
-//	}
 
     Utils::remove_instance_object();
 

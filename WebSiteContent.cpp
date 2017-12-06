@@ -2,7 +2,7 @@
 
 websitecontent.cpp
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2017 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -39,6 +39,7 @@ If not, see http://www.gnu.org/licenses/.
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
+#include "GroveStreamsUploader.h"
 
 #ifdef use_sqlite
 #include "sqlite3.h"
@@ -293,6 +294,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</table>\n";
         page += "<p style=\"text-align: center;\">";
         page += "<a href=\"/stop/\">stop Smart Traffic Meter</a>\n";
+        page += "</p>";
+        page += "<p style=\"text-align: center;\">";
+        page += "<a href=\"/backup/\">back up stats</a>\n";
         page += "</p>";
         page += "<br><br>\n";
         page += "<div style=\"text-align:center\" align=\"center\">\n";
@@ -1254,27 +1258,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
             chart_options += "mode: 'xy',\n";
             chart_options += "speed: 2,\n";
             chart_options += "threshold: 2\n";
-            //chart_options += "rangeMin: {\n";
-            //chart_options += "x: null,\n";
-            //chart_options += "y: null\n";
-            //chart_options += "},\n";
-            //chart_options += "rangeMax: {\n";
-            //chart_options += "x: null,\n";
-            //chart_options += "y: null\n";
-            //chart_options += "}\n";
             chart_options += "},\n";
             chart_options += "zoom: {\n";
             chart_options += "enabled: true,\n";
-            //chart_options += "drag: true,\n";
             chart_options += "mode: 'y'\n";
-            //chart_options += "rangeMin: {\n";
-            //chart_options += "x: null,\n";
-            //chart_options += "y: null\n";
-            //chart_options += "},\n";
-            //chart_options += "rangeMax: {\n";
-            //chart_options += "x: null,\n";
-            //chart_options += "y: null\n";
-            //chart_options += "}\n";
             chart_options += "},\n";
             chart_options += "responsive : true\n";
             chart_options += "};";
@@ -1942,6 +1929,150 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         Globals::terminate_program = true;
     };
 
+    server.resource["^/backup/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\">\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+        page += "<p>\n";
+        page += "<a href=\"/grovestreamsupload/\">Upload all stats to grovestreams</a>\n";
+        page += "</p>\n";
+        page += "<br><br>\n"
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</div>\n";
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream = Utils::gz_compress(page);
+
+        content_stream.seekp( 0, ios::end );
+        *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
+    server.resource["^/grovestreamsupload/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    {
+    	GroveStreamsUploader::upload_all();
+
+        string page;
+
+        page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+        page += "<html>\n";
+        page += "<head>\n";
+        page += "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"content-type\">\n";
+        page += "<title>Smart Traffic Meter</title>\n";
+        page += "<style type=\"text/css\">\n";
+        page += "h1 {\n";
+        page += "font-size: xx-large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "h2 {\n";
+        page += "font-size: large;\n";
+        page += "font-style: normal;\n";
+        page += "text-align: center;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "font-weight: bold;\n";
+        page += "text-transform: none;\n";
+        page += "}\n";
+        page += "p {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "li {\n";
+        page += "font-style: normal;\n";
+        page += "font-family: Arial,Helvetica,sans-serif;\n";
+        page += "text-transform: none;\n";
+        page += "font-size: large;\n";
+        page += "text-align: left;\n";
+        page += "font-weight: normal;\n";
+        page += "color: black;\n";
+        page += "}\n";
+        page += "tab1 {\n";
+        page += "padding-left: 1em;\n";
+        page += "padding-right: 1em;\n";
+        page += "}\n";
+        page += "</style>\n";
+        page += "</head>\n";
+        page += "<body background=\"../background.png\">\n";
+        page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
+        page += "<p>\n";
+        page += "All stats have been uploaded to grovestreams";
+        page += "</p>\n";
+        page += "<br><br>\n"
+        page += "<p>\n<a href=\"/\">Home</a></p>\n";
+        page += "</div>\n";
+        page += "</body>\n";
+        page += "</html>\n";
+
+        stringstream content_stream;
+        content_stream = Utils::gz_compress(page);
+
+        content_stream.seekp( 0, ios::end );
+        *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
+        *response << "Content-Encoding: gzip\r\n";
+        *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
+        *response << "Cache-Control: no-cache, no-store, public";
+        *response << "\r\n\r\n" << content_stream.rdbuf();
+    };
+
     server.resource["^/settings/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         string page;
@@ -2027,6 +2158,10 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>grovestreams api key</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"grovestreams_api_key\" value=\"" + Settings::settings["grovestreams api key"] + "\"></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"></td>\n";
+        page += "</tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>grovestreams update interval</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"grovestreams_update_interval\" value=\"" + Settings::settings["grovestreams update interval"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
 
