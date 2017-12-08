@@ -26176,7 +26176,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1512601096 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1512772343 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1505854603 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26421,7 +26421,7 @@
 1505854603 source:/home/rafal/Programowanie/C++/smarttrafficmeter/BackgroundImage.cpp
 	"Resources.h"
 
-1512598198 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
+1512772200 source:/home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.cpp
 	"config.h"
 	<string>
 	"Utils.h"
@@ -26432,7 +26432,7 @@
 	"sqlite3.h"
 	<curl/curl.h>
 
-1512598213 /home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.h
+1512771794 /home/rafal/Programowanie/C++/smarttrafficmeter/GroveStreamsUploader.h
 
 1510166274 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"

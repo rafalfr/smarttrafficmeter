@@ -1983,7 +1983,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<p>\n";
         page += "<a href=\"/grovestreamsupload/\">Upload all stats to grovestreams</a>\n";
         page += "</p>\n";
-        page += "<br><br>\n"
+        page += "<br><br>\n";
         page += "<p>\n<a href=\"/\">Home</a></p>\n";
         page += "</div>\n";
         page += "</body>\n";
@@ -2056,7 +2056,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<p>\n";
         page += "All stats have been uploaded to grovestreams";
         page += "</p>\n";
-        page += "<br><br>\n"
+        page += "<br><br>\n";
         page += "<p>\n<a href=\"/\">Home</a></p>\n";
         page += "</div>\n";
         page += "</body>\n";

@@ -19,10 +19,10 @@ using namespace std;
   * Public method that uploads all statistics to grovestreams.
   *
   * @param void
-  * @return void
+  * @return number of sent bytes
   *
   */
-void GroveStreamsUploader::upload_all( void )
+uint32_t GroveStreamsUploader::upload_all( void )
 {
     CURL *curl;
 
@@ -30,7 +30,7 @@ void GroveStreamsUploader::upload_all( void )
 
     if ( api_key.compare( "" ) == 0 )
     {
-        return;
+        return 0U;
     }
 
     curl_global_init( CURL_GLOBAL_DEFAULT );
@@ -64,6 +64,8 @@ void GroveStreamsUploader::upload_all( void )
         string base_url = "http://grovestreams.com:80/api/feed?";
 
         const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
+
+        uint32_t sent_bytes=0U;
 
         for ( auto const & kv : interfaces )
         {
@@ -151,12 +153,20 @@ void GroveStreamsUploader::upload_all( void )
             curl_easy_setopt( curl, CURLOPT_POSTFIELDS, json.c_str() );
 
             curl_easy_perform( curl );
+
+            sent_bytes+=json.size();
         }
 
         curl_slist_free_all( headers );
 
         curl_easy_cleanup( curl );
+
+        return sent_bytes;
     }
+    else
+	{
+		return 0U;
+	}
 }
 
 /** @brief download_handler
