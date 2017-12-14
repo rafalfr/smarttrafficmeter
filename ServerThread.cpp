@@ -108,8 +108,8 @@ void ServerThread::UDPServer::do_receive( void )
   *
   * The private method that sends data
   *
-  * @param void
-  * @return void
+  * @param none
+  * @return none
   *
   */
 void ServerThread::UDPServer::do_send( void )

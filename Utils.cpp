@@ -754,7 +754,7 @@ string Utils::date_str( const string& type, uint32_t y, uint32_t m, uint32_t d, 
  * @param[out] month
  * @param[out] day
  * @param[out] hour
- * @return void
+ * @return none
  *
  */
 void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32_t* m, uint32_t* d, uint32_t* h )
@@ -903,7 +903,7 @@ void Utils::load_stats( const string& a_mac )
   * The database file is determined based on
   * the current working directory and network interface MAC address.
   *
-  * @param void
+  * @param mac
   * @return void
   *
   */
@@ -1203,7 +1203,7 @@ void Utils::load_data_from_sqlite( const string& a_mac )
   * The database file is determined based on
   * the current working directory and network interface MAC address.
   *
-  * @param void
+  * @param mac
   * @return void
   *
   */
@@ -1320,7 +1320,7 @@ void Utils::save_stats( const string& a_mac )
   * The database file is determined based on
   * the current working directory and network interface MAC address.
   *
-  * @param void
+  * @param mac
   * @return void
   *
   */
@@ -1444,7 +1444,7 @@ void Utils::save_stats_to_sqlite( const string& a_mac )
   * The database file is determined based on
   * the current working directory and network interface MAC address.
   *
-  * @param void
+  * @param mac
   * @return void
   *
   */
@@ -1498,8 +1498,8 @@ void Utils::save_stats_to_files( const string& a_mac )
   * The database file is determined based on
   * the current working directory and network interface MAC address.
   *
-  * @param void
-  * @return void
+  * @param mac
+  * @return none
   *
   */
 void Utils::save_stats_to_mysql( const string& a_mac )
@@ -1613,7 +1613,8 @@ void Utils::save_stats_to_mysql( const string& a_mac )
   * and returns false if databse integrity is lost
   *
   * @param mac
-  * @return bool
+  * @return True if database integrity is maintained
+  *
   */
 bool Utils::check_databse_integrity( const string& a_mac )
 {
@@ -1709,7 +1710,8 @@ bool Utils::check_databse_integrity( const string& a_mac )
   * and returns true if everything went ok.
   *
   * @param mac address of network interface
-  * @return bool
+  * @return True when database has been repaired
+  *
   */
 bool Utils::repair_broken_databse( const string& a_mac )
 {
@@ -1937,11 +1939,11 @@ bool Utils::repair_broken_databse( const string& a_mac )
 #endif // use_sqlite
 }
 
-
-
 /** @brief callback
   *
-  * @todo: document this function
+  * The callback method used to query database.
+  * The method is not used outside the Utils class.
+  *
   */
 int Utils::callback( void*, int argc, char** argv, char** azColName )
 {
@@ -1967,7 +1969,11 @@ int Utils::callback( void*, int argc, char** argv, char** azColName )
 
 /** @brief stoi
   *
-  * @todo: document this function
+  * The method converts decimal string to 32bit signed integer
+  *
+  * @param decimal string
+  * @return converted value as a 32bit signed integer
+  *
   */
 int32_t Utils::stoi( const string & str )
 {
@@ -2009,7 +2015,11 @@ int32_t Utils::stoi( const string & str )
 
 /** @brief stoui
   *
-  * @todo: document this function
+  * The method converts decimal string to 32bit unsigned integer
+  *
+  * @param decimal string
+  * @return converted value as a 32bit unsigned integer
+  *
   */
 uint32_t Utils::stoui( const string & str )
 {
@@ -2035,11 +2045,13 @@ uint32_t Utils::stoui( const string & str )
     return result;
 }
 
-
-
 /** @brief stoull
   *
-  * @todo: document this function
+  * The method converts decimal string to 64bit unsigned integer
+  *
+  * @param decimal string
+  * @return converted value as a 64bit unsigned integer
+  *
   */
 uint64_t Utils::stoull( const string & str )
 {
@@ -2081,7 +2093,11 @@ uint64_t Utils::stoull( const string & str )
 
 /** @brief hstoi
   *
-  * @todo: document this function
+  * The method converts hexadecimal string to integer
+  *
+  * @param hexadecimal string
+  * @return converted value as an integer
+  *
   */
 int32_t Utils::hstoi( const string & str )
 {
@@ -2095,7 +2111,11 @@ int32_t Utils::hstoi( const string & str )
 
 /** @brief set_signals_handler
   *
-  * @todo: document this function
+  * The method sets signal handlers
+  *
+  * @param none
+  * @return none
+  *
   */
 void Utils::set_signals_handler( void )
 {
@@ -2110,7 +2130,11 @@ void Utils::set_signals_handler( void )
 
 /** @brief BecomeDaemon
   *
-  * @todo: document this function
+  * The method starts the program as a daemon (service)
+  *
+  * @param none
+  * @return daemon status as an integer
+  *
   */
 int32_t Utils::BecomeDaemon( void )
 {
@@ -2123,9 +2147,13 @@ int32_t Utils::BecomeDaemon( void )
 #endif // __linux
 }
 
-/** @brief MeterThread
+/** @brief make_program_run_at_startup
   *
-  * @todo: document this function
+  * The method makes the program run at computer startup.
+  *
+  * @param none
+  * @return none
+  *
   */
 void Utils::MeterThread( void )
 {
@@ -2140,7 +2168,11 @@ void Utils::MeterThread( void )
 
 /** @brief make_program_run_at_startup
   *
-  * @todo: document this function
+  * The method makes the program run at computer startup.
+  *
+  * @param none
+  * @return none
+  *
   */
 void Utils::make_program_run_at_startup( void )
 {
@@ -2155,7 +2187,11 @@ void Utils::make_program_run_at_startup( void )
 
 /** @brief get_program_path
   *
-  * @todo: document this function
+  * The method returns the program path.
+  *
+  * @param programs' arguments
+  * @return program path as a string
+  *
   */
 string Utils::get_program_path( char** argv )
 {
@@ -2168,10 +2204,13 @@ string Utils::get_program_path( char** argv )
 #endif // __linux
 }
 
-
-/** @brief get_path
+/** @brief sleep_seconds
   *
-  * @todo: document this function
+  * The method sleeps for a given number of seconds.
+  *
+  * @param seconds to sleep
+  * @return none
+  *
   */
 string Utils::get_path( const string & full_file_path )
 {
@@ -2183,9 +2222,14 @@ string Utils::get_path( const string & full_file_path )
 
     return path;
 }
-/** @brief sleep
+
+/** @brief sleep_seconds
   *
-  * @todo: document this function
+  * The method sleeps for a given number of seconds.
+  *
+  * @param seconds to sleep
+  * @return none
+  *
   */
 void Utils::sleep_seconds( uint32_t seconds )
 {
@@ -2198,6 +2242,14 @@ void Utils::sleep_seconds( uint32_t seconds )
 #endif // __linux
 }
 
+/** @brief to_narrow
+  *
+  * The method converts wchar_t string to std::string
+  *
+  * @param wchar_t string
+  * @return converted string as std::string
+  *
+  */
 string Utils::to_narrow( const wchar_t* src )
 {
     size_t i;
@@ -2231,6 +2283,14 @@ string Utils::to_narrow( const wchar_t* src )
     return out;
 }
 
+/** @brief set_endsession_handler
+  *
+  * The method sets endsession handler
+  *
+  * @param none
+  * @return none
+  *
+  */
 void Utils::set_endsession_handler( void )
 {
 #ifdef __WIN32
@@ -2238,7 +2298,14 @@ void Utils::set_endsession_handler( void )
 #endif // __WIN32
 }
 
-
+/** @brief dir_exists
+  *
+  * The method checks if a given path exists.
+  *
+  * @param directory path to check
+  * @return True if path exists, false otherwise
+  *
+  */
 bool Utils::dir_exists( const char* path )
 {
 #ifdef _WIN32
@@ -2250,7 +2317,15 @@ bool Utils::dir_exists( const char* path )
 #endif // __linux
 }
 
-
+/** @brief make_path
+  *
+  * The method creates a new directory
+  *
+  * @param directory path to create
+  * @param new directory mode
+  * @return none
+  *
+  */
 int32_t Utils::make_path( const string & _s, mode_t mode )
 {
 #ifdef _WIN32
@@ -2264,7 +2339,11 @@ int32_t Utils::make_path( const string & _s, mode_t mode )
 
 /** @brief save_pid_file
   *
-  * @todo: document this function
+  * The method saves pid file
+  *
+  * @param pid file path
+  * @return none
+  *
   */
 void Utils::save_pid_file( const string & pid_file_path )
 {
@@ -2275,7 +2354,11 @@ void Utils::save_pid_file( const string & pid_file_path )
 
 /** @brief rfc1123_datetime
   *
-  * @todo: document this function
+  * The method converts time_t structure to rfc1123 date format.
+  *
+  * @param time
+  * @return rfc1123 date
+  *
   */
 string Utils::rfc1123_datetime( time_t time )
 {
@@ -2290,7 +2373,12 @@ string Utils::rfc1123_datetime( time_t time )
 
 /** @brief save_settings
   *
-  * @todo: document this function
+  * The method saves all settings
+  * in the Globals::cwd + PATH_SEPARATOR + smarttrafficmeter.conf
+  *
+  * @param none
+  * @return True if save successful
+  *
   */
 bool Utils::save_settings( void )
 {
@@ -2319,7 +2407,11 @@ bool Utils::save_settings( void )
 
 /** @brief gz_compress
   *
-  * @todo: document this function
+  * The method is used to compress a string using gz compression.
+  *
+  * @param data for the compression as a string
+  * @return compressed data as a string
+  *
   */
 stringstream Utils::gz_compress(const std::string& data )
 {
@@ -2338,7 +2430,11 @@ stringstream Utils::gz_compress(const std::string& data )
 
 /** @brief gz_decompress
   *
-  * @todo: document this function
+  * The method is used to decompress a string using gz decompression.
+  *
+  * @param compressed data as a string
+  * @return decompressed data as a string
+  *
   */
 string Utils::gz_decompress(const std::string& data )
 {
