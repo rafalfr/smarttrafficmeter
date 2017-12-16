@@ -2,7 +2,7 @@
 
 websitecontent.cpp
 
-Copyright (C) 2017 Rafał Frączek
+Copyright (C) 2018 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -55,7 +55,7 @@ typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
   */
 void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& server )
 {
-    server.default_resource["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.default_resource["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string row;
         ifstream file;
@@ -324,7 +324,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << content_stream.rdbuf();
     };
 
-    server.resource["^/customrange/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/customrange/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         // https://jsfiddle.net/nulref/v29okbqr/
         string page;
@@ -343,7 +343,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^/stopwatch/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/stopwatch/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
 
@@ -455,7 +455,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/legalinfo/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/legalinfo/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
 
@@ -1349,7 +1349,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << out_stream.rdbuf();
     };
 
-    server.resource["^\\/history\\/?(.*)?\\/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^\\/history\\/?(.*)?\\/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string row;
         ifstream file;
@@ -1526,7 +1526,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["\\/background.png$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/background.png$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
 
         *response << "HTTP/1.1 200 OK" << "\r\n";
@@ -1543,7 +1543,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["\\/Chart.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/Chart.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1558,7 +1558,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/smoothie.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/smoothie.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1573,7 +1573,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/jquery.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/jquery.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1588,7 +1588,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/jscolor.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/jscolor.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1603,7 +1603,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/zoom.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/zoom.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1618,7 +1618,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/hammer.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/hammer.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1633,7 +1633,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/speed_update.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/speed_update.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1648,7 +1648,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/stopwatch.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/stopwatch.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1663,7 +1663,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/custom_time_span.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/custom_time_span.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
         *response << "Content-Type: application/javascript; charset=utf-8" << "\r\n";
@@ -1678,7 +1678,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-    server.resource["\\/stats.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/stats.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string row;
         stringstream content_stream;
@@ -1772,7 +1772,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["\\/speed.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/speed.json$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string row;
         stringstream content_stream;
@@ -1807,7 +1807,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["\\/savedata$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["\\/savedata$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         stringstream content_stream;
 
@@ -1858,7 +1858,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/stop/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/stop/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
 
@@ -1929,7 +1929,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         Globals::terminate_program = true;
     };
 
-    server.resource["^/backup/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/backup/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
 
@@ -2000,7 +2000,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/grovestreamsupload/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/grovestreamsupload/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
     	GroveStreamsUploader::upload_all();
 
@@ -2073,7 +2073,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-    server.resource["^/settings/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/settings/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
 
@@ -2301,7 +2301,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     };
 
 
-    server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
+    server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         uint32_t y;
         uint32_t m;

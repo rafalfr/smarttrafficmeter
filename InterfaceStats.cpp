@@ -2,7 +2,7 @@
 
 InterfaceStats.cpp
 
-Copyright (C) 2017 Rafał Frączek
+Copyright (C) 2018 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -68,7 +68,6 @@ void InterfaceStats::set_first_update(bool _first_update)
 {
 	first_update=_first_update;
 }
-
 
 /** @brief set_initial_stats
  *
