@@ -1207,81 +1207,8 @@ void Utils::load_data_from_sqlite( const string& a_mac )
   * @return void
   *
   */
-void Utils::load_data_from_files( const string& a_mac )
+void Utils::load_data_from_files( const string& )
 {
-//    uint32_t y;
-//    uint32_t m;
-//    uint32_t d;
-//    uint32_t h;
-//    uint64_t rx_bytes;
-//    uint64_t tx_bytes;
-//    Globals::data_load_save_mutex.lock();
-//
-//    Utils::get_time( &y, &m, &d, &h );
-//
-//    const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
-//
-//    string row;
-//    ifstream file;
-//
-//    for ( auto const & kv : interfaces )
-//    {
-//        const InterfaceInfo& in = kv.second;
-//        const string& mac = in.get_mac();
-//
-/////
-//        row.clear();
-//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-//        file.open( Globals::cwd + PATH_SEPARATOR + mac + PATH_SEPARATOR + "hourly" PATH_SEPARATOR+ row + PATH_SEPARATOR + "stats.txt", std::ifstream::in );
-//
-//        if ( file.is_open() == true )
-//        {
-//            file >> rx_bytes;
-//            file >> tx_bytes;
-//            file.close();
-//            Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
-//        }
-//
-/////
-//        row.clear();
-//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
-//        file.open( cwd + "/" + mac + "/daily/" + row + "/stats.txt", ifstream::in );
-//
-//        if ( file.is_open() == true )
-//        {
-//            file >> rx_bytes;
-//            file >> tx_bytes;
-//            file.close();
-//            Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
-//        }
-//
-/////
-//        row.clear();
-//        row += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
-//        file.open( cwd + "/" + mac + "/monthly/" + row + "/stats.txt", ifstream::in );
-//
-//        if ( file.is_open() == true )
-//        {
-//            file >> rx_bytes;
-//            file >> tx_bytes;
-//            file.close();
-//            Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
-//        }
-//
-/////
-//        row.clear();
-//        row += Utils::to_string( y );
-//        file.open( cwd + "/" + mac + "/yearly/" + row + "/stats.txt", ifstream::in );
-//
-//        if ( file.is_open() == true )
-//        {
-//            file >> rx_bytes;
-//            file >> tx_bytes;
-//            file.close();
-//            Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
-//        }
-//    }
-//  Globals::data_load_save_mutex.unlock();
 }
 
 
@@ -1448,48 +1375,8 @@ void Utils::save_stats_to_sqlite( const string& a_mac )
   * @return void
   *
   */
-void Utils::save_stats_to_files( const string& a_mac )
+void Utils::save_stats_to_files( const string& )
 {
-//  Globals::data_load_save_mutex.lock();
-//    for ( auto const & mac_table : Globals::all_stats )
-//    {
-//        const string& mac = mac_table.first;
-//        mkpath( mac, 0755 );
-//
-//        const map<string, map<string, InterfaceStats> > & table = mac_table.second;
-//
-//        for ( auto const & table_row : table )
-//        {
-//            const string& table_name = table_row.first;
-//            mkpath( mac + "/" + table_name, 0755 );
-//
-//            const map<string, InterfaceStats> & row = table_row.second;
-//
-//            for ( auto const & row_stats : row )
-//            {
-//                const string& row = row_stats.first;
-//                mkpath( mac + "/" + table_name + "/" + row, 0755 );
-//
-//                const InterfaceStats& stats = row_stats.second;
-//
-//                ofstream file;
-//                file.open( cwd + "/" + mac + "/" + table_name + "/" + row + "/stats.txt" );
-//
-//                if ( file.is_open() == true )
-//                {
-//                    uint64_t rx = stats.recieved();
-//                    uint64_t tx = stats.transmited();
-//
-//                    file << ( Utils::to_string( rx ) );
-//                    file << endl;
-//                    file << ( Utils::to_string( tx ) );
-//
-//                    file.close();
-//                }
-//            }
-//        }
-//    }
-//  Globals::data_load_save_mutex.unlock();
 }
 
 /** @brief save_stats_to_mysql

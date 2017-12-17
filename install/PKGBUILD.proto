@@ -4,17 +4,15 @@
 # then please put 'unknown'.
 
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=NAME
-pkgver=VERSION
+pkgname=smarttrafficmeter
+pkgver=2.1.1208.6780
 pkgrel=1
-epoch=
-pkgdesc=""
-arch=()
+pkgdesc="Software for measuring network usage"
+arch=('i686' 'x86_64' 'arm')
 url=""
-license=('GPL')
-groups=()
-depends=()
-makedepends=()
+license=('LGPL3')
+depends=('boost' 'curl')
+makedepends=('gcc')
 checkdepends=()
 optdepends=()
 provides=()

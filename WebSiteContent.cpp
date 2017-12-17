@@ -144,7 +144,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "font-family: Arial,Helvetica,sans-serif;\n";
         page += "text-transform: none;\n";
         page += "font-size: large;\n";
-        //page += "text-align: justify;\n";
         page += "font-weight: normal;\n";
         page += "color: black;\n";
         page += "}\n";
@@ -326,7 +325,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^/customrange/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
-        // https://jsfiddle.net/nulref/v29okbqr/
         string page;
 
         stringstream content_stream;
@@ -341,7 +339,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         content_stream.seekp( 0, ios::beg );
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
-
 
     server.resource["^/stopwatch/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
@@ -1542,7 +1539,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
     };
 
-
     server.resource["\\/Chart.js$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         *response << "HTTP/1.1 200 OK\r\n";
@@ -2191,7 +2187,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
 
-
     server.resource["^/submitsettings/?$"]["POST"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         string page;
@@ -2257,7 +2252,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             if ( content_value[0].size() > 0 && content_value[1].size() > 0 )
             {
-                //page+=content_value[0]+" is "+content_value[1]+"<br>\n";
                 string& key = content_value[0];
                 string& value = content_value[1];
 
@@ -2299,7 +2293,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
-
 
     server.resource["^/customtimespan/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
@@ -2624,30 +2617,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         *response << "Cache-Control: no-cache, no-store, public";
         *response << "\r\n\r\n" << content_stream.rdbuf();
     };
-
-//    server.resource["\\/test.html$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
-//    {
-//        ifstream file;
-//        file.open( "../../webpage/test3.html", std::ifstream::in | std::ifstream::binary );
-//
-//        if ( file.is_open() )
-//        {
-//            stringstream input_file_stream;
-//            input_file_stream << file.rdbuf();
-//            file.close();
-//
-//            input_file_stream.seekp( 0, ios::end );
-//            *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << input_file_stream.tellp() << "\r\n";
-//            *response << "Content-Type: text/html; charset=utf-8" << "\r\n";
-//            *response << "Cache-Control: no-cache, no-store, public" << "\r\n";
-//            *response << "\r\n\r\n" << input_file_stream.rdbuf();
-//        }
-//    };
 }
 
 /** @brief rgba_color
   *
-  * @todo: document this function
+  * The method converts color as a hexadecimal string to a rgba string
+  * @param hexadecima color as a string
+  * @param transparence as a float
+  * @return rgba color as a string
+  *
   */
 string WebSiteContent::rgba_color( string& hex_color, float a )
 {

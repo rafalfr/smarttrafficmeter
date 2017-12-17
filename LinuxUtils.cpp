@@ -421,7 +421,6 @@ void* LinuxUtils::MeterThread ( void )
 		}
 
 		freeifaddrs ( ipa );
-		//cout << "\033[2J\033[1;1H";
 
 		struct timeval te;
 		gettimeofday ( &te, nullptr );
@@ -490,25 +489,6 @@ void* LinuxUtils::MeterThread ( void )
 			save_p_time = c_time;
 			ph = h;
 		}
-
-
-		if ( c_time >= grovestreams_p_time + ( 1000ULL * save_interval ) )
-		{
-//            if ( Globals::upload_threads.size() > 0 )
-//            {
-//                for ( const auto & th : Globals::upload_threads )
-//                {
-//                    delete th;
-//                }
-//
-//                Globals::upload_threads.clear();
-//            }
-//
-//            Globals::upload_threads.push_back( new boost::thread( GroveStreamsUploader::run ) );
-
-            grovestreams_p_time=c_time;
-		}
-
 
 		if ( hourly_row_changed == true )
 		{
@@ -1129,6 +1109,5 @@ void LinuxUtils::save_pid_file ( const string& pid_file_path )
 		file.close();
 	}
 }
-
 
 #endif // __linux
