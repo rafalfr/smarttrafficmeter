@@ -10,41 +10,41 @@ pkgrel=1
 pkgdesc="Software for measuring network usage"
 arch=('i686' 'x86_64' 'arm')
 url=""
-license=('LGPL3')
-depends=('boost' 'curl', 'binutils' 'git')
-makedepends=('gcc')
+license=('GPL3')
+depends=('boost' 'curl' 'binutils')
+makedepends=('gcc' 'git')
 checkdepends=()
 optdepends=()
-provides=()
+provides=('smarttrafficmeter')
 conflicts=()
 replaces=()
 backup=()
 options=()
 install=
 changelog=
-source=("$pkgname-$pkgver.tar.gz"
-        "$pkgname-$pkgver.patch")
+source=()
 noextract=()
 md5sums=()
 validpgpkeys=()
+_gitroot="git@bitbucket.org:rafalfr/smarttrafficmeter.git"
+_gitname="smarttrafficmeter"
 
-prepare() {
-	cd "$pkgname-$pkgver"
-	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
-}
+# prepare() {
+# 	#cd "$pkgname-$pkgver"
+# 	#patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+# }
 
 build() {
-	cd "$pkgname-$pkgver"
-	./configure --prefix=/usr
-	make
+	git clone --depth 1 ${_gitroot}
+	cd ${srcdir}/smarttrafficmeter/
+	make -f SmartTrafficMeter.cbp.mak linux_release
 }
 
-check() {
-	cd "$pkgname-$pkgver"
-	make -k check
-}
+# check() {
+# 	#cd "$pkgname-$pkgver"
+# 	#make -k check
+# }
 
 package() {
-	cd "$pkgname-$pkgver"
-	make DESTDIR="$pkgdir/" install
-}
+ 	cp ${srcdir}/smarttrafficmeter/bin/Release/smarttrafficmeter ${pkgdir}/
+ }
