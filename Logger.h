@@ -2,7 +2,7 @@
 
 Logger.h
 
-Copyright (C) 2016 Rafał Frączek
+Copyright (C) 2018 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
@@ -42,15 +42,15 @@ class Logger
 {
 
 private:
-	static constexpr uint64_t max_log_length=1ULL*1024ULL*1024ULL;
+    static constexpr uint64_t max_log_length = 1ULL * 1024ULL * 1024ULL;
 
 public:
 
-	static void LogDebug( const string& );
+    static void LogDebug( const string& );
 
-	static void LogInfo( const string& );
+    static void LogInfo( const string& );
 
-	static void LogError( const string& );
+    static void LogError( const string& );
 };
 
 #endif // LOGGER_H

@@ -1389,7 +1389,7 @@ void Utils::save_stats_to_files( const string& )
   * @return none
   *
   */
-void Utils::save_stats_to_mysql( const string& a_mac )
+void Utils::save_stats_to_mysql( const string& )
 {
 #ifdef use_mysql
 

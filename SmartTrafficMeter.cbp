@@ -13,20 +13,14 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Weffc++" />
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
 					<Add option="-std=c++14" />
-					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="-Og" />
 					<Add option="-O0" />
 					<Add option="-march=native" />
 					<Add option="-D__linux" />
-					<Add option="-Duse_sqlite" />
 				</Compiler>
 				<Linker>
-					<Add option="-m64" />
 					<Add library="rt" />
 					<Add library="dl" />
 					<Add library="bfd" />
@@ -54,16 +48,15 @@
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-O3" />
 					<Add option="-Weffc++" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-std=c++11" />
-					<Add option="-m64" />
+					<Add option="-std=c++14" />
 					<Add option="-rdynamic" />
 					<Add option="-D__linux" />
-					<Add option="-Duse_sqlite" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-m64" />
 					<Add option="-rdynamic" />
 					<Add library="rt" />
 					<Add library="dl" />
@@ -264,6 +257,8 @@
 			<Option target="Windows Release" />
 			<Option target="Windows Debug" />
 		</Unit>
+		<Unit filename="serverhttp/status_code.hpp" />
+		<Unit filename="serverhttp/utility.hpp" />
 		<Unit filename="smoothiejs.cpp" />
 		<Unit filename="speed_update.cpp" />
 		<Unit filename="sqlite/sqlite3.h" />

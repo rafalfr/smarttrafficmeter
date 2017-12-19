@@ -102,10 +102,8 @@ void* LinuxUtils::MeterThread ( void )
 	uint32_t num_running_interfaces = 0U;
 	uint32_t pnum_running_interfaces = 0U;
 	static uint64_t save_p_time = 0U;
-	static uint64_t grovestreams_p_time = 0U;
 	struct ifaddrs *ifaddr, *ipa = nullptr;
-	int32_t family, s;
-	char host[NI_MAXHOST];
+	int32_t family;
 	uint32_t refresh_interval;	//statistics refresh interval in seconds
 	uint32_t save_interval; 	//save interval in seconds
 	const string hourly ( "hourly" );

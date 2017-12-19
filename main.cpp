@@ -171,7 +171,7 @@ int main( int argc, char *argv[] )
     Settings::settings["database directory"] = Globals::cwd;
     Settings::settings["stats refresh interval"] = "1";	//seconds
     Settings::settings["stats save interval"] = "1800";	//seconds
-    Settings::settings["web server port"] = "8080";
+    Settings::settings["web server port"] = "7676";
     Settings::settings["grovestreams api key"] = "";
     Settings::settings["grovestreams update interval"] = "1800";
     Settings::settings["smtp server"] = "";
@@ -191,7 +191,7 @@ int main( int argc, char *argv[] )
     {
         const string& mac = mac_info.second.get_mac();
 
-        Logger::LogInfo(mac);
+        Logger::LogInfo( mac );
 
         InterfaceSpeedMeter ism;
         Globals::speed_stats[mac] = ism;
@@ -230,9 +230,9 @@ int main( int argc, char *argv[] )
 
     Utils::load_stats( "" );
 
-    if ( Utils::check_databse_integrity("") == false )
+    if ( Utils::check_databse_integrity( "" ) == false )
     {
-        Utils::repair_broken_databse("");
+        Utils::repair_broken_databse( "" );
 
         Utils::sleep_seconds( 5 );
         Utils::load_stats( "" );
@@ -246,7 +246,8 @@ int main( int argc, char *argv[] )
     }
 
 #ifndef _NO_WEBSERVER
-    SimpleWeb::Server<SimpleWeb::HTTP> http_server( Utils::stoi( Settings::settings["web server port"] ), 2 );
+    SimpleWeb::Server<SimpleWeb::HTTP> http_server;
+    http_server.config.port = static_cast<unsigned short>( Utils::stoi( Settings::settings["web server port"] ) );
     WebSiteContent::set_web_site_content( http_server );
 
     boost::thread web_server_thread( [&http_server]()
