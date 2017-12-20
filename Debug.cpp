@@ -45,7 +45,7 @@ string Debug::get_backtrace( void )
     string out;
 
 #ifdef _WIN32
-return string("");
+    return string( "" );
 #endif // _WIN32
 
 #ifdef __linux

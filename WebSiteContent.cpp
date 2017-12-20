@@ -309,7 +309,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</body>\n";
         page += "</html>\n\n";
 
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
 
@@ -441,7 +441,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\n";
@@ -570,12 +570,12 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://jscolor.com\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://www.gnu.org/licenses/gpl-3.0.txt\">license</a></p></td>\n";
         page += "</tr>\n";
-		page += "<tr>\n";
+        page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>hammer.js</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://hammerjs.github.io\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/hammerjs/hammer.js/blob/master/LICENSE.md\">license</a></p></td>\n";
         page += "</tr>\n";
-		page += "<tr>\n";
+        page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>chartjs-plugin-zoom</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/chartjs/chartjs-plugin-zoom\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://opensource.org/licenses/MIT\">license</a></p></td>\n";
@@ -591,7 +591,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
@@ -1335,7 +1335,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>";
 
         stringstream out_stream;
-        out_stream = Utils::gz_compress(page);
+        out_stream = Utils::gz_compress( page );
 
         out_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << out_stream.tellp() << "\r\n";
@@ -1510,7 +1510,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</body>\n";
         page += "</html>\n";
 
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
 
@@ -1844,7 +1844,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</body>\n";
         page += "</html>";
 
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
@@ -1913,7 +1913,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
@@ -1986,7 +1986,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
@@ -1998,7 +1998,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
     server.resource["^/grovestreamsupload/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
-    	GroveStreamsUploader::upload_all();
+        uint32_t result = GroveStreamsUploader::upload_all();
 
         string page;
 
@@ -2050,7 +2050,16 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<body background=\"../background.png\">\n";
         page += "<div style=\"width: 100%; text-align:center\" align=\"center\">\n";
         page += "<p>\n";
-        page += "All stats have been uploaded to grovestreams";
+
+        if ( result == 0 )
+        {
+            page += "All stats have been uploaded to grovestreams.";
+        }
+        else
+        {
+            page += "No stats have been uploaded to grovestreams, probably due to network error.";
+        }
+
         page += "</p>\n";
         page += "<br><br>\n";
         page += "<p>\n<a href=\"/\">Home</a></p>\n";
@@ -2059,7 +2068,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response <<  "HTTP/1.1 200 OK\r\nContent-Length: " << content_stream.tellp() << "\r\n";
@@ -2176,7 +2185,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";
@@ -2283,7 +2292,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";
@@ -2607,7 +2616,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</html>\n\n";
 
         stringstream content_stream;
-        content_stream = Utils::gz_compress(page);
+        content_stream = Utils::gz_compress( page );
 
         content_stream.seekp( 0, ios::end );
         *response << "HTTP/1.1 200 OK\r\n";

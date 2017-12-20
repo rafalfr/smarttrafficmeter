@@ -86,10 +86,10 @@ void ServerThread::UDPServer::do_receive( void )
         [this]( boost::system::error_code ec, std::size_t bytes_recvd )
     {
 
-    	if (Globals::terminate_program==true)
-		{
-			return;
-		}
+        if ( Globals::terminate_program == true )
+        {
+            return;
+        }
 
 
         if ( !ec && bytes_recvd > 0 )
@@ -223,10 +223,10 @@ void ServerThread::UDPServer::do_send( void )
         boost::asio::buffer( response.c_str(), response.size() ), m_sender_endpoint,
         [this]( boost::system::error_code, std::size_t )
     {
-    	if (Globals::terminate_program==true)
-		{
-			return;
-		}
+        if ( Globals::terminate_program == true )
+        {
+            return;
+        }
 
         do_receive();
     } );

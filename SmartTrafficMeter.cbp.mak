@@ -19,7 +19,7 @@ LIB =
 LDFLAGS = 
 
 INC_LINUX_DEBUG = $(INC)
-CFLAGS_LINUX_DEBUG = $(CFLAGS) -std=c++14 -g -Og -O0 -march=native -D__linux
+CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++14 -g -Og -O0 -D__linux
 RESINC_LINUX_DEBUG = $(RESINC)
 RCFLAGS_LINUX_DEBUG = $(RCFLAGS)
 LIBDIR_LINUX_DEBUG = $(LIBDIR)
@@ -30,7 +30,7 @@ DEP_LINUX_DEBUG =
 OUT_LINUX_DEBUG = bin/Debug/smarttrafficmeter
 
 INC_LINUX_RELEASE = $(INC)
-CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -Weffc++ -pedantic -Wextra -Wall -std=c++14 -rdynamic -D__linux
+CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++14 -rdynamic -D__linux
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)

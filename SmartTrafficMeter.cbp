@@ -13,11 +13,11 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-w" />
 					<Add option="-std=c++14" />
 					<Add option="-g" />
 					<Add option="-Og" />
 					<Add option="-O0" />
-					<Add option="-march=native" />
 					<Add option="-D__linux" />
 				</Compiler>
 				<Linker>
@@ -47,10 +47,7 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-O3" />
-					<Add option="-Weffc++" />
-					<Add option="-pedantic" />
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
+					<Add option="-w" />
 					<Add option="-std=c++14" />
 					<Add option="-rdynamic" />
 					<Add option="-D__linux" />

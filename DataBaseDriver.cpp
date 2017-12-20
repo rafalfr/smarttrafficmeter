@@ -114,7 +114,7 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
     if ( rc != SQLITE_OK )
     {
         Logger::LogDebug( "can't open the database" );
-        sqlite3_close_v2(db);
+        sqlite3_close_v2( db );
         return results;
     }
 
@@ -192,7 +192,7 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
         Logger::LogDebug( "sqlite3_exec error" );
     }
 
-    sqlite3_close_v2(db);
+    sqlite3_close_v2( db );
 
 #endif // use_sqlite
 

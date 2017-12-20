@@ -27,4 +27,4 @@ The global map object that stores the program settings
 The map structure is as follows:
 key, value
 */
-map<string,string> Settings::settings;
+map<string, string> Settings::settings;

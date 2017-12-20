@@ -1,9 +1,5 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
-
 # Maintainer: Your Name <youremail@domain.com>
+_gitname="smarttrafficmeter"
 pkgname=smarttrafficmeter
 pkgver=2.1.1208.6780
 pkgrel=1
@@ -22,9 +18,10 @@ backup=()
 options=()
 install=
 changelog=
-source=()
+source=("git@bitbucket.org:rafalfr/smarttrafficmeter.git")
 noextract=()
-md5sums=()
+md5sums=('SKIP')
+sha1sums=('SKIP')
 validpgpkeys=()
 _gitroot="git@bitbucket.org:rafalfr/smarttrafficmeter.git"
 _gitname="smarttrafficmeter"
@@ -47,4 +44,8 @@ build() {
 
 package() {
  	cp ${srcdir}/smarttrafficmeter/bin/Release/smarttrafficmeter ${pkgdir}/
+ 	
+#    cd "$pkgname"
+# make DESTDIR="$pkgdir" install
+#    install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart" 	
  }

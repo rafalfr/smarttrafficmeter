@@ -52,7 +52,7 @@ uint32_t GroveStreamsUploader::upload_all( void )
 
     if ( api_key.compare( "" ) == 0 )
     {
-        return 0U;
+        return 1U;
     }
 
     curl_global_init( CURL_GLOBAL_DEFAULT );
@@ -87,7 +87,7 @@ uint32_t GroveStreamsUploader::upload_all( void )
 
         const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
 
-        uint32_t sent_bytes=0U;
+        uint32_t sent_bytes = 0U;
 
         for ( auto const & kv : interfaces )
         {
@@ -176,7 +176,7 @@ uint32_t GroveStreamsUploader::upload_all( void )
 
             curl_easy_perform( curl );
 
-            sent_bytes+=json.size();
+            sent_bytes += json.size();
         }
 
         curl_slist_free_all( headers );
@@ -186,9 +186,9 @@ uint32_t GroveStreamsUploader::upload_all( void )
         return sent_bytes;
     }
     else
-	{
-		return 0U;
-	}
+    {
+        return 0U;
+    }
 }
 
 /** @brief download_handler

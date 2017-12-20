@@ -64,9 +64,9 @@ InterfaceStats::~InterfaceStats()
   *
   * @todo: document this function
   */
-void InterfaceStats::set_first_update(bool _first_update)
+void InterfaceStats::set_first_update( bool _first_update )
 {
-	first_update=_first_update;
+    first_update = _first_update;
 }
 
 /** @brief set_initial_stats
@@ -126,10 +126,10 @@ void InterfaceStats::update( uint64_t _tx, uint64_t _rx )
     else
     {
 #ifdef __linux
-		// In linux we sometimes need to perform this operation because the current value
-		// obtained from the os kernel can be lower than the previous one.
-		// This is because the os uses only 32-bits unsigned integer to store
-		// the number of transmitted and received bytes.
+        // In linux we sometimes need to perform this operation because the current value
+        // obtained from the os kernel can be lower than the previous one.
+        // This is because the os uses only 32-bits unsigned integer to store
+        // the number of transmitted and received bytes.
         rx += ( _rx + ( uint64_t ) std::numeric_limits<uint32_t>::max() ) - p_rx;
 #else
         p_rx = _rx;
