@@ -1,5 +1,4 @@
 # Maintainer: Your Name <youremail@domain.com>
-_gitname="smarttrafficmeter"
 pkgname=smarttrafficmeter
 pkgver=2.1.1208.6780
 pkgrel=1
@@ -18,13 +17,10 @@ backup=()
 options=()
 install=
 changelog=
-source=("git@bitbucket.org:rafalfr/smarttrafficmeter.git")
+source=()
 noextract=()
-md5sums=('SKIP')
-sha1sums=('SKIP')
+md5sums=()
 validpgpkeys=()
-_gitroot="git@bitbucket.org:rafalfr/smarttrafficmeter.git"
-_gitname="smarttrafficmeter"
 
 # prepare() {
 # 	#cd "$pkgname-$pkgver"
@@ -32,7 +28,7 @@ _gitname="smarttrafficmeter"
 # }
 
 build() {
-	git clone --depth 1 ${_gitroot}
+	git clone --depth 1 "git@bitbucket.org:rafalfr/smarttrafficmeter.git"
 	cd ${srcdir}/smarttrafficmeter/
 	make -f SmartTrafficMeter.cbp.mak linux_release
 }
@@ -44,8 +40,5 @@ build() {
 
 package() {
  	cp ${srcdir}/smarttrafficmeter/bin/Release/smarttrafficmeter ${pkgdir}/
- 	
-#    cd "$pkgname"
-# make DESTDIR="$pkgdir" install
-#    install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart" 	
+ 	cp ${srcdir}/smarttrafficmeter/install/smarttrafficmeter.service ${pkgdir}/
  }
