@@ -1,0 +1,16 @@
+post_install() {
+    systemctl enable smarttrafficmeter
+ 	systemctl start smarttrafficmeter
+}
+
+pre_upgrade() {
+	systemctl stop smarttrafficmeter
+}
+
+post_upgrade() {
+	systemctl start smarttrafficmeter
+}
+
+pre_remove() {
+	systemctl stop smarttrafficmeter
+}
