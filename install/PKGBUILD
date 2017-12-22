@@ -1,6 +1,6 @@
 # Maintainer: Rafał Frączek <rafalfr@protonmail.ch>
 pkgname=smarttrafficmeter
-pkgver=2.1.1208.6780
+pkgver=2.1.1227.6875
 pkgrel=1
 pkgdesc="Software for measuring network usage"
 arch=('i686' 'x86_64')
@@ -23,7 +23,7 @@ md5sums=()
 validpgpkeys=()
 
 build() {
-	git clone --depth 1 "git@bitbucket.org:rafalfr/smarttrafficmeter.git"
+	git clone --depth 1 "https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git"
 	cd ${srcdir}/smarttrafficmeter/
 	make -f SmartTrafficMeter.cbp.mak linux_release
 }
