@@ -11,9 +11,9 @@ Restart=on-failure
 ExecStart=/usr/bin/smarttrafficmeter --daemon
 PIDFile=/var/run/smarttrafficmeter.pid
 ExecStopPost=/usr/bin/rm -f /var/run/smarttrafficmeter.pid
-TimeoutSec=5
+TimeoutSec=20
 Restart=always
-RestartSec=10
+RestartSec=1800
 
 [Install]
 WantedBy=multi-user.target
