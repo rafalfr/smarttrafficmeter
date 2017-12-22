@@ -164,6 +164,7 @@ int main( int argc, char *argv[] )
     Settings::settings["database directory"] = "/usr/share/smarttrafficmeter";
     Settings::settings["config directory"] = "/etc/smarttrafficmeter";
     Settings::settings["log directory"] = "/var/log/smarttrafficmeter";
+    Settings::settings["pid directory"] = "/var/run";
     Settings::settings["stats refresh interval"] = "1";	//seconds
     Settings::settings["stats save interval"] = "1800";	//seconds
     Settings::settings["web server port"] = "7676";
@@ -182,7 +183,7 @@ int main( int argc, char *argv[] )
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
     Globals::db_drv.set_database_dir( Settings::settings["database directory"] );
 
-    Utils::save_pid_file( Settings::settings["config directory"] + PATH_SEPARATOR_CAHR + "stm.pid" );
+    Utils::save_pid_file( Settings::settings["pid directory"] + PATH_SEPARATOR_CAHR + "smarttrafficmeter.pid" );
 
     if ( chdir( Settings::settings["log directory"].c_str() ) == -1 )
     {
