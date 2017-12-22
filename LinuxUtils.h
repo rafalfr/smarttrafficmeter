@@ -54,9 +54,9 @@ private:
 
 #ifndef __pi__
 
-	static bfd* abfd;
-	static asymbol **syms;
-	static asection *text;
+    static bfd* abfd;
+    static asymbol **syms;
+    static asection *text;
 
 #endif // __pi__
 
@@ -74,24 +74,25 @@ public:
 
     static bool check_one_instance( void );
 
-    static void remove_instance_object(void);
+    static void remove_instance_object( void );
 
-    static void set_signals_handler(void);
+    static void set_signals_handler( void );
 
     static string resolve( const unsigned long address );
 
-    static string get_program_path(const char* argv0);
+    static string get_program_path( const char* argv0 );
 
-    static void get_user_host(string& user,string& host);
+    static void get_user_host( string& user, string& host );
 
-    static void get_os_info(string& os_info);
+    static void get_os_info( string& os_info );
 
     static bool dir_exists( const char *path );
 
     static int32_t make_path( const string& _s, mode_t mode );
 
-    static void save_pid_file(const string& pid_file_path);
+    static void save_pid_file( const string& pid_file_path );
 
+    static int32_t ensure_dir( const string& dir );
 };
 
 #endif // __linux

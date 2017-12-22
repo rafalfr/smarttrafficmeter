@@ -949,7 +949,7 @@ void Utils::load_data_from_sqlite( const string& a_mac )
 
     for ( string const & mac : macs )
     {
-        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
+        rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -1286,7 +1286,7 @@ void Utils::save_stats_to_sqlite( const string& a_mac )
 
         const map<string, map<string, InterfaceStats> > & table = Globals::all_stats[mac];
 
-        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+        rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -2261,7 +2261,7 @@ string Utils::rfc1123_datetime( time_t time )
 /** @brief save_settings
   *
   * The method saves all settings
-  * in the Globals::cwd + PATH_SEPARATOR + smarttrafficmeter.conf
+  * in the Settings::settings["config directory"] + PATH_SEPARATOR + smarttrafficmeter.conf
   *
   * @param none
   * @return True if save successful
@@ -2270,7 +2270,7 @@ string Utils::rfc1123_datetime( time_t time )
 bool Utils::save_settings( void )
 {
     ofstream file;
-    file.open( Globals::cwd + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ofstream::out );
+    file.open( Settings::settings["config directory"] + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ofstream::out );
 
     if ( file.is_open() )
     {
@@ -2337,3 +2337,19 @@ string Utils::gz_decompress( const std::string& data )
 
     return decompressed.str();
 }
+
+/** @brief ensure_dir
+  *
+  * The method is used to create a new directory if it does not exists
+  *
+  * @param new directory as a string
+  * @return creation status, 0 on success
+  *
+  */
+int32_t Utils::ensure_dir(const string& dir)
+{
+#ifdef __linux
+return LinuxUtils::ensure_dir(dir);
+#endif // __linux
+}
+

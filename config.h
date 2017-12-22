@@ -57,9 +57,6 @@ If not, see http://www.gnu.org/licenses/.
                                        sysconf(_SC_OPEN_MAX) is indeterminate */
 
 #define use_sqlite
-//#define use_mysql
-
-//#define _NO_WEBSERVER
 
 #define PACKAGE "SmartTrafficMeter"
 #define PACKAGE_VERSION FULLVERSION_STRING

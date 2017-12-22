@@ -1108,4 +1108,24 @@ void LinuxUtils::save_pid_file( const string& pid_file_path )
     }
 }
 
+/** @brief ensure_dir
+  *
+  * The method is used to create a new directory if it does not exists
+  *
+  * @param new directory as a string
+  * @return creation status, 0 on success
+  *
+  */
+int32_t LinuxUtils::ensure_dir( const string& dir )
+{
+    if ( dir_exists( dir.c_str() ) == false )
+    {
+        return make_path( dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 #endif // __linux

@@ -26,7 +26,9 @@ If not, see http://www.gnu.org/licenses/.
 #include <cstring>
 #include <time.h>
 
+#include "config.h"
 #include "Logger.h"
+#include "Settings.h"
 
 using namespace std;
 
@@ -42,9 +44,11 @@ void Logger::LogDebug( const string& message )
 {
     bool remove_log_file = false;
 
+    const string& log_file_path = Settings::settings["log directory"] + PATH_SEPARATOR + "stm_log.txt";
+
     ifstream in;
 
-    in.open( "stm_log.txt", std::ifstream::binary );
+    in.open( log_file_path, std::ifstream::binary );
 
     if ( in.good() )
     {
@@ -61,12 +65,12 @@ void Logger::LogDebug( const string& message )
 
     if ( remove_log_file == true )
     {
-        remove( "stm_log.txt" );
+        remove( log_file_path.c_str() );
     }
 
     ofstream f;
 
-    f.open( "stm_log.txt", std::ios::app );
+    f.open( log_file_path, std::ios::app );
 
     if ( f.good() )
     {
@@ -100,9 +104,11 @@ void Logger::LogInfo( const string& message )
 {
     bool remove_log_file = false;
 
+    const string& log_file_path = Settings::settings["log directory"] + PATH_SEPARATOR + "stm_log.txt";
+
     ifstream in;
 
-    in.open( "stm_log.txt", std::ifstream::binary );
+    in.open( log_file_path, std::ifstream::binary );
 
     if ( in.good() )
     {
@@ -119,12 +125,12 @@ void Logger::LogInfo( const string& message )
 
     if ( remove_log_file == true )
     {
-        remove( "stm_log.txt" );
+        remove( log_file_path.c_str() );
     }
 
     ofstream f;
 
-    f.open( "stm_log.txt", std::ios::app );
+    f.open( log_file_path, std::ios::app );
 
     if ( f.good() )
     {
@@ -158,9 +164,11 @@ void Logger::LogError( const string& message )
 {
     bool remove_log_file = false;
 
+    const string& log_file_path = Settings::settings["log directory"] + PATH_SEPARATOR + "stm_log.txt";
+
     ifstream in;
 
-    in.open( "stm_log.txt", std::ifstream::binary );
+    in.open( log_file_path, std::ifstream::binary );
 
     if ( in.good() )
     {
@@ -177,12 +185,12 @@ void Logger::LogError( const string& message )
 
     if ( remove_log_file == true )
     {
-        remove( "stm_log.txt" );
+        remove( log_file_path.c_str() );
     }
 
     ofstream f;
 
-    f.open( "stm_log.txt", std::ios::app );
+    f.open( log_file_path, std::ios::app );
 
     if ( f.good() )
     {

@@ -2132,7 +2132,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<h1>Settings</h1>\n";
         page += "<br><br>\n";
 
-        page += "<form action=\"submitsettings\" method=\"post\">\n";
+        page += "<form action=\"../submitsettings\" method=\"post\">\n";
         page += "<table border=\"0\" cellspacing=\"30\" cellpadding=\"10\" align=\"center\">\n";
         page += "<tbody>\n";
         page += "<tr>\n";

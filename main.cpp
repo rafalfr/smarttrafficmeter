@@ -125,11 +125,6 @@ int main( int argc, char *argv[] )
     Globals::program_path = Utils::get_program_path( argv );
     Globals::cwd = Utils::get_path( Globals::program_path );
 
-    if ( chdir( Globals::cwd.c_str() ) == -1 )
-    {
-        Logger::LogError( "cannot change working directory" );
-    }
-
     if ( make_program_run_at_startup == true )
     {
         Utils::make_program_run_at_startup();
@@ -155,8 +150,6 @@ int main( int argc, char *argv[] )
         return 0;
     }
 
-    Utils::save_pid_file( Globals::cwd + PATH_SEPARATOR_CAHR + "stm.pid" );
-
     if ( Globals::is_daemon == true )
     {
         Utils::sleep_seconds( 10 );
@@ -168,7 +161,9 @@ int main( int argc, char *argv[] )
 
     //set default settings
     Settings::settings["storage"] = "sqlite";
-    Settings::settings["database directory"] = Globals::cwd;
+    Settings::settings["database directory"] = "/usr/share/smarttrafficmeter";
+    Settings::settings["config directory"] = "/etc/smarttrafficmeter";
+    Settings::settings["log directory"] = "/var/log/smarttrafficmeter";
     Settings::settings["stats refresh interval"] = "1";	//seconds
     Settings::settings["stats save interval"] = "1800";	//seconds
     Settings::settings["web server port"] = "7676";
@@ -178,10 +173,21 @@ int main( int argc, char *argv[] )
     Settings::settings["mailbox login"] = "";
     Settings::settings["mailbox password"] = "";
 
+    Utils::ensure_dir( Settings::settings["database directory"] );
+    Utils::ensure_dir( Settings::settings["config directory"] );
+    Utils::ensure_dir( Settings::settings["log directory"] );
+
     load_settings();
 
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
     Globals::db_drv.set_database_dir( Settings::settings["database directory"] );
+
+    Utils::save_pid_file( Settings::settings["config directory"] + PATH_SEPARATOR_CAHR + "stm.pid" );
+
+    if ( chdir( Settings::settings["log directory"].c_str() ) == -1 )
+    {
+        Logger::LogError( "cannot change working directory" );
+    }
 
     Globals::interfaces = Utils::get_all_interfaces();
 
@@ -190,8 +196,6 @@ int main( int argc, char *argv[] )
     for ( auto const & mac_info : Globals::interfaces )
     {
         const string& mac = mac_info.second.get_mac();
-
-        Logger::LogInfo( mac );
 
         InterfaceSpeedMeter ism;
         Globals::speed_stats[mac] = ism;
@@ -275,7 +279,7 @@ int main( int argc, char *argv[] )
 void load_settings( void )
 {
     ifstream file;
-    file.open( Globals::cwd + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ifstream::in );
+    file.open( Settings::settings["config directory"] + PATH_SEPARATOR + "smarttrafficmeter.conf", std::ifstream::in );
 
     if ( file.is_open() )
     {
