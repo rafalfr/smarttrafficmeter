@@ -26,15 +26,12 @@
 					<Add library="bfd" />
 					<Add library="pthread" />
 					<Add library="boost_system" />
-					<Add library="boost_coroutine" />
 					<Add library="boost_regex" />
 					<Add library="boost_thread" />
-					<Add library="boost_context" />
 					<Add library="boost_filesystem" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
 					<Add library="ssl" />
-					<Add library="crypto" />
 				</Linker>
 			</Target>
 			<Target title="Linux Release">
@@ -60,15 +57,12 @@
 					<Add library="bfd" />
 					<Add library="pthread" />
 					<Add library="boost_system" />
-					<Add library="boost_coroutine" />
 					<Add library="boost_regex" />
 					<Add library="boost_thread" />
-					<Add library="boost_context" />
 					<Add library="boost_filesystem" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
 					<Add library="ssl" />
-					<Add library="crypto" />
 				</Linker>
 			</Target>
 			<Target title="pi">
@@ -94,12 +88,9 @@
 					<Add library="boost_thread" />
 					<Add library="boost_filesystem" />
 					<Add library="boost_regex" />
-					<Add library="boost_context" />
-					<Add library="boost_coroutine" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
 					<Add library="ssl" />
-					<Add library="crypto" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">

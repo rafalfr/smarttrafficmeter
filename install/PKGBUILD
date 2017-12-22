@@ -1,4 +1,4 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Rafał Frączek <rafalfr@protonmail.ch>
 pkgname=smarttrafficmeter
 pkgver=2.1.1208.6780
 pkgrel=1
@@ -7,7 +7,7 @@ arch=('i686' 'x86_64')
 url=""
 license=('GPL3')
 depends=('boost-libs' 'curl')
-makedepends=('gcc' 'git' 'boost' 'binutils')
+makedepends=('gcc' 'git' 'boost' 'curl' 'binutils')
 checkdepends=()
 optdepends=()
 provides=('smarttrafficmeter')
