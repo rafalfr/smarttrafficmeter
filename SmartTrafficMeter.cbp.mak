@@ -19,23 +19,23 @@ LIB =
 LDFLAGS = 
 
 INC_LINUX_DEBUG = $(INC)
-CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++14 -g -Og -O0 -D__linux
+CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++14 -m64 -g -Og -O0 -D__linux
 RESINC_LINUX_DEBUG = $(RESINC)
 RCFLAGS_LINUX_DEBUG = $(RCFLAGS)
 LIBDIR_LINUX_DEBUG = $(LIBDIR)
 LIB_LINUX_DEBUG = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_regex -lboost_thread -lboost_filesystem -lboost_iostreams -lcurl -lssl
-LDFLAGS_LINUX_DEBUG = $(LDFLAGS)
+LDFLAGS_LINUX_DEBUG = $(LDFLAGS) -m64
 OBJDIR_LINUX_DEBUG = obj/Debug
 DEP_LINUX_DEBUG = 
 OUT_LINUX_DEBUG = bin/Debug/smarttrafficmeter
 
 INC_LINUX_RELEASE = $(INC)
-CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++14 -rdynamic -D__linux
+CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++14 -m64 -rdynamic -D__linux
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)
 LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_regex -lboost_thread -lboost_filesystem -lboost_iostreams -lcurl -lssl
-LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -s -rdynamic
+LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -s -m64 -rdynamic
 OBJDIR_LINUX_RELEASE = obj/Release
 DEP_LINUX_RELEASE = 
 OUT_LINUX_RELEASE = bin/Release/smarttrafficmeter

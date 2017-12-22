@@ -4,11 +4,12 @@ post_install() {
  	echo "#####################################################################"
  	echo "#                                                                   #"
  	echo "# Smart Traffic Meter should now be running as a service (daemon)   #"
- 	echo "# Open your web browser and navigate to 127.0.0.1:7676              #
+ 	echo "# Open your web browser and navigate to 127.0.0.1:7676              #"
  	echo "# If the page does not open                                         #"
  	echo "# you may need to execute the following comands in the command line #"
  	echo "# sudo systemctl enable smarttrafficmeter                           #"
  	echo "# sudo systemctl start smarttrafficmeter                            #"
+ 	echo "# and restart your computer                                         #"
  	echo "#                                                                   #"
  	echo "#####################################################################"
 }

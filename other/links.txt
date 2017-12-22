@@ -97,6 +97,7 @@
 
 https://wiki.archlinux.org/index.php/Creating_packages#Meta_packages_and_groups
 https://wiki.archlinux.org/index.php/PKGBUILD
+https://wiki.archlinux.org/index.php/Arch_User_Repository#Submitting_packages
 
 // for backtrace code to work compile with -g -rdynamic options
 
