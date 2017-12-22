@@ -15,17 +15,12 @@ conflicts=()
 replaces=()
 backup=()
 options=()
-install=smarttrafficmeter.install
+install='smarttrafficmeter.install'
 changelog=
 source=()
 noextract=()
 md5sums=()
 validpgpkeys=()
-
-# prepare() {
-# 	#cd "$pkgname-$pkgver"
-# 	#patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
-# }
 
 build() {
 	git clone --depth 1 "git@bitbucket.org:rafalfr/smarttrafficmeter.git"
@@ -33,12 +28,7 @@ build() {
 	make -f SmartTrafficMeter.cbp.mak linux_release
 }
 
-# check() {
-# 	#cd "$pkgname-$pkgver"
-# 	#make -k check
-# }
-
 package() {
- 	cp ${srcdir}/smarttrafficmeter/bin/Release/smarttrafficmeter ${pkgdir}/
- 	cp ${srcdir}/smarttrafficmeter/install/smarttrafficmeter.service ${pkgdir}/
+ 	install -D -m755 ${srcdir}/smarttrafficmeter/bin/Release/smarttrafficmeter ${pkgdir}/usr/bin/smarttrafficmeter
+ 	install -D -m755 ${srcdir}/smarttrafficmeter/install/smarttrafficmeter.service ${pkgdir}/usr/lib/systemd/system/smarttrafficmeter.service
  }

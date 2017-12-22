@@ -8,9 +8,9 @@ After=network.target
 [Service]
 Type=forking
 Restart=on-failure
-ExecStart=/opt/smarttrafficmeter/smarttrafficmeter --daemon
-PIDFile=/opt/smarttrafficmeter/smarttrafficmeter.pid
-ExecStopPost=/usr/bin/rm -f /opt/smarttrafficmeter/smarttrafficmeter.pid
+ExecStart=/usr/bin/smarttrafficmeter --daemon
+PIDFile=/var/run/smarttrafficmeter.pid
+ExecStopPost=/usr/bin/rm -f /var/run/smarttrafficmeter.pid
 TimeoutSec=5
 Restart=always
 RestartSec=10
