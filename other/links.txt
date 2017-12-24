@@ -99,6 +99,14 @@ https://wiki.archlinux.org/index.php/Creating_packages#Meta_packages_and_groups
 https://wiki.archlinux.org/index.php/PKGBUILD
 https://wiki.archlinux.org/index.php/Arch_User_Repository#Submitting_packages
 
+https://askubuntu.com/questions/1345/what-is-the-simplest-debian-packaging-guide
+
+https://www.debian.org/doc/manuals/developers-reference/pkgs.html#newpackage
+https://www.debian.org/doc/manuals/distribute-deb/distribute-deb.html#package-repository
+https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
+https://launchpad.net/
+https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
+
 // for backtrace code to work compile with -g -rdynamic options
 
 //required packages
