@@ -42,6 +42,7 @@ If you want the program to run at computer startup copy
 */install/smarttrafficmeter.service* file to */usr/lib/systemd/system/*
 
 and then execute:
+
 *sudo systemctl enable smarttrafficmeter*
 
 *sudo systemctl start smarttrafficmeter*
