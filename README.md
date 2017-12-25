@@ -8,15 +8,15 @@ If you are using Arch linux you can install Smart Traffic Meter from the AUR rep
 
 If you want to compile and install the program by yourself, do the folloing:
 
-Install required libraries:
+## Install required libraries
 * curl
-* boost
-* binutils
++ boost
+- binutils
 
-Clone the git repository:
+## Clone the git repository:
 git clone https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git
 
-Compile the program:
+## Compile the program:
 
 for the *release* version execute:
 make -f SmartTrafficMeter.cbp.mak linux_release
@@ -24,7 +24,7 @@ make -f SmartTrafficMeter.cbp.mak linux_release
 or for the *debug* version execute:
 make -f SmartTrafficMeter.cbp.mak linux_debug
 
-Install program:
+## Install program:
 
 Copy the compiled binary file *smarttrafficmeter* to */usr/bin/*
 The *smarttrafficmeter* is found in either *bin/Release* or *bin/Debug* for the release or debug compilations respectively.
@@ -32,7 +32,7 @@ The *smarttrafficmeter* is found in either *bin/Release* or *bin/Debug* for the 
 Now you can start the program by executing the following command:
 *smarttrafficmeter --daemon*
 
-Make the program run at computer startup
+## Make the program run at computer startup
 
 If you want the program to run at computer startup copy
 */install/smarttrafficmeter.service* file to */usr/lib/systemd/system/*
@@ -40,14 +40,14 @@ and then execute:
 *sudo systemctl enable smarttrafficmeter*
 *sudo systemctl start smarttrafficmeter*
 
-Managing the application
+## Managing the application
 To start/stop/enable/disable Smart Traffic Meter execute
 *sudo systemctl start/stop/enable/disable smarttrafficmeter*
 
-Web interface
+## Web interface
 By default, the web interface is avalable at [http://127.0.0.1:7676](http://127.0.0.1:7676)
 
-Directories
+## Directories
 default database directory: */usr/share/smarttrafficmeter*
 default config directory: */etc/smarttrafficmeter*
 default log directory: */var/log/smarttrafficmeter*
