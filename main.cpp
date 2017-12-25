@@ -158,7 +158,6 @@ int main( int argc, char *argv[] )
     Utils::set_signals_handler();
     Utils::set_endsession_handler();
 
-
     //set default settings
     Settings::settings["storage"] = "sqlite";
     Settings::settings["database directory"] = "/usr/share/smarttrafficmeter";
@@ -260,7 +259,6 @@ int main( int argc, char *argv[] )
         http_server.start();
     } );
 #endif // _NO_WEBSERVER
-
 
     meter_thread.join();
 
