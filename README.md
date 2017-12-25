@@ -2,13 +2,13 @@
 
 Smart Traffic Meter is a program for measuring netweork usage and displaying the statistics in varius formats. The program runs as a system service and is managed through a website interface.
 
-## How do I get set up? ##
+## How do I get set up?
 
 If you are using Arch linux you can install Smart Traffic Meter from the AUR repository. Find the *smarttrafficmeter* package and install it.
 
 If you want to compile and install the program by yourself, do the folloing:
 
-## Install required libraries
+### Install required libraries
 * curl
 + boost
 - binutils
