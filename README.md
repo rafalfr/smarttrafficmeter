@@ -19,10 +19,12 @@ git clone https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git
 ## Compile the program:
 
 for the *release* version execute:
-make -f SmartTrafficMeter.cbp.mak linux_release
+
+*make -f SmartTrafficMeter.cbp.mak linux_release*
 
 or for the *debug* version execute:
-make -f SmartTrafficMeter.cbp.mak linux_debug
+
+*make -f SmartTrafficMeter.cbp.mak linux_debug*
 
 ## Install program:
 
