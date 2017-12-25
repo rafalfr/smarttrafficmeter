@@ -18,6 +18,10 @@ Make sure that you have installed development files for the above dependencies.
 ### Clone the git repository
 *git clone --depth 1 https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git*
 
+or
+
+*git clone --depth 1 https://github.com/rafalfr/smarttrafficmeter.git*
+
 ### Compile the program
 If you use *Code::Blocs* IDE, you can open the *SmartTrafficMeter.cbp* project file and build the *release* or *debug* version.
 
