@@ -14,11 +14,14 @@ If you want to compile and install the program by yourself, do the following:
 - binutils
 
 ### Clone the git repository
-*git clone https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git*
+*git clone --depth 1 https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git*
 
 ### Compile the program
+If you use Code::Blocs IDE, you can open the *SmartTrafficMeter.cbp" project file and build the *release* or *debug* version.
 
-for the *release* version execute:
+If you do not use Code::Blocks, you can build the program using the *make* tool.
+
+For the *release* version execute:
 
 *make -f SmartTrafficMeter.cbp.mak linux_release*
 
