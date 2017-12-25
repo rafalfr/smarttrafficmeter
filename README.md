@@ -13,6 +13,8 @@ If you want to compile and install the program by yourself, do the following:
 + boost
 - binutils
 
+Make sure that you have installed development files for the above dependencies.
+
 ### Clone the git repository
 *git clone --depth 1 https://rafalfr@bitbucket.org/rafalfr/smarttrafficmeter.git*
 
