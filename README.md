@@ -30,7 +30,7 @@ or for the *debug* version execute:
 
 Copy the compiled binary file *smarttrafficmeter* to */usr/bin/*
 
-The *smarttrafficmeter* is found in either *bin/Release* or *bin/Debug* for the release or debug compilations respectively.
+The *smarttrafficmeter* is found in either *bin/Release* or *bin/Debug* for the *release* or *debug* compilations respectively.
 
 Now you can start the program by executing the following command:
 *smarttrafficmeter --daemon*
@@ -48,7 +48,7 @@ and then execute:
 *sudo systemctl start smarttrafficmeter*
 
 ### Managing the application
-To start/stop/enable/disable Smart Traffic Meter execute
+To *start/stop/enable/disable* Smart Traffic Meter execute
 
 *sudo systemctl start/stop/enable/disable smarttrafficmeter*
 
