@@ -304,6 +304,9 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "&emsp;";
         page += "<a href=\"/legalinfo/\">legal info</a>\n";
         page += "</p>\n";
+        page += "&emsp;";
+        page += "<a href=\"https://github.com/rafalfr/smarttrafficmeter\">github</a>\n";
+        page += "</p>\n";
         page += "</div>\n";
 
         page += "</body>\n";
@@ -524,6 +527,11 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"left\" valign=\"middle\"><p>boost libraries</p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://www.boost.org/\">home page</a></p></td>\n";
         page += "<td align=\"center\" valign=\"middle\"><p><a href=\"http://www.boost.org/users/license.html\">license</a></p></td>\n";
+        page += "</tr>\n";
+        page += "<tr>\n";
+        page += "<td align=\"left\" valign=\"middle\"><p>curl</p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://curl.haxx.se/libcurl/\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://curl.haxx.se/docs/copyright.html\">license</a></p></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>Chart.js</p></td>\n";
