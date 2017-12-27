@@ -1,7 +1,7 @@
 post_install() {
     systemctl enable smarttrafficmeter
     echo "Please wait for the installation to complete
- 	systemctl start smarttrafficmeter 	
+ 	systemctl start smarttrafficmeter
  	echo "#####################################################################"
  	echo "#                                                                   #"
  	echo "# Smart Traffic Meter should now be running as a service (daemon)   #"
