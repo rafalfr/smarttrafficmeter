@@ -42,7 +42,7 @@ Now you can start the program by executing the following command:
 
 If you want the program to run at computer startup copy
 
-*/install/smarttrafficmeter.service* file to */usr/lib/systemd/system/*
+*/install/arch/smarttrafficmeter.service* file to */usr/lib/systemd/system/*
 
 and then execute:
 

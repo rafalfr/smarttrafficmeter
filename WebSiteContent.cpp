@@ -2172,10 +2172,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"grovestreams_api_key\" value=\"" + Settings::settings["grovestreams api key"] + "\"></td>\n";
         page += "<td align=\"center\" valign=\"middle\"></td>\n";
         page += "</tr>\n";
-        page += "<td align=\"left\" valign=\"middle\"><p>grovestreams update interval</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><input type=\"text\" style=\"font-size: 12pt\" name=\"grovestreams_update_interval\" value=\"" + Settings::settings["grovestreams update interval"] + "\"></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"></td>\n";
-        page += "</tr>\n";
 
         page += "</tbody>\n";
         page += "</table>\n";

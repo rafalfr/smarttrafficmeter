@@ -96,6 +96,7 @@ int main( int argc, char *argv[] )
 
     string version = string( AutoVersion::FULLVERSION_STRING ) + " built on " + string( __DATE__ ) + " " + string( __TIME__ );
 
+    /* read command line arguments */
     try
     {
         CmdLine cmd( "Command description message", ' ', version );
@@ -111,7 +112,7 @@ int main( int argc, char *argv[] )
         Globals::is_daemon = daemon_switch.getValue();
         make_program_run_at_startup = startup_switch.getValue();
     }
-    catch ( ArgException &e ) // catch any exceptions
+    catch ( ArgException &e )
     {
         cerr << "error: " << e.error() << " for arg " << e.argId() << endl;
     }
@@ -121,6 +122,7 @@ int main( int argc, char *argv[] )
         cout << "Smart Traffic Meter version " << version << endl;
     }
 
+    /* get current environment variables */
     Utils::get_user_host( Globals::user_name, Globals::host_name );
     Globals::program_path = Utils::get_program_path( argv );
     Globals::cwd = Utils::get_path( Globals::program_path );
@@ -130,6 +132,7 @@ int main( int argc, char *argv[] )
         Utils::make_program_run_at_startup();
     }
 
+    /* If daemon argument is used make the program to run as a daemon*/
     if ( Globals::is_daemon == true )
     {
         if ( Utils::BecomeDaemon() == -1 )
@@ -144,8 +147,10 @@ int main( int argc, char *argv[] )
         }
     }
 
+    /* Check if no other program's instance is running */
     if ( Utils::check_one_instance() == false )
     {
+    	/*If so, terminate this instance */
         Logger::LogError( "Another instance is already running. Process has finished." );
         return 0;
     }
@@ -155,10 +160,11 @@ int main( int argc, char *argv[] )
         Utils::sleep_seconds( 10 );
     }
 
+    /* set default signals handlers*/
     Utils::set_signals_handler();
     Utils::set_endsession_handler();
 
-    //set default settings
+    /* set default settings */
     Settings::settings["storage"] = "sqlite";
     Settings::settings["database directory"] = "/usr/share/smarttrafficmeter";
     Settings::settings["config directory"] = "/etc/smarttrafficmeter";
@@ -168,15 +174,13 @@ int main( int argc, char *argv[] )
     Settings::settings["stats save interval"] = "1800";	//seconds
     Settings::settings["web server port"] = "7676";
     Settings::settings["grovestreams api key"] = "";
-    Settings::settings["grovestreams update interval"] = "1800";
-    Settings::settings["smtp server"] = "";
-    Settings::settings["mailbox login"] = "";
-    Settings::settings["mailbox password"] = "";
 
+    /* ensure existence of default directories */
     Utils::ensure_dir( Settings::settings["database directory"] );
     Utils::ensure_dir( Settings::settings["config directory"] );
     Utils::ensure_dir( Settings::settings["log directory"] );
 
+    /* load settings */
     load_settings();
 
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
