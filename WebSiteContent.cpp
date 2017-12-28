@@ -303,7 +303,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<a href=\"/settings/\">settings</a>\n";
         page += "&emsp;";
         page += "<a href=\"/legalinfo/\">legal info</a>\n";
-        page += "</p>\n";
         page += "&emsp;";
         page += "<a href=\"https://github.com/rafalfr/smarttrafficmeter\">github</a>\n";
         page += "</p>\n";

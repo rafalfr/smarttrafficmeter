@@ -1,0 +1,41 @@
+{
+  "name": "smarttrafficmeter",
+  "homepage": "https://github.com/rafalfr/smarttrafficmeter",
+  "description": "Tool for measuring network usage.",
+  "version": "2.1.1229.6881",
+  "license": "GPL3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafalfr/smarttrafficmeter"
+  },
+  "devDependencies": {
+    "boost": "",
+    "Chart.js": "",
+    "jsoncpp": "",
+    "Simple-Web-Server": "",
+    "SQLite": "",
+    "TCLAP": "",
+    "smoothie": "",
+    "urlcpp": "",
+    "jquery": "",
+    "jscolor": "",
+    "hammer.js": "",
+    "chartjs-plugin-zoom": "",
+    "curl": ""
+  },
+  "dependencies": {
+    "boost": "",
+    "Chart.js": "",
+    "jsoncpp": "",
+    "Simple-Web-Server": "",
+    "SQLite": "",
+    "TCLAP": "",
+    "smoothie": "",
+    "urlcpp": "",
+    "jquery": "",
+    "jscolor": "",
+    "hammer.js": "",
+    "chartjs-plugin-zoom": "",
+    "curl": ""
+  }
+} 
