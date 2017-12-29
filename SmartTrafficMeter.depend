@@ -25837,7 +25837,7 @@
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
 
-1514220636 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
+1514583891 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Debug.cpp
 	"Debug.h"
 	"Utils.h"
 	"Logger.h"
@@ -25860,7 +25860,7 @@
 1514220636 /home/rafal/Programowanie/C++/smarttrafficmeter/Logger.h
 	<string>
 
-1514220636 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
+1514584002 /home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.h
 	<map>
 	<string>
 	"InterfaceInfo.h"
@@ -26095,7 +26095,7 @@
 	<limits>
 	"InterfaceStats.h"
 
-1514220887 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
+1514584002 source:/home/rafal/Programowanie/C++/smarttrafficmeter/LinuxUtils.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26143,7 +26143,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1514220636 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1514502551 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26178,9 +26178,9 @@
 	<direct.h>
 	"sqlite3.h"
 
-1514383213 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1514586462 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
 	<tclap/MultiSwitchArg.h>
 	<tclap/UnlabeledValueArg.h>
@@ -26201,12 +26201,12 @@
 	<algorithm>
 	<stdlib.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/SwitchArg.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/SwitchArg.h
 	<string>
 	<vector>
 	<tclap/Arg.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Arg.h
+1514298654 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Arg.h
 	<config.h>
 	<string>
 	<vector>
@@ -26214,6 +26214,7 @@
 	<iostream>
 	<iomanip>
 	<cstdio>
+	<tclap/sstream.h>
 	<sstream>
 	<strstream>
 	<tclap/ArgException.h>
@@ -26222,42 +26223,42 @@
 	<tclap/ArgTraits.h>
 	<tclap/StandardTraits.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgException.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgException.h
 	<string>
 	<exception>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Visitor.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Visitor.h
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineInterface.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineInterface.h
 	<string>
 	<vector>
 	<list>
 	<iostream>
 	<algorithm>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgTraits.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ArgTraits.h
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StandardTraits.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StandardTraits.h
 	<config.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiSwitchArg.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiSwitchArg.h
 	<string>
 	<vector>
 	<tclap/SwitchArg.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledValueArg.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledValueArg.h
 	<string>
 	<vector>
 	<tclap/ValueArg.h>
 	<tclap/OptionalUnlabeledTracker.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValueArg.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValueArg.h
 	<string>
 	<vector>
 	<tclap/Arg.h>
 	<tclap/Constraint.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Constraint.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/Constraint.h
 	<string>
 	<vector>
 	<list>
@@ -26265,34 +26266,34 @@
 	<iomanip>
 	<algorithm>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/OptionalUnlabeledTracker.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/OptionalUnlabeledTracker.h
 	<string>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledMultiArg.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/UnlabeledMultiArg.h
 	<string>
 	<vector>
 	<tclap/MultiArg.h>
 	<tclap/OptionalUnlabeledTracker.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiArg.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/MultiArg.h
 	<string>
 	<vector>
 	<tclap/Arg.h>
 	<tclap/Constraint.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/XorHandler.h
+1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/XorHandler.h
 	<tclap/Arg.h>
 	<string>
 	<vector>
 	<algorithm>
 	<iostream>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/HelpVisitor.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/HelpVisitor.h
 	<tclap/CmdLineInterface.h>
 	<tclap/CmdLineOutput.h>
 	<tclap/Visitor.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineOutput.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLineOutput.h
 	<string>
 	<vector>
 	<list>
@@ -26300,16 +26301,16 @@
 	<iomanip>
 	<algorithm>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/VersionVisitor.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/VersionVisitor.h
 	<tclap/CmdLineInterface.h>
 	<tclap/CmdLineOutput.h>
 	<tclap/Visitor.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/IgnoreRestVisitor.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/IgnoreRestVisitor.h
 	<tclap/Visitor.h>
 	<tclap/Arg.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StdOutput.h
+1514294966 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/StdOutput.h
 	<string>
 	<vector>
 	<list>
@@ -26320,13 +26321,12 @@
 	<tclap/XorHandler.h>
 	<tclap/Arg.h>
 
-1514220633 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValuesConstraint.h
+1514298654 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/ValuesConstraint.h
+	<config.h>
 	<string>
 	<vector>
 	<tclap/Constraint.h>
-	<config.h>
-	<sstream>
-	<strstream>
+	<tclap/sstream.h>
 
 1514220636 /home/rafal/Programowanie/C++/smarttrafficmeter/WebSiteContent.h
 	<string>
@@ -26591,4 +26591,8 @@
 	<string>
 	<unordered_map>
 	<vector>
+
+1514298654 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/sstream.h
+	<sstream>
+	<strstream>
 
