@@ -19,7 +19,7 @@ LIB =
 LDFLAGS = 
 
 INC_LINUX_DEBUG = $(INC)
-CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++14 -m64 -g -Og -O0 -D__linux
+CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++11 -m64 -g -Og -O0 -D__linux
 RESINC_LINUX_DEBUG = $(RESINC)
 RCFLAGS_LINUX_DEBUG = $(RCFLAGS)
 LIBDIR_LINUX_DEBUG = $(LIBDIR)
@@ -27,10 +27,10 @@ LIB_LINUX_DEBUG = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_regex -
 LDFLAGS_LINUX_DEBUG = $(LDFLAGS) -m64
 OBJDIR_LINUX_DEBUG = obj/Debug
 DEP_LINUX_DEBUG = 
-OUT_LINUX_DEBUG = bin/Debug/smarttrafficmeter
+OUT_LINUX_DEBUG = bin/debug/smarttrafficmeter
 
 INC_LINUX_RELEASE = $(INC)
-CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++14 -m64 -rdynamic -D__linux
+CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -m64 -rdynamic -D__linux
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)
@@ -38,31 +38,44 @@ LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_regex
 LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -s -m64 -rdynamic
 OBJDIR_LINUX_RELEASE = obj/Release
 DEP_LINUX_RELEASE = 
-OUT_LINUX_RELEASE = bin/Release/smarttrafficmeter
+OUT_LINUX_RELEASE = bin/release/smarttrafficmeter
 
-INC_PI = $(INC)
-CFLAGS_PI = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
-RESINC_PI = $(RESINC)
-RCFLAGS_PI = $(RCFLAGS)
-LIBDIR_PI = $(LIBDIR)
-LIB_PI = $(LIB)-lrt -ldl -lpthread -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_iostreams -lcurl -lssl
-LDFLAGS_PI = $(LDFLAGS) -s
-OBJDIR_PI = obj/pi
-DEP_PI = 
-OUT_PI = bin/pi/smarttrafficmeter
+INC_ARM_RELEASE = $(INC)
+CFLAGS_ARM_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
+RESINC_ARM_RELEASE = $(RESINC)
+RCFLAGS_ARM_RELEASE = $(RCFLAGS)
+LIBDIR_ARM_RELEASE = $(LIBDIR)
+LIB_ARM_RELEASE = $(LIB)-lrt -ldl -lpthread -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_iostreams -lcurl -lssl
+LDFLAGS_ARM_RELEASE = $(LDFLAGS) -s
+OBJDIR_ARM_RELEASE = obj/pi
+DEP_ARM_RELEASE = 
+OUT_ARM_RELEASE = bin/arm/release/smarttrafficmeter
+
+INC_ARM_DEBUG = $(INC)
+CFLAGS_ARM_DEBUG = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
+RESINC_ARM_DEBUG = $(RESINC)
+RCFLAGS_ARM_DEBUG = $(RCFLAGS)
+LIBDIR_ARM_DEBUG = $(LIBDIR)
+LIB_ARM_DEBUG = $(LIB)-lrt -ldl -lpthread -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_iostreams -lcurl -lssl
+LDFLAGS_ARM_DEBUG = $(LDFLAGS) -s
+OBJDIR_ARM_DEBUG = obj/pi
+DEP_ARM_DEBUG = 
+OUT_ARM_DEBUG = bin/arm/debug/smarttrafficmeter
 
 OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/smoothiejs.o $(OBJDIR_LINUX_DEBUG)/stopwatch.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/speed_update.o $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/jsoncpp.o $(OBJDIR_LINUX_DEBUG)/jscolor.o $(OBJDIR_LINUX_DEBUG)/jquery.o $(OBJDIR_LINUX_DEBUG)/zoom.o $(OBJDIR_LINUX_DEBUG)/hammer.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/Resources.o $(OBJDIR_LINUX_DEBUG)/Path.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/GroveStreamsUploader.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/custom_time_span.o $(OBJDIR_LINUX_DEBUG)/csmtp/md5.o $(OBJDIR_LINUX_DEBUG)/csmtp/base64.o $(OBJDIR_LINUX_DEBUG)/csmtp/CSmtp.o $(OBJDIR_LINUX_DEBUG)/chartjs.o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/Url.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/ServerThread.o
 
 OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/smoothiejs.o $(OBJDIR_LINUX_RELEASE)/stopwatch.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/speed_update.o $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/jsoncpp.o $(OBJDIR_LINUX_RELEASE)/jscolor.o $(OBJDIR_LINUX_RELEASE)/jquery.o $(OBJDIR_LINUX_RELEASE)/zoom.o $(OBJDIR_LINUX_RELEASE)/hammer.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/Resources.o $(OBJDIR_LINUX_RELEASE)/Path.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/GroveStreamsUploader.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/custom_time_span.o $(OBJDIR_LINUX_RELEASE)/csmtp/md5.o $(OBJDIR_LINUX_RELEASE)/csmtp/base64.o $(OBJDIR_LINUX_RELEASE)/csmtp/CSmtp.o $(OBJDIR_LINUX_RELEASE)/chartjs.o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/Url.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/ServerThread.o
 
-OBJ_PI = $(OBJDIR_PI)/smoothiejs.o $(OBJDIR_PI)/stopwatch.o $(OBJDIR_PI)/sqlite3.o $(OBJDIR_PI)/speed_update.o $(OBJDIR_PI)/main.o $(OBJDIR_PI)/jsoncpp.o $(OBJDIR_PI)/jscolor.o $(OBJDIR_PI)/jquery.o $(OBJDIR_PI)/zoom.o $(OBJDIR_PI)/hammer.o $(OBJDIR_PI)/InterfaceSpeedMeter.o $(OBJDIR_PI)/Resources.o $(OBJDIR_PI)/Path.o $(OBJDIR_PI)/MySQLInterface.o $(OBJDIR_PI)/Logger.o $(OBJDIR_PI)/LinuxUtils.o $(OBJDIR_PI)/InterfaceStats.o $(OBJDIR_PI)/InterfaceInfo.o $(OBJDIR_PI)/GroveStreamsUploader.o $(OBJDIR_PI)/Globals.o $(OBJDIR_PI)/Debug.o $(OBJDIR_PI)/DataBaseDriver.o $(OBJDIR_PI)/custom_time_span.o $(OBJDIR_PI)/csmtp/md5.o $(OBJDIR_PI)/csmtp/base64.o $(OBJDIR_PI)/csmtp/CSmtp.o $(OBJDIR_PI)/chartjs.o $(OBJDIR_PI)/BackgroundImage.o $(OBJDIR_PI)/WebSiteContent.o $(OBJDIR_PI)/Utils.o $(OBJDIR_PI)/Url.o $(OBJDIR_PI)/Settings.o $(OBJDIR_PI)/ServerThread.o
+OBJ_ARM_RELEASE = $(OBJDIR_ARM_RELEASE)/smoothiejs.o $(OBJDIR_ARM_RELEASE)/stopwatch.o $(OBJDIR_ARM_RELEASE)/sqlite3.o $(OBJDIR_ARM_RELEASE)/speed_update.o $(OBJDIR_ARM_RELEASE)/main.o $(OBJDIR_ARM_RELEASE)/jsoncpp.o $(OBJDIR_ARM_RELEASE)/jscolor.o $(OBJDIR_ARM_RELEASE)/jquery.o $(OBJDIR_ARM_RELEASE)/zoom.o $(OBJDIR_ARM_RELEASE)/hammer.o $(OBJDIR_ARM_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_ARM_RELEASE)/Resources.o $(OBJDIR_ARM_RELEASE)/Path.o $(OBJDIR_ARM_RELEASE)/MySQLInterface.o $(OBJDIR_ARM_RELEASE)/Logger.o $(OBJDIR_ARM_RELEASE)/LinuxUtils.o $(OBJDIR_ARM_RELEASE)/InterfaceStats.o $(OBJDIR_ARM_RELEASE)/InterfaceInfo.o $(OBJDIR_ARM_RELEASE)/GroveStreamsUploader.o $(OBJDIR_ARM_RELEASE)/Globals.o $(OBJDIR_ARM_RELEASE)/Debug.o $(OBJDIR_ARM_RELEASE)/DataBaseDriver.o $(OBJDIR_ARM_RELEASE)/custom_time_span.o $(OBJDIR_ARM_RELEASE)/csmtp/md5.o $(OBJDIR_ARM_RELEASE)/csmtp/base64.o $(OBJDIR_ARM_RELEASE)/csmtp/CSmtp.o $(OBJDIR_ARM_RELEASE)/chartjs.o $(OBJDIR_ARM_RELEASE)/BackgroundImage.o $(OBJDIR_ARM_RELEASE)/WebSiteContent.o $(OBJDIR_ARM_RELEASE)/Utils.o $(OBJDIR_ARM_RELEASE)/Url.o $(OBJDIR_ARM_RELEASE)/Settings.o $(OBJDIR_ARM_RELEASE)/ServerThread.o
 
-all: linux_debug linux_release pi
+OBJ_ARM_DEBUG = $(OBJDIR_ARM_DEBUG)/smoothiejs.o $(OBJDIR_ARM_DEBUG)/stopwatch.o $(OBJDIR_ARM_DEBUG)/sqlite3.o $(OBJDIR_ARM_DEBUG)/speed_update.o $(OBJDIR_ARM_DEBUG)/main.o $(OBJDIR_ARM_DEBUG)/jsoncpp.o $(OBJDIR_ARM_DEBUG)/jscolor.o $(OBJDIR_ARM_DEBUG)/jquery.o $(OBJDIR_ARM_DEBUG)/zoom.o $(OBJDIR_ARM_DEBUG)/hammer.o $(OBJDIR_ARM_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_ARM_DEBUG)/Resources.o $(OBJDIR_ARM_DEBUG)/Path.o $(OBJDIR_ARM_DEBUG)/MySQLInterface.o $(OBJDIR_ARM_DEBUG)/Logger.o $(OBJDIR_ARM_DEBUG)/LinuxUtils.o $(OBJDIR_ARM_DEBUG)/InterfaceStats.o $(OBJDIR_ARM_DEBUG)/InterfaceInfo.o $(OBJDIR_ARM_DEBUG)/GroveStreamsUploader.o $(OBJDIR_ARM_DEBUG)/Globals.o $(OBJDIR_ARM_DEBUG)/Debug.o $(OBJDIR_ARM_DEBUG)/DataBaseDriver.o $(OBJDIR_ARM_DEBUG)/custom_time_span.o $(OBJDIR_ARM_DEBUG)/csmtp/md5.o $(OBJDIR_ARM_DEBUG)/csmtp/base64.o $(OBJDIR_ARM_DEBUG)/csmtp/CSmtp.o $(OBJDIR_ARM_DEBUG)/chartjs.o $(OBJDIR_ARM_DEBUG)/BackgroundImage.o $(OBJDIR_ARM_DEBUG)/WebSiteContent.o $(OBJDIR_ARM_DEBUG)/Utils.o $(OBJDIR_ARM_DEBUG)/Url.o $(OBJDIR_ARM_DEBUG)/Settings.o $(OBJDIR_ARM_DEBUG)/ServerThread.o
 
-clean: clean_linux_debug clean_linux_release clean_pi
+all: linux_debug linux_release arm_release arm_debug
+
+clean: clean_linux_debug clean_linux_release clean_arm_release clean_arm_debug
 
 before_linux_debug: 
-	test -d bin/Debug || mkdir -p bin/Debug
+	test -d bin/debug || mkdir -p bin/debug
 	test -d $(OBJDIR_LINUX_DEBUG) || mkdir -p $(OBJDIR_LINUX_DEBUG)
 	test -d $(OBJDIR_LINUX_DEBUG)/csmtp || mkdir -p $(OBJDIR_LINUX_DEBUG)/csmtp
 
@@ -174,12 +187,12 @@ $(OBJDIR_LINUX_DEBUG)/ServerThread.o: ServerThread.cpp
 
 clean_linux_debug: 
 	rm -f $(OBJ_LINUX_DEBUG) $(OUT_LINUX_DEBUG)
-	rm -rf bin/Debug
+	rm -rf bin/debug
 	rm -rf $(OBJDIR_LINUX_DEBUG)
 	rm -rf $(OBJDIR_LINUX_DEBUG)/csmtp
 
 before_linux_release: 
-	test -d bin/Release || mkdir -p bin/Release
+	test -d bin/release || mkdir -p bin/release
 	test -d $(OBJDIR_LINUX_RELEASE) || mkdir -p $(OBJDIR_LINUX_RELEASE)
 	test -d $(OBJDIR_LINUX_RELEASE)/csmtp || mkdir -p $(OBJDIR_LINUX_RELEASE)/csmtp
 
@@ -291,126 +304,243 @@ $(OBJDIR_LINUX_RELEASE)/ServerThread.o: ServerThread.cpp
 
 clean_linux_release: 
 	rm -f $(OBJ_LINUX_RELEASE) $(OUT_LINUX_RELEASE)
-	rm -rf bin/Release
+	rm -rf bin/release
 	rm -rf $(OBJDIR_LINUX_RELEASE)
 	rm -rf $(OBJDIR_LINUX_RELEASE)/csmtp
 
-before_pi: 
-	test -d bin/pi || mkdir -p bin/pi
-	test -d $(OBJDIR_PI) || mkdir -p $(OBJDIR_PI)
-	test -d $(OBJDIR_PI)/csmtp || mkdir -p $(OBJDIR_PI)/csmtp
+before_arm_release: 
+	test -d bin/arm/release || mkdir -p bin/arm/release
+	test -d $(OBJDIR_ARM_RELEASE) || mkdir -p $(OBJDIR_ARM_RELEASE)
+	test -d $(OBJDIR_ARM_RELEASE)/csmtp || mkdir -p $(OBJDIR_ARM_RELEASE)/csmtp
 
-after_pi: 
+after_arm_release: 
 
-pi: before_pi out_pi after_pi
+arm_release: before_arm_release out_arm_release after_arm_release
 
-out_pi: before_pi $(OBJ_PI) $(DEP_PI)
-	$(LD) $(LIBDIR_PI) -o $(OUT_PI) $(OBJ_PI)  $(LDFLAGS_PI) $(LIB_PI)
+out_arm_release: before_arm_release $(OBJ_ARM_RELEASE) $(DEP_ARM_RELEASE)
+	$(LD) $(LIBDIR_ARM_RELEASE) -o $(OUT_ARM_RELEASE) $(OBJ_ARM_RELEASE)  $(LDFLAGS_ARM_RELEASE) $(LIB_ARM_RELEASE)
 
-$(OBJDIR_PI)/smoothiejs.o: smoothiejs.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c smoothiejs.cpp -o $(OBJDIR_PI)/smoothiejs.o
+$(OBJDIR_ARM_RELEASE)/smoothiejs.o: smoothiejs.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c smoothiejs.cpp -o $(OBJDIR_ARM_RELEASE)/smoothiejs.o
 
-$(OBJDIR_PI)/stopwatch.o: stopwatch.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c stopwatch.cpp -o $(OBJDIR_PI)/stopwatch.o
+$(OBJDIR_ARM_RELEASE)/stopwatch.o: stopwatch.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c stopwatch.cpp -o $(OBJDIR_ARM_RELEASE)/stopwatch.o
 
-$(OBJDIR_PI)/sqlite3.o: sqlite3.c
-	$(CC) $(CFLAGS_PI) $(INC_PI) -c sqlite3.c -o $(OBJDIR_PI)/sqlite3.o
+$(OBJDIR_ARM_RELEASE)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c sqlite3.c -o $(OBJDIR_ARM_RELEASE)/sqlite3.o
 
-$(OBJDIR_PI)/speed_update.o: speed_update.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c speed_update.cpp -o $(OBJDIR_PI)/speed_update.o
+$(OBJDIR_ARM_RELEASE)/speed_update.o: speed_update.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c speed_update.cpp -o $(OBJDIR_ARM_RELEASE)/speed_update.o
 
-$(OBJDIR_PI)/main.o: main.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c main.cpp -o $(OBJDIR_PI)/main.o
+$(OBJDIR_ARM_RELEASE)/main.o: main.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c main.cpp -o $(OBJDIR_ARM_RELEASE)/main.o
 
-$(OBJDIR_PI)/jsoncpp.o: jsoncpp.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jsoncpp.cpp -o $(OBJDIR_PI)/jsoncpp.o
+$(OBJDIR_ARM_RELEASE)/jsoncpp.o: jsoncpp.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c jsoncpp.cpp -o $(OBJDIR_ARM_RELEASE)/jsoncpp.o
 
-$(OBJDIR_PI)/jscolor.o: jscolor.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jscolor.cpp -o $(OBJDIR_PI)/jscolor.o
+$(OBJDIR_ARM_RELEASE)/jscolor.o: jscolor.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c jscolor.cpp -o $(OBJDIR_ARM_RELEASE)/jscolor.o
 
-$(OBJDIR_PI)/jquery.o: jquery.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c jquery.cpp -o $(OBJDIR_PI)/jquery.o
+$(OBJDIR_ARM_RELEASE)/jquery.o: jquery.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c jquery.cpp -o $(OBJDIR_ARM_RELEASE)/jquery.o
 
-$(OBJDIR_PI)/zoom.o: zoom.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c zoom.cpp -o $(OBJDIR_PI)/zoom.o
+$(OBJDIR_ARM_RELEASE)/zoom.o: zoom.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c zoom.cpp -o $(OBJDIR_ARM_RELEASE)/zoom.o
 
-$(OBJDIR_PI)/hammer.o: hammer.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c hammer.cpp -o $(OBJDIR_PI)/hammer.o
+$(OBJDIR_ARM_RELEASE)/hammer.o: hammer.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c hammer.cpp -o $(OBJDIR_ARM_RELEASE)/hammer.o
 
-$(OBJDIR_PI)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_PI)/InterfaceSpeedMeter.o
+$(OBJDIR_ARM_RELEASE)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_ARM_RELEASE)/InterfaceSpeedMeter.o
 
-$(OBJDIR_PI)/Resources.o: Resources.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Resources.cpp -o $(OBJDIR_PI)/Resources.o
+$(OBJDIR_ARM_RELEASE)/Resources.o: Resources.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Resources.cpp -o $(OBJDIR_ARM_RELEASE)/Resources.o
 
-$(OBJDIR_PI)/Path.o: Path.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Path.cpp -o $(OBJDIR_PI)/Path.o
+$(OBJDIR_ARM_RELEASE)/Path.o: Path.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Path.cpp -o $(OBJDIR_ARM_RELEASE)/Path.o
 
-$(OBJDIR_PI)/MySQLInterface.o: MySQLInterface.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c MySQLInterface.cpp -o $(OBJDIR_PI)/MySQLInterface.o
+$(OBJDIR_ARM_RELEASE)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c MySQLInterface.cpp -o $(OBJDIR_ARM_RELEASE)/MySQLInterface.o
 
-$(OBJDIR_PI)/Logger.o: Logger.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Logger.cpp -o $(OBJDIR_PI)/Logger.o
+$(OBJDIR_ARM_RELEASE)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Logger.cpp -o $(OBJDIR_ARM_RELEASE)/Logger.o
 
-$(OBJDIR_PI)/LinuxUtils.o: LinuxUtils.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c LinuxUtils.cpp -o $(OBJDIR_PI)/LinuxUtils.o
+$(OBJDIR_ARM_RELEASE)/LinuxUtils.o: LinuxUtils.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c LinuxUtils.cpp -o $(OBJDIR_ARM_RELEASE)/LinuxUtils.o
 
-$(OBJDIR_PI)/InterfaceStats.o: InterfaceStats.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceStats.cpp -o $(OBJDIR_PI)/InterfaceStats.o
+$(OBJDIR_ARM_RELEASE)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c InterfaceStats.cpp -o $(OBJDIR_ARM_RELEASE)/InterfaceStats.o
 
-$(OBJDIR_PI)/InterfaceInfo.o: InterfaceInfo.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c InterfaceInfo.cpp -o $(OBJDIR_PI)/InterfaceInfo.o
+$(OBJDIR_ARM_RELEASE)/InterfaceInfo.o: InterfaceInfo.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c InterfaceInfo.cpp -o $(OBJDIR_ARM_RELEASE)/InterfaceInfo.o
 
-$(OBJDIR_PI)/GroveStreamsUploader.o: GroveStreamsUploader.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c GroveStreamsUploader.cpp -o $(OBJDIR_PI)/GroveStreamsUploader.o
+$(OBJDIR_ARM_RELEASE)/GroveStreamsUploader.o: GroveStreamsUploader.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c GroveStreamsUploader.cpp -o $(OBJDIR_ARM_RELEASE)/GroveStreamsUploader.o
 
-$(OBJDIR_PI)/Globals.o: Globals.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Globals.cpp -o $(OBJDIR_PI)/Globals.o
+$(OBJDIR_ARM_RELEASE)/Globals.o: Globals.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Globals.cpp -o $(OBJDIR_ARM_RELEASE)/Globals.o
 
-$(OBJDIR_PI)/Debug.o: Debug.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Debug.cpp -o $(OBJDIR_PI)/Debug.o
+$(OBJDIR_ARM_RELEASE)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Debug.cpp -o $(OBJDIR_ARM_RELEASE)/Debug.o
 
-$(OBJDIR_PI)/DataBaseDriver.o: DataBaseDriver.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c DataBaseDriver.cpp -o $(OBJDIR_PI)/DataBaseDriver.o
+$(OBJDIR_ARM_RELEASE)/DataBaseDriver.o: DataBaseDriver.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c DataBaseDriver.cpp -o $(OBJDIR_ARM_RELEASE)/DataBaseDriver.o
 
-$(OBJDIR_PI)/custom_time_span.o: custom_time_span.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c custom_time_span.cpp -o $(OBJDIR_PI)/custom_time_span.o
+$(OBJDIR_ARM_RELEASE)/custom_time_span.o: custom_time_span.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c custom_time_span.cpp -o $(OBJDIR_ARM_RELEASE)/custom_time_span.o
 
-$(OBJDIR_PI)/csmtp/md5.o: csmtp/md5.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/md5.cpp -o $(OBJDIR_PI)/csmtp/md5.o
+$(OBJDIR_ARM_RELEASE)/csmtp/md5.o: csmtp/md5.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c csmtp/md5.cpp -o $(OBJDIR_ARM_RELEASE)/csmtp/md5.o
 
-$(OBJDIR_PI)/csmtp/base64.o: csmtp/base64.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/base64.cpp -o $(OBJDIR_PI)/csmtp/base64.o
+$(OBJDIR_ARM_RELEASE)/csmtp/base64.o: csmtp/base64.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c csmtp/base64.cpp -o $(OBJDIR_ARM_RELEASE)/csmtp/base64.o
 
-$(OBJDIR_PI)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c csmtp/CSmtp.cpp -o $(OBJDIR_PI)/csmtp/CSmtp.o
+$(OBJDIR_ARM_RELEASE)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c csmtp/CSmtp.cpp -o $(OBJDIR_ARM_RELEASE)/csmtp/CSmtp.o
 
-$(OBJDIR_PI)/chartjs.o: chartjs.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c chartjs.cpp -o $(OBJDIR_PI)/chartjs.o
+$(OBJDIR_ARM_RELEASE)/chartjs.o: chartjs.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c chartjs.cpp -o $(OBJDIR_ARM_RELEASE)/chartjs.o
 
-$(OBJDIR_PI)/BackgroundImage.o: BackgroundImage.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c BackgroundImage.cpp -o $(OBJDIR_PI)/BackgroundImage.o
+$(OBJDIR_ARM_RELEASE)/BackgroundImage.o: BackgroundImage.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c BackgroundImage.cpp -o $(OBJDIR_ARM_RELEASE)/BackgroundImage.o
 
-$(OBJDIR_PI)/WebSiteContent.o: WebSiteContent.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c WebSiteContent.cpp -o $(OBJDIR_PI)/WebSiteContent.o
+$(OBJDIR_ARM_RELEASE)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c WebSiteContent.cpp -o $(OBJDIR_ARM_RELEASE)/WebSiteContent.o
 
-$(OBJDIR_PI)/Utils.o: Utils.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Utils.cpp -o $(OBJDIR_PI)/Utils.o
+$(OBJDIR_ARM_RELEASE)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Utils.cpp -o $(OBJDIR_ARM_RELEASE)/Utils.o
 
-$(OBJDIR_PI)/Url.o: Url.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Url.cpp -o $(OBJDIR_PI)/Url.o
+$(OBJDIR_ARM_RELEASE)/Url.o: Url.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Url.cpp -o $(OBJDIR_ARM_RELEASE)/Url.o
 
-$(OBJDIR_PI)/Settings.o: Settings.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c Settings.cpp -o $(OBJDIR_PI)/Settings.o
+$(OBJDIR_ARM_RELEASE)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c Settings.cpp -o $(OBJDIR_ARM_RELEASE)/Settings.o
 
-$(OBJDIR_PI)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_PI) $(INC_PI) -c ServerThread.cpp -o $(OBJDIR_PI)/ServerThread.o
+$(OBJDIR_ARM_RELEASE)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_ARM_RELEASE) $(INC_ARM_RELEASE) -c ServerThread.cpp -o $(OBJDIR_ARM_RELEASE)/ServerThread.o
 
-clean_pi: 
-	rm -f $(OBJ_PI) $(OUT_PI)
-	rm -rf bin/pi
-	rm -rf $(OBJDIR_PI)
-	rm -rf $(OBJDIR_PI)/csmtp
+clean_arm_release: 
+	rm -f $(OBJ_ARM_RELEASE) $(OUT_ARM_RELEASE)
+	rm -rf bin/arm/release
+	rm -rf $(OBJDIR_ARM_RELEASE)
+	rm -rf $(OBJDIR_ARM_RELEASE)/csmtp
 
-.PHONY: before_linux_debug after_linux_debug clean_linux_debug before_linux_release after_linux_release clean_linux_release before_pi after_pi clean_pi
+before_arm_debug: 
+	test -d bin/arm/debug || mkdir -p bin/arm/debug
+	test -d $(OBJDIR_ARM_DEBUG) || mkdir -p $(OBJDIR_ARM_DEBUG)
+	test -d $(OBJDIR_ARM_DEBUG)/csmtp || mkdir -p $(OBJDIR_ARM_DEBUG)/csmtp
+
+after_arm_debug: 
+
+arm_debug: before_arm_debug out_arm_debug after_arm_debug
+
+out_arm_debug: before_arm_debug $(OBJ_ARM_DEBUG) $(DEP_ARM_DEBUG)
+	$(LD) $(LIBDIR_ARM_DEBUG) -o $(OUT_ARM_DEBUG) $(OBJ_ARM_DEBUG)  $(LDFLAGS_ARM_DEBUG) $(LIB_ARM_DEBUG)
+
+$(OBJDIR_ARM_DEBUG)/smoothiejs.o: smoothiejs.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c smoothiejs.cpp -o $(OBJDIR_ARM_DEBUG)/smoothiejs.o
+
+$(OBJDIR_ARM_DEBUG)/stopwatch.o: stopwatch.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c stopwatch.cpp -o $(OBJDIR_ARM_DEBUG)/stopwatch.o
+
+$(OBJDIR_ARM_DEBUG)/sqlite3.o: sqlite3.c
+	$(CC) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c sqlite3.c -o $(OBJDIR_ARM_DEBUG)/sqlite3.o
+
+$(OBJDIR_ARM_DEBUG)/speed_update.o: speed_update.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c speed_update.cpp -o $(OBJDIR_ARM_DEBUG)/speed_update.o
+
+$(OBJDIR_ARM_DEBUG)/main.o: main.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c main.cpp -o $(OBJDIR_ARM_DEBUG)/main.o
+
+$(OBJDIR_ARM_DEBUG)/jsoncpp.o: jsoncpp.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c jsoncpp.cpp -o $(OBJDIR_ARM_DEBUG)/jsoncpp.o
+
+$(OBJDIR_ARM_DEBUG)/jscolor.o: jscolor.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c jscolor.cpp -o $(OBJDIR_ARM_DEBUG)/jscolor.o
+
+$(OBJDIR_ARM_DEBUG)/jquery.o: jquery.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c jquery.cpp -o $(OBJDIR_ARM_DEBUG)/jquery.o
+
+$(OBJDIR_ARM_DEBUG)/zoom.o: zoom.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c zoom.cpp -o $(OBJDIR_ARM_DEBUG)/zoom.o
+
+$(OBJDIR_ARM_DEBUG)/hammer.o: hammer.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c hammer.cpp -o $(OBJDIR_ARM_DEBUG)/hammer.o
+
+$(OBJDIR_ARM_DEBUG)/InterfaceSpeedMeter.o: InterfaceSpeedMeter.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c InterfaceSpeedMeter.cpp -o $(OBJDIR_ARM_DEBUG)/InterfaceSpeedMeter.o
+
+$(OBJDIR_ARM_DEBUG)/Resources.o: Resources.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Resources.cpp -o $(OBJDIR_ARM_DEBUG)/Resources.o
+
+$(OBJDIR_ARM_DEBUG)/Path.o: Path.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Path.cpp -o $(OBJDIR_ARM_DEBUG)/Path.o
+
+$(OBJDIR_ARM_DEBUG)/MySQLInterface.o: MySQLInterface.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c MySQLInterface.cpp -o $(OBJDIR_ARM_DEBUG)/MySQLInterface.o
+
+$(OBJDIR_ARM_DEBUG)/Logger.o: Logger.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Logger.cpp -o $(OBJDIR_ARM_DEBUG)/Logger.o
+
+$(OBJDIR_ARM_DEBUG)/LinuxUtils.o: LinuxUtils.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c LinuxUtils.cpp -o $(OBJDIR_ARM_DEBUG)/LinuxUtils.o
+
+$(OBJDIR_ARM_DEBUG)/InterfaceStats.o: InterfaceStats.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c InterfaceStats.cpp -o $(OBJDIR_ARM_DEBUG)/InterfaceStats.o
+
+$(OBJDIR_ARM_DEBUG)/InterfaceInfo.o: InterfaceInfo.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c InterfaceInfo.cpp -o $(OBJDIR_ARM_DEBUG)/InterfaceInfo.o
+
+$(OBJDIR_ARM_DEBUG)/GroveStreamsUploader.o: GroveStreamsUploader.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c GroveStreamsUploader.cpp -o $(OBJDIR_ARM_DEBUG)/GroveStreamsUploader.o
+
+$(OBJDIR_ARM_DEBUG)/Globals.o: Globals.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Globals.cpp -o $(OBJDIR_ARM_DEBUG)/Globals.o
+
+$(OBJDIR_ARM_DEBUG)/Debug.o: Debug.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Debug.cpp -o $(OBJDIR_ARM_DEBUG)/Debug.o
+
+$(OBJDIR_ARM_DEBUG)/DataBaseDriver.o: DataBaseDriver.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c DataBaseDriver.cpp -o $(OBJDIR_ARM_DEBUG)/DataBaseDriver.o
+
+$(OBJDIR_ARM_DEBUG)/custom_time_span.o: custom_time_span.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c custom_time_span.cpp -o $(OBJDIR_ARM_DEBUG)/custom_time_span.o
+
+$(OBJDIR_ARM_DEBUG)/csmtp/md5.o: csmtp/md5.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c csmtp/md5.cpp -o $(OBJDIR_ARM_DEBUG)/csmtp/md5.o
+
+$(OBJDIR_ARM_DEBUG)/csmtp/base64.o: csmtp/base64.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c csmtp/base64.cpp -o $(OBJDIR_ARM_DEBUG)/csmtp/base64.o
+
+$(OBJDIR_ARM_DEBUG)/csmtp/CSmtp.o: csmtp/CSmtp.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c csmtp/CSmtp.cpp -o $(OBJDIR_ARM_DEBUG)/csmtp/CSmtp.o
+
+$(OBJDIR_ARM_DEBUG)/chartjs.o: chartjs.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c chartjs.cpp -o $(OBJDIR_ARM_DEBUG)/chartjs.o
+
+$(OBJDIR_ARM_DEBUG)/BackgroundImage.o: BackgroundImage.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c BackgroundImage.cpp -o $(OBJDIR_ARM_DEBUG)/BackgroundImage.o
+
+$(OBJDIR_ARM_DEBUG)/WebSiteContent.o: WebSiteContent.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c WebSiteContent.cpp -o $(OBJDIR_ARM_DEBUG)/WebSiteContent.o
+
+$(OBJDIR_ARM_DEBUG)/Utils.o: Utils.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Utils.cpp -o $(OBJDIR_ARM_DEBUG)/Utils.o
+
+$(OBJDIR_ARM_DEBUG)/Url.o: Url.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Url.cpp -o $(OBJDIR_ARM_DEBUG)/Url.o
+
+$(OBJDIR_ARM_DEBUG)/Settings.o: Settings.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c Settings.cpp -o $(OBJDIR_ARM_DEBUG)/Settings.o
+
+$(OBJDIR_ARM_DEBUG)/ServerThread.o: ServerThread.cpp
+	$(CXX) $(CFLAGS_ARM_DEBUG) $(INC_ARM_DEBUG) -c ServerThread.cpp -o $(OBJDIR_ARM_DEBUG)/ServerThread.o
+
+clean_arm_debug: 
+	rm -f $(OBJ_ARM_DEBUG) $(OUT_ARM_DEBUG)
+	rm -rf bin/arm/debug
+	rm -rf $(OBJDIR_ARM_DEBUG)
+	rm -rf $(OBJDIR_ARM_DEBUG)/csmtp
+
+.PHONY: before_linux_debug after_linux_debug clean_linux_debug before_linux_release after_linux_release clean_linux_release before_arm_release after_arm_release clean_arm_release before_arm_debug after_arm_debug clean_arm_debug
 

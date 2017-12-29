@@ -40,25 +40,25 @@ If not, see http://www.gnu.org/licenses/.
 #include <string>
 #include "InterfaceInfo.h"
 
-#ifndef __pi__
+#ifndef __arm__
 
 #include "config.h"
 #include <bfd.h>
 
-#endif // __pi__
+#endif // __arm__
 
 class LinuxUtils
 {
 
 private:
 
-#ifndef __pi__
+#ifndef __arm__
 
     static bfd* abfd;
     static asymbol **syms;
     static asection *text;
 
-#endif // __pi__
+#endif // __arm__
 
 public:
 

@@ -71,13 +71,13 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "LinuxUtils.h"
 
-#ifndef __pi__
+#ifndef __arm__
 
 bfd* LinuxUtils::abfd = nullptr;
 asymbol ** LinuxUtils::syms = nullptr;
 asection* LinuxUtils::text = nullptr;
 
-#endif // __pi__
+#endif // __arm__
 
 
 using namespace std;
@@ -844,7 +844,7 @@ string LinuxUtils::resolve( const unsigned long address )
 {
     string out;
 
-#ifndef __pi__
+#ifndef __arm__
 
     if ( !abfd )
     {
@@ -903,7 +903,7 @@ string LinuxUtils::resolve( const unsigned long address )
         }
     }
 
-#endif // __pi__
+#endif // __arm__
     return out;
 }
 
