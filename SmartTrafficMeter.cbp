@@ -79,7 +79,7 @@
 					<Add option="-O3" />
 					<Add option="-w" />
 					<Add option="-std=c++11" />
-					<Add option="-D__pi__" />
+					<Add option="-D__arm__" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -107,7 +107,7 @@
 					<Add option="-O3" />
 					<Add option="-w" />
 					<Add option="-std=c++11" />
-					<Add option="-D__pi__" />
+					<Add option="-D__arm__" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

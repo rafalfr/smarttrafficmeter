@@ -41,7 +41,7 @@ DEP_LINUX_RELEASE =
 OUT_LINUX_RELEASE = bin/linux/release/smarttrafficmeter
 
 INC_ARM_RELEASE = $(INC)
-CFLAGS_ARM_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
+CFLAGS_ARM_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__arm__
 RESINC_ARM_RELEASE = $(RESINC)
 RCFLAGS_ARM_RELEASE = $(RCFLAGS)
 LIBDIR_ARM_RELEASE = $(LIBDIR)
@@ -52,7 +52,7 @@ DEP_ARM_RELEASE =
 OUT_ARM_RELEASE = bin/arm/release/smarttrafficmeter
 
 INC_ARM_DEBUG = $(INC)
-CFLAGS_ARM_DEBUG = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__pi__
+CFLAGS_ARM_DEBUG = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations -O3 -w -std=c++11 -D__arm__
 RESINC_ARM_DEBUG = $(RESINC)
 RCFLAGS_ARM_DEBUG = $(RCFLAGS)
 LIBDIR_ARM_DEBUG = $(LIBDIR)
