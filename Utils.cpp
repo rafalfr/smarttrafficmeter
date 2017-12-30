@@ -2300,7 +2300,7 @@ bool Utils::save_settings( void )
   * @return compressed data as a string
   *
   */
-stringstream Utils::gz_compress( const std::string& data )
+string Utils::gz_compress( const std::string& data )
 {
     namespace bio = boost::iostreams;
 
@@ -2312,7 +2312,7 @@ stringstream Utils::gz_compress( const std::string& data )
     out.push( origin );
     bio::copy( out, compressed );
 
-    return compressed;
+    return compressed.str();
 }
 
 /** @brief gz_decompress

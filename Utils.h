@@ -152,7 +152,7 @@ public:
 
     static bool save_settings( void );
 
-    static std::stringstream gz_compress( const std::string& data );
+    static std::string gz_compress( const std::string& data );
 
     static std::string gz_decompress( const std::string& data );
 
