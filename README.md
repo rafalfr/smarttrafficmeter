@@ -1,6 +1,6 @@
 # README #
 
-Smart Traffic Meter is a program for measuring network usage and displaying the statistics in various formats. The program runs as a system service and is managed through a website interface.
+Smart Traffic Meter is a program for measuring network usage and displaying the statistics in various formats. The program runs as a system service and is managed through a website interface. Watch brief video presentation [video presentation](https://youtu.be/BXddbb82FTA).
 
 ## How do I get set up?
 
@@ -21,19 +21,33 @@ Make sure that you have installed development files for the above dependencies.
 ### Compile the program
 If you use *Code::Blocs* IDE, you can open the *SmartTrafficMeter.cbp* project file and build the *release* or *debug* version.
 
-If you do not use *Code::Blocks*, you can build the program using the *make* tool. For the *release* version execute:
+If you do not use *Code::Blocks*, you can build the program using the *make* tool.
+
+For *x86_64* processors:
+
+*release* version:
 
 *make -f SmartTrafficMeter.cbp.mak linux_release*
 
-or for the *debug* version execute:
+*debug* version:
 
 *make -f SmartTrafficMeter.cbp.mak linux_debug*
+
+For the arm processors:
+
+*release* version:
+
+*make -f SmartTrafficMeter.cbp.mak arm_release*
+
+*debug* version:
+
+*make -f SmartTrafficMeter.cbp.mak arm_debug*
 
 ### Install the program
 
 Copy the compiled binary file *smarttrafficmeter* to */usr/bin/*
 
-The compiled *smarttrafficmeter* is found in either *bin/Release* or *bin/Debug* for the *release* or *debug* compilations respectively.
+The compiled *smarttrafficmeter* is found in either *bin/linux/release* or *bin/linux/debug* for the *x86_64* processors and *bin/arm/release* or *bin/arm/debug* for the *arm* processors.
 
 Now you can start the program by executing the following command:
 *smarttrafficmeter --daemon*
