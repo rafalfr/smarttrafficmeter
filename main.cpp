@@ -48,7 +48,6 @@ If not, see http://www.gnu.org/licenses/.
 #include "InterfaceSpeedMeter.h"
 #include "GroveStreamsUploader.h"
 #include "tclap/CmdLine.h"
-#include "csmtp/CSmtp.h"
 
 #ifndef _NO_WEBSERVER
 #include "WebSiteContent.h"

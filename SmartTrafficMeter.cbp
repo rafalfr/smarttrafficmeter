@@ -8,8 +8,8 @@
 		<Build>
 			<Target title="Linux Debug">
 				<Option platforms="Unix;" />
-				<Option output="bin/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="bin/linux/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/linux/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -33,13 +33,12 @@
 					<Add library="boost_filesystem" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
-					<Add library="ssl" />
 				</Linker>
 			</Target>
 			<Target title="Linux Release">
 				<Option platforms="Unix;" />
-				<Option output="bin/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin/linux/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/linux/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -66,13 +65,12 @@
 					<Add library="boost_filesystem" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
-					<Add library="ssl" />
 				</Linker>
 			</Target>
 			<Target title="Arm Release">
 				<Option platforms="Unix;" />
 				<Option output="bin/arm/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/pi/" />
+				<Option object_output="obj/arm/release" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -100,7 +98,7 @@
 			<Target title="Arm Debug">
 				<Option platforms="Unix;" />
 				<Option output="bin/arm/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/pi/" />
+				<Option object_output="obj/arm/release" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -128,7 +126,7 @@
 			<Target title="Windows Release">
 				<Option platforms="Windows;" />
 				<Option output="bin/Release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option object_output="obj/windows/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -162,7 +160,7 @@
 			<Target title="Windows Debug">
 				<Option platforms="Windows;" />
 				<Option output="bin/Debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="obj/windows/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -253,12 +251,6 @@
 		</Unit>
 		<Unit filename="chartjs.cpp" />
 		<Unit filename="config.h" />
-		<Unit filename="csmtp/CSmtp.cpp" />
-		<Unit filename="csmtp/CSmtp.h" />
-		<Unit filename="csmtp/base64.cpp" />
-		<Unit filename="csmtp/base64.h" />
-		<Unit filename="csmtp/md5.cpp" />
-		<Unit filename="csmtp/md5.h" />
 		<Unit filename="custom_time_span.cpp" />
 		<Unit filename="defines.h" />
 		<Unit filename="hammer.cpp" />
