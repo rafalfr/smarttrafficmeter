@@ -71,14 +71,9 @@ If not, see http://www.gnu.org/licenses/.
 
 #include "LinuxUtils.h"
 
-#ifndef __arm__
-
 bfd* LinuxUtils::abfd = nullptr;
 asymbol ** LinuxUtils::syms = nullptr;
 asection* LinuxUtils::text = nullptr;
-
-#endif // __arm__
-
 
 using namespace std;
 
@@ -844,8 +839,6 @@ string LinuxUtils::resolve( const unsigned long address )
 {
     string out;
 
-#ifndef __arm__
-
     if ( !abfd )
     {
         char ename[1024];
@@ -903,7 +896,6 @@ string LinuxUtils::resolve( const unsigned long address )
         }
     }
 
-#endif // __arm__
     return out;
 }
 

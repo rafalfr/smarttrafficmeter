@@ -54,8 +54,6 @@ string Debug::get_backtrace( void )
 
     size = backtrace( array, 64 );
 
-#ifndef __arm__
-
     //we skip the first two entries
     //because they refer to the Debug::get_backtrace
     for ( i = 2; i < size; i++ )
@@ -64,21 +62,15 @@ string Debug::get_backtrace( void )
         out += "\n";
     }
 
-#endif // __arm__
-
-#ifdef __arm__
-
-    char** strs = backtrace_symbols( array, size );
-
-    for ( i = 0; i < size; ++i )
-    {
-        out += strs[i];
-        out += "\n";
-    }
-
-    free( strs );
-
-#endif // __arm__
+//    char** strs = backtrace_symbols( array, size );
+//
+//    for ( i = 0; i < size; ++i )
+//    {
+//        out += strs[i];
+//        out += "\n";
+//    }
+//
+//    free( strs );
 
 #endif // __linux
 

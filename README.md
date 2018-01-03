@@ -33,7 +33,7 @@ For *x86_64* processors:
 
 *make -f SmartTrafficMeter.cbp.mak linux_debug*
 
-For the arm processors:
+For the *arm* processors:
 
 *release* version:
 

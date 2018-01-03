@@ -39,26 +39,17 @@ If not, see http://www.gnu.org/licenses/.
 #include <map>
 #include <string>
 #include "InterfaceInfo.h"
-
-#ifndef __arm__
-
 #include "config.h"
 #include <bfd.h>
-
-#endif // __arm__
 
 class LinuxUtils
 {
 
 private:
 
-#ifndef __arm__
-
     static bfd* abfd;
     static asymbol **syms;
     static asection *text;
-
-#endif // __arm__
 
 public:
 
