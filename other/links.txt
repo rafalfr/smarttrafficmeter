@@ -107,6 +107,7 @@ https://www.debian.org/doc/manuals/distribute-deb/distribute-deb.html#package-re
 https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
 https://launchpad.net/
 https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
+https://github.com/raboof/nethogs/blob/master/src/process.cpp
 
 // for backtrace code to work compile with -g -rdynamic options
 

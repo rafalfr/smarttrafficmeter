@@ -15,14 +15,12 @@
 				<Compiler>
 					<Add option="-w" />
 					<Add option="-std=c++11" />
-					<Add option="-m64" />
 					<Add option="-g" />
 					<Add option="-Og" />
 					<Add option="-O0" />
 					<Add option="-D__linux" />
 				</Compiler>
 				<Linker>
-					<Add option="-m64" />
 					<Add library="rt" />
 					<Add library="dl" />
 					<Add library="bfd" />
@@ -47,13 +45,11 @@
 					<Add option="-O3" />
 					<Add option="-w" />
 					<Add option="-std=c++11" />
-					<Add option="-m64" />
 					<Add option="-rdynamic" />
 					<Add option="-D__linux" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-m64" />
 					<Add option="-rdynamic" />
 					<Add library="rt" />
 					<Add library="dl" />
