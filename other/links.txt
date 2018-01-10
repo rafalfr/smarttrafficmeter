@@ -109,6 +109,10 @@ https://launchpad.net/
 https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
 https://github.com/raboof/nethogs/blob/master/src/process.cpp
 
+
+//arm requirements
+libboost-dev binutils-dev libcurl4-gnutls-dev libboost-system-dev libboost-regex-dev libboost-thread-dev libboost-filesystem-dev libboost-iostreams-dev
+
 // for backtrace code to work compile with -g -rdynamic options
 
 //required packages

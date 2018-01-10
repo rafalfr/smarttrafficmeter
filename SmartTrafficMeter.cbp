@@ -8,8 +8,8 @@
 		<Build>
 			<Target title="Linux Debug">
 				<Option platforms="Unix;" />
-				<Option output="bin/linux/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/linux/debug/" />
+				<Option output="bin/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -35,8 +35,8 @@
 			</Target>
 			<Target title="Linux Release">
 				<Option platforms="Unix;" />
-				<Option output="bin/linux/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/linux/release/" />
+				<Option output="bin/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -59,60 +59,6 @@
 					<Add library="boost_regex" />
 					<Add library="boost_thread" />
 					<Add library="boost_filesystem" />
-					<Add library="boost_iostreams" />
-					<Add library="curl" />
-				</Linker>
-			</Target>
-			<Target title="Arm Release">
-				<Option platforms="Unix;" />
-				<Option output="bin/arm/release/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/arm/release" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-fomit-frame-pointer" />
-					<Add option="-fexpensive-optimizations" />
-					<Add option="-O3" />
-					<Add option="-w" />
-					<Add option="-std=c++11" />
-					<Add option="-D__arm__" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-					<Add library="rt" />
-					<Add library="dl" />
-					<Add library="pthread" />
-					<Add library="boost_system" />
-					<Add library="boost_thread" />
-					<Add library="boost_filesystem" />
-					<Add library="boost_regex" />
-					<Add library="boost_iostreams" />
-					<Add library="curl" />
-				</Linker>
-			</Target>
-			<Target title="Arm Debug">
-				<Option platforms="Unix;" />
-				<Option output="bin/arm/debug/smarttrafficmeter" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/arm/release" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-fomit-frame-pointer" />
-					<Add option="-fexpensive-optimizations" />
-					<Add option="-O3" />
-					<Add option="-w" />
-					<Add option="-std=c++11" />
-					<Add option="-D__arm__" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-					<Add library="rt" />
-					<Add library="dl" />
-					<Add library="pthread" />
-					<Add library="boost_system" />
-					<Add library="boost_thread" />
-					<Add library="boost_filesystem" />
-					<Add library="boost_regex" />
 					<Add library="boost_iostreams" />
 					<Add library="curl" />
 				</Linker>
@@ -210,14 +156,10 @@
 		<Unit filename="LinuxUtils.cpp">
 			<Option target="Linux Debug" />
 			<Option target="Linux Release" />
-			<Option target="Arm Release" />
-			<Option target="Arm Debug" />
 		</Unit>
 		<Unit filename="LinuxUtils.h">
 			<Option target="Linux Debug" />
 			<Option target="Linux Release" />
-			<Option target="Arm Release" />
-			<Option target="Arm Debug" />
 		</Unit>
 		<Unit filename="Logger.cpp" />
 		<Unit filename="Logger.h" />
