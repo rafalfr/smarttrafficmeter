@@ -156,7 +156,7 @@ int main( int argc, char *argv[] )
 
     if ( Globals::is_daemon == true )
     {
-        Utils::sleep_seconds( 10 );
+        Utils::sleep_seconds( 1 );
     }
 
     /* set default signals handlers*/
