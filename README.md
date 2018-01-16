@@ -21,9 +21,12 @@ Make sure that you have installed development files for the above dependencies.
 ### Compile the program
 If you use *Code::Blocs* IDE, you can open the *SmartTrafficMeter.cbp* project file and build the *release* or *debug* version.
 
-If you do not use *Code::Blocks*, you can build the program using the *make* tool.
+If you use *cmake* build system, you can use it by executing the following commands:
 
-For *x86_64* processors:
+*cmake -H. -Bbuild*
+*cmake --build build -- -j3*
+
+If you do not use *Code::Blocks* or *cmake*, you can build the program using the *make* tool.
 
 *release* version:
 
@@ -32,16 +35,6 @@ For *x86_64* processors:
 *debug* version:
 
 *make -f SmartTrafficMeter.cbp.mak linux_debug*
-
-For the *arm* processors:
-
-*release* version:
-
-*make -f SmartTrafficMeter.cbp.mak arm_release*
-
-*debug* version:
-
-*make -f SmartTrafficMeter.cbp.mak arm_debug*
 
 ### Install the program
 
