@@ -24,6 +24,7 @@ If you use *Code::Blocs* IDE, you can open the *SmartTrafficMeter.cbp* project f
 If you use *cmake* build system, you can use it by executing the following commands:
 
 *cmake -H. -Bbuild*
+
 *cmake --build build -- -j3*
 
 If you do not use *Code::Blocks* or *cmake*, you can build the program using the *make* tool.
