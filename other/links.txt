@@ -1,5 +1,6 @@
 https://www.debian.org/devel/wnpp/
 https://wiki.ubuntu.com/UbuntuDevelopment/NewPackages
+https://solus-project.com/articles/packaging/
 
 // http://llvm.org/docs/CodingStandards.html
 //http://www.man7.org/tlpi/code/online/all_files_alpha.html

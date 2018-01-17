@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 project (smarttrafficmeter)
 
+message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
+
 include_directories(url)
 include_directories(json)
 include_directories(tclap)
@@ -16,6 +18,12 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/obj/release/)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/release/)
 
 file(GLOB SOURCES "*.c*")
+
+## Compiler flags
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-w -O3 -fexpensive-optimizations")        ## Optimize
+    set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
+endif()
 
 add_executable(smarttrafficmeter ${SOURCES})
 TARGET_LINK_LIBRARIES( smarttrafficmeter LINK_PUBLIC ${Boost_LIBRARIES} )
