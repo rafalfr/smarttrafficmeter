@@ -1,4 +1,3 @@
-
 /****************************************************************************** 
  * 
  *  file:  XorHandler.h
@@ -23,6 +22,7 @@
 #ifndef TCLAP_XORHANDLER_H
 #define TCLAP_XORHANDLER_H
 
+#include <istream>
 #include <tclap/Arg.h>
 #include <string>
 #include <vector>

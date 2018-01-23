@@ -106,6 +106,9 @@ int main( int argc, char *argv[] )
         SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, nullptr );
         cmd.add( startup_switch );
 
+        //SwitchArg website_switch( "w", "website", "open the program website", false, nullptr );
+        //cmd.add( website_switch );
+
         cmd.parse( argc, argv );
 
         Globals::is_daemon = daemon_switch.getValue();

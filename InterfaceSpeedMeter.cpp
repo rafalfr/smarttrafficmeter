@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License along with Sma
 If not, see http://www.gnu.org/licenses/.
 
 */
+#include <ctime>
 #include <sys/time.h>
 #include "InterfaceSpeedMeter.h"
 

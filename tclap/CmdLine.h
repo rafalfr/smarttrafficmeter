@@ -1,5 +1,3 @@
-// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
-
 /******************************************************************************
  *
  *  file:  CmdLine.h
@@ -40,6 +38,7 @@
 #include <tclap/Constraint.h>
 #include <tclap/ValuesConstraint.h>
 
+#include <istream>
 #include <string>
 #include <vector>
 #include <list>

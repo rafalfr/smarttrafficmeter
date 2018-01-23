@@ -1,5 +1,3 @@
-// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
-
 /****************************************************************************** 
  * 
  *  file:  ZshCompletionOutput.h
@@ -28,6 +26,7 @@
 #include <config.h>
 #endif
 
+#include <istream>
 #include <string>
 #include <vector>
 #include <list>

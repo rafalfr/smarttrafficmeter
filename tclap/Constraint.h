@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *
  *  file:  Constraint.h
@@ -22,6 +21,7 @@
 #ifndef TCLAP_CONSTRAINT_H
 #define TCLAP_CONSTRAINT_H
 
+#include <istream>
 #include <string>
 #include <vector>
 #include <list>

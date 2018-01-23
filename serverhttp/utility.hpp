@@ -3,6 +3,7 @@
 
 #include "status_code.hpp"
 #include <atomic>
+#include <istream>
 #include <iostream>
 #include <memory>
 #include <string>

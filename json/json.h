@@ -77,7 +77,7 @@ license you like.
 /// If defined, indicates that the source file is amalgated
 /// to prevent private header inclusion.
 #define JSON_IS_AMALGAMATION
-
+#include <cassert>
 // //////////////////////////////////////////////////////////////////////
 // Beginning of content of file: include/json/version.h
 // //////////////////////////////////////////////////////////////////////

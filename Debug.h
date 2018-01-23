@@ -34,6 +34,7 @@ If not, see http://www.gnu.org/licenses/.
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include <istream>
 #include <iostream>
 
 using namespace std;

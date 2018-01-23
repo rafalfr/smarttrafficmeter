@@ -21,8 +21,10 @@ If not, see http://www.gnu.org/licenses/.
 */
 
 #ifdef use_mysql
-#include "MySQLInterface.h"
+#include <istream>
 #include <iostream>
+#include "MySQLInterface.h"
+
 
 
 MySQLInterface::MySQLInterface()

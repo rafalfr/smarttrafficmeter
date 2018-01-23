@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <istream>
 #include <list>
 #include <ostream>
 #include <iostream>

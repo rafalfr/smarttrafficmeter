@@ -3,6 +3,7 @@
 
 #include "utility.hpp"
 #include <functional>
+#include <istream>
 #include <iostream>
 #include <limits>
 #include <map>

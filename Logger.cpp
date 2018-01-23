@@ -20,6 +20,8 @@ If not, see http://www.gnu.org/licenses/.
 
 */
 
+#include <ctime>
+#include <istream>
 #include <iostream>
 #include <fstream>
 #include <string>
