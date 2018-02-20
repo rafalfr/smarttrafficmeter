@@ -135,3 +135,5 @@ make -f SmartTrafficMeter.cbp.mak
 // http://html-color-codes.info/html-editor/
 // http://jsbin.com/biwefacino/edit?html,css,js,output
 // http://www.awwwards.com/10-html-css-online-code-editors-for-web-developers.html
+
+git remote set-url --add origin git@github.com:rafalfr/smarttrafficmeter.git
