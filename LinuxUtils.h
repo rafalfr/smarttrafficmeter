@@ -84,6 +84,8 @@ public:
     static void save_pid_file( const string& pid_file_path );
 
     static int32_t ensure_dir( const string& dir );
+
+    static int32_t launch_default_browser( const string & url );
 };
 
 #endif // __linux

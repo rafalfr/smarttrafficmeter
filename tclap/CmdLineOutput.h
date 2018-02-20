@@ -1,3 +1,5 @@
+
+
 /****************************************************************************** 
  * 
  *  file:  CmdLineOutput.h
@@ -21,7 +23,6 @@
 #ifndef TCLAP_CMDLINEOUTPUT_H
 #define TCLAP_CMDLINEOUTPUT_H
 
-#include <istream>
 #include <string>
 #include <vector>
 #include <list>

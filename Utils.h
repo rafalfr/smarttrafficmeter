@@ -158,6 +158,7 @@ public:
 
     static int32_t ensure_dir( const string& dir );
 
+    static int32_t launch_default_browser( const string& url );
 };
 
 #endif // UTILS_H

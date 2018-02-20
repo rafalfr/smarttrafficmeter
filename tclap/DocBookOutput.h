@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 /****************************************************************************** 
  * 
  *  file:  DocBookOutput.h
@@ -21,7 +23,6 @@
 #ifndef TCLAP_DOCBOOKOUTPUT_H
 #define TCLAP_DOCBOOKOUTPUT_H
 
-#include <istream>
 #include <string>
 #include <vector>
 #include <list>

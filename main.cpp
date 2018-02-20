@@ -88,6 +88,7 @@ int main( int argc, char *argv[] )
     uint32_t d;
     uint32_t h;
     bool make_program_run_at_startup = false;
+    bool launch_website = false;
 
     Globals::all_stats.clear();
     Globals::speed_stats.clear();
@@ -106,13 +107,14 @@ int main( int argc, char *argv[] )
         SwitchArg startup_switch( "s", "startup", "make the program run at computer startup (currently only Windows supported)", false, nullptr );
         cmd.add( startup_switch );
 
-        //SwitchArg website_switch( "w", "website", "open the program website", false, nullptr );
-        //cmd.add( website_switch );
+        SwitchArg website_switch( "w", "website", "open the program website", false, nullptr );
+        cmd.add( website_switch );
 
         cmd.parse( argc, argv );
 
         Globals::is_daemon = daemon_switch.getValue();
         make_program_run_at_startup = startup_switch.getValue();
+        launch_website = website_switch.getValue();
     }
     catch ( ArgException &e )
     {
@@ -139,22 +141,14 @@ int main( int argc, char *argv[] )
     {
         if ( Utils::BecomeDaemon() == -1 )
         {
-            cout << "Can't start as daemon. Process exited" << endl;
-            Logger::LogError( "Can't start as daemon. Process exited" );
+            cout << "Can not start as daemon. Process exited" << endl;
+            Logger::LogError( "Can not start as daemon. Process exited" );
             return 0;
         }
         else
         {
             Logger::LogInfo( "SmartTrafficMeter has started as a daemon" );
         }
-    }
-
-    /* Check if no other program's instance is running */
-    if ( Utils::check_one_instance() == false )
-    {
-    	/*If so, terminate this instance */
-        Logger::LogError( "Another instance is already running. Process has finished." );
-        return 0;
     }
 
     if ( Globals::is_daemon == true )
@@ -184,6 +178,25 @@ int main( int argc, char *argv[] )
 
     /* load settings */
     load_settings();
+
+    /* Check if no other program's instance is running */
+    if ( Utils::check_one_instance() == false )
+    {
+        if ( launch_website == true )
+        {
+            string url;
+            url += "http://127.0.0.1:";
+            url += Settings::settings["web server port"];
+            Utils::launch_default_browser( url );
+            return 0;
+        }
+
+        /*If so, terminate this instance */
+        Logger::LogError( "Another instance is already running. Process has finished." );
+        return 0;
+    }
+
+
 
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
     Globals::db_drv.set_database_dir( Settings::settings["database directory"] );

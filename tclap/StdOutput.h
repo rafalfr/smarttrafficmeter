@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 /****************************************************************************** 
  * 
  *  file:  StdOutput.h
@@ -21,7 +23,6 @@
 #ifndef TCLAP_STDCMDLINEOUTPUT_H
 #define TCLAP_STDCMDLINEOUTPUT_H
 
-#include <istream>
 #include <string>
 #include <vector>
 #include <list>

@@ -1120,4 +1120,19 @@ int32_t LinuxUtils::ensure_dir( const string& dir )
     }
 }
 
+/** @brief launch_default_browser
+  *
+  * This method opens the given url in a default browser
+  *
+  * @param the url to be opened
+  * @return The value returned is -1 on error and the return status of the command otherwise.
+  *
+  */
+int32_t LinuxUtils::launch_default_browser(const string& url)
+{
+	string command;
+	command+="xdg-open ";
+	command+=url;
+	return system(command.c_str());
+}
 #endif // __linux

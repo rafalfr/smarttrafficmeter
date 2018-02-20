@@ -2346,10 +2346,26 @@ string Utils::gz_decompress( const std::string& data )
   * @return creation status, 0 on success
   *
   */
-int32_t Utils::ensure_dir(const string& dir)
+int32_t Utils::ensure_dir( const string& dir )
 {
 #ifdef __linux
-return LinuxUtils::ensure_dir(dir);
+    return LinuxUtils::ensure_dir( dir );
 #endif // __linux
 }
+
+/** @brief launch_default_browser
+  *
+  * This method opens the given url in a default browser
+  *
+  * @param the url to be opened
+  * @return The value returned is -1 on error and the return status of the command otherwise.
+  *
+  */
+int32_t Utils::launch_default_browser(const string& url )
+{
+#ifdef __linux
+    return LinuxUtils::launch_default_browser( url );
+#endif // __linux
+}
+
 

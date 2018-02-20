@@ -1,3 +1,4 @@
+
 /****************************************************************************** 
  * 
  *  file:  CmdLineInterface.h
@@ -22,7 +23,6 @@
 #ifndef TCLAP_COMMANDLINE_INTERFACE_H
 #define TCLAP_COMMANDLINE_INTERFACE_H
 
-#include <istream>
 #include <string>
 #include <vector>
 #include <list>
