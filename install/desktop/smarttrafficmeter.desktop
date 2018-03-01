@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Smart Traffic Meter
+GenericName=System service
+Comment=Measure Network Traffic
+Exec=smarttrafficmeter -w
+Terminal=false
+Icon=smarttrafficmeter
+Type=Application
+Categories=Network
