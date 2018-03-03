@@ -1,6 +1,5 @@
 *.o
 *.db
-*.xml
 *.pid
 *.layout
 /bin/*

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">org.smarttrafficmeter-project.SmartTrafficMeter</id>
+  <launchable type="desktop">smarttrafficmeter.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>Smart Traffic Meter is a program for measuring network usage.</p>
+    <ul>
+      <li>web user interface</li>
+      <li>yearly, monthly, daily and hourly statistics</li>
+      <li>realtime network speed</li>
+      <li>stopwatch</li>
+    </ul>
+  </description>
+  <url type="homepage">https://github.com/rafalfr/smarttrafficmeter</url>
+</application>
