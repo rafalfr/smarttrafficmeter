@@ -6,4 +6,5 @@
 /obj/*
 /build/*
 /install/kde/*
+/smarttrafficmeter-cppcheck-build-dir/*
 

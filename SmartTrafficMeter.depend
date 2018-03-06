@@ -25871,12 +25871,12 @@
 1519137489 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceInfo.cpp
 	"InterfaceInfo.h"
 
-1519137489 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
+1520370708 source:/home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.cpp
 	<ctime>
 	<sys/time.h>
 	"InterfaceSpeedMeter.h"
 
-1519137489 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
+1520370528 /home/rafal/Programowanie/C++/smarttrafficmeter/InterfaceSpeedMeter.h
 	<map>
 	<list>
 

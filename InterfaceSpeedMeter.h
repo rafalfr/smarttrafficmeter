@@ -56,6 +56,8 @@ public:
 
     InterfaceSpeedMeter( const InterfaceSpeedMeter& );
 
+    InterfaceSpeedMeter& operator=(const InterfaceSpeedMeter& );
+
     virtual ~InterfaceSpeedMeter();
 
     uint64_t get_rx_speed( void ) const;

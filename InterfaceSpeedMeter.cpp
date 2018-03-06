@@ -67,6 +67,34 @@ InterfaceSpeedMeter::InterfaceSpeedMeter( const InterfaceSpeedMeter& ism ) : max
         buf.push_front( item );
     }
 }
+/** @brief operator=
+  *
+  * The assignment operator
+  *
+  */
+InterfaceSpeedMeter& InterfaceSpeedMeter::operator=( const InterfaceSpeedMeter& ism )
+{
+    if ( this == &ism )
+    {
+        return *this;
+    }
+
+    for ( auto const & stats : ism.buf )
+    {
+        uint64_t rx = stats.at( "rx" );
+        uint64_t tx = stats.at( "tx" );
+        uint64_t time = stats.at( "time" );
+        map<string, uint64_t> item;
+
+        item["rx"] = rx;
+        item["tx"] = tx;
+        item["time"] = time;
+
+        buf.push_front( item );
+    }
+
+    return *this;
+}
 
 /** @brief ~InterfaceSpeedMeter
  *

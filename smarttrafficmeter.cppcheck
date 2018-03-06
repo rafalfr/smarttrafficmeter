@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <builddir>smarttrafficmeter-cppcheck-build-dir</builddir>
+    <analyze-all-vs-configs>true</analyze-all-vs-configs>
+    <includedir>
+        <dir name="/home/rafal/Programowanie/C++/smarttrafficmeter/"/>
+    </includedir>
+    <paths>
+        <dir name="/home/rafal/Programowanie/C++/smarttrafficmeter"/>
+    </paths>
+</project>
