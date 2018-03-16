@@ -813,8 +813,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t d;
         uint32_t h;
 
-        uint64_t rx_in_period = 0ULL;
-        uint64_t tx_in_period = 0ULL;
         string unit;
         float scale;
 
@@ -1107,8 +1105,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
 
             //scale obtained stats
             uint64_t max_value = 0ULL;
-            rx_in_period = 0ULL;
-            tx_in_period = 0ULL;
+            uint64_t rx_in_period = 0ULL;
+            uint64_t tx_in_period = 0ULL;
 
             for ( auto & row_stats : results )
             {

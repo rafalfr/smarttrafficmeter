@@ -47,6 +47,25 @@ InterfaceStats::InterfaceStats( const InterfaceStats& stats ) : first_update( st
 {
 }
 
+/** @brief operator=
+  *
+  * The assignment operator
+  *
+  */
+InterfaceStats& InterfaceStats::operator=( InterfaceStats& is )
+{
+    if ( this != &is )
+    {
+        first_update = is.first_update;
+        rx = is.rx;
+        tx = is.tx;
+        p_rx = is.p_rx;
+        p_tx = is.p_tx;
+    }
+
+    return *this;
+}
+
 /** @brief ~InterfaceStats
  *
  * The default destructor

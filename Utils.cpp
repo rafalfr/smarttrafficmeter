@@ -346,7 +346,6 @@ string Utils::replace( const string& pattern, const string& with, const string& 
     string out;
 
     size_t start = 0;
-    size_t end = 0;
 
     if ( in.find( pattern, start ) == string::npos )
     {
@@ -354,6 +353,7 @@ string Utils::replace( const string& pattern, const string& with, const string& 
     }
     else
     {
+    	size_t end;
         while ( ( end = in.find( pattern, start ) ) != string::npos )
         {
             out += in.substr( start, end - start );
@@ -915,7 +915,6 @@ void Utils::load_data_from_sqlite( const string& a_mac )
 
     sqlite3 *db;
     char *zErrMsg = nullptr;
-    int rc;
     uint32_t y;
     uint32_t m;
     uint32_t d;
@@ -949,7 +948,7 @@ void Utils::load_data_from_sqlite( const string& a_mac )
 
     for ( string const & mac : macs )
     {
-        rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
+        int rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -1609,7 +1608,6 @@ bool Utils::repair_broken_databse( const string& a_mac )
     uint32_t h;
     sqlite3 *db;
     char *zErrMsg = nullptr;
-    int rc;
     vector<string> macs;
 
     vector<string> queries;
@@ -1796,7 +1794,7 @@ bool Utils::repair_broken_databse( const string& a_mac )
 
         Globals::data_load_save_mutex.lock();
 
-        rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+        int rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
@@ -1835,11 +1833,10 @@ bool Utils::repair_broken_databse( const string& a_mac )
 int Utils::callback( void*, int argc, char** argv, char** azColName )
 {
 #ifdef use_sqlite
-    int i;
 
     if ( argc > 0 )
     {
-        for ( i = 0; i < argc; i++ )
+        for ( int i = 0; i < argc; i++ )
         {
             Utils::table_columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
         }
@@ -2139,15 +2136,12 @@ void Utils::sleep_seconds( uint32_t seconds )
   */
 string Utils::to_narrow( const wchar_t* src )
 {
-    size_t i;
-    wchar_t code;
+    size_t i=0;
     string out;
-
-    i = 0;
 
     while ( src[i] != '\0' )
     {
-        code = src[i];
+        wchar_t code = src[i];
 
         if ( code < 128 )
         {

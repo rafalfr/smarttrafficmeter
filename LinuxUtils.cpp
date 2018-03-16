@@ -113,11 +113,6 @@ void* LinuxUtils::MeterThread( void )
     string p_daily_row;
     string p_monthly_row;
     string p_yearly_row;
-    bool hourly_row_changed = false;
-    bool daily_row_changed = false;
-    bool monthly_row_changed = false;
-    bool yearly_row_changed = false;
-
 
     try
     {
@@ -153,8 +148,6 @@ void* LinuxUtils::MeterThread( void )
             p_yearly_row = Utils::to_string( y );
             first_iteration = false;
         }
-
-        hourly_row_changed = daily_row_changed = monthly_row_changed = yearly_row_changed = false;
 
         if ( getifaddrs( &ifaddr ) == -1 )
         {
@@ -260,6 +253,11 @@ void* LinuxUtils::MeterThread( void )
         }
 
         ifaddr = ipa;
+
+		bool hourly_row_changed = false;
+		bool daily_row_changed = false;
+		bool monthly_row_changed = false;
+		bool yearly_row_changed = false;
 
         for ( ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
         {
@@ -467,7 +465,7 @@ void* LinuxUtils::MeterThread( void )
                             rows4remove.push_back( it );
                         }
 
-                        it++;
+                        ++it;
                     }
 
                     for ( uint32_t i = 0; i < rows4remove.size(); i++ )
@@ -569,8 +567,6 @@ void LinuxUtils::signal_handler( int signal )
  */
 int LinuxUtils::BecomeDaemon( int flags )
 {
-    int maxfd, fd;
-
     switch ( fork() )                   /* Become background process */
     {
     case -1:
@@ -611,12 +607,12 @@ int LinuxUtils::BecomeDaemon( int flags )
 
     if ( !( flags & BD_NO_CLOSE_FILES ) )  /* Close all open files */
     {
-        maxfd = sysconf( _SC_OPEN_MAX );
+        int maxfd = sysconf( _SC_OPEN_MAX );
 
         if ( maxfd == -1 )              /* Limit is indeterminate... */
             maxfd = BD_MAX_CLOSE;       /* so take a guess */
 
-        for ( fd = 0; fd < maxfd; fd++ )
+        for ( int fd = 0; fd < maxfd; fd++ )
             close( fd );
     }
 
@@ -641,6 +637,7 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
     if ( getifaddrs( &ifaddr ) == -1 )
     {
+    	delete []host;
         freeifaddrs( ifaddr );
         return interfaces;
     }
@@ -666,7 +663,7 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
 
         if ( family == AF_INET )
         {
-            for ( uint32_t i = 0; host[i] != '\0' && i < NI_MAXHOST; i++ )
+            for ( uint32_t i = 0; i < NI_MAXHOST && host[i] != '\0'; i++ )
             {
                 host[i] = '\0';
             }
@@ -686,8 +683,6 @@ map<string, InterfaceInfo> LinuxUtils::get_all_interfaces( void )
             {
                 continue;
             }
-
-            string interface_name( ifaddr->ifa_name );
 
             string mac = get_mac( ifaddr->ifa_name );
 

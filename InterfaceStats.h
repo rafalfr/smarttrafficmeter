@@ -57,6 +57,8 @@ public:
 
     InterfaceStats( const InterfaceStats& );
 
+    InterfaceStats& operator=(const InterfaceStats& );
+
     ~InterfaceStats();
 
     void set_first_update(bool _first_update);

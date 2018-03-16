@@ -99,9 +99,6 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
     map<string, InterfaceStats> results;
 
-    uint64_t rx_bytes;
-    uint64_t tx_bytes;
-
 #ifdef use_sqlite
     sqlite3 *db;
     char *zErrMsg = nullptr;
@@ -164,6 +161,9 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
 
             row = result["row"];
 
+			uint64_t rx_bytes;
+			uint64_t tx_bytes;
+
             try
             {
                 rx_bytes = Utils::stoull( result["rx_bytes"] );
@@ -208,13 +208,11 @@ const map<string, InterfaceStats> DataBaseDriver::get_stats( const string& _mac,
   */
 int DataBaseDriver::callback( void*, int argc, char** argv, char** azColName )
 {
-    int i;
-
     map <string, string> columns;
 
     if ( argc > 0 )
     {
-        for ( i = 0; i < argc; i++ )
+        for (int i = 0; i < argc; i++ )
         {
             columns[string( azColName[i] )] = string( argv[i] ? argv[i] : "0" );
         }

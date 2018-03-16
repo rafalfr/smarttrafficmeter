@@ -15,10 +15,11 @@
 				<Compiler>
 					<Add option="-w" />
 					<Add option="-std=c++11" />
-					<Add option="-g" />
 					<Add option="-Og" />
+					<Add option="-g" />
 					<Add option="-O0" />
 					<Add option="-D__linux" />
+					<Add option="-Duse_sqlite" />
 				</Compiler>
 				<Linker>
 					<Add library="rt" />
