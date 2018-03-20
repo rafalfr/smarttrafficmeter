@@ -209,9 +209,9 @@ void* LinuxUtils::MeterThread( void )
 
                     Utils::load_stats( mac );
 
-                    if ( Utils::check_databse_integrity( mac ) == false )
+                    if ( Utils::check_database_integrity( mac ) == false )
                     {
-                        Utils::repair_broken_databse( mac );
+                        Utils::repair_broken_database( mac );
                         Utils::load_stats( mac );
                     }
                 }

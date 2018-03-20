@@ -74,8 +74,6 @@ public:
 
     void set_name( const char* t_name );
 
-    void set_desc( const char* t_desc );
-
     void set_ip4( const char* t_ip4 );
 
     void set_ip6( const char* t_ip6 );

@@ -253,9 +253,9 @@ int main( int argc, char *argv[] )
 
     Utils::load_stats( "" );
 
-    if ( Utils::check_databse_integrity( "" ) == false )
+    if ( Utils::check_database_integrity( "" ) == false )
     {
-        Utils::repair_broken_databse( "" );
+        Utils::repair_broken_database( "" );
 
         Utils::sleep_seconds( 5 );
         Utils::load_stats( "" );

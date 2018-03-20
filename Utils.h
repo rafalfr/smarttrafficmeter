@@ -68,9 +68,9 @@ public:
 
     static void save_pid_file( const std::string& pid_file_path );
 
-    static bool check_databse_integrity( const std::string& a_mac );
+    static bool check_database_integrity( const std::string& a_mac );
 
-    static bool repair_broken_databse( const std::string& a_mac );
+    static bool repair_broken_database( const std::string& a_mac );
 
     static std::string get_mac( char* name );
 
@@ -96,8 +96,6 @@ public:
 
     static std::string float_to_string( float value, int32_t precision = 3 );
 
-    static std::string double_to_string( double value, int32_t precision = 3 );
-
     static std::string to_string( uint64_t value, uint32_t min_string_length = 0 );
 
     static std::string to_string( uint32_t value, uint32_t min_string_length = 0 );
@@ -107,8 +105,6 @@ public:
     static uint32_t stoui( const std::string& str );
 
     static int32_t hstoi( const string& str );
-
-    static float stof( const std::string& str );
 
     static uint64_t stoull( const std::string& str );
 
@@ -140,8 +136,6 @@ public:
 
     static void sleep_seconds( uint32_t seconds );
 
-    static std::string to_narrow( const wchar_t * src );
-
     static void set_endsession_handler( void );
 
     static bool dir_exists( const char *path );
@@ -153,8 +147,6 @@ public:
     static bool save_settings( void );
 
     static std::string gz_compress( const std::string& data );
-
-    static std::string gz_decompress( const std::string& data );
 
     static int32_t ensure_dir( const string& dir );
 

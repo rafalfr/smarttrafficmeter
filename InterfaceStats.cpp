@@ -52,7 +52,7 @@ InterfaceStats::InterfaceStats( const InterfaceStats& stats ) : first_update( st
   * The assignment operator
   *
   */
-InterfaceStats& InterfaceStats::operator=( InterfaceStats& is )
+InterfaceStats& InterfaceStats::operator=(const InterfaceStats& is )
 {
     if ( this != &is )
     {

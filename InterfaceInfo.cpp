@@ -183,20 +183,6 @@ void InterfaceInfo::set_name( const char* t_name )
     name.append( t_name );
 }
 
-/** @brief set_desc
-  *
-  * The function sets the MAC address for the network interface
-  *
-  * @param network interface description
-  * @return void
-  *
-  */
-void InterfaceInfo::set_desc( const char* t_desc )
-{
-    desc.clear();
-    desc.append( t_desc );
-}
-
 /** @brief set_ip4
  *
  * The function sets the IP4 address for the network interface

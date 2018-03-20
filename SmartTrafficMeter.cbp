@@ -132,6 +132,7 @@
 			<Add option="-march=native" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add option="-DSQLITE_ENABLE_BATCH_ATOMIC_WRITE" />
+			<Add option="-Duse_sqlite" />
 			<Add directory="url" />
 			<Add directory="sqlite" />
 			<Add directory="serverhttp" />

@@ -283,14 +283,7 @@ bool Utils::contains( const string& str, const string& key )
   */
 bool Utils::starts_with( const string& str, const string& key )
 {
-    if ( str.find( key ) == 0 )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return str.size() >= key.size() && str.compare(0, key.size(), key) == 0;
 }
 
 /** @brief split
@@ -379,24 +372,6 @@ string Utils::replace( const string& pattern, const string& with, const string& 
   *
   */
 string Utils::float_to_string( float value, int32_t precision )
-{
-    std::ostringstream stm ;
-    stm.precision( precision );
-    stm.setf( std::ios_base::fixed );
-    stm << value ;
-    return stm.str() ;
-}
-
-/** @brief double_to_string
-  *
-  * The function converts double value to string
-  *
-  * @param value
-  * @param string precision
-  * @return string representation of the double value
-  *
-  */
-string Utils::double_to_string( double value, int32_t precision )
 {
     std::ostringstream stm ;
     stm.precision( precision );
@@ -573,31 +548,6 @@ string Utils::to_string( uint32_t value, uint32_t min_string_length )
 
     return out;
 }
-
-/** @brief stof
-  *
-  * The function converts string to float value
-  *
-  * @param string
-  * @return float value
-  *
-  */
-float Utils::stof( const string& str )
-{
-    float value;
-
-    std::stringstream stream( str );
-
-    stream >> value;
-
-    if ( stream.fail() )
-    {
-        return 0.0f;
-    }
-
-    return value;
-}
-
 
 /** @brief hexcolor_to_strings
   *
@@ -1493,16 +1443,16 @@ void Utils::save_stats_to_mysql( const string& )
 #endif // use_mysql
 }
 
-/** @brief check_databse_integrity
+/** @brief check_database_integrity
   *
-  * This function returns true if the databse integrity is maintained
-  * and returns false if databse integrity is lost
+  * This function returns true if the database integrity is maintained
+  * and returns false if database integrity is lost
   *
   * @param mac
   * @return True if database integrity is maintained
   *
   */
-bool Utils::check_databse_integrity( const string& a_mac )
+bool Utils::check_database_integrity( const string& a_mac )
 {
     uint32_t y;
     uint32_t m;
@@ -1590,7 +1540,7 @@ bool Utils::check_databse_integrity( const string& a_mac )
     return true;
 }
 
-/** @brief repair_broken_databse
+/** @brief repair_broken_database
   *
   * This function repairs the broken database
   * and returns true if everything went ok.
@@ -1599,7 +1549,7 @@ bool Utils::check_databse_integrity( const string& a_mac )
   * @return True when database has been repaired
   *
   */
-bool Utils::repair_broken_databse( const string& a_mac )
+bool Utils::repair_broken_database( const string& a_mac )
 {
 #ifdef use_sqlite
     uint32_t y;
@@ -2126,44 +2076,6 @@ void Utils::sleep_seconds( uint32_t seconds )
 #endif // __linux
 }
 
-/** @brief to_narrow
-  *
-  * The method converts wchar_t string to std::string
-  *
-  * @param wchar_t string
-  * @return converted string as std::string
-  *
-  */
-string Utils::to_narrow( const wchar_t* src )
-{
-    size_t i=0;
-    string out;
-
-    while ( src[i] != '\0' )
-    {
-        wchar_t code = src[i];
-
-        if ( code < 128 )
-        {
-            out += char ( code );
-        }
-        else
-        {
-            out += ' ';
-
-            // if lead surrogate, skip the next code unit, which is the trail
-            if ( code >= 0xD800 && code <= 0xD8FF )
-            {
-                i++;
-            }
-        }
-
-        i++;
-    }
-
-    return out;
-}
-
 /** @brief set_endsession_handler
   *
   * The method sets endsession handler
@@ -2307,29 +2219,6 @@ string Utils::gz_compress( const std::string& data )
     bio::copy( out, compressed );
 
     return compressed.str();
-}
-
-/** @brief gz_decompress
-  *
-  * The method is used to decompress a string using gz decompression.
-  *
-  * @param compressed data as a string
-  * @return decompressed data as a string
-  *
-  */
-string Utils::gz_decompress( const std::string& data )
-{
-    namespace bio = boost::iostreams;
-
-    std::stringstream compressed( data );
-    std::stringstream decompressed;
-
-    bio::filtering_streambuf<bio::input> out;
-    out.push( bio::gzip_decompressor() );
-    out.push( compressed );
-    bio::copy( out, decompressed );
-
-    return decompressed.str();
 }
 
 /** @brief ensure_dir
