@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -Iurl -Isqlite -Iserverhttp -I/usr/include/mysql/ -I/usr/include/libiberty/ -I../smarttrafficmeter
-CFLAGS = -fexceptions -march=native -DGLIBCXX_FORCE_NEW -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE
+CFLAGS = -fexceptions -march=native -DGLIBCXX_FORCE_NEW -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE -Duse_sqlite
 RESINC = 
 LIBDIR = 
 LIB = 

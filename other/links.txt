@@ -130,6 +130,9 @@ make clean -f SmartTrafficMeter.cbp.mak
 make -f SmartTrafficMeter.cbp.mak
 */ 
 
+execute before publishing to Arch User Repository
+makepkg --printsrcinfo > .SRCINFO
+
 
 //projektowanie strony internetowej
 // http://html-color-codes.info/html-editor/
