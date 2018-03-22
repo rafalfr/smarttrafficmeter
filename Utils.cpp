@@ -1744,7 +1744,7 @@ bool Utils::repair_broken_database( const string& a_mac )
 
         Globals::data_load_save_mutex.lock();
 
-        int rc = sqlite3_open_v2( ( Globals::cwd + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
+        int rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr );
 
         if ( rc != SQLITE_OK )
         {
