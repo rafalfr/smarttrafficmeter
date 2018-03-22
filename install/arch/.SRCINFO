@@ -1,0 +1,21 @@
+pkgbase = smarttrafficmeter
+	pkgdesc = Software for measuring network usage.
+	pkgver = 2.1.1280.7172
+	pkgrel = 1
+	url = https://github.com/rafalfr/smarttrafficmeter
+	install = smarttrafficmeter.install
+	arch = x86_64
+	license = GPL3
+	makedepends = gcc
+	makedepends = git
+	makedepends = boost
+	makedepends = curl
+	makedepends = binutils
+	makedepends = gzip
+	depends = boost-libs
+	depends = curl
+	depends = xdg-utils
+	provides = smarttrafficmeter
+
+pkgname = smarttrafficmeter
+
