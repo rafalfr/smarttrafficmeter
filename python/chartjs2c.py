@@ -2,6 +2,8 @@ import os
 import gzip
 import codecs
 
+#python 2
+
 # open the original file
 file = codecs.open("Chart.min.js", "rb", "utf-8")
 file_content = file.read()

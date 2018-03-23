@@ -40,9 +40,9 @@ OBJDIR_LINUX_RELEASE = obj/release
 DEP_LINUX_RELEASE = 
 OUT_LINUX_RELEASE = bin/release/smarttrafficmeter
 
-OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/stopwatch.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/speed_update.o $(OBJDIR_LINUX_DEBUG)/smoothiejs.o $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/jsoncpp.o $(OBJDIR_LINUX_DEBUG)/zoom.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/Path.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/GroveStreamsUploader.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o $(OBJDIR_LINUX_DEBUG)/jscolor.o $(OBJDIR_LINUX_DEBUG)/jquery.o $(OBJDIR_LINUX_DEBUG)/hammer.o $(OBJDIR_LINUX_DEBUG)/custom_time_span.o $(OBJDIR_LINUX_DEBUG)/chartjs.o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/Url.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/ServerThread.o $(OBJDIR_LINUX_DEBUG)/Resources.o
+OBJ_LINUX_DEBUG = $(OBJDIR_LINUX_DEBUG)/stopwatch.o $(OBJDIR_LINUX_DEBUG)/sqlite3.o $(OBJDIR_LINUX_DEBUG)/speed_update.o $(OBJDIR_LINUX_DEBUG)/smoothiejs.o $(OBJDIR_LINUX_DEBUG)/main.o $(OBJDIR_LINUX_DEBUG)/jsoncpp.o $(OBJDIR_LINUX_DEBUG)/zoom.o $(OBJDIR_LINUX_DEBUG)/MySQLInterface.o $(OBJDIR_LINUX_DEBUG)/Logger.o $(OBJDIR_LINUX_DEBUG)/LinuxUtils.o $(OBJDIR_LINUX_DEBUG)/InterfaceStats.o $(OBJDIR_LINUX_DEBUG)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_DEBUG)/Path.o $(OBJDIR_LINUX_DEBUG)/InterfaceInfo.o $(OBJDIR_LINUX_DEBUG)/GroveStreamsUploader.o $(OBJDIR_LINUX_DEBUG)/Globals.o $(OBJDIR_LINUX_DEBUG)/Debug.o $(OBJDIR_LINUX_DEBUG)/DataBaseDriver.o $(OBJDIR_LINUX_DEBUG)/WebSiteContent.o $(OBJDIR_LINUX_DEBUG)/jscolor.o $(OBJDIR_LINUX_DEBUG)/jquery.o $(OBJDIR_LINUX_DEBUG)/hammer.o $(OBJDIR_LINUX_DEBUG)/custom_time_span.o $(OBJDIR_LINUX_DEBUG)/chartjs.o $(OBJDIR_LINUX_DEBUG)/BackgroundImage.o $(OBJDIR_LINUX_DEBUG)/Utils.o $(OBJDIR_LINUX_DEBUG)/Url.o $(OBJDIR_LINUX_DEBUG)/Settings.o $(OBJDIR_LINUX_DEBUG)/Resources.o
 
-OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/stopwatch.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/speed_update.o $(OBJDIR_LINUX_RELEASE)/smoothiejs.o $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/jsoncpp.o $(OBJDIR_LINUX_RELEASE)/zoom.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/Path.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/GroveStreamsUploader.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o $(OBJDIR_LINUX_RELEASE)/jscolor.o $(OBJDIR_LINUX_RELEASE)/jquery.o $(OBJDIR_LINUX_RELEASE)/hammer.o $(OBJDIR_LINUX_RELEASE)/custom_time_span.o $(OBJDIR_LINUX_RELEASE)/chartjs.o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/Url.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/ServerThread.o $(OBJDIR_LINUX_RELEASE)/Resources.o
+OBJ_LINUX_RELEASE = $(OBJDIR_LINUX_RELEASE)/stopwatch.o $(OBJDIR_LINUX_RELEASE)/sqlite3.o $(OBJDIR_LINUX_RELEASE)/speed_update.o $(OBJDIR_LINUX_RELEASE)/smoothiejs.o $(OBJDIR_LINUX_RELEASE)/main.o $(OBJDIR_LINUX_RELEASE)/jsoncpp.o $(OBJDIR_LINUX_RELEASE)/zoom.o $(OBJDIR_LINUX_RELEASE)/MySQLInterface.o $(OBJDIR_LINUX_RELEASE)/Logger.o $(OBJDIR_LINUX_RELEASE)/LinuxUtils.o $(OBJDIR_LINUX_RELEASE)/InterfaceStats.o $(OBJDIR_LINUX_RELEASE)/InterfaceSpeedMeter.o $(OBJDIR_LINUX_RELEASE)/Path.o $(OBJDIR_LINUX_RELEASE)/InterfaceInfo.o $(OBJDIR_LINUX_RELEASE)/GroveStreamsUploader.o $(OBJDIR_LINUX_RELEASE)/Globals.o $(OBJDIR_LINUX_RELEASE)/Debug.o $(OBJDIR_LINUX_RELEASE)/DataBaseDriver.o $(OBJDIR_LINUX_RELEASE)/WebSiteContent.o $(OBJDIR_LINUX_RELEASE)/jscolor.o $(OBJDIR_LINUX_RELEASE)/jquery.o $(OBJDIR_LINUX_RELEASE)/hammer.o $(OBJDIR_LINUX_RELEASE)/custom_time_span.o $(OBJDIR_LINUX_RELEASE)/chartjs.o $(OBJDIR_LINUX_RELEASE)/BackgroundImage.o $(OBJDIR_LINUX_RELEASE)/Utils.o $(OBJDIR_LINUX_RELEASE)/Url.o $(OBJDIR_LINUX_RELEASE)/Settings.o $(OBJDIR_LINUX_RELEASE)/Resources.o
 
 all: linux_debug linux_release
 
@@ -142,9 +142,6 @@ $(OBJDIR_LINUX_DEBUG)/Url.o: Url.cpp
 
 $(OBJDIR_LINUX_DEBUG)/Settings.o: Settings.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Settings.cpp -o $(OBJDIR_LINUX_DEBUG)/Settings.o
-
-$(OBJDIR_LINUX_DEBUG)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c ServerThread.cpp -o $(OBJDIR_LINUX_DEBUG)/ServerThread.o
 
 $(OBJDIR_LINUX_DEBUG)/Resources.o: Resources.cpp
 	$(CXX) $(CFLAGS_LINUX_DEBUG) $(INC_LINUX_DEBUG) -c Resources.cpp -o $(OBJDIR_LINUX_DEBUG)/Resources.o
@@ -248,9 +245,6 @@ $(OBJDIR_LINUX_RELEASE)/Url.o: Url.cpp
 
 $(OBJDIR_LINUX_RELEASE)/Settings.o: Settings.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Settings.cpp -o $(OBJDIR_LINUX_RELEASE)/Settings.o
-
-$(OBJDIR_LINUX_RELEASE)/ServerThread.o: ServerThread.cpp
-	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c ServerThread.cpp -o $(OBJDIR_LINUX_RELEASE)/ServerThread.o
 
 $(OBJDIR_LINUX_RELEASE)/Resources.o: Resources.cpp
 	$(CXX) $(CFLAGS_LINUX_RELEASE) $(INC_LINUX_RELEASE) -c Resources.cpp -o $(OBJDIR_LINUX_RELEASE)/Resources.o

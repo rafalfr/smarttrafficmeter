@@ -170,8 +170,6 @@
 		<Unit filename="Path.cpp" />
 		<Unit filename="Resources.cpp" />
 		<Unit filename="Resources.h" />
-		<Unit filename="ServerThread.cpp" />
-		<Unit filename="ServerThread.h" />
 		<Unit filename="Settings.cpp" />
 		<Unit filename="Settings.h" />
 		<Unit filename="Url.cpp" />

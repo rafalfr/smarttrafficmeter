@@ -42,7 +42,6 @@ If not, see http://www.gnu.org/licenses/.
 #include "Logger.h"
 #include "Settings.h"
 #include "MySQLInterface.h"
-#include "ServerThread.h"
 #include "InterfaceInfo.h"
 #include "InterfaceStats.h"
 #include "InterfaceSpeedMeter.h"
