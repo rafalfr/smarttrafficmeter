@@ -167,6 +167,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<tr>\n";
         page += "<td>\n";
         page += "<h1>Smart Traffic Meter</h1>\n";
+        page += "<br>\n";
+        page += "<p>version " + string( AutoVersion::FULLVERSION_STRING ) + "</p>";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";

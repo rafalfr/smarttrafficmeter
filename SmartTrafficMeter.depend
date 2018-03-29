@@ -26149,7 +26149,7 @@
 	"GroveStreamsUploader.h"
 	"LinuxUtils.h"
 
-1521585621 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
+1521816795 source:/home/rafal/Programowanie/C++/smarttrafficmeter/main.cpp
 	"config.h"
 	<iostream>
 	<fstream>
@@ -26172,7 +26172,6 @@
 	"Logger.h"
 	"Settings.h"
 	"MySQLInterface.h"
-	"ServerThread.h"
 	"InterfaceInfo.h"
 	"InterfaceStats.h"
 	"InterfaceSpeedMeter.h"
@@ -26183,7 +26182,7 @@
 	<direct.h>
 	"sqlite3.h"
 
-1521816796 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
+1522359778 /home/rafal/Programowanie/C++/smarttrafficmeter/version.h
 
 1514294978 /home/rafal/Programowanie/C++/smarttrafficmeter/tclap/CmdLine.h
 	<tclap/SwitchArg.h>
@@ -26451,7 +26450,7 @@
 1519137489 source:/home/rafal/Programowanie/C++/smarttrafficmeter/speed_update.cpp
 	"Resources.h"
 
-1521815639 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
+1522359190 source:/home/rafal/Programowanie/C++/smarttrafficmeter/smoothiejs.cpp
 	"Resources.h"
 
 1519137489 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Path.cpp
