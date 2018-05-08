@@ -168,7 +168,6 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<td>\n";
         page += "<h1>Smart Traffic Meter</h1>\n";
         page += "<br>\n";
-        page += "<p>version " + string( AutoVersion::FULLVERSION_STRING ) + "</p>";
         page += "</td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
@@ -492,7 +491,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<br><br>\n";
         page += "<div align=\"center\">\n";
         page += "<p>\n";
-        page += "Copyright &copy; 2017 Rafał Frączek\n";
+        page += "Copyright &copy; 2018 Rafał Frączek\n";
         page += "</p>\n";
         page += "<p>\n";
         page += "Smart Traffic Meter is released under the <a href=\"https://opensource.org/licenses/GPL-3.0\">GNU General Public License, version 3 (GPL-3.0)</a> license.\n";
