@@ -2,7 +2,7 @@
 
 Logger.cpp
 
-Copyright (C) 2018 Rafał Frączek
+Copyright (C) 2019 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
