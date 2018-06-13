@@ -140,3 +140,4 @@ makepkg --printsrcinfo > .SRCINFO
 // http://www.awwwards.com/10-html-css-online-code-editors-for-web-developers.html
 
 git remote set-url --add origin git@github.com:rafalfr/smarttrafficmeter.git
+git remote set-url --add origin git@gitlab.com:rafalfr/smarttrafficmeter.git
