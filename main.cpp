@@ -196,7 +196,6 @@ int main( int argc, char *argv[] )
     }
 
 
-
     Globals::db_drv.set_database_type( Settings::settings["storage"] );
     Globals::db_drv.set_database_dir( Settings::settings["database directory"] );
 

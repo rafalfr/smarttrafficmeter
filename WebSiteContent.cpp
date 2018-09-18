@@ -840,15 +840,15 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         }
         else if ( stats_type.compare( "monthly" ) == 0 )
         {
-            start_date_str = "1900-01";
+            start_date_str = "1900-00";
         }
         else if ( stats_type.compare( "daily" ) == 0 )
         {
-            start_date_str = "1900-01-01";
+            start_date_str = "1900-00-00";
         }
         else if ( stats_type.compare( "hourly" ) == 0 )
         {
-            start_date_str = "1900-01-01-00";
+            start_date_str = "1900-00-00_00-01";
         }
 
         string end_date_str = current_time_str;

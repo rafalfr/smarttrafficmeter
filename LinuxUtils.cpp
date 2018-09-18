@@ -120,7 +120,7 @@ void* LinuxUtils::MeterThread( void )
     }
     catch ( ... )
     {
-        refresh_interval = 1;
+        refresh_interval = 1U;
     }
 
     try
@@ -129,7 +129,7 @@ void* LinuxUtils::MeterThread( void )
     }
     catch ( ... )
     {
-        save_interval = 30 * 60;	// default save interval time in seconds
+        save_interval = 30U * 60U;	// default save interval time in seconds
     }
 
     string row;
@@ -157,7 +157,7 @@ void* LinuxUtils::MeterThread( void )
 
         ipa = ifaddr;
 
-        for ( num_running_interfaces = 0 ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
+        for ( num_running_interfaces = 0U ; ifaddr != NULL; ifaddr = ifaddr->ifa_next )
         {
 
             if ( ifaddr->ifa_addr == NULL || strcmp( ifaddr->ifa_name, "lo" ) == 0 || strcmp( ifaddr->ifa_name, "" ) == 0 || strlen( ifaddr->ifa_name ) == 0 )
@@ -468,7 +468,7 @@ void* LinuxUtils::MeterThread( void )
                         ++it;
                     }
 
-                    for ( uint32_t i = 0; i < rows4remove.size(); i++ )
+                    for ( uint32_t i = 0U; i < rows4remove.size(); i++ )
                     {
                         Globals::all_stats[mac][table_name].erase( rows4remove[i] );
                     }

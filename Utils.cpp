@@ -283,7 +283,7 @@ bool Utils::contains( const string& str, const string& key )
   */
 bool Utils::starts_with( const string& str, const string& key )
 {
-    return str.size() >= key.size() && str.compare(0, key.size(), key) == 0;
+    return str.size() >= key.size() && str.compare( 0, key.size(), key ) == 0;
 }
 
 /** @brief split
@@ -346,7 +346,8 @@ string Utils::replace( const string& pattern, const string& with, const string& 
     }
     else
     {
-    	size_t end;
+        size_t end;
+
         while ( ( end = in.find( pattern, start ) ) != string::npos )
         {
             out += in.substr( start, end - start );
@@ -791,7 +792,7 @@ void Utils::str2date( const string& str, const string& type, uint32_t* y, uint32
   */
 uint32_t Utils::days_in_month( uint32_t month, uint32_t year )
 {
-    if ( month == 0U || month == 1UL || month == 3UL || month == 5UL || month == 7UL || month == 8UL || month == 10UL || month == 12UL )
+    if ( month == 0UL || month == 1UL || month == 3UL || month == 5UL || month == 7UL || month == 8UL || month == 10UL || month == 12UL )
     {
         return 31UL;
     }
@@ -801,7 +802,7 @@ uint32_t Utils::days_in_month( uint32_t month, uint32_t year )
     }
     else if ( month == 2UL )
     {
-        bool leap_year = ( year % 400 ) ? ( ( year % 100 ) ? ( ( year % 4 ) ? false : true ) : false ) : true;
+        bool leap_year = ( year % 400UL ) ? ( ( year % 100UL ) ? ( ( year % 4UL ) ? false : true ) : false ) : true;
 
         if ( leap_year )
         {
@@ -939,27 +940,30 @@ void Utils::load_data_from_sqlite( const string& a_mac )
         {
             row = table_columns["row"];
 
-            try
+            if ( row.compare( "" ) != 0 )
             {
-                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-            }
-            catch ( ... )
-            {
-                rx_bytes = 0ULL;
-            }
+                try
+                {
+                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    rx_bytes = 0ULL;
+                }
 
-            try
-            {
-                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-            }
-            catch ( ... )
-            {
-                tx_bytes = 0ULL;
-            }
+                try
+                {
+                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    tx_bytes = 0ULL;
+                }
 
-            InterfaceStats ystats;
-            Globals::all_stats[mac]["yearly"][row] = ystats;
-            Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+                InterfaceStats ystats;
+                Globals::all_stats[mac]["yearly"][row] = ystats;
+                Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+            }
         }
 
 ///
@@ -997,27 +1001,30 @@ void Utils::load_data_from_sqlite( const string& a_mac )
         {
             row = table_columns["row"];
 
-            try
+            if ( row.compare( "" ) != 0 )
             {
-                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-            }
-            catch ( ... )
-            {
-                rx_bytes = 0ULL;
-            }
+                try
+                {
+                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    rx_bytes = 0ULL;
+                }
 
-            try
-            {
-                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-            }
-            catch ( ... )
-            {
-                tx_bytes = 0ULL;
-            }
+                try
+                {
+                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    tx_bytes = 0ULL;
+                }
 
-            InterfaceStats mstats;
-            Globals::all_stats[mac]["monthly"][row] = mstats;
-            Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+                InterfaceStats mstats;
+                Globals::all_stats[mac]["monthly"][row] = mstats;
+                Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
+            }
         }
 
 ///
@@ -1056,27 +1063,30 @@ void Utils::load_data_from_sqlite( const string& a_mac )
         {
             row = table_columns["row"];
 
-            try
+            if ( row.compare( "" ) != 0 )
             {
-                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-            }
-            catch ( ... )
-            {
-                rx_bytes = 0ULL;
-            }
+                try
+                {
+                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    rx_bytes = 0ULL;
+                }
 
-            try
-            {
-                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-            }
-            catch ( ... )
-            {
-                tx_bytes = 0ULL;
-            }
+                try
+                {
+                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    tx_bytes = 0ULL;
+                }
 
-            InterfaceStats dstats;
-            Globals::all_stats[mac]["daily"][row] = dstats;
-            Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+                InterfaceStats dstats;
+                Globals::all_stats[mac]["daily"][row] = dstats;
+                Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
+            }
         }
 
 ///
@@ -1115,27 +1125,30 @@ void Utils::load_data_from_sqlite( const string& a_mac )
         {
             row = table_columns["row"];
 
-            try
+            if ( row.compare( "" ) != 0 )
             {
-                rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-            }
-            catch ( ... )
-            {
-                rx_bytes = 0ULL;
-            }
+                try
+                {
+                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    rx_bytes = 0ULL;
+                }
 
-            try
-            {
-                tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-            }
-            catch ( ... )
-            {
-                tx_bytes = 0ULL;
-            }
+                try
+                {
+                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
+                }
+                catch ( ... )
+                {
+                    tx_bytes = 0ULL;
+                }
 
-            InterfaceStats hstats;
-            Globals::all_stats[mac]["hourly"][row] = hstats;
-            Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+                InterfaceStats hstats;
+                Globals::all_stats[mac]["hourly"][row] = hstats;
+                Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
+            }
         }
 
         sqlite3_close_v2( db );
@@ -1508,6 +1521,7 @@ bool Utils::check_database_integrity( const string& a_mac )
             hourly_tx += stats.transmitted();
         }
 
+        // check yearly stats
         start_date.year = 1900;
         start_date.month = 0;
         start_date.day = 0;
@@ -1532,6 +1546,64 @@ bool Utils::check_database_integrity( const string& a_mac )
         }
 
         if ( hourly_rx != yearly_rx || hourly_tx != yearly_tx )
+        {
+            return false;
+        }
+
+        // check monthly stats
+        start_date.year = 1900;
+        start_date.month = 0;
+        start_date.day = 0;
+        start_date.hour = 0;
+
+        end_date.year = y;
+        end_date.month = m;
+        end_date.day = 0;
+        end_date.hour = 0;
+
+        results = Globals::db_drv.get_stats( mac, "monthly", start_date, end_date );
+
+        uint64_t monthly_rx = 0ULL;
+        uint64_t monthly_tx = 0ULL;
+
+        for ( auto & row_stats : results )
+        {
+            const InterfaceStats& stats = row_stats.second;
+
+            monthly_rx += stats.received();
+            monthly_tx += stats.transmitted();
+        }
+
+        if ( hourly_rx != monthly_rx || hourly_tx != monthly_tx )
+        {
+            return false;
+        }
+
+        // check daily stats
+        start_date.year = 1900;
+        start_date.month = 0;
+        start_date.day = 0;
+        start_date.hour = 0;
+
+        end_date.year = y;
+        end_date.month = m;
+        end_date.day = d;
+        end_date.hour = 0;
+
+        results = Globals::db_drv.get_stats( mac, "daily", start_date, end_date );
+
+        uint64_t daily_rx = 0ULL;
+        uint64_t daily_tx = 0ULL;
+
+        for ( auto & row_stats : results )
+        {
+            const InterfaceStats& stats = row_stats.second;
+
+            daily_rx += stats.received();
+            daily_tx += stats.transmitted();
+        }
+
+        if ( hourly_rx != daily_rx || hourly_tx != daily_tx )
         {
             return false;
         }
@@ -1591,8 +1663,8 @@ bool Utils::repair_broken_database( const string& a_mac )
 
         // fix yearly stats
         start_date.year = 1900;
-        start_date.month = 1;
-        start_date.day = 1;
+        start_date.month = 0;
+        start_date.day = 0;
         start_date.hour = 0;
 
         end_date.year = y;
@@ -1610,8 +1682,8 @@ bool Utils::repair_broken_database( const string& a_mac )
             struct date hourly_end_date;
 
             hourly_start_date.year = Utils::stoi( row );
-            hourly_start_date.month = 1;
-            hourly_start_date.day = 1;
+            hourly_start_date.month = 0;
+            hourly_start_date.day = 0;
             hourly_start_date.hour = 0;
 
             hourly_end_date.year = Utils::stoi( row );
@@ -1660,7 +1732,7 @@ bool Utils::repair_broken_database( const string& a_mac )
 
             hourly_start_date.year = current_year;
             hourly_start_date.month = current_month;
-            hourly_start_date.day = 1;
+            hourly_start_date.day = 0;
             hourly_start_date.hour = 0;
 
             hourly_end_date.year = current_year;
@@ -2244,7 +2316,7 @@ int32_t Utils::ensure_dir( const string& dir )
   * @return The value returned is -1 on error and the return status of the command otherwise.
   *
   */
-int32_t Utils::launch_default_browser(const string& url )
+int32_t Utils::launch_default_browser( const string& url )
 {
 #ifdef __linux
     return LinuxUtils::launch_default_browser( url );
