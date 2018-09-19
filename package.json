@@ -9,19 +9,19 @@
     "url": "https://github.com/rafalfr/smarttrafficmeter"
   },
   "devDependencies": {
-    "Chart": "",
+    "Chart.js": "",
     "smoothie": "",
     "jquery": "",
     "jscolor": "",
-    "hammer": "",
+    "hammer.js": "",
     "chartjs-plugin-zoom": ""
   },
   "dependencies": {
-    "Chart": "",
+    "Chart.js": "",
     "smoothie": "",
     "jquery": "",
     "jscolor": "",
-    "hammer": "",
+    "hammer.js": "",
     "chartjs-plugin-zoom": ""
   }
 } 
