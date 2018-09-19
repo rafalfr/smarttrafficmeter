@@ -9,7 +9,7 @@
     "url": "https://github.com/rafalfr/smarttrafficmeter"
   },
   "devDependencies": {
-    "boost.org/interprocess": "",
+    "boostorg/interprocess": "",
     "Chart.js": "",
     "jsoncpp": "",
     "Simple-Web-Server": "",
@@ -24,7 +24,7 @@
     "curl": ""
   },
   "dependencies": {
-    "boost": "",
+    "boostorg/interprocess": "",
     "Chart.js": "",
     "jsoncpp": "",
     "Simple-Web-Server": "",
