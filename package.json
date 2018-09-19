@@ -9,33 +9,19 @@
     "url": "https://github.com/rafalfr/smarttrafficmeter"
   },
   "devDependencies": {
-    "boostorg/interprocess": "",
-    "Chart.js": "",
-    "jsoncpp": "",
-    "Simple-Web-Server": "",
-    "SQLite": "",
-    "TCLAP": "",
+    "Chart": "",
     "smoothie": "",
-    "urlcpp": "",
     "jquery": "",
     "jscolor": "",
-    "hammer.js": "",
-    "chartjs-plugin-zoom": "",
-    "curl": ""
+    "hammer": "",
+    "chartjs-plugin-zoom": ""
   },
   "dependencies": {
-    "boostorg/interprocess": "",
-    "Chart.js": "",
-    "jsoncpp": "",
-    "Simple-Web-Server": "",
-    "SQLite": "",
-    "TCLAP": "",
+    "Chart": "",
     "smoothie": "",
-    "urlcpp": "",
     "jquery": "",
     "jscolor": "",
-    "hammer.js": "",
-    "chartjs-plugin-zoom": "",
-    "curl": ""
+    "hammer": "",
+    "chartjs-plugin-zoom": ""
   }
 } 
