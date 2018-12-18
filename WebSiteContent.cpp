@@ -529,8 +529,8 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>Simple-Web-Server</p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/eidheim/Simple-Web-Server\">home page</a></p></td>\n";
-        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://github.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://gitlab.com/eidheim/Simple-Web-Server\">home page</a></p></td>\n";
+        page += "<td align=\"center\" valign=\"middle\"><p><a href=\"https://gitlab.com/eidheim/Simple-Web-Server/blob/master/LICENSE\">license</a></p></td>\n";
         page += "</tr>\n";
         page += "<tr>\n";
         page += "<td align=\"left\" valign=\"middle\"><p>SQLite</p></td>\n";
