@@ -114,7 +114,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         string monthly_past_year = "<a href=\"monthly/start=" + start_year_str + "-" + start_month_str + "-" + start_day_str + "\">past year</a>";
 
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -329,7 +329,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/stopwatch/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -441,7 +441,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/legalinfo/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -600,7 +600,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t d;
         uint32_t h;
         string csv;
-        csv.reserve(4*1024);
+        csv.reserve( 4 * 1024 );
 
         //option: name, value
         map<string, string> options;
@@ -822,7 +822,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         float scale;
 
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         //option: name, value
         map<string, string> options;
@@ -1342,7 +1342,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         ifstream file;
 
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -1843,7 +1843,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/stop/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -1914,7 +1914,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/backup/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -1987,7 +1987,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t result = GroveStreamsUploader::upload_all();
 
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -2067,7 +2067,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/settings/?$"]["GET"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -2181,7 +2181,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
     server.resource["^/submitsettings/?$"]["POST"] = [&server]( shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> request )
     {
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         page += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
         page += "<html>\n";
@@ -2292,7 +2292,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         uint32_t d;
         uint32_t h;
         string page;
-        page.reserve(4*1024);
+        page.reserve( 4 * 1024 );
 
         Utils::get_time( &y, &m, &d, &h );
 

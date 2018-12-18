@@ -421,62 +421,6 @@ void* LinuxUtils::MeterThread( void )
         {
             Utils::save_stats( "" );
 
-            /* remove unused rows from the all_stats container */
-
-            for ( auto const & mac_table : Globals::all_stats )
-            {
-                const string& mac = mac_table.first;
-
-                const map<string, map<string, InterfaceStats> > & table = mac_table.second;
-
-                for ( auto const & table_row : table )
-                {
-                    const string& table_name = table_row.first;	//hourly, daily, etc..
-
-                    current_row.clear();
-
-                    if ( table_name.compare( "hourly" ) == 0 )
-                    {
-                        current_row += current_hourly_row;
-                    }
-                    else if ( table_name.compare( "daily" ) == 0 )
-                    {
-                        current_row += current_daily_row;
-                    }
-                    else if ( table_name.compare( "monthly" ) == 0 )
-                    {
-                        current_row += current_monthly_row;
-                    }
-                    else if ( table_name.compare( "yearly" ) == 0 )
-                    {
-                        current_row += current_yearly_row;
-                    }
-
-                    const map<string, InterfaceStats> & crow = table_row.second;
-
-                    rows4remove.clear();
-
-                    for ( map<string, InterfaceStats>::const_iterator it = crow.cbegin(); it != crow.cend(); )
-                    {
-                        const string& row_in_table = it->first;	//subsequent rows in the current table
-
-                        if ( row_in_table.compare( current_row ) != 0 )
-                        {
-                            rows4remove.push_back( it );
-                        }
-
-                        ++it;
-                    }
-
-                    for ( uint32_t i = 0U; i < rows4remove.size(); i++ )
-                    {
-                        Globals::all_stats[mac][table_name].erase( rows4remove[i] );
-                    }
-
-                    rows4remove.clear();
-                }
-            }
-
             save_p_time = c_time;
             ph = h;
         }
