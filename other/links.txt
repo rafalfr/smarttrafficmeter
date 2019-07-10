@@ -34,6 +34,7 @@ https://solus-project.com/articles/packaging/
 
 //http://zetcode.com/db/mysqlc/
 //https://github.com/fmtlib/fmt
+//http://libdbi.sourceforge.net/
 
 //Windows
 //http://www.codeproject.com/Articles/499465/Simple-Windows-Service-in-Cplusplus
