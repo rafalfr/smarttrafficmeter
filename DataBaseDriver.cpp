@@ -2,7 +2,7 @@
 
 DataBaseDriver.cpp
 
-Copyright (C) 2018 Rafał Frączek
+Copyright (C) 2020 Rafał Frączek
 
 This file is part of Smart Traffic Meter.
 
