@@ -111,6 +111,9 @@ https://launchpad.net/
 https://askubuntu.com/questions/16446/how-to-get-my-software-into-ubuntu
 https://github.com/raboof/nethogs/blob/master/src/process.cpp
 
+https://stackoverflow.com/questions/5188267/checking-the-gcc-version-in-a-makefile
+
+https://stackoverflow.com/questions/2324658/how-to-determine-the-version-of-the-c-standard-used-by-the-compiler
 
 //arm requirements
 libboost-dev binutils-dev libcurl4-gnutls-dev libboost-system-dev libboost-regex-dev libboost-thread-dev libboost-filesystem-dev libboost-iostreams-dev

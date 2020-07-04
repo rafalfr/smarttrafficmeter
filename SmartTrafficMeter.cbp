@@ -187,6 +187,7 @@
 		</Unit>
 		<Unit filename="chartjs.cpp" />
 		<Unit filename="config.h" />
+		<Unit filename="ctre/ctre.hpp" />
 		<Unit filename="custom_time_span.cpp" />
 		<Unit filename="defines.h" />
 		<Unit filename="hammer.cpp" />
