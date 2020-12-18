@@ -36,8 +36,11 @@ If not, see http://www.gnu.org/licenses/.
 
 #include <map>
 #include <list>
+#include <string>
 
-using namespace std;
+using std::map;
+using std::list;
+using std::string;
 
 class InterfaceSpeedMeter
 {

@@ -56,12 +56,12 @@
 					<Add library="dl" />
 					<Add library="bfd" />
 					<Add library="pthread" />
+					<Add library="curl" />
 					<Add library="boost_system" />
 					<Add library="boost_regex" />
-					<Add library="boost_thread" />
-					<Add library="boost_filesystem" />
 					<Add library="boost_iostreams" />
-					<Add library="curl" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_thread" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
@@ -242,10 +242,6 @@
 		<Unit filename="version.h" />
 		<Unit filename="zoom.cpp" />
 		<Extensions>
-			<envvars />
-			<code_completion />
-			<debugger />
-			<lib_finder disable_auto="1" />
 			<AutoVersioning>
 				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
 				<Settings autoincrement="1" date_declarations="1" use_define="0" update_manifest="1" do_auto_increment="1" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="version.h" />
@@ -261,6 +257,7 @@
 				<doxyfile_dot />
 				<general />
 			</DoxyBlocks>
+			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
