@@ -132,6 +132,11 @@
 			<Add option="-march=native" />
 			<Add option="-DGLIBCXX_FORCE_NEW" />
 			<Add option="-DSQLITE_ENABLE_BATCH_ATOMIC_WRITE" />
+			<Add option="-DSQLITE_ENABLE_ATOMIC_WRITE" />
+			<Add option="-DSQLITE_ENABLE_MEMORY_MANAGEMENT" />
+			<Add option="-DSQLITE_ENABLE_RBU" />
+			<Add option="-DSQLITE_ENABLE_RTREE" />
+			<Add option="-DSQLITE_USE_ALLOCA" />
 			<Add option="-Duse_sqlite" />
 			<Add directory="url" />
 			<Add directory="sqlite" />
