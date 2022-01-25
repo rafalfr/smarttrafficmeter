@@ -3,6 +3,7 @@ import gzip
 import codecs
 
 # https://github.com/chartjs/chartjs-plugin-zoom
+# https://github.com/chartjs/chartjs-plugin-zoom/releases
 
 # open the original file
 file = codecs.open("chartjs-plugin-zoom.min.js", "rb", "utf-8")

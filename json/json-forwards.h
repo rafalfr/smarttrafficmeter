@@ -7,28 +7,28 @@
 // //////////////////////////////////////////////////////////////////////
 
 /*
-The JsonCpp library's source code, including accompanying documentation, 
+The JsonCpp library's source code, including accompanying documentation,
 tests and demonstration applications, are licensed under the following
 conditions...
 
-Baptiste Lepilleur and The JsonCpp Authors explicitly disclaim copyright in all 
-jurisdictions which recognize such a disclaimer. In such jurisdictions, 
+Baptiste Lepilleur and The JsonCpp Authors explicitly disclaim copyright in all
+jurisdictions which recognize such a disclaimer. In such jurisdictions,
 this software is released into the Public Domain.
 
 In jurisdictions which do not recognize Public Domain property (e.g. Germany as of
 2010), this software is Copyright (c) 2007-2010 by Baptiste Lepilleur and
 The JsonCpp Authors, and is released under the terms of the MIT License (see below).
 
-In jurisdictions which recognize Public Domain property, the user of this 
-software may choose to accept it either as 1) Public Domain, 2) under the 
-conditions of the MIT License (see below), or 3) under the terms of dual 
+In jurisdictions which recognize Public Domain property, the user of this
+software may choose to accept it either as 1) Public Domain, 2) under the
+conditions of the MIT License (see below), or 3) under the terms of dual
 Public Domain/MIT License conditions described here, as they choose.
 
 The MIT License is about as close to Public Domain as a license can get, and is
 described in clear, concise terms at:
 
    http://en.wikipedia.org/wiki/MIT_License
-   
+
 The full text of the MIT License follows:
 
 ========================================================================
@@ -78,6 +78,150 @@ license you like.
 /// If defined, indicates that the source file is amalgamated
 /// to prevent private header inclusion.
 #define JSON_IS_AMALGAMATION
+
+// //////////////////////////////////////////////////////////////////////
+// Beginning of content of file: include/json/version.h
+// //////////////////////////////////////////////////////////////////////
+
+#ifndef JSON_VERSION_H_INCLUDED
+#define JSON_VERSION_H_INCLUDED
+
+// Note: version must be updated in three places when doing a release. This
+// annoying process ensures that amalgamate, CMake, and meson all report the
+// correct version.
+// 1. /meson.build
+// 2. /include/json/version.h
+// 3. /CMakeLists.txt
+// IMPORTANT: also update the SOVERSION!!
+
+#define JSONCPP_VERSION_STRING "1.9.5"
+#define JSONCPP_VERSION_MAJOR 1
+#define JSONCPP_VERSION_MINOR 9
+#define JSONCPP_VERSION_PATCH 5
+#define JSONCPP_VERSION_QUALIFIER
+#define JSONCPP_VERSION_HEXA                                                   \
+  ((JSONCPP_VERSION_MAJOR << 24) | (JSONCPP_VERSION_MINOR << 16) |             \
+   (JSONCPP_VERSION_PATCH << 8))
+
+#ifdef JSONCPP_USING_SECURE_MEMORY
+#undef JSONCPP_USING_SECURE_MEMORY
+#endif
+#define JSONCPP_USING_SECURE_MEMORY 0
+// If non-zero, the library zeroes any memory that it has allocated before
+// it frees its memory.
+
+#endif // JSON_VERSION_H_INCLUDED
+
+// //////////////////////////////////////////////////////////////////////
+// End of content of file: include/json/version.h
+// //////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+// //////////////////////////////////////////////////////////////////////
+// Beginning of content of file: include/json/allocator.h
+// //////////////////////////////////////////////////////////////////////
+
+// Copyright 2007-2010 Baptiste Lepilleur and The JsonCpp Authors
+// Distributed under MIT license, or public domain if desired and
+// recognized in your jurisdiction.
+// See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
+
+#ifndef JSON_ALLOCATOR_H_INCLUDED
+#define JSON_ALLOCATOR_H_INCLUDED
+
+#include <cstring>
+#include <memory>
+
+#pragma pack(push, 8)
+
+namespace Json {
+template <typename T> class SecureAllocator {
+public:
+  // Type definitions
+  using value_type = T;
+  using pointer = T*;
+  using const_pointer = const T*;
+  using reference = T&;
+  using const_reference = const T&;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+
+  /**
+   * Allocate memory for N items using the standard allocator.
+   */
+  pointer allocate(size_type n) {
+    // allocate using "global operator new"
+    return static_cast<pointer>(::operator new(n * sizeof(T)));
+  }
+
+  /**
+   * Release memory which was allocated for N items at pointer P.
+   *
+   * The memory block is filled with zeroes before being released.
+   */
+  void deallocate(pointer p, size_type n) {
+    // memset_s is used because memset may be optimized away by the compiler
+    memset_s(p, n * sizeof(T), 0, n * sizeof(T));
+    // free using "global operator delete"
+    ::operator delete(p);
+  }
+
+  /**
+   * Construct an item in-place at pointer P.
+   */
+  template <typename... Args> void construct(pointer p, Args&&... args) {
+    // construct using "placement new" and "perfect forwarding"
+    ::new (static_cast<void*>(p)) T(std::forward<Args>(args)...);
+  }
+
+  size_type max_size() const { return size_t(-1) / sizeof(T); }
+
+  pointer address(reference x) const { return std::addressof(x); }
+
+  const_pointer address(const_reference x) const { return std::addressof(x); }
+
+  /**
+   * Destroy an item in-place at pointer P.
+   */
+  void destroy(pointer p) {
+    // destroy using "explicit destructor"
+    p->~T();
+  }
+
+  // Boilerplate
+  SecureAllocator() {}
+  template <typename U> SecureAllocator(const SecureAllocator<U>&) {}
+  template <typename U> struct rebind { using other = SecureAllocator<U>; };
+};
+
+template <typename T, typename U>
+bool operator==(const SecureAllocator<T>&, const SecureAllocator<U>&) {
+  return true;
+}
+
+template <typename T, typename U>
+bool operator!=(const SecureAllocator<T>&, const SecureAllocator<U>&) {
+  return false;
+}
+
+} // namespace Json
+
+#pragma pack(pop)
+
+#endif // JSON_ALLOCATOR_H_INCLUDED
+
+// //////////////////////////////////////////////////////////////////////
+// End of content of file: include/json/allocator.h
+// //////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 // //////////////////////////////////////////////////////////////////////
 // Beginning of content of file: include/json/config.h

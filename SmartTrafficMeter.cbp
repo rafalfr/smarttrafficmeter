@@ -58,10 +58,10 @@
 					<Add library="pthread" />
 					<Add library="curl" />
 					<Add library="boost_system" />
-					<Add library="boost_regex" />
-					<Add library="boost_iostreams" />
 					<Add library="boost_filesystem" />
+					<Add library="boost_iostreams" />
 					<Add library="boost_thread" />
+					<Add library="boost_regex" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">

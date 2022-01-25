@@ -5,7 +5,7 @@ import codecs
 # http://jscolor.com/
 
 # open the original file
-file = codecs.open("jscolor.min.js", "rb", "utf-8")
+file = codecs.open("jscolor.js", "rb", "utf-8")
 file_content = file.read()
 file.close()
 

@@ -4,8 +4,10 @@ import codecs
 
 #python 2
 
+# https://cdnjs.com/libraries/Chart.js
+
 # open the original file
-file = codecs.open("Chart.min.js", "rb", "utf-8")
+file = codecs.open("chart.min.js", "rb", "utf-8")
 file_content = file.read()
 file.close()
 

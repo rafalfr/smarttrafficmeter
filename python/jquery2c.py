@@ -5,7 +5,7 @@ import codecs
 # https://jquery.com/
 
 # open the original file
-file = codecs.open("jquery-3.1.1.min.js", "rb", "utf-8")
+file = codecs.open("jquery-3.6.0.min.js", "rb", "utf-8")
 file_content = file.read()
 file.close()
 

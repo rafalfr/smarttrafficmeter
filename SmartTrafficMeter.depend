@@ -26032,13 +26032,13 @@
 1587209015 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Settings.cpp
 	"Settings.h"
 
-1587209014 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
-	"config.h"
+1641945415 source:/home/rafal/Programowanie/C++/smarttrafficmeter/sqlite3.c
 	<vxWorks.h>
 	<pthread.h>
 	"mingw.h"
 	"_mingw.h"
 	<stdarg.h>
+	"config.h"
 	<stdint.h>
 	<inttypes.h>
 	<intrin.h>
@@ -26080,7 +26080,6 @@
 	<dlfcn.h>
 	"sqlite_tcl.h"
 	"tcl.h"
-	<ctype.h>
 	"sqlite3rtree.h"
 	<ctype.h>
 	<unicode/utypes.h>
@@ -26098,7 +26097,7 @@
 	"Utils.h"
 	"sqlite3.h"
 
-1587209015 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
+1641945415 /home/rafal/Programowanie/C++/smarttrafficmeter/sqlite/sqlite3.h
 	<stdarg.h>
 
 1587209015 source:/home/rafal/Programowanie/C++/smarttrafficmeter/Globals.cpp
@@ -26343,7 +26342,7 @@
 	<string>
 	"server_http.hpp"
 
-1587208206 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
+1609612565 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/server_http.hpp
 	"asio_compatibility.hpp"
 	"mutex.hpp"
 	"utility.hpp"
@@ -26640,7 +26639,7 @@
 
 1536434567 /usr/include/mysql//my_alloc.h
 
-1587208206 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/asio_compatibility.hpp
+1609612746 /home/rafal/Programowanie/C++/smarttrafficmeter/serverhttp/asio_compatibility.hpp
 	<memory>
 	<asio.hpp>
 	<asio/steady_timer.hpp>

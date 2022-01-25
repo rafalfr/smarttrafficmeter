@@ -494,7 +494,7 @@ void WebSiteContent::set_web_site_content( SimpleWeb::Server<SimpleWeb::HTTP>& s
         page += "<br><br>\n";
         page += "<div align=\"center\">\n";
         page += "<p>\n";
-        page += "Copyright &copy; 2020 Rafał Frączek\n";
+        page += "Copyright &copy; 2022 Rafał Frączek\n";
         page += "</p>\n";
         page += "<p>\n";
         page += "Smart Traffic Meter is released under the <a href=\"https://opensource.org/licenses/GPL-3.0\">GNU General Public License, version 3 (GPL-3.0)</a> license.\n";

@@ -283,7 +283,7 @@ namespace SimpleWeb {
     class Connection : public std::enable_shared_from_this<Connection> {
     public:
       template <typename... Args>
-      Connection(std::shared_ptr<ScopeRunner> handler_runner_, Args &&... args) noexcept : handler_runner(std::move(handler_runner_)), socket(new socket_type(std::forward<Args>(args)...)) {}
+      Connection(std::shared_ptr<ScopeRunner> handler_runner_, Args &&...args) noexcept : handler_runner(std::move(handler_runner_)), socket(new socket_type(std::forward<Args>(args)...)) {}
 
       std::shared_ptr<ScopeRunner> handler_runner;
 
@@ -517,7 +517,7 @@ namespace SimpleWeb {
     virtual void accept() = 0;
 
     template <typename... Args>
-    std::shared_ptr<Connection> create_connection(Args &&... args) noexcept {
+    std::shared_ptr<Connection> create_connection(Args &&...args) noexcept {
       auto connections = this->connections;
       auto connection = std::shared_ptr<Connection>(new Connection(handler_runner, std::forward<Args>(args)...), [connections](Connection *connection) {
         {
@@ -538,13 +538,13 @@ namespace SimpleWeb {
     void read(const std::shared_ptr<Session> &session) {
       session->connection->set_timeout(config.timeout_request);
       asio::async_read_until(*session->connection->socket, session->request->streambuf, "\r\n\r\n", [this, session](const error_code &ec, std::size_t bytes_transferred) {
-        session->connection->set_timeout(config.timeout_content);
         auto lock = session->connection->handler_runner->continue_lock();
         if(!lock)
           return;
         session->request->header_read_time = std::chrono::system_clock::now();
 
         if(!ec) {
+          session->connection->set_timeout(this->config.timeout_content);
           // request->streambuf.size() is not necessarily the same as bytes_transferred, from Boost-docs:
           // "After a successful async_read_until operation, the streambuf may contain additional data beyond the delimiter"
           // The chosen solution is to extract lines from the stream directly when parsing the header. What is left of the

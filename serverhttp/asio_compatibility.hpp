@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#ifdef USE_STANDALONE_ASIO
+#ifdef ASIO_STANDALONE
 #include <asio.hpp>
 #include <asio/steady_timer.hpp>
 namespace SimpleWeb {
@@ -27,7 +27,7 @@ namespace SimpleWeb {
 #endif
 
 namespace SimpleWeb {
-#if(USE_STANDALONE_ASIO && ASIO_VERSION >= 101300) || BOOST_ASIO_VERSION >= 101300
+#if(ASIO_STANDALONE && ASIO_VERSION >= 101300) || BOOST_ASIO_VERSION >= 101300
   using io_context = asio::io_context;
   using resolver_results = asio::ip::tcp::resolver::results_type;
   using async_connect_endpoint = asio::ip::tcp::endpoint;
