@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -Iurl -Isqlite -Iserverhttp -I/usr/include/mysql/ -I/usr/include/libiberty/ -I../smarttrafficmeter
-CFLAGS = -fexceptions -march=native -DGLIBCXX_FORCE_NEW -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE -Duse_sqlite
+CFLAGS = -fexceptions -march=native -mtune=native -DGLIBCXX_FORCE_NEW -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE -DSQLITE_ENABLE_ATOMIC_WRITE -DSQLITE_ENABLE_MEMORY_MANAGEMENT -DSQLITE_ENABLE_RBU -DSQLITE_ENABLE_RTREE -DSQLITE_USE_ALLOCA -Duse_sqlite
 RESINC = 
 LIBDIR = 
 LIB = 
@@ -34,7 +34,7 @@ CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations 
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)
-LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lcurl -lboost_system -lboost_regex -lboost_iostreams -lboost_filesystem -lboost_thread
+LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lcurl -lboost_system -lboost_filesystem -lboost_iostreams -lboost_thread -lboost_regex
 LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -s -rdynamic
 OBJDIR_LINUX_RELEASE = obj/release
 DEP_LINUX_RELEASE = 

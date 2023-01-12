@@ -145,3 +145,6 @@ makepkg --printsrcinfo > .SRCINFO
 
 git remote set-url --add origin git@github.com:rafalfr/smarttrafficmeter.git
 git remote set-url --add origin git@gitlab.com:rafalfr/smarttrafficmeter.git
+
+tło
+https://www.toptal.com/designers/subtlepatterns/crossword/
