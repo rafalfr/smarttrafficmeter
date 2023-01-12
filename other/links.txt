@@ -135,7 +135,9 @@ make -f SmartTrafficMeter.cbp.mak
 */ 
 
 execute before publishing to Arch User Repository
+najpierw pobrać repozytorium z AUR, przejść do pobranego katalogu, następnie w pliku PKGBUILD uaktualnić wersję i opcjonalnie inne inforamcje, a potem wykonać poniższe polecenie
 makepkg --printsrcinfo > .SRCINFO
+i wysłać na git
 
 
 //projektowanie strony internetowej
