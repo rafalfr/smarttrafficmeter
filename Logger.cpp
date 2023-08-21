@@ -26,6 +26,7 @@ If not, see http://www.gnu.org/licenses/.
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <cstdint>
 #include <time.h>
 
 #include "config.h"
