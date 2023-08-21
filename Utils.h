@@ -38,6 +38,7 @@ If not, see http://www.gnu.org/licenses/.
 #include <string>
 #include <vector>
 #include "InterfaceInfo.h"
+#include <cstdint>
 
 class Utils
 {
