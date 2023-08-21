@@ -36,6 +36,7 @@ If not, see http://www.gnu.org/licenses/.
 #include <map>
 #include <vector>
 #include <string>
+#include <cstdint>
 #include "defines.h"
 #include "InterfaceStats.h"
 
