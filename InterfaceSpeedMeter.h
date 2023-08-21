@@ -37,6 +37,7 @@ If not, see http://www.gnu.org/licenses/.
 #include <map>
 #include <list>
 #include <string>
+#include <cstdint>
 
 using std::map;
 using std::list;
