@@ -91,15 +91,44 @@ public:
 
     static bool starts_with( const std::string& str, const std::string& key );
 
-    static std::string replace( const std::string& pattern, const std::string& with, const std::string& in ) noexcept;
+    static std::string replace( const std::string& pattern, const std::string& with, const std::string& in ) noexcept {
+        if (pattern.empty()) return in;
+        
+        std::string result;
+        result.reserve(in.length()); // Reserve space to minimize reallocations
+        
+        size_t start_pos = 0;
+        size_t found_pos;
+        
+        while ((found_pos = in.find(pattern, start_pos)) != std::string::npos) {
+            result.append(in, start_pos, found_pos - start_pos);
+            result.append(with);
+            start_pos = found_pos + pattern.length();
+        }
+        
+        result.append(in, start_pos, std::string::npos);
+        return result;
+    }
 
     static std::vector<std::string> split( const std::string& str, const std::string& delim );
 
     static std::string float_to_string( float value, int32_t precision = 3 );
 
-    static std::string to_string( uint64_t value, uint32_t min_string_length = 0 );
+    static std::string to_string( uint64_t value, uint32_t min_string_length = 0 ) {
+        std::string result = std::to_string(value);
+        if (result.length() < min_string_length) {
+            result.insert(0, min_string_length - result.length(), '0');
+        }
+        return result;
+    }
 
-    static std::string to_string( uint32_t value, uint32_t min_string_length = 0 );
+    static std::string to_string( uint32_t value, uint32_t min_string_length = 0 ) {
+        std::string result = std::to_string(value);
+        if (result.length() < min_string_length) {
+            result.insert(0, min_string_length - result.length(), '0');
+        }
+        return result;
+    }
 
     static int32_t stoi( const std::string& str );
 

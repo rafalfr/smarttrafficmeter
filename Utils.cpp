@@ -326,6 +326,7 @@ vector<string> Utils::split( const string& str, const string& delim )
 /** @brief replace
   *
   * The function replaces the pattern with a new content in the given string
+  * Implemented in Utils.h as inline function for better performance
   *
   * @param pattern
   * @param content that will replace the pattern
@@ -333,35 +334,6 @@ vector<string> Utils::split( const string& str, const string& delim )
   * @return new string with pattern replaced with the content
   *
   */
-string Utils::replace( const string& pattern, const string& with, const string& in ) noexcept
-{
-
-    string out;
-
-    size_t start = 0;
-
-    if ( in.find( pattern, start ) == string::npos )
-    {
-        out += in;
-    }
-    else
-    {
-        size_t end;
-
-        while ( ( end = in.find( pattern, start ) ) != string::npos )
-        {
-            out += in.substr( start, end - start );
-
-            out += with;
-
-            start = end + pattern.size();
-        }
-
-        out += in.substr( start, end );
-    }
-
-    return out;
-}
 
 /** @brief float_to_string
   *
@@ -386,169 +358,26 @@ string Utils::float_to_string( float value, int32_t precision )
   * The function converts uint64_t value to string
   * If the string representation is shorter than min_string_length
   * the string is prepended with the appropriate number of zeros.
+  * Implemented in Utils.h as inline function for better performance.
   *
   * @param uint64_t value
   * @param minimum string length
   * @return string representation of the uint64_t value
   *
   */
-string Utils::to_string( uint64_t value, uint32_t min_string_length )
-{
-
-    string out;
-
-    uint64_t divisor = 10000000000000000000ULL;
-
-    if ( value == 0ULL )
-    {
-        out += "0";
-    }
-    else
-    {
-        while ( divisor > 0ULL )
-        {
-            uint64_t c = value / divisor;
-            value -= c * divisor;
-            divisor /= 10ULL;
-
-            if ( out.empty() == false || c > 0ULL )
-            {
-                if ( c == 0ULL )
-                {
-                    out += "0";
-                }
-                else if ( c == 1ULL )
-                {
-                    out += "1";
-                }
-                else if ( c == 2ULL )
-                {
-                    out += "2";
-                }
-                else if ( c == 3ULL )
-                {
-                    out += "3";
-                }
-                else if ( c == 4ULL )
-                {
-                    out += "4";
-                }
-                else if ( c == 5ULL )
-                {
-                    out += "5";
-                }
-                else if ( c == 6ULL )
-                {
-                    out += "6";
-                }
-                else if ( c == 7ULL )
-                {
-                    out += "7";
-                }
-                else if ( c == 8ULL )
-                {
-                    out += "8";
-                }
-                else if ( c == 9ULL )
-                {
-                    out += "9";
-                }
-            }
-        }
-    }
-
-    for ( int32_t i = 0; i < ( ( int32_t ) min_string_length - ( int32_t ) out.size() ); i++ )
-    {
-        out.insert( 0, "0" );
-    }
-
-    return out;
-}
-
 
 /** @brief to_string
   *
   * The function converts uint32_t value to string
   * If the string representation is shorter than min_string_length
   * the string is prepended with the appropriate number of zeros.
+  * Implemented in Utils.h as inline function for better performance.
   *
-  * @param uint64_t value
+  * @param uint32_t value
   * @param minimum string length
   * @return string representation of the uint32_t value
   *
   */
-string Utils::to_string( uint32_t value, uint32_t min_string_length )
-{
-
-    string out;
-
-    uint32_t divisor = 1000000000U;
-
-    if ( value == 0U )
-    {
-        out += "0";
-    }
-    else
-    {
-        while ( divisor > 0U )
-        {
-            uint32_t c = value / divisor;
-            value -= c * divisor;
-            divisor /= 10U;
-
-            if ( out.empty() == false || c > 0U )
-            {
-                if ( c == 0U )
-                {
-                    out += "0";
-                }
-                else if ( c == 1U )
-                {
-                    out += "1";
-                }
-                else if ( c == 2U )
-                {
-                    out += "2";
-                }
-                else if ( c == 3U )
-                {
-                    out += "3";
-                }
-                else if ( c == 4U )
-                {
-                    out += "4";
-                }
-                else if ( c == 5U )
-                {
-                    out += "5";
-                }
-                else if ( c == 6U )
-                {
-                    out += "6";
-                }
-                else if ( c == 7U )
-                {
-                    out += "7";
-                }
-                else if ( c == 8U )
-                {
-                    out += "8";
-                }
-                else if ( c == 9U )
-                {
-                    out += "9";
-                }
-            }
-        }
-    }
-
-    for ( int32_t i = 0; i < ( ( int32_t ) min_string_length - ( int32_t ) out.size() ); i++ )
-    {
-        out.insert( 0, "0" );
-    }
-
-    return out;
-}
 
 /** @brief hexcolor_to_strings
   *
@@ -861,301 +690,90 @@ void Utils::load_stats( const string& a_mac )
 void Utils::load_data_from_sqlite( const string& a_mac )
 {
 #ifdef use_sqlite
-
     Globals::data_load_save_mutex.lock();
 
-    sqlite3 *db;
-    char *zErrMsg = nullptr;
-    uint32_t y;
-    uint32_t m;
-    uint32_t d;
-    uint32_t h;
-    uint64_t rx_bytes;
-    uint64_t tx_bytes;
-    vector<string> macs;
-
+    uint32_t y, m, d, h;
     Utils::get_time( &y, &m, &d, &h );
 
-    macs.clear();
-
-    if ( a_mac.compare( "" ) == 0 )
-    {
-        const map<string, InterfaceInfo>& interfaces = Utils::get_all_interfaces();
-
-        for ( auto const & kv : interfaces )
-        {
-            const InterfaceInfo& in = kv.second;
-            const string& mac = in.get_mac();
-            macs.push_back( mac );
+    vector<string> macs;
+    if (a_mac.empty()) {
+        const auto& interfaces = Utils::get_all_interfaces();
+        macs.reserve(interfaces.size());
+        for (const auto& [_, in] : interfaces) {
+            macs.push_back(in.get_mac());
         }
-    }
-    else
-    {
-        macs.push_back( a_mac );
+    } else {
+        macs.push_back(a_mac);
     }
 
-    string row;
-    string query;
+    // Prepare all queries in advance
+    const string yearly_date = Utils::to_string(y);
+    const string monthly_date = Utils::to_string(y) + "-" + Utils::to_string(m, 2);
+    const string daily_date = monthly_date + "-" + Utils::to_string(d, 2);
+    const string hourly_date = daily_date + "_" + Utils::to_string(h, 2) + ":00-" + Utils::to_string(h + 1, 2) + ":00";
 
-    for ( string const & mac : macs )
-    {
-        int rc = sqlite3_open_v2( ( Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db" ).c_str(), &db, SQLITE_OPEN_READWRITE, nullptr );
-
-        if ( rc != SQLITE_OK )
-        {
+    for (const string& mac : macs) {
+        sqlite3* db = nullptr;
+        const string db_path = Settings::settings["database directory"] + PATH_SEPARATOR + mac + ".db";
+        
+        if (sqlite3_open_v2(db_path.c_str(), &db, SQLITE_OPEN_READWRITE, nullptr) != SQLITE_OK) {
             continue;
         }
 
-        query.clear();
-        query += "DELETE FROM yearly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
+        // Use transactions for batch operations
+        sqlite3_exec(db, "BEGIN TRANSACTION;", nullptr, nullptr, nullptr);
 
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete empty row in the yearly table" );
+        // Delete operations
+        const char* delete_queries[] = {
+            "DELETE FROM yearly WHERE row NOT LIKE '2%%' OR (rx_bytes='0' AND tx_bytes='0');",
+            "DELETE FROM monthly WHERE row NOT LIKE '2%%' OR (rx_bytes='0' AND tx_bytes='0');",
+            "DELETE FROM daily WHERE row NOT LIKE '2%%' OR (rx_bytes='0' AND tx_bytes='0');",
+            "DELETE FROM hourly WHERE row NOT LIKE '2%%' OR (rx_bytes='0' AND tx_bytes='0');"
+        };
+
+        for (const char* query : delete_queries) {
+            sqlite3_exec(db, query, nullptr, nullptr, nullptr);
         }
 
-        query.clear();
-        query += "DELETE FROM yearly WHERE rx_bytes='0' AND tx_bytes='0';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
+        // Select operations with prepared statements
+        const char* select_templates[] = {
+            "SELECT * FROM yearly WHERE row=?1;",
+            "SELECT * FROM monthly WHERE row=?1;",
+            "SELECT * FROM daily WHERE row=?1;",
+            "SELECT * FROM hourly WHERE row=?1;"
+        };
+        const string* dates[] = {&yearly_date, &monthly_date, &daily_date, &hourly_date};
+        const char* tables[] = {"yearly", "monthly", "daily", "hourly"};
 
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete from yearly table rows with zero rx and tx values" );
-        }
-
-        query.clear();
-        query += "SELECT * from yearly ";
-        query += "WHERE row=";
-        query += "'";
-        query += Utils::to_string( y );
-        query += "'";
-        query += ";";
-        table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc == SQLITE_OK )
-        {
-            row = table_columns["row"];
-
-            if ( row.compare( "" ) != 0 )
-            {
-                try
-                {
-                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
+        for (size_t i = 0; i < 4; i++) {
+            sqlite3_stmt* stmt;
+            if (sqlite3_prepare_v2(db, select_templates[i], -1, &stmt, nullptr) == SQLITE_OK) {
+                sqlite3_bind_text(stmt, 1, dates[i]->c_str(), -1, SQLITE_STATIC);
+                
+                if (sqlite3_step(stmt) == SQLITE_ROW) {
+                    const char* row = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+                    if (row) {
+                        try {
+                            uint64_t rx_bytes = Utils::stoull(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+                            uint64_t tx_bytes = Utils::stoull(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+                            
+                            InterfaceStats stats;
+                            stats.set_initial_stats(tx_bytes, rx_bytes);
+                            Globals::all_stats[mac][tables[i]][row] = stats;
+                        } catch (...) {
+                            // Handle conversion errors
+                        }
+                    }
                 }
-                catch ( ... )
-                {
-                    rx_bytes = 0ULL;
-                }
-
-                try
-                {
-                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    tx_bytes = 0ULL;
-                }
-
-                InterfaceStats ystats;
-                Globals::all_stats[mac]["yearly"][row] = ystats;
-                Globals::all_stats[mac]["yearly"][row].set_initial_stats( tx_bytes, rx_bytes );
+                sqlite3_finalize(stmt);
             }
         }
 
-///
-        query.clear();
-        query += "DELETE FROM monthly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete empty row in the monthly table" );
-        }
-
-        query.clear();
-        query += "DELETE FROM monthly WHERE rx_bytes='0' AND tx_bytes='0';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete from monthly table rows with zero rx and tx values" );
-        }
-
-        query.clear();
-        query += "SELECT * from monthly ";
-        query += "WHERE row=";
-        query += "'";
-        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 );
-        query += "'";
-        query += ";";
-        table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc == SQLITE_OK )
-        {
-            row = table_columns["row"];
-
-            if ( row.compare( "" ) != 0 )
-            {
-                try
-                {
-                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    rx_bytes = 0ULL;
-                }
-
-                try
-                {
-                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    tx_bytes = 0ULL;
-                }
-
-                InterfaceStats mstats;
-                Globals::all_stats[mac]["monthly"][row] = mstats;
-                Globals::all_stats[mac]["monthly"][row].set_initial_stats( tx_bytes, rx_bytes );
-            }
-        }
-
-///
-        query.clear();
-        query += "DELETE FROM daily WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete empty row in the daily table" );
-        }
-
-        query.clear();
-        query += "DELETE FROM daily WHERE rx_bytes='0' AND tx_bytes='0';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete from daily table rows with zero rx and tx values" );
-        }
-
-        query.clear();
-        query += "SELECT * from daily ";
-        query += "WHERE row=";
-        query += "'";
-        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 );
-        query += "'";
-        query += ";";
-
-        table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc == SQLITE_OK )
-        {
-            row = table_columns["row"];
-
-            if ( row.compare( "" ) != 0 )
-            {
-                try
-                {
-                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    rx_bytes = 0ULL;
-                }
-
-                try
-                {
-                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    tx_bytes = 0ULL;
-                }
-
-                InterfaceStats dstats;
-                Globals::all_stats[mac]["daily"][row] = dstats;
-                Globals::all_stats[mac]["daily"][row].set_initial_stats( tx_bytes, rx_bytes );
-            }
-        }
-
-///
-        query.clear();
-        query += "DELETE FROM hourly WHERE row NOT LIKE '2%%';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete empty row in the hourly table" );
-        }
-
-        query.clear();
-        query += "DELETE FROM hourly WHERE rx_bytes='0' AND tx_bytes='0';";
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc != SQLITE_OK )
-        {
-            sqlite3_free( zErrMsg );
-            Logger::LogError( "Can not delete from hourly table rows with zero rx and tx values" );
-        }
-
-        query.clear();
-        query += "SELECT * from hourly ";
-        query += "WHERE row=";
-        query += "'";
-        query += Utils::to_string( y ) + "-" + Utils::to_string( m, 2 ) + "-" + Utils::to_string( d, 2 ) + "_" + Utils::to_string( h, 2 ) + ":00-" + Utils::to_string( h + 1, 2 ) + ":00";
-        query += "'";
-        query += ";";
-
-        table_columns.clear();
-        rc = sqlite3_exec( db, query.c_str(), callback, nullptr, &zErrMsg );
-
-        if ( rc == SQLITE_OK )
-        {
-            row = table_columns["row"];
-
-            if ( row.compare( "" ) != 0 )
-            {
-                try
-                {
-                    rx_bytes = Utils::stoull( table_columns["rx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    rx_bytes = 0ULL;
-                }
-
-                try
-                {
-                    tx_bytes = Utils::stoull( table_columns["tx_bytes"] );
-                }
-                catch ( ... )
-                {
-                    tx_bytes = 0ULL;
-                }
-
-                InterfaceStats hstats;
-                Globals::all_stats[mac]["hourly"][row] = hstats;
-                Globals::all_stats[mac]["hourly"][row].set_initial_stats( tx_bytes, rx_bytes );
-            }
-        }
-
-        sqlite3_close_v2( db );
+        sqlite3_exec(db, "COMMIT;", nullptr, nullptr, nullptr);
+        sqlite3_close_v2(db);
     }
 
     Globals::data_load_save_mutex.unlock();
-
 #endif // use_sqlite
 }
 
