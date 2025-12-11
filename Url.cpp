@@ -119,14 +119,14 @@ void Url::assign(const string& s)
              * then is this url an absolute path like /rara  ?
              * so rule of thumb is to sanitize double slashes on paths.
              */
-            if( match[SCHEME].matched )
-                scheme(match[SCHEME].str());
+            if( match[static_cast<int>(SCHEME)].matched )
+                scheme(match[static_cast<int>(SCHEME)].str());
 
-            if( match[DSLASH_AUTH].matched ) {
+            if( match[static_cast<int>(DSLASH_AUTH)].matched ) {
                 // Only valid for locally scoped urls like file:/// that define a default host, since http:/// makes no sense, authority must exists for globally scoped urls
                 // in this case 3: // 4 matches, but its empty
                 // if url == "/////" then 3: // 4 matches but empty 5: /// we treat this like an absolute path, but only if there's no scheme.
-                if( match[DSLASH_AUTH].str() == "//") {
+                if( match[static_cast<int>(DSLASH_AUTH)].str() == "//") {
                     // if( scheme().empty() )
                     // this is a relative uri with an absolute path we are ok.
                     if ( ! scheme().empty() && scheme() != "file" )
@@ -134,17 +134,17 @@ void Url::assign(const string& s)
                 }
             }
 
-            if( match[AUTHORITY].matched )
-                authority(match[AUTHORITY].str());
-            if( match[PATH].matched )
+            if( match[static_cast<int>(AUTHORITY)].matched )
+                authority(match[static_cast<int>(AUTHORITY)].str());
+            if( match[static_cast<int>(PATH)].matched )
                 //DLOG(cout << "PATH match: |" << match[PATH].str() << "|" << endl);
-                path(match[PATH].str());
+                path(match[static_cast<int>(PATH)].str());
 
-            if( match[QUERY].matched )
-                query(match[QUERY].str());
+            if( match[static_cast<int>(QUERY)].matched )
+                query(match[static_cast<int>(QUERY)].str());
 
-            if( match[FRAGMENT].matched )
-                fragment(match[FRAGMENT].str());
+            if( match[static_cast<int>(FRAGMENT)].matched )
+                fragment(match[static_cast<int>(FRAGMENT)].str());
 
             if( ! syntax_ok() )
                 throw UrlParseError(" ! syntax_ok() for this url, sanity checks failed");
