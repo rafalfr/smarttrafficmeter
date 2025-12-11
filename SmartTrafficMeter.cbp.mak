@@ -23,7 +23,7 @@ CFLAGS_LINUX_DEBUG = $(CFLAGS) -w -std=c++11 -Og -g -O0 -D__linux -Duse_sqlite
 RESINC_LINUX_DEBUG = $(RESINC)
 RCFLAGS_LINUX_DEBUG = $(RCFLAGS)
 LIBDIR_LINUX_DEBUG = $(LIBDIR)
-LIB_LINUX_DEBUG = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_system -lboost_regex -lboost_thread -lboost_filesystem -lboost_iostreams -lcurl
+LIB_LINUX_DEBUG = $(LIB)-lrt -ldl -lbfd -lpthread -lboost_regex -lboost_thread -lboost_filesystem -lboost_iostreams -lcurl
 LDFLAGS_LINUX_DEBUG = $(LDFLAGS)
 OBJDIR_LINUX_DEBUG = obj/debug
 DEP_LINUX_DEBUG = 
@@ -34,7 +34,7 @@ CFLAGS_LINUX_RELEASE = $(CFLAGS) -fomit-frame-pointer -fexpensive-optimizations 
 RESINC_LINUX_RELEASE = $(RESINC)
 RCFLAGS_LINUX_RELEASE = $(RCFLAGS)
 LIBDIR_LINUX_RELEASE = $(LIBDIR)
-LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lcurl -lboost_system -lboost_filesystem -lboost_iostreams -lboost_thread -lboost_regex
+LIB_LINUX_RELEASE = $(LIB)-lrt -ldl -lbfd -lpthread -lcurl -lboost_filesystem -lboost_iostreams -lboost_thread -lboost_regex
 LDFLAGS_LINUX_RELEASE = $(LDFLAGS) -s -rdynamic
 OBJDIR_LINUX_RELEASE = obj/release
 DEP_LINUX_RELEASE = 
